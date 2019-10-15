@@ -1,0 +1,10 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+pg:
+  redisson:
+    enabled: true
+    single-server-properties:
+      address: 127.0.0.1:6379
+      database: 0
