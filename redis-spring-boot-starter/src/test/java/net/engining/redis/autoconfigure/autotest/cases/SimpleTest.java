@@ -40,10 +40,12 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         Assert.isTrue(user.getName().equals(user1.name), "user对象的值不相等");
 
         //BitMap
-        boolean b = RedisUtil.getBitmapHandler().get("loginId", 0L);
+        boolean b = RedisUtil.getBitmapHandler().get("loginId", 3L);
         Assert.isTrue(b == true, "状态不相等");
-        boolean b2 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
+        boolean b2 = RedisUtil.getBitmapHandler().get("loginId", 4L);
         Assert.isTrue(b2 == false, "状态不相等");
+        boolean b3 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
+        Assert.isTrue(b3 == false, "状态不相等");
     }
 
     @Override
@@ -54,6 +56,7 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         //案例，根据loginId标识是否登录，offset用于关联在数据库内保存的loginId
         //默认DbIndex
         RedisUtil.getBitmapHandler().set("loginId", 3L, true);
+        RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
         //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
