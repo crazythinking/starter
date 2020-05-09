@@ -70,7 +70,7 @@
     	<Logger name="net.engining" level="TRACE" additivity="true"/>
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.boot" level="TRACE" additivity="true"/>
+        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
 
         <!-- 配合show_sql=true,显示sql中的参数值 -->
         <!--<Logger name="org.hibernate.type" level="INFO" additivity="true"/>-->

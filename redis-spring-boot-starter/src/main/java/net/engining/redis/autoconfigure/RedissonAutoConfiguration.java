@@ -18,7 +18,11 @@ import net.engining.pg.support.utils.ValidateUtilExt;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
-import org.redisson.config.*;
+import org.redisson.config.ClusterServersConfig;
+import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.ReplicatedServersConfig;
+import org.redisson.config.SentinelServersConfig;
+import org.redisson.config.SingleServerConfig;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -78,6 +82,9 @@ public class RedissonAutoConfiguration {
         return new RedissonCollection();
     }
 
+    /**
+     * 使用Redisson构建RedisConnectionFactory，与Spring-data-redis整合
+     */
     @Bean
     @ConditionalOnMissingBean({RedisConnectionFactory.class})
     public RedisConnectionFactory redisConnectionFactory(RedissonClient redisson) {

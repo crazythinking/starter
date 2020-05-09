@@ -8,4 +8,4 @@ pg:
       druid:
         enabled: false
       hikari:
-        enabled: false
+        enabled: true

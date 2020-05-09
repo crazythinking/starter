@@ -1,5 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
+import net.engining.datasource.autoconfigure.aop.SpecifiedDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,21 @@ public class DbService {
     private EntityManager em;
 
     @Transactional(rollbackFor = Exception.class)
-    public void dsTest(){
+    public Long dsTest(){
         PgIdTestEnt pgIdTestEnt = new PgIdTestEnt();
         pgIdTestEnt.setBatchNumber("aa1111111");
         em.persist(pgIdTestEnt);
         log.debug("dsTest");
+        return pgIdTestEnt.getSnowFlakeId();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Long dsTest4defautDataSource(){
+        PgIdTestEnt pgIdTestEnt = new PgIdTestEnt();
+        pgIdTestEnt.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt);
+        log.debug("dsTest");
+        return pgIdTestEnt.getSnowFlakeId();
     }
 
 }

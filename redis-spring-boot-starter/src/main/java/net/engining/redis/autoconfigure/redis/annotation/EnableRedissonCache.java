@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 @Import(RedissonCacheContextConfiguration.class)
 @Configuration
-public @interface EnableRedisCache {
+public @interface EnableRedissonCache {
 
     /**
      * 缓存的名称 @Cacheable,@CachePut,@CacheEvict的value必须包含在这里面

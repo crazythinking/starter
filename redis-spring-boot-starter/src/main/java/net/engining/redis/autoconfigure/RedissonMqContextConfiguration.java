@@ -1,12 +1,14 @@
 package net.engining.redis.autoconfigure;
 
 import net.engining.pg.redis.mq.RedissonMqConsumerListener;
+import net.engining.redis.autoconfigure.redis.annotation.EnableRedissonMq;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Redis MQ配置
+ * 基于 Redisson 的 Redis MQ 配置，通过{@link EnableRedissonMq}注入此配置
+ * 
  * @author Eric Lu
  */
 @Configuration
