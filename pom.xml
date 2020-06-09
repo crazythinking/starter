@@ -50,8 +50,8 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>redis-spring-boot-starter</module>
 		<module>dynamic-datasource-spring-boot-starter</module>
+		<module>redis-spring-boot-starter</module>
 	</modules>
 
 	<build>
