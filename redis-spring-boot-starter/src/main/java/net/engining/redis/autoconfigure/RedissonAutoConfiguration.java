@@ -135,7 +135,6 @@ public class RedissonAutoConfiguration {
                 singleServerConfig.setDnsMonitoringInterval(singleServerProperties.getDnsMonitoringInterval());
                 singleServerConfig.setSubscriptionConnectionMinimumIdleSize(singleServerProperties.getSubscriptionConnectionMinimumIdleSize());
                 singleServerConfig.setSubscriptionConnectionPoolSize(singleServerProperties.getSubscriptionConnectionPoolSize());
-                singleServerConfig.setPingTimeout(redissonProperties.getPingTimeout());
                 singleServerConfig.setClientName(redissonProperties.getClientName());
                 singleServerConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 singleServerConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
@@ -181,7 +180,6 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     clusterServersConfig.addNodeAddress(prefixAddress(nodeAddress));
                 }
-                clusterServersConfig.setPingTimeout(redissonProperties.getPingTimeout());
                 clusterServersConfig.setClientName(redissonProperties.getClientName());
                 clusterServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 clusterServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
@@ -229,7 +227,6 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     sentinelServersConfig.addSentinelAddress(prefixAddress(nodeAddress));
                 }
-                sentinelServersConfig.setPingTimeout(redissonProperties.getPingTimeout());
                 sentinelServersConfig.setClientName(redissonProperties.getClientName());
                 sentinelServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 sentinelServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
@@ -276,7 +273,6 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     replicatedServersConfig.addNodeAddress(prefixAddress(nodeAddress));
                 }
-                replicatedServersConfig.setPingTimeout(redissonProperties.getPingTimeout());
                 replicatedServersConfig.setClientName(redissonProperties.getClientName());
                 replicatedServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 replicatedServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
@@ -327,7 +323,6 @@ public class RedissonAutoConfiguration {
                         masterSlaveServersConfig.addSlaveAddress(prefixAddress(nodeAddress));
                     }
                 }
-                masterSlaveServersConfig.setPingTimeout(redissonProperties.getPingTimeout());
                 masterSlaveServersConfig.setClientName(redissonProperties.getClientName());
                 masterSlaveServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 masterSlaveServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());

@@ -13,7 +13,7 @@
     	<!-- 标准输出 -->
         <Console name="Console" target="SYSTEM_OUT">
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout disableAnsi="false" charset="UTF-8" pattern="%highlight{[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
+            <PatternLayout disableAnsi="false" charset="UTF-8" pattern="%highlight{[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=Bright cyan}"/>
         </Console>
         
         <!--所有日志-->
@@ -75,6 +75,7 @@
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
         <!-- <Logger name="org.springframework.boot" level="TRACE" additivity="true"/> -->
+        <Logger name="org.springframework.cache" level="TRACE" additivity="true"/>
 
         <!-- 配合show_sql=true,显示sql中的参数值 -->
         <!--<Logger name="org.hibernate.type" level="INFO" additivity="true"/>-->

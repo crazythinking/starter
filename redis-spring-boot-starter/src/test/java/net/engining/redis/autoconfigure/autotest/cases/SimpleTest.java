@@ -4,6 +4,8 @@ import net.engining.pg.redis.operation.RedissonObject;
 import net.engining.pg.redis.utils.RedisUtil;
 import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
 
@@ -60,6 +62,13 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
+        cachable("-test-cache");
+
+    }
+
+    @Cacheable(cacheNames = "pc111")
+    public String cachable(String a){
+        return "11111"+a;
     }
 
     @Override
