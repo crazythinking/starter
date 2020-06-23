@@ -16,6 +16,6 @@ import java.lang.annotation.Target;
 @Documented
 @Import(RedissonMqContextConfiguration.class)
 @Configuration
-public @interface EnableRedissonMq {
+public @interface EnableRedissonMQ {
 
 }

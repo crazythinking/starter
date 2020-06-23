@@ -43,7 +43,7 @@ import java.net.MalformedURLException;
 @Configuration
 @EnableConfigurationProperties(value = RedissonCommonProperties.class)
 @ConditionalOnClass(RedissonCommonProperties.class)
-@ConditionalOnProperty(prefix = "pg.redisson", name = "enabled")
+@ConditionalOnProperty(prefix = "pg.redisson", name = "enabled", matchIfMissing = true)
 @Import({
         RedisContextConfig.class
 })
@@ -121,7 +121,7 @@ public class RedissonAutoConfiguration {
         config.setMinCleanUpDelay(redissonProperties.getMinCleanUpDelay());
         config.setMaxCleanUpDelay(redissonProperties.getMaxCleanUpDelay());
 
-        MultipleServerProperties multipleServerConfig = redissonProperties.getMultipleServerConfig();
+        MultipleServerProperties multipleServerConfig = redissonProperties.getMultipleServerProperties();
 
         switch (redissonProperties.getModel()){
             case SINGLE:

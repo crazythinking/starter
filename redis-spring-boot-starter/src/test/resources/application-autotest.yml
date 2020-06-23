@@ -12,10 +12,6 @@ pg:
     single-server-properties:
       address: 127.0.0.1:6379
       database: 0
-    multiple-server-config:
-      database: 1
-      node-addresses:
-
     cache:
       enabled: true
       cache-properties-list:
