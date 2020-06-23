@@ -1,5 +1,6 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
+import cn.hutool.core.lang.Console;
 import net.engining.pg.redis.operation.RedissonObject;
 import net.engining.pg.redis.utils.RedisUtil;
 import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplate;
@@ -24,6 +25,12 @@ public class SimpleTest extends AbstractTestCaseTemplate {
 
     @Resource(name = RedisUtil.REDIS_TEMPLATE)
     RedisTemplate<String, Serializable> redisTemplate;
+
+    @Autowired
+    RedissonCacheService redissonCacheService;
+
+    @Autowired
+    RedisCacheService redisCacheService;
 
     private User user;
 
@@ -62,13 +69,14 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
-        cachable("-test-cache");
+        String a = redissonCacheService.cachable("-test-cache");
+        Console.log(a);
+        String b = redissonCacheService.cachable2("-test-cache");
+        Console.log(b);
+        String c = redissonCacheService.cachable3("-test-cache");
+        Console.log(c);
+        redisCacheService.originCachable("origin-test-cache");
 
-    }
-
-    @Cacheable(cacheNames = "pc111")
-    public String cachable(String a){
-        return "11111"+a;
     }
 
     @Override

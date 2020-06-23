@@ -1,52 +1,42 @@
 package net.engining.redis.autoconfigure;
 
+import net.engining.pg.config.RedisCacheContextConfig;
 import net.engining.pg.config.RedisConfigUtils;
 import net.engining.pg.props.CommonProperties;
-import net.engining.redis.autoconfigure.redis.annotation.EnableRedissonCache;
+import net.engining.pg.redis.props.CacheProperties;
+import net.engining.pg.redis.props.RedissonCacheProperties;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportAware;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * 基于 Redisson 的 Spring Cache 配置，通过{@link EnableRedissonCache}注入此配置
+ * 基于 Redisson 的 Spring Cache 配置
  *
  * @author Eric Lu
  */
 @Configuration
-@EnableCaching
-public class RedissonCacheContextConfiguration extends CachingConfigurerSupport implements ImportAware {
-
-    private String[] value;
+public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
 
     Logger logger = LoggerFactory.getLogger(RedissonCacheContextConfiguration.class);
 
-    /**
-     * 缓存时间
-     */
-    private long ttl;
-
-    /**
-     * 最长空闲时间
-     */
-    private long maxIdleTime;
-
     @Autowired
     CommonProperties commonProperties;
+
+    @Autowired
+    RedissonCacheProperties redissonCacheProperties;
 
     /**
      * 由于RedissonSpringCacheManager没有入口添加CacheKeyPrefix，只能通过keyGenerator控制；
@@ -56,8 +46,7 @@ public class RedissonCacheContextConfiguration extends CachingConfigurerSupport 
      * @return
      */
     @Bean("redissonKeyGenerator")
-    @Override
-    public KeyGenerator keyGenerator() {
+    public KeyGenerator redissonKeyGenerator() {
         return (target, method, params) -> {
             StringBuilder sb = new StringBuilder();
             sb.append(commonProperties.getAppname());
@@ -70,34 +59,29 @@ public class RedissonCacheContextConfiguration extends CachingConfigurerSupport 
     /**
      * 区别于“cacheManager”，“cacheParameterManager”；
      * 此cacheManager可以对一组cacheNames进行独立的（ttl、maxIdelTime、maxSize）配置；
-     * 需要通过{@link org.springframework.cache.annotation.CacheConfig}指定使用此CacheManager；
+     * 需要通过{@link org.springframework.cache.annotation.CacheConfig}指定使用此redissonCacheManager；
      * 另外用于{@link RedissonSpringCacheManager}没有入口设置 cache key prefix,
-     * 因此需要在使用{@link org.springframework.cache.annotation.Cacheable}时指定key
+     * 因此需要在使用{@link org.springframework.cache.annotation.CacheConfig}时指定redissonKeyGenerator
      *
      */
     @Bean("redissonCacheManager")
     public CacheManager redissonCacheManager(RedissonClient redissonClient) {
-        Map<String, CacheConfig> config = new HashMap<>(8);
-        //加载通过EnableRedissonCache注解配置内指定cacheNames的独立配置
-        for (String s : value) {
-            logger.debug("init redisson spring cache config for cache name: {}", s);
-            config.put(s, new CacheConfig(ttl, maxIdleTime));
+        Map<String, CacheConfig> configMap = new HashMap<>(8);
+        List<CacheProperties> cachePropertiesList = redissonCacheProperties.getCachePropertiesList();
+        for (CacheProperties cacheProperties : cachePropertiesList) {
+            String[] names = cacheProperties.getNames();
+            logger.debug("init redisson spring cache config for cache names: {}", names);
+            CacheConfig cacheConfig = new CacheConfig(cacheProperties.getTtl(), cacheProperties.getMaxIdleTime());
+            cacheConfig.setMaxSize(cacheProperties.getMaxSize());
+            for (String name : names) {
+                configMap.put(name, cacheConfig);
+            }
         }
 
-        RedissonSpringCacheManager cacheManager =  new RedissonSpringCacheManager(redissonClient, config);
+        RedissonSpringCacheManager cacheManager =  new RedissonSpringCacheManager(redissonClient, configMap);
         cacheManager.setAllowNullValues(true);
 
         return cacheManager;
     }
 
-
-    @Override
-    public void setImportMetadata(AnnotationMetadata importMetadata) {
-        Map<String, Object> enableAttrMap = importMetadata
-                .getAnnotationAttributes(EnableRedissonCache.class.getName());
-        AnnotationAttributes enableAttrs = AnnotationAttributes.fromMap(enableAttrMap);
-        this.value = enableAttrs.getStringArray("value");
-        this.maxIdleTime = enableAttrs.getNumber("maxIdleTime");
-        this.ttl = enableAttrs.getNumber("ttl");
-    }
 }

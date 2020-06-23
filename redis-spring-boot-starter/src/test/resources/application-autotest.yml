@@ -1,6 +1,6 @@
 spring:
   application:
-    name: redission-starter-test
+    name: redisson-starter-test
   main:
     allow-bean-definition-overriding: true
   cache:
@@ -12,4 +12,16 @@ pg:
     single-server-properties:
       address: 127.0.0.1:6379
       database: 0
-      dns-monitoring-interval:
+    multiple-server-config:
+      database: 1
+      node-addresses:
+
+    cache:
+      enabled: true
+      cache-properties-list:
+        - names: pc111,pc222,pc333
+          ttl: 1800000
+          max-idle-time: 1800000
+          max-size: 100
+
+

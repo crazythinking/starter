@@ -1,10 +1,10 @@
 package net.engining.redis.autoconfigure.autotest;
 
-import net.engining.pg.config.RedisCacheContextConfig;
 import net.engining.pg.config.RedisContextConfig;
 import net.engining.pg.param.props.PgParamAndCacheProperties;
 import net.engining.pg.props.CommonProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
+import net.engining.redis.autoconfigure.RedissonCacheContextConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.AdviceMode;
@@ -23,10 +23,10 @@ import org.springframework.context.annotation.Lazy;
         CommonProperties.class,
         PgParamAndCacheProperties.class,
 })
-@Import(value={
-        RedisContextConfig.class,
-        RedisCacheContextConfig.class
-})
+//@Import(value={
+//        RedisContextConfig.class,
+//        RedissonCacheContextConfiguration.class
+//})
 @EnableCaching(mode = AdviceMode.ASPECTJ)
 public class CombineContextConfig {
 

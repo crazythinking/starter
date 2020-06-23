@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.redis.autoconfigure.RedissonAutoConfiguration
+net.engining.redis.autoconfigure.RedissonAutoConfiguration,\
+net.engining.redis.autoconfigure.ReddissonCacheAutoConfiguration
