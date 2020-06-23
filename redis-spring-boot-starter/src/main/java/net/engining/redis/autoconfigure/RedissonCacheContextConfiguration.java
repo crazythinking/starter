@@ -1,5 +1,6 @@
 package net.engining.redis.autoconfigure;
 
+import cn.hutool.core.util.ArrayUtil;
 import net.engining.pg.config.RedisCacheContextConfig;
 import net.engining.pg.config.RedisConfigUtils;
 import net.engining.pg.props.CommonProperties;
@@ -11,8 +12,6 @@ import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
@@ -70,7 +69,7 @@ public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
         List<CacheProperties> cachePropertiesList = redissonCacheProperties.getCachePropertiesList();
         for (CacheProperties cacheProperties : cachePropertiesList) {
             String[] names = cacheProperties.getNames();
-            logger.debug("init redisson spring cache config for cache names: {}", names);
+            logger.debug("init redisson spring cache config for cache names: {}", ArrayUtil.join(names, ","));
             CacheConfig cacheConfig = new CacheConfig(cacheProperties.getTtl(), cacheProperties.getMaxIdleTime());
             cacheConfig.setMaxSize(cacheProperties.getMaxSize());
             for (String name : names) {

@@ -117,7 +117,6 @@ public class RedissonAutoConfiguration {
         config.setReferenceEnabled(redissonProperties.getReferenceEnabled());
         config.setLockWatchdogTimeout(redissonProperties.getLockWatchdogTimeout());
         config.setKeepPubSubOrder(redissonProperties.getKeepPubSubOrder());
-        config.setDecodeInExecutor(redissonProperties.getDecodeInExecutor());
         config.setUseScriptCache(redissonProperties.getUseScriptCache());
         config.setMinCleanUpDelay(redissonProperties.getMinCleanUpDelay());
         config.setMaxCleanUpDelay(redissonProperties.getMaxCleanUpDelay());
