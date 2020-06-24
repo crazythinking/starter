@@ -1,6 +1,7 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
 import cn.hutool.core.lang.Console;
+import com.google.common.collect.Sets;
 import net.engining.pg.redis.operation.RedissonObject;
 import net.engining.pg.redis.utils.RedisUtil;
 import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplate;
@@ -13,6 +14,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * @author Eric Lu
@@ -40,6 +42,11 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         user.setAge(30);
         user.setName("张三");
         user.setSalary(BigDecimal.valueOf(10000.00));
+
+        Set<String> set1 = Sets.newHashSet("aaa","bbb","ccc","ddd","eee");
+        Set<String> set2 = Sets.newHashSet("aaa","fff","ccc","ddd","hhh","mmm");
+        Sets.SetView<String> setView = Sets.symmetricDifference(set1, set2);
+        Console.log(setView.toString());
 
     }
 
