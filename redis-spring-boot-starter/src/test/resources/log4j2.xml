@@ -74,7 +74,7 @@
     	<Logger name="net.engining" level="TRACE" additivity="true"/>
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
-        <!-- <Logger name="org.springframework.boot" level="TRACE" additivity="true"/> -->
+        <Logger name="org.springframework.boot" level="TRACE" additivity="true"/>
         <Logger name="org.springframework.cache" level="TRACE" additivity="true"/>
 
         <!-- 配合show_sql=true,显示sql中的参数值 -->

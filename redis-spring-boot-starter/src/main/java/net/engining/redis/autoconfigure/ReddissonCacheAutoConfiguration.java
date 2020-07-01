@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableConfigurationProperties(value = RedissonCacheProperties.class)
 @ConditionalOnClass(RedissonCacheProperties.class)
-@ConditionalOnBean(RedissonClient.class)
-@ConditionalOnProperty(prefix = "pg.redisson.cache", name = "enabled")
+@ConditionalOnProperty(prefix = "pg.redisson.cache", name = "enabled", havingValue = "true")
 @Import({
         RedissonCacheContextConfiguration.class
 })

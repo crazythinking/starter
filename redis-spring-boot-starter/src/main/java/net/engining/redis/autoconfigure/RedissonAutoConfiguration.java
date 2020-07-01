@@ -1,8 +1,8 @@
 package net.engining.redis.autoconfigure;
 
 import net.engining.pg.config.RedisContextConfig;
-import net.engining.pg.redis.aop.LockAop;
-import net.engining.pg.redis.aop.RedisMqAop;
+import net.engining.pg.redis.aop.RedissonLockAopHandler;
+import net.engining.pg.redis.aop.RedissonMqPublishAopHandler;
 import net.engining.pg.redis.connection.RedissonConnectionConfiguration;
 import net.engining.pg.redis.connection.RedissonConnectionFactory;
 import net.engining.pg.redis.operation.RedissonBinary;
@@ -53,15 +53,15 @@ public class RedissonAutoConfiguration {
     private RedissonCommonProperties redissonProperties;
 
     @Bean
-    @ConditionalOnMissingBean(LockAop.class)
-    public LockAop lockAop() {
-        return new LockAop();
+    @ConditionalOnMissingBean(RedissonLockAopHandler.class)
+    public RedissonLockAopHandler lockAop() {
+        return new RedissonLockAopHandler();
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedisMqAop.class)
-    public RedisMqAop mqAop() {
-        return new RedisMqAop();
+    @ConditionalOnMissingBean(RedissonMqPublishAopHandler.class)
+    public RedissonMqPublishAopHandler mqAop() {
+        return new RedissonMqPublishAopHandler();
     }
 
     @Bean

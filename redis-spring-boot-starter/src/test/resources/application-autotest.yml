@@ -18,6 +18,6 @@ pg:
         - names: pc111,pc222,pc333
           ttl: 1800000
           max-idle-time: 1800000
-          max-size: 100
+          max-size: 2
 
 
