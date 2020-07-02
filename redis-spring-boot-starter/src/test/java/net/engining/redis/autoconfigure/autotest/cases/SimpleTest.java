@@ -1,6 +1,7 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
 import cn.hutool.core.lang.Console;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.engining.pg.redis.operation.RedissonObject;
 import net.engining.pg.redis.utils.RedisUtil;
@@ -8,12 +9,15 @@ import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -75,6 +79,17 @@ public class SimpleTest extends AbstractTestCaseTemplate {
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
         //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
+
+        RedisUtil.getBitmapHandler().set("loginId2", 1L, false, Duration.ofMinutes(10));
+
+        RedisUtil.getGeoHandler().add("geo1", new Point(1.0, 2.0), "ggggeo", Duration.ofMinutes(10));
+
+        RedisUtil.getHyperLogLogHandler().add("hyperlog1", Duration.ofMinutes(100), "a","b", "c", "d", "d", "c");
+
+        Map<String, String> m = Maps.newHashMap();
+        m.put("1", "a");
+        m.put("2", "b");
+        RedisUtil.getStringHandler().mset(m);
 
         String a = redissonCacheService.cachable("-test-cache");
         Console.log(a);
