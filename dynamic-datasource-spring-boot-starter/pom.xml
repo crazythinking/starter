@@ -58,6 +58,10 @@
 			<artifactId>pg-config</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>net.engining.gm</groupId>
+			<artifactId>gm-config</artifactId>
+		</dependency>
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
