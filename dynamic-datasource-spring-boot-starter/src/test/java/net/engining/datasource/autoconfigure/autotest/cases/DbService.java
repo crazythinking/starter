@@ -1,6 +1,5 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
-import net.engining.datasource.autoconfigure.aop.SpecifiedDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

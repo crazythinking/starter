@@ -1,7 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
-import net.engining.datasource.autoconfigure.aop.SpecifiedDataSource;
 import net.engining.datasource.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import net.engining.gm.config.autoconfigure.aop.SpecifiedDataSource;
 import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

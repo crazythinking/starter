@@ -1,6 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest;
 
-import net.engining.datasource.autoconfigure.aop.SpecifiedDataSourceHandler;
+import net.engining.gm.config.autoconfigure.aop.SpecifiedDataSourceHandler;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.h2.tools.Server;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
