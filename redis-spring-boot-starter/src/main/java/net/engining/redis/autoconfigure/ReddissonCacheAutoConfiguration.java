@@ -1,8 +1,7 @@
 package net.engining.redis.autoconfigure;
 
 import net.engining.pg.redis.props.RedissonCacheProperties;
-import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableConfigurationProperties(value = RedissonCacheProperties.class)
 @ConditionalOnClass(RedissonCacheProperties.class)
+@AutoConfigureAfter(RedissonAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "pg.redisson.cache", name = "enabled", havingValue = "true")
 @Import({
         RedissonCacheContextConfiguration.class
