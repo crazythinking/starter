@@ -24,7 +24,7 @@ import java.util.Set;
  * @author Eric Lu
  * @create 2019-09-21 23:58
  **/
-public class SimpleTest extends AbstractTestCaseTemplate {
+public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     RedissonObject redissonObject;
@@ -61,11 +61,11 @@ public class SimpleTest extends AbstractTestCaseTemplate {
 
         //BitMap
         boolean b = RedisUtil.getBitmapHandler().get("loginId", 3L);
-        Assert.isTrue(b == true, "状态不相等");
+        Assert.isTrue(b, "状态不相等");
         boolean b2 = RedisUtil.getBitmapHandler().get("loginId", 4L);
-        Assert.isTrue(b2 == false, "状态不相等");
+        Assert.isTrue(!b2, "状态不相等");
         boolean b3 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
-        Assert.isTrue(b3 == false, "状态不相等");
+        Assert.isTrue(!b3, "状态不相等");
     }
 
     @Override

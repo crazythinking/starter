@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Lazy;
         PgParamAndCacheProperties.class,
 })
 @EnableCaching
-//@EnableRedissonMQ
 public class CombineContextConfig {
 
     /**
