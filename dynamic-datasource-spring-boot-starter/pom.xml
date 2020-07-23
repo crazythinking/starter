@@ -25,12 +25,6 @@
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- 支持JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,5 +77,15 @@
 		</dependency>
 
     </dependencies>
+
+	<build>
+		<plugins>
+			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

@@ -5,6 +5,7 @@ import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.h2.tools.Server;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -20,7 +21,7 @@ import java.sql.SQLException;
  */
 @Configuration
 @EnableAspectJAutoProxy
-@EnableTransactionManagement
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @EntityScan(basePackages = {
         "net.engining.datasource.autoconfigure.autotest.cases"
 })

@@ -9,8 +9,8 @@ import com.alibaba.druid.spring.boot.autoconfigure.stat.DruidStatViewServletConf
 import com.alibaba.druid.spring.boot.autoconfigure.stat.DruidWebStatFilterConfiguration;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import net.engining.datasource.autoconfigure.props.DruidDataSourceWrapper;
-import net.engining.datasource.autoconfigure.props.DynamicDruidDataSourceProperties;
+import net.engining.pg.db.props.DruidDataSourceWrapper;
+import net.engining.pg.db.props.DynamicDruidDataSourceProperties;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;

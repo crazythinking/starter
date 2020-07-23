@@ -4,7 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.engining.datasource.autoconfigure.props.DynamicHikariDataSourceProperties;
+import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;

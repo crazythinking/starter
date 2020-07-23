@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
-import net.engining.datasource.autoconfigure.aop.SpecifiedDataSource;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * @author Eric Lu
@@ -23,20 +25,29 @@ public class DbService {
 
     @Transactional(rollbackFor = Exception.class)
     public Long dsTest(){
-        PgIdTestEnt pgIdTestEnt = new PgIdTestEnt();
-        pgIdTestEnt.setBatchNumber("aa1111111");
-        em.persist(pgIdTestEnt);
+        PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
+        pgIdTestEnt1.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt1);
         log.debug("dsTest");
-        return pgIdTestEnt.getSnowFlakeId();
+        return pgIdTestEnt1.getSnowFlakeId();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public Long dsTest4defautDataSource(){
-        PgIdTestEnt pgIdTestEnt = new PgIdTestEnt();
-        pgIdTestEnt.setBatchNumber("aa1111111");
-        em.persist(pgIdTestEnt);
+        PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
+        pgIdTestEnt1.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt1);
         log.debug("dsTest");
-        return pgIdTestEnt.getSnowFlakeId();
+        return pgIdTestEnt1.getSnowFlakeId();
+    }
+
+    public void test() {
+        QPgIdTestEnt pgIdTestEnt = new QPgIdTestEnt(1);
+        List<Tuple> tuples = new JPAQueryFactory(em)
+                .select(pgIdTestEnt.batchNumber(), pgIdTestEnt.snowFlakeId())
+                .where(pgIdTestEnt.batchNumber().eq("aa1111111"))
+                .fetch();
+        log.debug(tuples.get(0).get(pgIdTestEnt.snowFlakeId()).toString());
     }
 
 }
