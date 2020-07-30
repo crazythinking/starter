@@ -14,14 +14,14 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * PG_ID_TEST
+ * PG_ID_SD_TEST_Ent
  * @author pg-maven-plugin
  */
 @Entity
-@Table(name="PG_ID_TEST_Ent2")
+@Table(name="PG_ID_SD_TEST_Ent")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class PgIdTestEnt2 implements Serializable {
+public class PgIdSdTestEnt implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PropertyInfo(name="SNOW_FLAKE_ID", length=64)

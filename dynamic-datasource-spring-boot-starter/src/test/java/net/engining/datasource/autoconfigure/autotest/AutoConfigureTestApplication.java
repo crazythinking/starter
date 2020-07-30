@@ -8,7 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author luxue
  *
  */
-@SpringBootApplication
+@SpringBootApplication(
+        excludeName = {
+                "org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration"
+        })
 public class AutoConfigureTestApplication {
 
     public static void main(String[] args) {

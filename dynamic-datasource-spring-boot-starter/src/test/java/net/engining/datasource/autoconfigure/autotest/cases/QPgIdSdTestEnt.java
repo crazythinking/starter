@@ -15,26 +15,26 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
  * QPgIdTest is a Querydsl query type for PgIdTest
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QPgIdTestEnt2 extends EntityPathBase<PgIdTestEnt2> {
+public class QPgIdSdTestEnt extends EntityPathBase<PgIdSdTestEnt> {
 
     private static final long serialVersionUID = -799052121L;
 
-    public static final QPgIdTestEnt2 pgIdTest = new QPgIdTestEnt2("pgIdTestEnt2");
+    public static final QPgIdSdTestEnt pgIdTest = new QPgIdSdTestEnt("pgIdSdTestEnt");
 
     public final StringPath batchNumber = createString("batchNumber");
 
     public final NumberPath<Long> snowFlakeId = createNumber("snowFlakeId", Long.class);
 
-    public QPgIdTestEnt2(String variable) {
-        super(PgIdTestEnt2.class, forVariable(variable));
+    public QPgIdSdTestEnt(String variable) {
+        super(PgIdSdTestEnt.class, forVariable(variable));
     }
 
-    public QPgIdTestEnt2(Path<? extends PgIdTestEnt2> path) {
+    public QPgIdSdTestEnt(Path<? extends PgIdSdTestEnt> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QPgIdTestEnt2(PathMetadata metadata) {
-        super(PgIdTestEnt2.class, metadata);
+    public QPgIdSdTestEnt(PathMetadata metadata) {
+        super(PgIdSdTestEnt.class, metadata);
     }
 
 }

@@ -15,6 +15,7 @@
 
 	<properties>
 		<druid.spring.version>1.1.22</druid.spring.version>
+		<sharding.jdbc.version>4.1.1</sharding.jdbc.version>
 		<mysql-connector-java.version>8.0.16</mysql-connector-java.version>
 	</properties>
 
@@ -29,6 +30,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shardingsphere</groupId>
+			<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+			<version>${sharding.jdbc.version}</version>
 		</dependency>
 
 		<!-- druid datasource pool -->

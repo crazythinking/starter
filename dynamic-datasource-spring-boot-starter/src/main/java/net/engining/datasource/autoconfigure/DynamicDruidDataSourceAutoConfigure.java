@@ -25,6 +25,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -34,26 +35,31 @@ import java.util.Map;
  * 自动装配可切换的动态DataSource;
  * 指定在DruidDataSourceAutoConfigure之前装配，而DruidDataSourceAutoConfigure已经指定了在DataSourceAutoConfiguration之前，
  * 因此必然也在DataSourceAutoConfiguration之前;
+ * <br>
+ * 注：只在设置pg.datasource.dynamic.druid.enabled=true时才触发自动装配
  *
  * @author Eric Lu
  * @date 2019-11-04 16:46
  **/
 @Configuration
 @ConditionalOnClass(DruidDataSource.class)
-@ConditionalOnProperty(prefix = "pg.datasource.dynamic.druid", name = "enabled", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(prefix = "pg.datasource.dynamic.druid", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DruidDataSourceAutoConfigure.class)
 @EnableConfigurationProperties({
         DruidStatProperties.class, DataSourceProperties.class, DynamicDruidDataSourceProperties.class
 })
-@Import({DruidSpringAopConfiguration.class,
+@Import({
+        DruidSpringAopConfiguration.class,
         DruidStatViewServletConfiguration.class,
         DruidWebStatFilterConfiguration.class,
-        DruidFilterConfiguration.class})
+        DruidFilterConfiguration.class
+})
 public class DynamicDruidDataSourceAutoConfigure {
     /** logger */
     private static final Logger log = LoggerFactory.getLogger(DynamicDruidDataSourceAutoConfigure.class);
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public DataSource dataSource(DynamicDruidDataSourceProperties dynamicDruidDataSourceWrapper) {
         log.info("starting init dynamic datasource......");

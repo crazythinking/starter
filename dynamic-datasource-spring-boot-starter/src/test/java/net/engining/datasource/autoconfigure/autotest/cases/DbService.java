@@ -1,7 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,13 +40,26 @@ public class DbService {
         return pgIdTestEnt1.getSnowFlakeId();
     }
 
-    public void test() {
-        QPgIdTestEnt pgIdTestEnt = new QPgIdTestEnt(1);
-        List<Tuple> tuples = new JPAQueryFactory(em)
-                .select(pgIdTestEnt.batchNumber(), pgIdTestEnt.snowFlakeId())
-                .where(pgIdTestEnt.batchNumber().eq("aa1111111"))
-                .fetch();
-        log.debug(tuples.get(0).get(pgIdTestEnt.snowFlakeId()).toString());
+    @Transactional(rollbackFor = Exception.class)
+    public List<Long> dsTest4sharding(){
+        List<Long> ids = Lists.newArrayList();
+        PgIdSdTestEnt pgIdTestEnt = new PgIdSdTestEnt();
+        pgIdTestEnt.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt);
+        ids.add(pgIdTestEnt.getSnowFlakeId());
+
+        pgIdTestEnt = new PgIdSdTestEnt();
+        pgIdTestEnt.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt);
+        ids.add(pgIdTestEnt.getSnowFlakeId());
+
+        pgIdTestEnt = new PgIdSdTestEnt();
+        pgIdTestEnt.setBatchNumber("aa1111111");
+        em.persist(pgIdTestEnt);
+        ids.add(pgIdTestEnt.getSnowFlakeId());
+
+        return ids;
     }
+
 
 }

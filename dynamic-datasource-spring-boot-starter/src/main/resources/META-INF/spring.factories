@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 net.engining.datasource.autoconfigure.DynamicDruidDataSourceAutoConfigure,\
-net.engining.datasource.autoconfigure.DynamicDataSourceAutoConfigure
+net.engining.datasource.autoconfigure.DynamicDataSourceAutoConfigure,\
+net.engining.datasource.autoconfigure.ShardingJdbcAutoConfiguration

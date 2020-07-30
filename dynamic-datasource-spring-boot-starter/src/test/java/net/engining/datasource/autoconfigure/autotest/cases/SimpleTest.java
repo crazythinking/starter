@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,13 @@ import javax.persistence.PersistenceContext;
  * @author Eric Lu
  * @date 2019-09-21 23:58
  **/
+@ActiveProfiles(profiles={
+        "autotest.hikari",
+        "db.common",
+		"hikari.h2",
+//		"druid.mysql",
+//		"hikari.mysql"
+})
 public class SimpleTest extends AbstractTestCaseTemplate {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTest.class);
