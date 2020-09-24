@@ -1,5 +1,7 @@
 package net.engining.kettle.common;
 
+import org.pentaho.di.core.logging.LogLevel;
+
 /**
  * kettle 日志级别
  *
@@ -12,29 +14,42 @@ public enum KettleLogLevel {
     /**
      * 基础
      */
-    basic,
+    basic(LogLevel.BASIC),
     /**
      * 详情
      */
-    detail,
+    detail(LogLevel.DETAILED),
     /**
      * 错误
      */
-    error,
+    error(LogLevel.ERROR),
     /**
      * 调试
      */
-    debug,
+    debug(LogLevel.DEBUG),
     /**
      * 最小的
      */
-    minimal,
+    minimal(LogLevel.MINIMAL),
     /**
      * 行级
      */
-    rowlevel,
+    rowlevel(LogLevel.ROWLEVEL),
     /**
      * 没有
      */
-    nothing;
+    nothing(LogLevel.NOTHING);
+
+    private LogLevel logLevel;
+    KettleLogLevel(LogLevel logLevel){
+        this.logLevel=logLevel;
+    }
+
+    public LogLevel getLogLevel() {
+        return logLevel;
+    }
+
+    public void setLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
+    }
 }

@@ -8,7 +8,6 @@ import org.pentaho.di.core.Const;
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.Result;
 import org.pentaho.di.core.exception.KettleException;
-import org.pentaho.di.core.logging.LogLevel;
 import org.pentaho.di.core.plugins.PluginRegistry;
 import org.pentaho.di.core.plugins.RepositoryPluginType;
 import org.pentaho.di.job.Job;
@@ -81,7 +80,7 @@ public class KettleManagerService {
         Trans trans = new Trans(tm);
 
         // 调整日志级别
-        trans.setLogLevel(this.getLogerLevel());
+        trans.setLogLevel(kettleContextProperties.getKettleLogLevel().getLogLevel());
 
         // setup parameters
         if (params != null) {
@@ -124,7 +123,7 @@ public class KettleManagerService {
         Job job = new Job(null, jm);
 
         // adjust the log level
-        job.setLogLevel(this.getLogerLevel());
+        job.setLogLevel(kettleContextProperties.getKettleLogLevel().getLogLevel());
 
         if (params != null) {
             Iterator<Map.Entry<String, String>> entries = params.entrySet().iterator();
@@ -222,7 +221,7 @@ public class KettleManagerService {
         Job job = new Job(repository, jobMeta);
 
         // adjust the log level
-        job.setLogLevel(this.getLogerLevel());
+        job.setLogLevel(kettleContextProperties.getKettleLogLevel().getLogLevel());
 
         for (String key : params.keySet()) {
             job.setVariable(key, params.get(key));
@@ -248,41 +247,10 @@ public class KettleManagerService {
     }
 
     /**
-     * 取得kettle的日志级别
-     * @return 级别
+     *
+     * @throws KettleException
      */
-    private LogLevel getLogerLevel() {
-        LogLevel logLevel;
-        switch (kettleContextProperties.getKettleLogLevel()) {
-            case basic:
-                logLevel = LogLevel.BASIC;
-                break;
-            case detail:
-                logLevel = LogLevel.DETAILED;
-                break;
-            case error:
-                logLevel = LogLevel.ERROR;
-                break;
-            case debug:
-                logLevel = LogLevel.DEBUG;
-                break;
-            case minimal:
-                logLevel = LogLevel.MINIMAL;
-                break;
-            case rowlevel:
-                logLevel = LogLevel.ROWLEVEL;
-                break;
-            case nothing:
-                logLevel = LogLevel.NOTHING;
-                break;
-            default:
-                logLevel = null;
-                break;
-        }
-        return logLevel;
-    }
-
-    public void execute() throws KettleException {
+    public void defaultExecute() throws KettleException {
         for(KettleType key :kettleContextProperties.getKettleMap().keySet()){
             switch (key){
                 case file_ktr:

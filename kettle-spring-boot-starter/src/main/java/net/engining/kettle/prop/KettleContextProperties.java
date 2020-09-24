@@ -34,7 +34,7 @@ public class KettleContextProperties {
     /**
      * kettle LogLevel  日志级别
      */
-    private KettleLogLevel kettleLogLevel = KettleLogLevel.minimal;
+    private KettleLogLevel kettleLogLevel = KettleLogLevel.nothing;
     /**
      * 用户名
      */
