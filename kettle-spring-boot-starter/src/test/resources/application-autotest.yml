@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: redisson-starter-test
+  main:
+    allow-bean-definition-overriding: true
+  cache:
+    type: redis
+
+pg:
+  redisson:
+    enabled: true
+    single-server-properties:
+      address: 127.0.0.1:6379
+      database: 0
+    cache:
+      enabled: true
+      cache-properties-list:
+        - names: pc111,pc222,pc333
+          ttl: 1800000
+          max-idle-time: 1800000
+          max-size: 2
+  kettle:
+    enabled: true
+    config:
+      kettle-log-level: DETAIL
+      kettle-repo-id: KettleFileRepository
+      kettle-repo-path: C:\Cache\CSII\csii\shangcheng\starter\kettle-spring-boot-starter\src\test\resources
+      kettle-repo-name: test
+      kettle-map:
+        FILE-KTR:
+          name: test_num.ktr
+          params:
+            a: b
+            c: d
+        FILE-KJB:
+          name: test_no.kjb
+          params:
+            a: b
+            c: d
+        FILE-REPO:
+          name: test_repo
+          subdirectory:
+          params:
+            a: b
+            c: d

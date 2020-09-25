@@ -10,38 +10,38 @@ import org.pentaho.di.core.logging.LogLevel;
  * @date 2020/9/23 14:44
  * @since 1.0
  */
-public enum KettleLogLevel {
+public enum KettleLogLevelEnum {
     /**
      * 基础
      */
-    basic(LogLevel.BASIC),
+    BASIC(LogLevel.BASIC),
     /**
      * 详情
      */
-    detail(LogLevel.DETAILED),
+    DETAIL(LogLevel.DETAILED),
     /**
      * 错误
      */
-    error(LogLevel.ERROR),
+    ERROR(LogLevel.ERROR),
     /**
      * 调试
      */
-    debug(LogLevel.DEBUG),
+    DEBUG(LogLevel.DEBUG),
     /**
      * 最小的
      */
-    minimal(LogLevel.MINIMAL),
+    MINIMAL(LogLevel.MINIMAL),
     /**
      * 行级
      */
-    rowlevel(LogLevel.ROWLEVEL),
+    ROWLEVEL(LogLevel.ROWLEVEL),
     /**
      * 没有
      */
-    nothing(LogLevel.NOTHING);
+    NOTHING(LogLevel.NOTHING);
 
     private LogLevel logLevel;
-    KettleLogLevel(LogLevel logLevel){
+    KettleLogLevelEnum(LogLevel logLevel){
         this.logLevel=logLevel;
     }
 

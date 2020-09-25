@@ -1,13 +1,11 @@
 package net.engining.kettle.prop;
 
 import net.engining.kettle.common.KettleContextInfo;
-import net.engining.kettle.common.KettleLogLevel;
-import net.engining.kettle.common.KettleType;
+import net.engining.kettle.common.KettleLogLevelEnum;
+import net.engining.kettle.common.KettleTypeEnum;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Kettle 参数配置
@@ -17,7 +15,7 @@ import java.util.Set;
  * @date 2020/9/23 14:42
  * @since 1.0
  */
-@ConfigurationProperties("starter.kettle.config")
+@ConfigurationProperties("pg.kettle.config")
 public class KettleContextProperties {
     /**
      * kettle Repo 路径
@@ -34,7 +32,7 @@ public class KettleContextProperties {
     /**
      * kettle LogLevel  日志级别
      */
-    private KettleLogLevel kettleLogLevel = KettleLogLevel.nothing;
+    private KettleLogLevelEnum kettleLogLevel = KettleLogLevelEnum.NOTHING;
     /**
      * 用户名
      */
@@ -46,13 +44,13 @@ public class KettleContextProperties {
     /**
      * 执行配置
      */
-    private Map<KettleType, KettleContextInfo> kettleMap;
+    private Map<KettleTypeEnum, KettleContextInfo> kettleMap;
 
-    public Map<KettleType, KettleContextInfo> getKettleMap() {
+    public Map<KettleTypeEnum, KettleContextInfo> getKettleMap() {
         return kettleMap;
     }
 
-    public void setKettleMap(Map<KettleType, KettleContextInfo> kettleMap) {
+    public void setKettleMap(Map<KettleTypeEnum, KettleContextInfo> kettleMap) {
         this.kettleMap = kettleMap;
     }
 
@@ -81,11 +79,11 @@ public class KettleContextProperties {
         this.kettleRepoName = kettleRepoName;
     }
 
-    public KettleLogLevel getKettleLogLevel() {
+    public KettleLogLevelEnum getKettleLogLevel() {
         return kettleLogLevel;
     }
 
-    public void setKettleLogLevel(KettleLogLevel kettleLogLevel) {
+    public void setKettleLogLevel(KettleLogLevelEnum kettleLogLevel) {
         this.kettleLogLevel = kettleLogLevel;
     }
 

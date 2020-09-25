@@ -1,6 +1,6 @@
 package net.engining.kettle.service;
 
-import net.engining.kettle.common.KettleType;
+import net.engining.kettle.common.KettleTypeEnum;
 import net.engining.kettle.prop.KettleContextProperties;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -251,21 +251,21 @@ public class KettleManagerService {
      * @throws KettleException
      */
     public void defaultExecute() throws KettleException {
-        for(KettleType key :kettleContextProperties.getKettleMap().keySet()){
+        for(KettleTypeEnum key :kettleContextProperties.getKettleMap().keySet()){
             switch (key){
-                case file_ktr:
+                case FILE_KTR:
                     runTransformationFromFile(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getParams()
                     );
                     break;
-                case file_kjb:
+                case FILE_KJB:
                     runJobFromFile(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getParams()
                     );
                     break;
-                case file_repo:
+                case FILE_REPO:
                     runJobFromRepository(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getSubdirectory(),

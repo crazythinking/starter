@@ -1,7 +1,7 @@
 package net.engining.kettle.autoconfigure;
 
 import net.engining.kettle.common.KettleContextInfo;
-import net.engining.kettle.common.KettleType;
+import net.engining.kettle.common.KettleTypeEnum;
 import net.engining.kettle.prop.KettleContextProperties;
 import net.engining.kettle.service.KettleManagerService;
 import net.engining.pg.support.core.exception.ErrorCode;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableConfigurationProperties(value = KettleContextProperties.class)
-@ConditionalOnProperty(prefix = "starter.kettle", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "pg.kettle", name = "enabled", havingValue = "true")
 public class KettleAutoAutoconfigure {
     /**
      * kettle 配置参数
@@ -57,8 +57,8 @@ public class KettleAutoAutoconfigure {
         }else if (ValidateUtilExt.isNullOrEmpty(kettleContextProperties.getKettleRepoName())) {
             errormsg = "配置错误：kettle Repo 名称 不能为空";
         }else if(ValidateUtilExt.isNotNullOrEmpty(kettleContextProperties.getKettleMap())){
-            Map<KettleType, KettleContextInfo> kettleMap = kettleContextProperties.getKettleMap();
-            for (KettleType info:kettleMap.keySet()){
+            Map<KettleTypeEnum, KettleContextInfo> kettleMap = kettleContextProperties.getKettleMap();
+            for (KettleTypeEnum info:kettleMap.keySet()){
                 if(ValidateUtilExt.isNullOrEmpty(kettleMap.get(info).getName())){
                     errormsg=(new StringBuilder("执行配置中[ ").append(info.getValue()).append(" ]的名字不能为空！")).toString();
                     break;
