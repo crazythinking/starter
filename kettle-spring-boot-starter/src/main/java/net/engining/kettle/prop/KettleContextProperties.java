@@ -45,6 +45,18 @@ public class KettleContextProperties {
      * 执行配置
      */
     private Map<KettleTypeEnum, KettleContextInfo> kettleMap;
+    /**
+     * kettle 插件路径
+     */
+    private String kettlePluginPath = "./kettleplugins";
+
+    public String getKettlePluginPath() {
+        return kettlePluginPath;
+    }
+
+    public void setKettlePluginPath(String kettlePluginPath) {
+        this.kettlePluginPath = kettlePluginPath;
+    }
 
     public Map<KettleTypeEnum, KettleContextInfo> getKettleMap() {
         return kettleMap;

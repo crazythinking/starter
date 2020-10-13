@@ -1,5 +1,6 @@
 package net.engining.kettle.service;
 
+import com.google.common.collect.Maps;
 import net.engining.kettle.common.KettleTypeEnum;
 import net.engining.kettle.prop.KettleContextProperties;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
@@ -20,6 +21,7 @@ import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -34,7 +36,7 @@ import java.util.Map;
  * @date 2020/9/23 14:24
  * @since 1.0
  */
-public class KettleManagerService {
+public class KettleManagerService implements InitializingBean {
     /**
      * logger
      */
@@ -46,25 +48,13 @@ public class KettleManagerService {
     private KettleContextProperties kettleContextProperties;
 
     /**
-     * 构造
-     */
-    public KettleManagerService() {
-        try {
-            KettleEnvironment.init();
-        } catch (KettleException e) {
-            ExceptionUtilsExt.dump(e);
-        }
-    }
-
-
-    /**
      * 从 ktr 文件执行 Transformation
      *
      * @param transFileName ktr文件名
      * @param params        KV参数列表
      * @throws KettleException
      */
-    public void runTransformationFromFile(String transFileName, Map<String, String> params) throws KettleException {
+    public Result runTransformationFromFile(String transFileName, Map<String, String> params) throws KettleException {
 
         if (!KettleEnvironment.isInitialized()) {
             KettleEnvironment.init();
@@ -104,10 +94,10 @@ public class KettleManagerService {
                 result.getResult(),
                 result.getNrErrors()
         );
-
+        return result;
     }
 
-    public void runJobFromFile(String jobName, Map<String, String> params) throws KettleException {
+    public Result runJobFromFile(String jobName, Map<String, String> params) throws KettleException {
 
         if (!KettleEnvironment.isInitialized()) {
             KettleEnvironment.init();
@@ -146,6 +136,7 @@ public class KettleManagerService {
                 result.getResult(),
                 result.getNrErrors()
         );
+        return result;
     }
 
     /**
@@ -247,35 +238,48 @@ public class KettleManagerService {
     }
 
     /**
-     *
      * @throws KettleException
      */
-    public void defaultExecute() throws KettleException {
-        for(KettleTypeEnum key :kettleContextProperties.getKettleMap().keySet()){
-            switch (key){
+    public Map<KettleTypeEnum, Result> defaultExecute() throws KettleException {
+        Map<KettleTypeEnum, Result> kettleTypeEnumResultMap = Maps.newHashMap();
+        for (KettleTypeEnum key : kettleContextProperties.getKettleMap().keySet()) {
+            switch (key) {
                 case FILE_KTR:
-                    runTransformationFromFile(
+
+                    kettleTypeEnumResultMap.put(key, runTransformationFromFile(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getParams()
-                    );
+                    ));
                     break;
                 case FILE_KJB:
-                    runJobFromFile(
+                    kettleTypeEnumResultMap.put(key, runJobFromFile(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getParams()
-                    );
+                    ));
                     break;
                 case FILE_REPO:
-                    runJobFromRepository(
+                    kettleTypeEnumResultMap.put(key, runJobFromRepository(
                             kettleContextProperties.getKettleMap().get(key).getName(),
                             kettleContextProperties.getKettleMap().get(key).getSubdirectory(),
                             kettleContextProperties.getKettleMap().get(key).getParams()
-                    );
+                    ).getResult());
                     break;
                 default:
-                    logger.warn("配置文件 [{}] 配置错误，未被执行",key.getValue());
+                    logger.warn("配置文件 [{}] 配置错误，未被执行", key.getValue());
                     break;
             }
+        }
+        return kettleTypeEnumResultMap;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        try {
+            //指定组件库
+            System.setProperty("KETTLE_PLUGIN_BASE_FOLDERS", kettleContextProperties.getKettlePluginPath());
+            KettleEnvironment.init();
+        } catch (KettleException e) {
+            ExceptionUtilsExt.dump(e);
         }
     }
 }
