@@ -6,7 +6,11 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
+<<<<<<< HEAD
 		<version>0.0.1.RELEASE</version>
+=======
+		<version>1.0.0.RELEASE</version>
+>>>>>>> 1.0.0
 	</parent>
 
 	<artifactId>redis-spring-boot-starter</artifactId>

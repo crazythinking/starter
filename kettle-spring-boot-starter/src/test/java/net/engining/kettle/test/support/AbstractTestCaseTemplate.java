@@ -1,0 +1,54 @@
+package net.engining.kettle.test.support;
+
+import net.engining.kettle.test.AutoConfigureTestApplication;
+import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+
+/**
+ * 单元测试模版类
+ *
+ * @author 陈宝
+ * @version 1.0
+ * @date 2020/9/25 14:55
+ * @since 1.0
+ */
+@ActiveProfiles(profiles={
+        "autotest"
+})
+@SpringBootTest(classes = {
+        AutoConfigureTestApplication.class
+})
+@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
+public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringContextTestsWithoutServlet {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractTestCaseTemplate.class);
+
+    /**
+     * 由实现该接口的抽象类实现，用于统一的进行整体测试数据初始化，通常结合init项目;
+     * 针对所有测试，只执行一次，且必须为static void
+     *
+     * @throws Exception
+     */
+    @BeforeClass
+    public static void init4Test() throws Exception {
+
+    }
+
+    /**
+     * 针对所有测试，只执行一次，且必须为static void
+     *
+     * @throws Exception
+     */
+    @AfterClass
+    public static void tearDown4Test() throws Exception {
+
+    }
+
+}
+

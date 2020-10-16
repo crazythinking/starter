@@ -4,7 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.engining.datasource.autoconfigure.props.DynamicHikariDataSourceProperties;
+import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -27,17 +28,18 @@ import java.util.Map;
  * 指定在DynamicDruidDataSourceAutoConfigure之前装配，而DynamicDruidDataSourceAutoConfigure已经指定了在DruidDataSourceAutoConfigure之前，
  * 因此必然也在DruidDataSourceAutoConfigure之前;
  * <br>
- * 注：此自动装配只支持Hikari，其他由于性能差，不考虑支持；
+ * 注：只在设置pg.datasource.dynamic.hikari.enabled=true时才触发自动装配
  *
  * @author Eric Lu
  * @create 2019-11-04 16:46
  **/
 @Configuration
 @ConditionalOnClass(DruidDataSource.class)
-@ConditionalOnProperty(prefix = "pg.datasource.dynamic.hikari", name = "enabled", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(prefix = "pg.datasource.dynamic.hikari", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DynamicDruidDataSourceAutoConfigure.class)
 @EnableConfigurationProperties({
-        DataSourceProperties.class, DynamicHikariDataSourceProperties.class
+        DataSourceProperties.class,
+        DynamicHikariDataSourceProperties.class
 })
 public class DynamicDataSourceAutoConfigure {
     /** logger */
@@ -47,6 +49,7 @@ public class DynamicDataSourceAutoConfigure {
     DataSourceProperties basicProperties;
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public DataSource dataSource(DynamicHikariDataSourceProperties dynamicHikariDataSourceProperties) {
         log.info("starting init dynamic datasource......");

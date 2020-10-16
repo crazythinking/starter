@@ -10,14 +10,24 @@
 	<groupId>net.engining.starter</groupId>
 	<artifactId>starter-parent</artifactId>
 	<packaging>pom</packaging>
+<<<<<<< HEAD
 	<version>0.0.1.RELEASE</version>
+=======
+	<version>1.0.0.RELEASE</version>
+>>>>>>> 1.0.0
 	<description>自定义spring-boot-starter组件</description>
 	
 	<properties>
 		<pmd.skip>true</pmd.skip>
+<<<<<<< HEAD
 		<pg.version>3.6.0.RELEASE</pg.version>
 		<control.version>1.1.4.RELEASE</control.version>
 		<gm.version>1.5.0.RELEASE</gm.version>
+=======
+		<pg.version>3.6.1.RELEASE</pg.version>
+		<control.version>1.1.5.RELEASE</control.version>
+		<gm.version>1.5.1.RELEASE</gm.version>
+>>>>>>> 1.0.0
 	</properties>
 	
 	<dependencyManagement>
@@ -52,6 +62,7 @@
 	<modules>
 		<module>dynamic-datasource-spring-boot-starter</module>
 		<module>redis-spring-boot-starter</module>
+		<module>kettle-spring-boot-starter</module>
 	</modules>
 
 	<build>

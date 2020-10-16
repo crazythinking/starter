@@ -1,11 +1,13 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  shardingsphere:
+    enabled: false
 
 pg:
   datasource:
     dynamic:
       druid:
-        enabled: false
-      hikari:
         enabled: true
+      hikari:
+        enabled: false

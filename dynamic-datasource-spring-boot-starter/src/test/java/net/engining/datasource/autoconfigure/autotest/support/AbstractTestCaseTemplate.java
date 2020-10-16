@@ -20,13 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
  * @author luxue
  *
  */
-@ActiveProfiles(profiles={
-		"autotest",
-		"db.common",
-		"hikari.h2",
-//		"druid.mysql",
-//		"hikari.mysql"
-})
 @SpringBootTest(classes = {
 		AutoConfigureTestApplication.class
 })

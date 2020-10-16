@@ -1,10 +1,6 @@
-package net.engining.redis.autoconfigure.autotest;
+package net.engining.kettle.test;
 
-import net.engining.pg.param.props.PgParamAndCacheProperties;
-import net.engining.pg.props.CommonProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -12,16 +8,13 @@ import org.springframework.context.annotation.Lazy;
 /**
  * 通用Context配置
  *
- * @author Eric Lu
+ * @author 陈宝
+ * @version 1.0
+ * @date 2020/9/25 14:54
+ * @since 1.0
  */
 @Configuration
-@EnableConfigurationProperties(value = {
-        CommonProperties.class,
-        PgParamAndCacheProperties.class,
-})
-@EnableCaching
 public class CombineContextConfig {
-
     /**
      * ApplicationContext的静态辅助Bean，建议项目必须注入
      * @return
@@ -31,5 +24,4 @@ public class CombineContextConfig {
     public ApplicationContextHolder applicationContextHolder(){
         return new ApplicationContextHolder();
     }
-
 }
