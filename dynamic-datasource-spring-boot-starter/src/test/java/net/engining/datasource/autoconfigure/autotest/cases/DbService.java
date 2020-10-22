@@ -1,9 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
-<<<<<<< HEAD
-=======
 import com.google.common.collect.Lists;
->>>>>>> 1.0.0
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
