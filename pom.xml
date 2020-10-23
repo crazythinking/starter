@@ -54,6 +54,7 @@
 		<module>dynamic-datasource-spring-boot-starter</module>
 		<module>redis-spring-boot-starter</module>
 		<module>kettle-spring-boot-starter</module>
+		<module>bustream-spring-boot-starter</module>
 	</modules>
 
 	<build>

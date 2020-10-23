@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--log4j2内部插件的log打印级别-->
+<Configuration status="ERROR" monitorInterval="600" strict="true">
+    <properties>
+        <!-- 日志路径 -->
+        <!-- 可设置自定义jvm参数通过-D指定，这里通过${sys:xxxxxx}获取 >> ${sys:log.path.prefix}-->
+        <property name="LOG_HOME">./logs/</property>
+        <!-- 日志输入级别 -->
+        <property name="LOG_LEVEL">${sys:log4j2.level:-WARN}</property>
+    </properties>
+    
+    <Appenders>
+        <!-- 标准输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout disableAnsi="false" charset="UTF-8"
+                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
+        </Console>
+        
+        <!--所有日志-->
+        <!-- 异步输出，通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值 -->
+        <!--<RollingFile name="AllLog" fileName="${LOG_HOME}/all.log" append="true" filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
+            <PatternLayout charset="UTF-8" pattern="[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+        </RollingFile>
+        <Async name="AsyncAllLog" bufferSize="256">
+	      <AppenderRef ref="AllLog"/>
+	    </Async>-->
+        
+        <!--DEBUG日志-->
+        <!--<RollingFile name="DebugLog" fileName="${LOG_HOME}/debug.log" append="true" filePattern="${LOG_HOME}/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd-HHmmss}.log.gz">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout charset="UTF-8" pattern="[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+        </RollingFile>
+        <Async name="AsyncDebugLog" bufferSize="256">
+	      <AppenderRef ref="DebugLog"/>
+	    </Async>-->
+
+        <!--INFO日志-->
+        <!--<RollingFile name="InfoLog" fileName="${LOG_HOME}/info.log" append="true" filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd-HHmmss}.log.gz">
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout charset="UTF-8" pattern="[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+        </RollingFile>
+        <Async name="AsyncInfoLog" bufferSize="256">
+	      <AppenderRef ref="InfoLog"/>
+	    </Async>-->
+
+        <!--ERROR日志-->
+        <!--<RollingFile name="ErrLog" fileName="${LOG_HOME}/error.log" append="true" filePattern="${LOG_HOME}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd-HHmmss}.log.gz">
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout charset="UTF-8" pattern="[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+        </RollingFile>
+        <Async name="AsyncErrLog" bufferSize="256">
+	      <AppenderRef ref="ErrLog"/>
+	    </Async>-->
+    </Appenders>
+
+    <Loggers>
+    	<Logger name="net.engining" level="TRACE" additivity="true"/>
+
+        <Logger name="org.springframework" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
+
+        <!-- 配合show_sql=true,显示sql中的参数值 -->
+        <!--<Logger name="org.hibernate.type" level="INFO" additivity="true"/>-->
+        <!-- <Logger name="org.hibernate" level="INFO" additivity="true"/> -->
+         <!--<Logger name="com.querydsl" level="TRACE" additivity="true"/>-->
+        
+        <!-- <Logger name="net.sf.ehcache" level="INFO" additivity="false"/> -->
+
+        <!--只输入级别高于trace的日志-->
+        <root level="${LOG_LEVEL}">
+            <AppenderRef ref="Console"/>
+            <!--<AppenderRef ref="AsyncAllLog"/>-->
+            <!-- <AppenderRef ref="AsyncErrLog"/> -->
+        </root>
+    </Loggers>
+</Configuration>
