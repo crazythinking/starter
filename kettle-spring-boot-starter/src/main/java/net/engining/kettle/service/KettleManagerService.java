@@ -107,7 +107,17 @@ public class KettleManagerService implements InitializingBean {
         // The JobMeta object is the programmatic representation of a job definition.
         String jobFilePath = kettleContextProperties.getKettleRepoPath() + File.separator + jobName;
         JobMeta jm = new JobMeta(jobFilePath, null);
-
+        //setting JobMeta parameters
+        //获取kjb需要的入参
+        String[] needKeys = jm.listParameters();
+        //遍历并设置入参
+        for (String key : needKeys) {
+            logger.info("Kettle kjb (FILE_KJB) run need parameter : [{}]", key);
+            if (params.containsKey(key)) {
+                jm.setParameterValue(key, params.get(key));
+                logger.info("Setting Kettle kjb (FILE_KJB) run need parameter : [{}] Value: [{}]", key, params.get(key));
+            }
+        }
         // Creating a Job object which is the programmatic representation of a job
         // A Job object can be executed, report success, etc.
         Job job = new Job(null, jm);
@@ -207,16 +217,24 @@ public class KettleManagerService implements InitializingBean {
             jobMeta = repository.loadJob(jobName, tree, null, null);
         }
 
+        //setting JobMeta parameters
+        //获取kjb需要的入参
+        String[] needKeys = jobMeta.listParameters();
+        //遍历并设置入参
+        for (String key : needKeys) {
+            logger.info("Repositorie kjb (FILE_REPO) run need parameter : [{}]", key);
+            if (params.containsKey(key)) {
+                jobMeta.setParameterValue(key, params.get(key));
+                logger.info("Setting repositorie kjb (FILE_REPO) run need parameter : [{}] Value: [{}]", key, params.get(key));
+            }
+        }
+
         // Creating a Job object which is the programmatic representation of a job
         // A Job object can be executed, report success, etc.
         Job job = new Job(repository, jobMeta);
 
         // adjust the log level
         job.setLogLevel(kettleContextProperties.getKettleLogLevel().getLogLevel());
-
-        for (String key : params.keySet()) {
-            job.setVariable(key, params.get(key));
-        }
 
         // starting the job, which will execute asynchronously
         job.start();
