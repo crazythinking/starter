@@ -18,9 +18,9 @@ import java.util.List;
         "db.sharding.common",
         "db.sharding.hikari.h2"
 })
-public class SimpleShardingTest extends AbstractTestCaseTemplate {
+public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleShardingTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleShardingTestCase.class);
 
     @Autowired
     DbService dbService;

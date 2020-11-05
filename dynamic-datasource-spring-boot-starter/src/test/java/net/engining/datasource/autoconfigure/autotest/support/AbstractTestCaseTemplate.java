@@ -20,6 +20,9 @@ import org.springframework.test.context.ActiveProfiles;
  * @author luxue
  *
  */
+@ActiveProfiles(profiles={
+		"autotest"
+})
 @SpringBootTest(classes = {
 		AutoConfigureTestApplication.class
 })
