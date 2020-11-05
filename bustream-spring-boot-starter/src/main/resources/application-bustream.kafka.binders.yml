@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    stream:
+      binders:
+        kafkaCluster:
+          type: kafka
+      default-binder: kafkaCluster

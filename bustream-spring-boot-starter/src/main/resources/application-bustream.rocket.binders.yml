@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    stream:
+      binders:
+        rocketCluster:
+          type: rocketmq
+      default-binder: rocketCluster

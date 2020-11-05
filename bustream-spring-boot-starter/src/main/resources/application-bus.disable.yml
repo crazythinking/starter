@@ -1,0 +1,13 @@
+# 关闭Spring Cloud Bus 的基本能力
+spring:
+  cloud:
+    bus:
+      enabled: false
+      ack:
+        enabled: false
+      env:
+        enabled: false
+      refresh:
+        enabled: false
+      trace:
+        enabled: false

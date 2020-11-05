@@ -1,4 +1,4 @@
-package net.engining.bustream.base;
+package net.engining.bustream.base.stream;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.binder.PollableMessageSource;
@@ -11,8 +11,8 @@ import org.springframework.cloud.stream.binder.PollableMessageSource;
  **/
 public interface StreamPollableInput {
 
-    String POLLINPUT = "msgPollableInput";
+    String POLLINPUT = "pollableInput";
 
     @Input(StreamPollableInput.POLLINPUT)
-    PollableMessageSource msgPollableInput();
+    PollableMessageSource pollableInput();
 }

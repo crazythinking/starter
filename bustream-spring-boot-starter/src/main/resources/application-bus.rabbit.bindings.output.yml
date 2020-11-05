@@ -1,0 +1,12 @@
+# Spring cloud bus 默认约定配置： 生产者的Binding属性，针对于RabbitMq的特性
+spring:
+  cloud:
+    stream:
+      #属于特定于RabbitMq的Binding,不是通用的,如果涉及到mq的转换则不可用; 同样以key的方式指定配置，默认为default
+      rabbit:
+        bindings:
+          springCloudBusOutput:
+            producer:
+              exchangeType: topic # 指定Exchange类型
+#                routingKeyExpression: headers.type # 生产者配置RabbitMq的动态路由键, 需要在生产者端组装消息时指定headers.type的值
+#                routingKeyExpression: ‘’‘testKey1’‘’ # 固定的routing key值
