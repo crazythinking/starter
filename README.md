@@ -9,7 +9,17 @@ infrastructure gears based spring boot 2.1.4
 |master|1.1.0.RELEASE|1、datasource<br>-  druid<br>-  hikari<br>-  shardingjdbc<br>2、Redis|-|-|
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
+|1.2.0|1.2.0-SNAPSHOT|-|-|-|
 
+# 1.2.0版本火车
+
+|包名|版本|说明|
+|----|----|----|
+|starter-parent|1.1.0-SNAPSHOT|自身包|
+|project-parent|3.6.RELEASE|基础包|
+|pg|3.6.1.RELEASE|底层包|
+|gm|1.5.1.RELEASE|配置包|
+|control-parent|1.1.5.RELEASE|流程控制|
 
 # 1.1.0版本火车
 
