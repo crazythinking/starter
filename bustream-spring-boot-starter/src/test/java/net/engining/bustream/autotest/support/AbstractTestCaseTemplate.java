@@ -1,7 +1,8 @@
-package net.engining.datasource.autoconfigure.autotest.support;
+package net.engining.bustream.autotest.support;
 
-import net.engining.datasource.autoconfigure.autotest.AutoConfigureTestApplication;
+import net.engining.bustream.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
+import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithServlet;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import net.engining.pg.support.testcase.support.TestCommonLogic;
 import org.h2.tools.Server;
@@ -21,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
  *
  */
 @ActiveProfiles(profiles={
-		"autotest"
+		"autotest",
 })
 @SpringBootTest(classes = {
 		AutoConfigureTestApplication.class

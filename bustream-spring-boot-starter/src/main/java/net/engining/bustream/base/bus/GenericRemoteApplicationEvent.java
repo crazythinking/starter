@@ -1,4 +1,4 @@
-package net.engining.bustream.base;
+package net.engining.bustream.base.bus;
 
 import org.springframework.cloud.bus.event.RemoteApplicationEvent;
 

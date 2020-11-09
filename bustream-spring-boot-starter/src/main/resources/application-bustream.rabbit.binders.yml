@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    stream:
+      binders:
+        rabbitCluster:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                addresses: ${spring.rabbitmq.addresses}
+                cache:
+                  channel:
+                    size: 10
+                    checkout-timeout: 1s
+                  connection:
+                    mode: channel
+                connection-timeout: 3s
+                password: ${spring.rabbitmq.password}
+                username: ${spring.rabbitmq.username}
+                virtual-host: ${spring.rabbitmq.virtual-host}
+      default-binder: rabbitCluster

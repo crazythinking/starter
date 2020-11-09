@@ -1,0 +1,9 @@
+# Spring cloud bus 默认约定配置： 生产者和消费者的默认能力
+spring:
+  cloud:
+    stream:
+      bindings:
+        springCloudBusOutput:
+          destination: ${spring.application.name}.exchange1 # exchange的前缀,生产者的applicationName
+#          group: repayBack # queue的后缀,带业务含义; 由各业务系统自身定义
+          contentType: application/json
