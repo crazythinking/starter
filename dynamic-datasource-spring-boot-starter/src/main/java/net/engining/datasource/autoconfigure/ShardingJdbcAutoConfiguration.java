@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure;
 
 import com.google.common.base.Preconditions;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.shardingsphere.core.yaml.swapper.MasterSlaveRuleConfigurationYamlSwapper;
 import org.apache.shardingsphere.core.yaml.swapper.ShardingRuleConfigurationYamlSwapper;
 import org.apache.shardingsphere.core.yaml.swapper.impl.ShadowRuleConfigurationYamlSwapper;
@@ -192,7 +193,7 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
     private List<String> getDataSourceNames(final Environment environment, final String prefix) {
         StandardEnvironment standardEnv = (StandardEnvironment) environment;
         standardEnv.setIgnoreUnresolvableNestedPlaceholders(true);
-        return null == standardEnv.getProperty(prefix + "name")
+        return ValidateUtilExt.isNullOrEmpty(standardEnv.getProperty(prefix + "name"))
                 ? new InlineExpressionParser(standardEnv.getProperty(prefix + "names")).splitAndEvaluate()
                 : Collections.singletonList(standardEnv.getProperty(prefix + "name"));
     }

@@ -185,7 +185,7 @@ public class KettleManagerService implements InitializingBean {
 
         RepositoryMeta repositoryMeta = repositoriesMeta.findRepository(kettleContextProperties.getKettleRepoName());
 
-        if (repositoryMeta == null) {
+        if (ValidateUtilExt.isNullOrEmpty(repositoryMeta)) {
             throw new KettleException(
                     String.format(
                             "Cannot find repository %s . Please make sure it is defined in your %s  file",
