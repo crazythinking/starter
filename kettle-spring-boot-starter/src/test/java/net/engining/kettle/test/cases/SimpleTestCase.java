@@ -19,6 +19,7 @@ public class SimpleTestCase  extends AbstractTestCaseTemplate {
      */
     @Autowired
     private KettleManagerService kettleManagerService;
+
     @Override
     public void initTestData() throws Exception {
 
