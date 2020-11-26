@@ -46,6 +46,14 @@ public class KettleAutoAutoconfigure {
     }
 
     /**
+     * 错误信息头
+     */
+    private final static String MSG_HEAD="执行配置中[";
+    /**
+     * 错误信息尾
+     */
+    private final static String MSG_TAIL=" ]的名字不能为空！";
+    /**
      * 检查配置文件
      */
     public void checkProperties() {
@@ -60,7 +68,7 @@ public class KettleAutoAutoconfigure {
             Map<KettleTypeEnum, KettleContextInfo> kettleMap = kettleContextProperties.getKettleMap();
             for (KettleTypeEnum info:kettleMap.keySet()){
                 if(ValidateUtilExt.isNullOrEmpty(kettleMap.get(info).getName())){
-                    errormsg=(new StringBuilder("执行配置中[ ").append(info.getValue()).append(" ]的名字不能为空！")).toString();
+                    errormsg=MSG_HEAD+info.getValue()+MSG_TAIL;
                     break;
                 }
             }
