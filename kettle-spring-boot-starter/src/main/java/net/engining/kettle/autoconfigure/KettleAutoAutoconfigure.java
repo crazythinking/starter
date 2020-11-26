@@ -2,6 +2,7 @@ package net.engining.kettle.autoconfigure;
 
 import net.engining.kettle.common.KettleContextInfo;
 import net.engining.kettle.common.KettleTypeEnum;
+import net.engining.kettle.prop.KettleCommonProperties;
 import net.engining.kettle.prop.KettleContextProperties;
 import net.engining.kettle.service.KettleManagerService;
 import net.engining.pg.support.core.exception.ErrorCode;
@@ -24,7 +25,10 @@ import java.util.Map;
  * @since 1.0
  */
 @Configuration
-@EnableConfigurationProperties(value = KettleContextProperties.class)
+@EnableConfigurationProperties({
+        KettleCommonProperties.class,
+        KettleContextProperties.class
+})
 @ConditionalOnProperty(prefix = "pg.kettle", name = "enabled", havingValue = "true")
 public class KettleAutoAutoconfigure {
     /**
