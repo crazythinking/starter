@@ -63,6 +63,11 @@
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.engining.gm</groupId>
+			<artifactId>gm-sdk</artifactId>
+		</dependency>
+
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -87,7 +92,7 @@
 			</exclusions>
 		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
