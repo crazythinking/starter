@@ -40,8 +40,6 @@ public class CombineContextConfig {
     @Bean
     @ConditionalOnMissingBean
     public SpecifiedDataSourceHandler specifiedDataSourceHandler() {
-        //使用AspectJ在编译期织入的方式，使用如下方式
-        //SpecifiedDataSourceHandler aspect = Aspects.aspectOf(SpecifiedDataSourceHandler.class);
         //使用Spring AOP动态代理方式，使用如下方式
         SpecifiedDataSourceHandler aspect = new SpecifiedDataSourceHandler();
         return aspect;

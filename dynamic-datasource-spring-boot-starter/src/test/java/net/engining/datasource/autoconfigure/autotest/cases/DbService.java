@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
 import com.google.common.collect.Lists;
+import net.engining.gm.aop.SpecifiedDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class DbService {
     @PersistenceContext
     private EntityManager em;
 
+    @SpecifiedDataSource(value = "one")
     @Transactional(rollbackFor = Exception.class)
     public Long dsTest(){
         PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
