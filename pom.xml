@@ -16,7 +16,7 @@
 	<properties>
 		<pmd.skip>true</pmd.skip>
 
-		<pg.version>3.6.1.RELEASE</pg.version>
+		<pg.version>3.6.2-SNAPSHOT</pg.version>
 		<control.version>1.1.5.RELEASE</control.version>
 		<gm.version>1.5.2-SNAPSHOT</gm.version>
 
