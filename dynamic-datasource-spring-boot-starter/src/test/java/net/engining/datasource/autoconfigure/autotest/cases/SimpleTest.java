@@ -1,7 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.cases;
 
 import net.engining.datasource.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -25,9 +24,9 @@ import javax.persistence.PersistenceContext;
 //		"druid.mysql",
 //		"hikari.mysql"
 })
-public class SimpleTestCase extends AbstractTestCaseTemplate {
+public class SimpleTest extends AbstractTestCaseTemplate {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTest.class);
 
     @PersistenceContext
     private EntityManager em;
