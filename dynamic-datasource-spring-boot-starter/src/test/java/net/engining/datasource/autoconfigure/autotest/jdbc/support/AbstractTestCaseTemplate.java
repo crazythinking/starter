@@ -1,6 +1,6 @@
-package net.engining.datasource.autoconfigure.autotest.support;
+package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
-import net.engining.datasource.autoconfigure.autotest.AutoConfigureTestApplication;
+import net.engining.datasource.autoconfigure.autotest.jdbc.AutoConfigureTestApplication;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import net.engining.pg.support.testcase.support.TestCommonLogic;

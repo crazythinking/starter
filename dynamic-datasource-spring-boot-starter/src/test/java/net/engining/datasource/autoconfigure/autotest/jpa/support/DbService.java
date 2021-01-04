@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure.autotest.cases;
+package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
 import net.engining.gm.aop.SpecifiedDataSource;

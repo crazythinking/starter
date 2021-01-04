@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure.autotest.cases;
+package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;

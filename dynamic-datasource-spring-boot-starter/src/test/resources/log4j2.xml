@@ -71,11 +71,14 @@
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
         <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.jdbc" level="TRACE" additivity="true"/>
 
         <!-- 配合show_sql=true,显示sql中的参数值 -->
         <!--<Logger name="org.hibernate.type" level="INFO" additivity="true"/>-->
         <!-- <Logger name="org.hibernate" level="INFO" additivity="true"/> -->
          <!--<Logger name="com.querydsl" level="TRACE" additivity="true"/>-->
+
+        <Logger name="com.zaxxer.hikari" level="TRACE" additivity="true"/>
         
         <!-- <Logger name="net.sf.ehcache" level="INFO" additivity="false"/> -->
 

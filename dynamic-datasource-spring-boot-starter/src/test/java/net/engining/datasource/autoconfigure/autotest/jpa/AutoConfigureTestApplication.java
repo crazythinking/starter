@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure.autotest;
+package net.engining.datasource.autoconfigure.autotest.jpa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,4 +18,5 @@ public class AutoConfigureTestApplication {
     	SpringApplication.run(AutoConfigureTestApplication.class, args);
 
     }
+
 }
