@@ -1,6 +1,7 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
 import cn.hutool.core.lang.Console;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.engining.pg.redis.operation.RedissonObject;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +31,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     @Autowired
     RedissonObject redissonObject;
 
+    @Autowired
     @Resource(name = RedisUtil.REDIS_TEMPLATE)
     RedisTemplate<String, Serializable> redisTemplate;
 
@@ -46,6 +49,10 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         user.setAge(30);
         user.setName("张三");
         user.setSalary(BigDecimal.valueOf(10000.00));
+        user.msg = Lists.newArrayList();
+        for (int i = 0; i < 100; i++) {
+            user.msg.add("this is "+i);
+        }
 
         Set<String> set1 = Sets.newHashSet("aaa","bbb","ccc","ddd","eee");
         Set<String> set2 = Sets.newHashSet("aaa","fff","ccc","ddd","hhh","mmm");
@@ -103,13 +110,14 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void end() throws Exception {
-        redisTemplate.delete("user1");
+        //redisTemplate.delete("user1");
     }
 
     static class User implements Serializable {
         private String name;
         private int age;
         private BigDecimal salary;
+        private List<String> msg;
 
         public User(){}
 
@@ -137,12 +145,21 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             this.salary = salary;
         }
 
+        public List<String> getMsg() {
+            return msg;
+        }
+
+        public void setMsg(List<String> msg) {
+            this.msg = msg;
+        }
+
         @Override
         public String toString() {
             return "User{" +
                     "name='" + name + '\'' +
                     ", age=" + age +
                     ", salary=" + salary +
+                    ", msg=" + msg +
                     '}';
         }
     }
