@@ -24,7 +24,7 @@ pg:
     config:
       kettle-log-level: DETAIL
       kettle-repo-id: KettleFileRepository
-      kettle-repo-path: .\resources
+      kettle-repo-path: .\src\test\resources
       kettle-repo-name: test
       kettle-map:
         FILE-KTR:
