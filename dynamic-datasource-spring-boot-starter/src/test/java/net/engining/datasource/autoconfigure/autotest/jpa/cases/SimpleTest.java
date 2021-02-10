@@ -22,9 +22,9 @@ import javax.persistence.PersistenceContext;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
-		"hikari.h2",
+//		"hikari.h2",
 //		"druid.mysql",
-//		"hikari.mysql",
+		"hikari.mysql",
 })
 public class SimpleTest extends AbstractTestCaseTemplate {
     /** logger */
