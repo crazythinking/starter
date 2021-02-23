@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>distlock-spring-boot-starter</artifactId>
-	<name>redis starter</name>
+	<name>distlock starter</name>
 	<packaging>jar</packaging>
 
 	<properties>
