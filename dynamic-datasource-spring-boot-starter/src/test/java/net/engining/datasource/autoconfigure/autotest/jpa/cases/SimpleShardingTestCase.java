@@ -1,6 +1,7 @@
-package net.engining.datasource.autoconfigure.autotest.cases;
+package net.engining.datasource.autoconfigure.autotest.jpa.cases;
 
-import net.engining.datasource.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

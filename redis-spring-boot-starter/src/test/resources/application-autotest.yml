@@ -10,7 +10,7 @@ pg:
   redisson:
     enabled: true
     single-server-properties:
-      address: 127.0.0.1:6379
+      address: ubuntu.wsl:6379
       database: 0
     cache:
       enabled: true
@@ -19,5 +19,6 @@ pg:
           ttl: 1800000
           max-idle-time: 1800000
           max-size: 2
+#    codec: org.redisson.codec.SmileJacksonCodec
 
 

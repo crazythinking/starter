@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: distlock-starter-test
+  main:
+    allow-bean-definition-overriding: true
+pg:
+  distlock:
+    acquire-timeout: 3000
+    expire: 30000
+    retry-interval: 100
+    zookeeper:
+      zk-servers: ubuntu.wsl:2181
+      base-sleep-time-ms: 1000
+      connection-timeout: 5000
+      max-retries: 3
+      session-timeout: 30000

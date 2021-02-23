@@ -1,10 +1,7 @@
-package net.engining.datasource.autoconfigure.autotest.support;
+package net.engining.lock.autoconfigure.autotest.support;
 
-import net.engining.datasource.autoconfigure.autotest.AutoConfigureTestApplication;
-import net.engining.pg.support.core.context.ApplicationContextHolder;
+import net.engining.lock.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
-import net.engining.pg.support.testcase.support.TestCommonLogic;
-import org.h2.tools.Server;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
@@ -50,21 +47,8 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	@AfterClass
 	public static void tearDown4Test() throws Exception {
 		//使用H2的测试需要关闭
-		TestCommonLogic.closeH2();
-		closeH2();
+		//TestCommonLogic.closeH2();
 
-	}
-
-	private static void closeH2(){
-		//使用H2的测试需要关闭
-		try {
-			Server h2tcp = ApplicationContextHolder.getBean("h2tcpOne");
-			h2tcp.stop();
-			log.info("H2-one TCP server is closed");
-		}
-		catch (Exception e){
-			log.info("H2-one TCP server not exists");
-		}
 	}
 
 }

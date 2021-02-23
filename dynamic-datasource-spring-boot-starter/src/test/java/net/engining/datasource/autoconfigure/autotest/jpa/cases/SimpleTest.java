@@ -1,6 +1,8 @@
-package net.engining.datasource.autoconfigure.autotest.cases;
+package net.engining.datasource.autoconfigure.autotest.jpa.cases;
 
-import net.engining.datasource.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdTestEnt1;
 import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -22,7 +24,7 @@ import javax.persistence.PersistenceContext;
         "db.common",
 		"hikari.h2",
 //		"druid.mysql",
-//		"hikari.mysql"
+//		"hikari.mysql",
 })
 public class SimpleTest extends AbstractTestCaseTemplate {
     /** logger */

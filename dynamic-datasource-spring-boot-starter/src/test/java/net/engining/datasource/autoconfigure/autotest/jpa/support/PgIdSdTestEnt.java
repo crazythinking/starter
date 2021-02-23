@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure.autotest.cases;
+package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.base.MoreObjects;
 import net.engining.pg.support.meta.PropertyInfo;
@@ -6,18 +6,22 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * PG_ID_TEST
+ * PG_ID_SD_TEST_Ent
  * @author pg-maven-plugin
  */
 @Entity
-@Table(name="PG_ID_TEST_Ent1")
+@Table(name="PG_ID_SD_TEST_Ent")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class PgIdTestEnt1 implements Serializable {
+public class PgIdSdTestEnt implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PropertyInfo(name="SNOW_FLAKE_ID", length=64)
