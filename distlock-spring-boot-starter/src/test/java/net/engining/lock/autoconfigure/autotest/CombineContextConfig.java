@@ -1,8 +1,6 @@
 package net.engining.lock.autoconfigure.autotest;
 
 import net.engining.lock.autoconfigure.autotest.support.UserService;
-import net.engining.pg.param.props.PgParamAndCacheProperties;
-import net.engining.pg.props.CommonProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
