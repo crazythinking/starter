@@ -2,6 +2,19 @@
 infrastructure gears based spring boot 2.1.4
 
 ---
+模块介绍
+
+|模块|模块名|简介|
+|----|----|----|
+|bustream-spring-boot-starter|消息中间件|-|
+|distlock-spring-boot-starter|分布式事务所|-|
+|dynamic-datasource-spring-boot-starter|数据库组件|-|
+|kettle-spring-boot-starter|kettle中间件|-|
+|redis-spring-boot-starter|redis中间件|-|
+|transflow-spring-boot-starter|并发交易流程中间件|-|
+
+
+---
 变更记录
 
 |分支|版本|修改内容|分支开立时间|分支合并时间|
@@ -9,7 +22,7 @@ infrastructure gears based spring boot 2.1.4
 |master|1.1.0.RELEASE|1、datasource<br>-  druid<br>-  hikari<br>-  shardingjdbc<br>2、Redis|-|-|
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
-|1.2.0|1.2.0-SNAPSHOT|1、添加分布式锁服务distlock<br>|-|-|
+|1.2.0|1.2.0-SNAPSHOT|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
 
 # 1.2.0版本火车
 
