@@ -3,8 +3,6 @@ package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 import java.util.List;
 
 /**
- * @author yuanquan
- *         on 4/8/2017
  * 单表操作的使用 DAO 接口
  * @param <K> 主键类型
  * @param <E> Entity 类型

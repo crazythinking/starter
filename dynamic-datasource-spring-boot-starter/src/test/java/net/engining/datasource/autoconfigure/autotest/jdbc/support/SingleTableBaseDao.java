@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.KeyHolder;
 
 /**
- * @author yuanquan
- *         on 4/3/2017
  * 所有的处理单表的 DAO 都应继承该类，该类封装了{@link SimpleJdbcInsert} 利用数据库 Metadata 进行插入操作
  */
 public abstract class SingleTableBaseDao<K, E> implements SimpleTableDao<K, E>{

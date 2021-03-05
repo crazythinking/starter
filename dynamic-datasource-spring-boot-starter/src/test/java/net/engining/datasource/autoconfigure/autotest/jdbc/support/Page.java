@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * SQL 查询分页信息
  *
- * @author yuanquan
- *         on 4/10/2017
  * @param <R>
  */
 public class Page<R>{
