@@ -1,4 +1,4 @@
-package net.engining.lock.autoconfigure.autotest;
+package net.engining.pg.disruptor.autoconfigure.autotest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

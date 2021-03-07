@@ -1,4 +1,4 @@
-package net.engining.transflow.autoconfigure.autotest;
+package net.engining.pg.disruptor.autoconfigure.autotest;
 
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

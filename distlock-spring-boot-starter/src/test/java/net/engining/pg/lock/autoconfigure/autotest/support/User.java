@@ -1,4 +1,4 @@
-package net.engining.lock.autoconfigure.autotest.support;
+package net.engining.pg.lock.autoconfigure.autotest.support;
 
 public class User {
 

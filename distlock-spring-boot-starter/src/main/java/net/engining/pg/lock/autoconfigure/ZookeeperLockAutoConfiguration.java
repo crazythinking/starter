@@ -1,7 +1,7 @@
-package net.engining.lock.autoconfigure;
+package net.engining.pg.lock.autoconfigure;
 
-import net.engining.lock.condition.ZookeeperCondition;
-import net.engining.lock.excutor.ZookeeperLockExecutor;
+import net.engining.pg.lock.condition.ZookeeperCondition;
+import net.engining.pg.lock.excutor.ZookeeperLockExecutor;
 import net.engining.pg.lock.props.ZookeeperProperties;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

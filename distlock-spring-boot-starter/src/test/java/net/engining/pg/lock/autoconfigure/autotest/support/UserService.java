@@ -1,9 +1,9 @@
-package net.engining.lock.autoconfigure.autotest.support;
+package net.engining.pg.lock.autoconfigure.autotest.support;
 
-import net.engining.lock.LockInfo;
-import net.engining.lock.LockTemplate;
-import net.engining.lock.annotation.DistLock;
-import net.engining.lock.excutor.ZookeeperLockExecutor;
+import net.engining.pg.lock.LockInfo;
+import net.engining.pg.lock.LockTemplate;
+import net.engining.pg.lock.annotation.DistLock;
+import net.engining.pg.lock.excutor.ZookeeperLockExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserService {

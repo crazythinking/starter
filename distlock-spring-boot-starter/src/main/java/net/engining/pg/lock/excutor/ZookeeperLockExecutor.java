@@ -1,6 +1,6 @@
-package net.engining.lock.excutor;
+package net.engining.pg.lock.excutor;
 
-import net.engining.lock.executor.AbstractLockExecutor;
+import net.engining.pg.lock.executor.AbstractLockExecutor;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.imps.CuratorFrameworkState;

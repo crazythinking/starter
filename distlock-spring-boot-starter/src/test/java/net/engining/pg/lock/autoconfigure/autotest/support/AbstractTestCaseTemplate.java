@@ -1,7 +1,7 @@
-package net.engining.transflow.autoconfigure.autotest.support;
+package net.engining.pg.lock.autoconfigure.autotest.support;
 
+import net.engining.pg.lock.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
-import net.engining.transflow.autoconfigure.autotest.AutoConfigureTestApplication;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;

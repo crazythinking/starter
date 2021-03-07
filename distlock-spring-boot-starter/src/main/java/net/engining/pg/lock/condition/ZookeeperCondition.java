@@ -1,4 +1,4 @@
-package net.engining.lock.condition;
+package net.engining.pg.lock.condition;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;

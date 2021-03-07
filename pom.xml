@@ -65,6 +65,7 @@
 		<module>bustream-spring-boot-starter</module>
 		<module>distlock-spring-boot-starter</module>
 		<module>transflow-spring-boot-starter</module>
+		<module>disruptor-spring-boot-starter</module>
 	</modules>
 
 	<build>

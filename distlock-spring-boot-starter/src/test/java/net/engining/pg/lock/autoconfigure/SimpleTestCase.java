@@ -1,8 +1,8 @@
-package net.engining.lock.autoconfigure;
+package net.engining.pg.lock.autoconfigure;
 
-import net.engining.lock.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.lock.autoconfigure.autotest.support.User;
-import net.engining.lock.autoconfigure.autotest.support.UserService;
+import net.engining.pg.lock.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import net.engining.pg.lock.autoconfigure.autotest.support.User;
+import net.engining.pg.lock.autoconfigure.autotest.support.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Random;

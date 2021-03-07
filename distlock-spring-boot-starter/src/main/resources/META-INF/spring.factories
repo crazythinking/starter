@@ -1,4 +1,4 @@
 #配置自定义Starter的自动化配置
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.lock.autoconfigure.LockAutoConfiguration,\
-net.engining.lock.autoconfigure.ZookeeperLockAutoConfiguration
+net.engining.pg.lock.autoconfigure.LockAutoConfiguration,\
+net.engining.pg.lock.autoconfigure.ZookeeperLockAutoConfiguration

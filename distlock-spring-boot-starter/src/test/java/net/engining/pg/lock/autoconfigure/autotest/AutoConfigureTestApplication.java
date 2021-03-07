@@ -1,4 +1,4 @@
-package net.engining.transflow.autoconfigure.autotest;
+package net.engining.pg.lock.autoconfigure.autotest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

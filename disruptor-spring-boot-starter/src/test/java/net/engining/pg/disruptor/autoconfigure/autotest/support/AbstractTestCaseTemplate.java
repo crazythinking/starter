@@ -1,6 +1,6 @@
-package net.engining.lock.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support;
 
-import net.engining.lock.autoconfigure.autotest.AutoConfigureTestApplication;
+import net.engining.pg.disruptor.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
