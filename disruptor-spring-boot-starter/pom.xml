@@ -32,10 +32,6 @@
 			<artifactId>pg-disruptor</artifactId>
 			<version>${pg.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>net.engining.gm</groupId>
-			<artifactId>gm-config</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

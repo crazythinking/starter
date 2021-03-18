@@ -1,4 +1,3 @@
 #配置自定义Starter的自动化配置
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.pg.disruptor.autoconfigure.DisruptorAutoConfiguration,\
-net.engining.pg.disruptor.autoconfigure.RingBufferAutoConfiguration
+net.engining.pg.disruptor.autoconfigure.DisruptorAutoConfiguration
