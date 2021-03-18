@@ -34,12 +34,10 @@ public class DisruptorHandler31 extends AbstractDependenciesDiamondGroupedEventH
     }
 
     @Override
-    protected void doHandlerInternal(DisruptorBizDataEvent<Integer> event, long sequence, boolean endOfBatch) throws Exception {
+    protected void doHandlerInternal(DisruptorBizDataEvent<Integer> event) throws Exception {
         LOGGER.info(
-                "disruptor event ({}) execution on sequence={}, endOfBatch={}, result={}",
+                "disruptor event ({}), result={}",
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
-                sequence,
-                endOfBatch,
                 event.getBizData()+ORDER
         );
         Thread.sleep(1000);

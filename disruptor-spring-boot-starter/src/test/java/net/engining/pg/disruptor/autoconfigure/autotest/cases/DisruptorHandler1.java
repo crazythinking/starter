@@ -28,12 +28,10 @@ public class DisruptorHandler1 extends AbstractParallelGroupedEventHandler<Disru
     }
 
     @Override
-    protected void doHandlerInternal(DisruptorBizDataEvent<String> event, long sequence, boolean endOfBatch) throws Exception {
+    protected void doHandlerInternal(DisruptorBizDataEvent<String> event) throws Exception {
         LOGGER.info(
-                "disruptor event ({}) execution on sequence={}, endOfBatch={}",
-                event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
-                sequence,
-                endOfBatch
+                "disruptor event ({})",
+                event.toString()+ StrUtil.COMMA + " bizData :" + event.getBizData()
         );
     }
 
