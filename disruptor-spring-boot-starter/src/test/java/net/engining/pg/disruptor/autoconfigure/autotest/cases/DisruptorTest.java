@@ -47,18 +47,21 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        DisruptorApplicationEvent<String> event = (DisruptorApplicationEvent<String>) this.testIncomeDataContext.get("event");
-        applicationContext.publishEvent(event);
+        //DisruptorApplicationEvent<String> event = (DisruptorApplicationEvent<String>) this.testIncomeDataContext.get("event");
+        //for (int i = 0; i < 10; i++) {
+        //    event.setKey(StringUtils.substring(event.getKey(), 0, event.getKey().length()-1) + i);
+        //    applicationContext.publishEvent(event);
+        //}
 
-        //DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
-        //event2.setEventGroupKey(DisruptorUtils.groupKey("TestCase-Event2", ExecutionMode.SerialChain));
-        //event2.setKey("key1");
-        //event2.setTag("en");
-        //event2.setBind(12345);
-
-        //bizDataEventDisruptorTemplate.publishEvent(event);
-        //bizDataEventDisruptorTemplate.publishEvent(event);
-        //bizDataEventDisruptorTemplate.publishEvent(event2);
+        DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
+        event2.setTopicKey(DisruptorUtils.topicKey("TestCase-Event2", ExecutionMode.SerialChain));
+        event2.setKey("key1");
+        event2.setTag("en");
+        event2.setBind(12345);
+        for (int i = 0; i < 10; i++) {
+            event2.setBind(event2.getBind()+1);
+            bizDataEventDisruptorTemplate.publishEvent(event2);
+        }
 
         //bizDataEventDisruptorTemplate.publishEvent(
         //        this,
