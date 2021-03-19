@@ -111,7 +111,7 @@ public class DisruptorAutoConfiguration {
                 if (disruptorHandler instanceof AbstractGroupedEventHandler) {
                     AbstractGroupedEventHandler<AbstractDisruptorEvent> gpHandler
                             = (AbstractGroupedEventHandler<AbstractDisruptorEvent>) disruptorHandler;
-                    String gpkey = gpHandler.getGroupKey();
+                    String gpkey = gpHandler.getTopicKey();
                     if (groupedHandlers.containsKey(gpkey)) {
                         gpHandlersTreeMap = groupedHandlers.get(gpkey);
                         gpHandlers = gpHandlersTreeMap.get(gpHandler.getListIndex());

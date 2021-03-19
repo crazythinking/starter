@@ -32,7 +32,7 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
     @Override
     public void initTestData() throws Exception {
         DisruptorApplicationEvent<String> event = new DisruptorApplicationEvent<>(this);
-        event.setEventGroupKey(DisruptorUtils.groupKey("TestCase-Event1", ExecutionMode.Parallel));
+        event.setTopicKey(DisruptorUtils.topicKey("TestCase-Event1", ExecutionMode.Parallel));
         event.setKey("key1");
         event.setTag("en");
         event.setBind("this is biz data");
@@ -48,13 +48,13 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         DisruptorApplicationEvent<String> event = (DisruptorApplicationEvent<String>) this.testIncomeDataContext.get("event");
-        //applicationContext.publishEvent(event);
+        applicationContext.publishEvent(event);
 
-        DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
-        event2.setEventGroupKey(DisruptorUtils.groupKey("TestCase-Event2", ExecutionMode.SerialChain));
-        event2.setKey("key1");
-        event2.setTag("en");
-        event2.setBind(12345);
+        //DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
+        //event2.setEventGroupKey(DisruptorUtils.groupKey("TestCase-Event2", ExecutionMode.SerialChain));
+        //event2.setKey("key1");
+        //event2.setTag("en");
+        //event2.setBind(12345);
 
         //bizDataEventDisruptorTemplate.publishEvent(event);
         //bizDataEventDisruptorTemplate.publishEvent(event);
@@ -67,12 +67,12 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
         //        12345
         //);
 
-        bizDataEventDisruptorTemplate.publishEvent(
-                this,
-                DisruptorUtils.groupKey("TestCase-Event4", ExecutionMode.MultiSerialChain),
-                "en",
-                12345
-        );
+        //bizDataEventDisruptorTemplate.publishEvent(
+        //        this,
+        //        DisruptorUtils.groupKey("TestCase-Event4", ExecutionMode.MultiSerialChain),
+        //        "en",
+        //        12345
+        //);
 
         Thread.sleep(20000);
     }
