@@ -4,12 +4,10 @@ import cn.hutool.core.lang.Console;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import net.engining.pg.redis.operation.RedissonObject;
+import net.engining.pg.redis.operation.RedissonObjectOperation;
 import net.engining.pg.redis.utils.RedisUtil;
 import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
@@ -29,7 +27,7 @@ import java.util.Set;
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    RedissonObject redissonObject;
+    RedissonObjectOperation redissonObject;
 
     @Autowired
     @Resource(name = RedisUtil.REDIS_TEMPLATE)
@@ -83,8 +81,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //案例，根据loginId标识是否登录，offset用于关联在数据库内保存的loginId
         //默认DbIndex
         RedisUtil.getBitmapHandler().set("loginId", 3L, true);
+        //这里会触发创建新的一套连接池到指定的DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
-        //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
         RedisUtil.getBitmapHandler().set("loginId2", 1L, false, Duration.ofMinutes(10));

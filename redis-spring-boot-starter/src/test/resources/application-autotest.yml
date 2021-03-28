@@ -12,6 +12,10 @@ pg:
     single-server-properties:
       address: ubuntu.wsl:6379
       database: 0
+      connection-minimum-idle-size: 5
+      #redis读写操作最大连接数
+      connection-pool-size: 200
+      subscription-connection-minimum-idle-size: 1
     cache:
       enabled: true
       cache-properties-list:
@@ -19,6 +23,8 @@ pg:
           ttl: 1800000
           max-idle-time: 1800000
           max-size: 2
+     #linux环境使用epoll代替Nio
+#    transport-mode: epoll
 #    codec: org.redisson.codec.SmileJacksonCodec
 
 

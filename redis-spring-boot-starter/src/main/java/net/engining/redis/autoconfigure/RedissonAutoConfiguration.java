@@ -5,9 +5,9 @@ import net.engining.pg.redis.aop.RedissonLockAopHandler;
 import net.engining.pg.redis.aop.RedissonMqPublishAopHandler;
 import net.engining.pg.redis.connection.RedissonConnectionConfiguration;
 import net.engining.pg.redis.connection.RedissonConnectionFactory;
-import net.engining.pg.redis.operation.RedissonBinary;
-import net.engining.pg.redis.operation.RedissonCollection;
-import net.engining.pg.redis.operation.RedissonObject;
+import net.engining.pg.redis.operation.RedissonBinaryOperation;
+import net.engining.pg.redis.operation.RedissonCollectionOperation;
+import net.engining.pg.redis.operation.RedissonObjectOperation;
 import net.engining.pg.redis.props.MultipleServerProperties;
 import net.engining.pg.redis.props.RedissonCommonProperties;
 import net.engining.pg.redis.props.SingleServerProperties;
@@ -65,21 +65,21 @@ public class RedissonAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedissonBinary.class)
-    public RedissonBinary redissonBinary() {
-        return new RedissonBinary();
+    @ConditionalOnMissingBean(RedissonBinaryOperation.class)
+    public RedissonBinaryOperation redissonBinary() {
+        return new RedissonBinaryOperation();
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedissonObject.class)
-    public RedissonObject redissonObject() {
-        return new RedissonObject();
+    @ConditionalOnMissingBean(RedissonObjectOperation.class)
+    public RedissonObjectOperation redissonObject() {
+        return new RedissonObjectOperation();
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedissonCollection.class)
-    public RedissonCollection redissonCollection() {
-        return new RedissonCollection();
+    @ConditionalOnMissingBean(RedissonCollectionOperation.class)
+    public RedissonCollectionOperation redissonCollection() {
+        return new RedissonCollectionOperation();
     }
 
     /**
