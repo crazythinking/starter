@@ -9,6 +9,9 @@ spring:
 pg:
   redisson:
     enabled: true
+#    multiple-server-properties:
+#      master-connection-pool-size: 100
+#      slave-connection-pool-size: 100
     single-server-properties:
       address: ubuntu.wsl:6379
       database: 0
