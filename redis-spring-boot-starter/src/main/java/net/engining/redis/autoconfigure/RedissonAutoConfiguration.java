@@ -1,6 +1,7 @@
 package net.engining.redis.autoconfigure;
 
 import net.engining.pg.config.RedisContextConfig;
+import net.engining.pg.props.CommonProperties;
 import net.engining.pg.redis.aop.RedissonLockAopHandler;
 import net.engining.pg.redis.aop.RedissonMqPublishAopHandler;
 import net.engining.pg.redis.connection.RedissonConnectionConfiguration;
@@ -24,6 +25,8 @@ import org.redisson.config.ReplicatedServersConfig;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
 import org.redisson.connection.balancer.LoadBalancer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -48,6 +51,12 @@ import java.net.MalformedURLException;
         RedisContextConfig.class
 })
 public class RedissonAutoConfiguration {
+
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedissonAutoConfiguration.class);
+
+    @Autowired
+    private CommonProperties commonProperties;
 
     @Autowired
     private RedissonCommonProperties redissonProperties;
@@ -134,7 +143,17 @@ public class RedissonAutoConfiguration {
                 singleServerConfig.setDnsMonitoringInterval(singleServerProperties.getDnsMonitoringInterval());
                 singleServerConfig.setSubscriptionConnectionMinimumIdleSize(singleServerProperties.getSubscriptionConnectionMinimumIdleSize());
                 singleServerConfig.setSubscriptionConnectionPoolSize(singleServerProperties.getSubscriptionConnectionPoolSize());
-                singleServerConfig.setClientName(redissonProperties.getClientName());
+                if (ValidateUtilExt.isNotNullOrEmpty(redissonProperties.getClientName())){
+                    singleServerConfig.setClientName(redissonProperties.getClientName());
+                }
+                else {
+                    if (ValidateUtilExt.isNotNullOrEmpty(commonProperties.getAppname())){
+                        singleServerConfig.setClientName(commonProperties.getAppname());
+                    }
+                    else {
+                        LOGGER.warn("the application name should be setup!");
+                    }
+                }
                 singleServerConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 singleServerConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 singleServerConfig.setKeepAlive(redissonProperties.getKeepAlive());
@@ -179,7 +198,17 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     clusterServersConfig.addNodeAddress(prefixAddress(nodeAddress));
                 }
-                clusterServersConfig.setClientName(redissonProperties.getClientName());
+                if (ValidateUtilExt.isNotNullOrEmpty(redissonProperties.getClientName())){
+                    clusterServersConfig.setClientName(redissonProperties.getClientName());
+                }
+                else {
+                    if (ValidateUtilExt.isNotNullOrEmpty(commonProperties.getAppname())){
+                        clusterServersConfig.setClientName(commonProperties.getAppname());
+                    }
+                    else {
+                        LOGGER.warn("the application name should be setup!");
+                    }
+                }
                 clusterServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 clusterServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 clusterServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
@@ -226,7 +255,17 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     sentinelServersConfig.addSentinelAddress(prefixAddress(nodeAddress));
                 }
-                sentinelServersConfig.setClientName(redissonProperties.getClientName());
+                if (ValidateUtilExt.isNotNullOrEmpty(redissonProperties.getClientName())){
+                    sentinelServersConfig.setClientName(redissonProperties.getClientName());
+                }
+                else {
+                    if (ValidateUtilExt.isNotNullOrEmpty(commonProperties.getAppname())){
+                        sentinelServersConfig.setClientName(commonProperties.getAppname());
+                    }
+                    else {
+                        LOGGER.warn("the application name should be setup!");
+                    }
+                }
                 sentinelServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 sentinelServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 sentinelServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
@@ -272,7 +311,17 @@ public class RedissonAutoConfiguration {
                 for (String nodeAddress : multipleServerConfig.getNodeAddresses()) {
                     replicatedServersConfig.addNodeAddress(prefixAddress(nodeAddress));
                 }
-                replicatedServersConfig.setClientName(redissonProperties.getClientName());
+                if (ValidateUtilExt.isNotNullOrEmpty(redissonProperties.getClientName())){
+                    replicatedServersConfig.setClientName(redissonProperties.getClientName());
+                }
+                else {
+                    if (ValidateUtilExt.isNotNullOrEmpty(commonProperties.getAppname())){
+                        replicatedServersConfig.setClientName(commonProperties.getAppname());
+                    }
+                    else {
+                        LOGGER.warn("the application name should be setup!");
+                    }
+                }
                 replicatedServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 replicatedServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 replicatedServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
@@ -322,7 +371,17 @@ public class RedissonAutoConfiguration {
                         masterSlaveServersConfig.addSlaveAddress(prefixAddress(nodeAddress));
                     }
                 }
-                masterSlaveServersConfig.setClientName(redissonProperties.getClientName());
+                if (ValidateUtilExt.isNotNullOrEmpty(redissonProperties.getClientName())){
+                    masterSlaveServersConfig.setClientName(redissonProperties.getClientName());
+                }
+                else {
+                    if (ValidateUtilExt.isNotNullOrEmpty(commonProperties.getAppname())){
+                        masterSlaveServersConfig.setClientName(commonProperties.getAppname());
+                    }
+                    else {
+                        LOGGER.warn("the application name should be setup!");
+                    }
+                }
                 masterSlaveServersConfig.setConnectTimeout(redissonProperties.getConnectTimeout());
                 masterSlaveServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 masterSlaveServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
