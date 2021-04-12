@@ -10,22 +10,23 @@ pg:
   redisson:
     enabled: true
     #默认是single，生产必须按实际情况指定
-    model: single
+#    model: single
+    model: cluster
     #linux环境使用epoll代替Nio
     keep-alive: true
     client-name: ${spring.application.name}
 #    transport-mode: epoll
-#    codec: org.redisson.codec.SmileJacksonCodec
-#    multiple-server-properties:
-#      master-connection-pool-size: 100
-#      slave-connection-pool-size: 100
-    single-server-properties:
-      address: ubuntu.wsl:6379
-      database: 0
-      connection-minimum-idle-size: 5
-      #redis读写操作最大连接数
-      connection-pool-size: 200
-      subscription-connection-minimum-idle-size: 1
+    codec: org.redisson.codec.SmileJacksonCodec
+    multiple-server-properties:
+      master-connection-pool-size: 100
+      slave-connection-pool-size: 100
+#    single-server-properties:
+#      address: ubuntu.wsl:6379
+#      database: 0
+#      connection-minimum-idle-size: 5
+#      #redis读写操作最大连接数
+#      connection-pool-size: 200
+#      subscription-connection-minimum-idle-size: 1
     cache:
       enabled: true
       cache-properties-list:
@@ -33,5 +34,6 @@ pg:
           ttl: 1800000
           max-idle-time: 1800000
           max-size: 2
+
 
 
