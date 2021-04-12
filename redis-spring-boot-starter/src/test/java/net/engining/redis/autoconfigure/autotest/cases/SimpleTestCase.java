@@ -1,14 +1,13 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
 import cn.hutool.core.lang.Console;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import net.engining.pg.redis.operation.RedissonObject;
+import net.engining.pg.redis.operation.RedissonObjectOperation;
 import net.engining.pg.redis.utils.RedisUtil;
 import net.engining.redis.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
@@ -17,6 +16,7 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,8 +27,9 @@ import java.util.Set;
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    RedissonObject redissonObject;
+    RedissonObjectOperation redissonObject;
 
+    @Autowired
     @Resource(name = RedisUtil.REDIS_TEMPLATE)
     RedisTemplate<String, Serializable> redisTemplate;
 
@@ -46,6 +47,10 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         user.setAge(30);
         user.setName("张三");
         user.setSalary(BigDecimal.valueOf(10000.00));
+        user.msg = Lists.newArrayList();
+        for (int i = 0; i < 100; i++) {
+            user.msg.add("this is "+i);
+        }
 
         Set<String> set1 = Sets.newHashSet("aaa","bbb","ccc","ddd","eee");
         Set<String> set2 = Sets.newHashSet("aaa","fff","ccc","ddd","hhh","mmm");
@@ -76,8 +81,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //案例，根据loginId标识是否登录，offset用于关联在数据库内保存的loginId
         //默认DbIndex
         RedisUtil.getBitmapHandler().set("loginId", 3L, true);
+        //这里会触发创建新的一套连接池到指定的DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
-        //连接另一个DbIndex
         RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
         RedisUtil.getBitmapHandler().set("loginId2", 1L, false, Duration.ofMinutes(10));
@@ -103,13 +108,14 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void end() throws Exception {
-        redisTemplate.delete("user1");
+        //redisTemplate.delete("user1");
     }
 
     static class User implements Serializable {
         private String name;
         private int age;
         private BigDecimal salary;
+        private List<String> msg;
 
         public User(){}
 
@@ -137,12 +143,21 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             this.salary = salary;
         }
 
+        public List<String> getMsg() {
+            return msg;
+        }
+
+        public void setMsg(List<String> msg) {
+            this.msg = msg;
+        }
+
         @Override
         public String toString() {
             return "User{" +
                     "name='" + name + '\'' +
                     ", age=" + age +
                     ", salary=" + salary +
+                    ", msg=" + msg +
                     '}';
         }
     }

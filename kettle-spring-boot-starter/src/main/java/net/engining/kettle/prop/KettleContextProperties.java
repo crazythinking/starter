@@ -1,5 +1,6 @@
 package net.engining.kettle.prop;
 
+import com.google.common.collect.Maps;
 import net.engining.kettle.common.KettleContextInfo;
 import net.engining.kettle.common.KettleLogLevelEnum;
 import net.engining.kettle.common.KettleTypeEnum;
@@ -44,7 +45,7 @@ public class KettleContextProperties {
     /**
      * 执行配置
      */
-    private Map<KettleTypeEnum, KettleContextInfo> kettleMap;
+    private Map<KettleTypeEnum, KettleContextInfo> kettleMap= Maps.newHashMap();
     /**
      * kettle 插件路径
      */

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: distlock-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+pg:
+  disruptor:
+    enabled: true

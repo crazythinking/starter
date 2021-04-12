@@ -64,9 +64,11 @@ public class DynamicDataSourceAutoConfigure {
 
         // 装配其他DataSource
         Map<String, HikariConfig> cfMap = dynamicHikariDataSourceProperties.getCfMap();
-        cfMap.forEach((s, config) -> {
-            dataSourceMap.put(s, createDataSource(basicProperties, config));
-        });
+        if(ValidateUtilExt.isNotNullOrEmpty(cfMap)) {
+            cfMap.forEach((s, config) -> {
+                dataSourceMap.put(s, createDataSource(basicProperties, config));
+            });
+        }
         dynamicRoutingDataSource.setTargetDataSources(dataSourceMap);
 
         dynamicRoutingDataSource.afterPropertiesSet();

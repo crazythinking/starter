@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>1.1.0.RELEASE</version>
+		<version>1.2.0.RELEASE</version>
 	</parent>
 
 	<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
@@ -24,6 +24,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
 
 		<!-- 支持JPA -->
@@ -63,11 +68,23 @@
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.engining.gm</groupId>
+			<artifactId>gm-sdk</artifactId>
+		</dependency>
+
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-connector-java.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ru.yandex.clickhouse</groupId>
+			<artifactId>clickhouse-jdbc</artifactId>
+			<version>0.2.4</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -87,7 +104,7 @@
 			</exclusions>
 		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -95,6 +112,26 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose><!-- Emit messages about accessed/processed compilation units -->
+					<privateScope>true</privateScope><!-- Shows all classes and members. -->
+					<showWeaveInfo>true</showWeaveInfo><!-- Emit messages about weaving -->
+					<aspectLibraries>
+						<aspectLibrary><!-- 这里与spring-aspects配合使用；项目中springJPA事务管理就是使用Spring + AspectJ Annotation进行编译时Weave -->
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-aspects</artifactId>
+						</aspectLibrary>
+						<aspectLibrary>
+							<groupId>net.engining.gm</groupId>
+							<artifactId>gm-sdk</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+					<!-- Generate aop.xml file for load-time weaving with default name (/META-INF/aop.xml). -->
+					<outxml>true</outxml>
+					<complianceLevel>${jdk.version}</complianceLevel>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -2,6 +2,21 @@
 infrastructure gears based spring boot 2.1.4
 
 ---
+模块介绍
+
+|模块|模块名|简介|
+|----|----|----|
+|bustream-spring-boot-starter|消息队列组件|-|
+|distlock-spring-boot-starter|分布式锁组件|-|
+|dynamic-datasource-spring-boot-starter|动态数据库组件|-|
+|kettle-spring-boot-starter|kettle中间件|-|
+|redis-spring-boot-starter|redis中间件|-|
+|transflow-spring-boot-starter|可编排的交易流程中间件|-|
+|disruptor-spring-boot-starter|整合Disruptor与Spring的编程模型组件|-|
+
+
+
+---
 变更记录
 
 |分支|版本|修改内容|分支开立时间|分支合并时间|
@@ -9,7 +24,17 @@ infrastructure gears based spring boot 2.1.4
 |master|1.1.0.RELEASE|1、datasource<br>-  druid<br>-  hikari<br>-  shardingjdbc<br>2、Redis|-|-|
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
+|1.2.0|1.2.0.RELEASE|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
 
+# 1.2.0版本火车
+
+|包名|版本|说明|
+|----|----|----|
+|starter-parent|1.1.0-SNAPSHOT|自身包|
+|project-parent|3.6.RELEASE|基础包|
+|pg|3.6.2.RELEASE|底层包|
+|gm|1.5.2.RELEASE|配置包|
+|control-parent|1.1.6.RELEASE|流程控制|
 
 # 1.1.0版本火车
 
@@ -49,3 +74,8 @@ infrastructure gears based spring boot 2.1.4
             </plugin>
 </build>
 ```
+
+## TODO List
+1. disruptor-spring-boot-starter 目前只整合了EventHandler，因此对于每个独立的Event，其Handler都是单线程模型；下一步需要整合WorkHandler，支持多线程模型；
+2. distlock-spring-boot-starter 分布式锁；由于大部分金融级系统都需要分布式强一致性，因此从性能和一致性两方面考量推荐基于ZK实现；
+   但下一步会增加支持基于 Redis 和数据库的分布式锁；
