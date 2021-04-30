@@ -1,6 +1,8 @@
 package net.engining.bustream.autotest.cases;
 
 import net.engining.bustream.base.stream.AbstractInputBustreamHandler;
+import net.engining.pg.support.core.exception.ErrorCode;
+import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -26,6 +28,9 @@ public class UserMsgInputStreamHandler extends AbstractInputBustreamHandler<User
     protected boolean handler(User event, Map<String, Object> headers) {
         LOGGER.info("handler event for user object: {}", event);
         user = event;
+        if (user.getAge()==0){
+            throw new ErrorMessageException(ErrorCode.SystemError, "error test");
+        }
         return true;
     }
 }

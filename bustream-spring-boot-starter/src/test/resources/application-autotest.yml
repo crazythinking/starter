@@ -3,9 +3,3 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: bustream-test
-
-gm:
-  bustream:
-    default-producer-name: bustream-test
-    other-producer-names:
-      scac: scac-online-sv

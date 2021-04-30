@@ -16,7 +16,9 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * 默认消息消费者的处理抽象类，由业务系统继承并注入 Spring Context
+ * 默认消息消费者的处理抽象类，由业务系统继承并注入 Spring Context；
+ * 注意：此类绑定了Channel：INPUT；如果业务类需要自定义的Channel时，需要自行实现BustreamHandler；
+ * TODO 此限制可优化，由子类注入SubscribableChannel，通过SubscribableChannel接受消息，不使用@StreamListener；
  * @author Eric Lu
  * @date 2020-10-29 18:16
  **/

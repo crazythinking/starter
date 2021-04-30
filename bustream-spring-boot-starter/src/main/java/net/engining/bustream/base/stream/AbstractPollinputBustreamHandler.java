@@ -13,7 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.io.Serializable;
 
 /**
- * 消息的轮询消费者抽象封装，由业务类继承并注入 Spring Context
+ * 消息的轮询消费者抽象封装，由业务类继承并注入 Spring Context；
+ * 注意：此类绑定了Channel：OUTPUT；如果业务类需要自定义的Channel时，需要自行实现BustreamHandler；
+ * TODO 此限制可优化，由子类注入PollableMessageSource
  *
  * @author : Eric Lu
  * @version :

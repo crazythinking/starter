@@ -16,7 +16,7 @@ import java.util.Map;
  * @date : 2020-10-31 18:25
  * @since :
  **/
-@ActiveProfiles(profiles={
+@ActiveProfiles(profiles = {
         "rabbit.common",
         "rabbit.dev",
         "bus.disable",
@@ -24,7 +24,9 @@ import java.util.Map;
         "stream.common.bindings.input",
         "stream.common.bindings.output",
         "stream.rabbit.bindings.input",
-        "stream.rabbit.bindings.output"
+        "stream.rabbit.bindings.output",
+        "stream.common",
+        "stream.dev"
 })
 public class StreamTestCase extends AbstractTestCaseTemplate {
 
@@ -44,24 +46,43 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
 
         Assert.isTrue(
                 this.testAssertDataContext.get("user").equals(JSON.toJSONString(userMsgInputStreamHandler.user)),
-                "same user"
+                "not the same user"
         );
     }
 
     @Override
     public void testProcess() throws Exception {
-        User user = new User();
-        user.setUserId(System.currentTimeMillis());
-        user.setName("name");
-        user.setAge(RandomUtil.randomInt(1, 100));
+        //normal();
+        deadLetter();
+    }
+
+    private void deadLetter() {
+        User user = setupUser();
+        user.setAge(0);
+        userMsgOutputStreamHandler.send(user, Maps.newHashMap());
+    }
+
+    private void normal() throws InterruptedException {
+        User user = setupUser();
         this.testAssertDataContext.put("user", JSON.toJSONString(user));
 
         Map<String, Object> headerMap = Maps.newHashMap();
         headerMap.put("gender", user.getAge() % 2);
-        userMsgOutputStreamHandler.send(user, headerMap);
+        for (int i = 0; i < 10; i++) {
+            userMsgOutputStreamHandler.send(user, headerMap);
+        }
 
         //等待另一个线程获取到消息并赋值
         Thread.sleep(2000);
+    }
+
+    private User setupUser() {
+        User user = new User();
+        user.setUserId(System.currentTimeMillis());
+        user.setName("name");
+        user.setAge(RandomUtil.randomInt(1, 100));
+
+        return user;
     }
 
     @Override
