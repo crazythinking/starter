@@ -8,5 +8,6 @@ import io.zeebe.client.api.worker.JobHandler;
  * @date : 2021-04-25 17:43
  * @since :
  **/
-public abstract class AbstractJobHandler implements JobHandler {
+public interface ZeebeDefaultJobHandler extends JobHandler {
+
 }
