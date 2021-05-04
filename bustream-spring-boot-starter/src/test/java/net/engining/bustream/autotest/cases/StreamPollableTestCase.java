@@ -25,7 +25,9 @@ import java.util.Map;
         "stream.common.bindings.pollinput",
         "stream.common.bindings.output",
         "stream.rabbit.bindings.pollinput",
-        "stream.rabbit.bindings.output"
+        "stream.rabbit.bindings.output",
+        "stream.common",
+        "stream.dev"
 })
 public class StreamPollableTestCase extends AbstractTestCaseTemplate {
 

@@ -5,8 +5,7 @@ spring:
       bindings:
         input: # binding的key为input
 #          binder: rabbitCluster # 指定某个binder, 通常不需要, 由default-binder配置
-          destination: ${gm.bustream.default-producer-name}.exchange1
-#          group: xxx # queue的后缀,带业务含义; 由各业务系统自身定义
+          destination: ${gm.bustream.default-producer-name}.default
           contentType: application/json
           consumer:
             maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3

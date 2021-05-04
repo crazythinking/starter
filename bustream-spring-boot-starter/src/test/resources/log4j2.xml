@@ -14,7 +14,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout disableAnsi="false" charset="UTF-8"
-                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
+                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
         </Console>
 
         <!--所有日志,异步输出,通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值-->

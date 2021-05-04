@@ -4,6 +4,5 @@ spring:
     stream:
       bindings:
         springCloudBusOutput:
-          destination: ${spring.application.name}.exchange1 # exchange的前缀,生产者的applicationName
-#          group: repayBack # queue的后缀,带业务含义; 由各业务系统自身定义
+          destination: ${spring.application.name}.default # exchange 或 topic 用生产者的applicationName做前缀
           contentType: application/json

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author : Eric Lu
@@ -24,13 +25,27 @@ public class UserMsgInputStreamHandler extends AbstractInputBustreamHandler<User
 
     public User user;
 
+    public AtomicInteger okCount = new AtomicInteger(0);
+
     @Override
-    protected boolean handler(User event, Map<String, Object> headers) {
+    protected void handler(User event, Map<String, Object> headers) throws Exception{
         LOGGER.info("handler event for user object: {}", event);
-        user = event;
-        if (user.getAge()==0){
+        if (event.getAge()==0){
+            user = event;
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");
         }
-        return true;
+        else {
+            okCount.incrementAndGet();
+        }
+    }
+
+    @Override
+    public void before(User event) {
+        defalutBefore(event, Type.CONSUMER, LOGGER);
+    }
+
+    @Override
+    public void after(User event, boolean rt) {
+        defaultAfter(event, rt, Type.CONSUMER, LOGGER);
     }
 }

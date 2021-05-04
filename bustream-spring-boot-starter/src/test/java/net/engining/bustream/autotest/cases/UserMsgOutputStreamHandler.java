@@ -25,4 +25,14 @@ public class UserMsgOutputStreamHandler extends AbstractOutputBustreamHandler<Us
     protected void transform(User event, Map<String, Object> headers) {
         LOGGER.info("transform event to user object: {}", event);
     }
+
+    @Override
+    public void before(User event) {
+        defalutBefore(event, Type.PRODUCER, LOGGER);
+    }
+
+    @Override
+    public void after(User event, boolean rt) {
+        defaultAfter(event, rt, Type.PRODUCER, LOGGER);
+    }
 }

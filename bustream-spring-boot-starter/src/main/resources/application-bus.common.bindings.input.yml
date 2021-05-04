@@ -5,7 +5,7 @@ spring:
       bindings:
         springCloudBusInput:
 #          binder: rabbitCluster
-          destination: ${gm.bustream.default-producer-name}.exchange1 # exchange 用生产者的applicationName做前缀
+          destination: ${gm.bustream.default-producer-name}.default # exchange 或 topic 用生产者的applicationName做前缀
 #          group: xxx # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json
           consumer:

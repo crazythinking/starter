@@ -5,6 +5,6 @@ spring:
       bindings:
         output: # binding的key为output
 #          binder: rabbitCluster # 指定某个binder, 通常不需要, 由default-binder配置
-          destination: ${spring.application.name}.exchange1
+          destination: ${spring.application.name}.default
 #          group: saclGroup # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json
