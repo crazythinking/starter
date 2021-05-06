@@ -16,23 +16,23 @@ import java.util.Map;
  **/
 @Profile("stream.common.bindings.output")
 @Service
-public class UserMsgOutputStreamHandler extends AbstractOutputBustreamHandler<User> {
+public class User2OutputStreamHandler extends AbstractOutputBustreamHandler<User2> {
 
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserMsgOutputStreamHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(User2OutputStreamHandler.class);
 
     @Override
-    protected void transform(User event, Map<String, Object> headers) {
-        LOGGER.info("transform event to user object: {}", event);
+    protected void transform(User2 event, Map<String, Object> headers) {
+        LOGGER.info("transform event to user2 object: {}", event);
     }
 
     @Override
-    public void before(User event) {
+    public void before(User2 event) {
         defalutBefore(event, Type.PRODUCER, LOGGER);
     }
 
     @Override
-    public void after(User event, boolean rt) {
+    public void after(User2 event, boolean rt) {
         defaultAfter(event, rt, Type.PRODUCER, LOGGER);
     }
 }

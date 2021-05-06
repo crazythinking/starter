@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>bustream-spring-boot-starter</artifactId>
-	<name>bustream starter: spring cloud bus and stream standard configuration</name>
+	<name>bustream starter: spring cloud bus and stream </name>
 	<packaging>jar</packaging>
 
 	<properties>

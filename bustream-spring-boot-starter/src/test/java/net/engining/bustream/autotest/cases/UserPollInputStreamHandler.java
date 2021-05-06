@@ -2,13 +2,10 @@ package net.engining.bustream.autotest.cases;
 
 import com.google.common.collect.Lists;
 import net.engining.bustream.base.stream.AbstractPollinputBustreamHandler;
-import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +19,9 @@ import java.util.Map;
  **/
 @Profile("stream.common.bindings.pollinput")
 @Service
-public class UserMsgPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> {
+public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserMsgPollInputStreamHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserPollInputStreamHandler.class);
 
     public List<User> users = Lists.newArrayList();
 

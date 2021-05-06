@@ -2,6 +2,7 @@ package net.engining.bustream.base.stream;
 
 import net.engining.bustream.base.BustreamHandler;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Map;

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +31,10 @@ import java.util.Map;
 public class StreamPollableTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    UserMsgOutputStreamHandler userMsgOutputStreamHandler;
+    UserOutputStreamHandler userMsgOutputStreamHandler;
 
     @Autowired
-    UserMsgPollInputStreamHandler userMsgPollInputStreamHandler;
+    UserPollInputStreamHandler userMsgPollInputStreamHandler;
 
     @Override
     public void initTestData() throws Exception {
