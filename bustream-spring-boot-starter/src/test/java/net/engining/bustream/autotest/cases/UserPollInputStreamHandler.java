@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.engining.bustream.base.stream.AbstractPollinputBustreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.Map;
  **/
 @Profile("stream.common.bindings.pollinput")
 @Service
-public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> {
+public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> implements InitializingBean {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPollInputStreamHandler.class);
 
@@ -37,12 +38,8 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
     }
 
     @Override
-    public void before(User event) {
-        defalutBefore(event, Type.POLLABLE_CONSUMER, LOGGER);
-    }
-
-    @Override
-    public void after(User event, boolean rt) {
-        defaultAfter(event, rt, Type.POLLABLE_CONSUMER, LOGGER);
+    public void afterPropertiesSet() throws Exception {
+        super.setLogger(LOGGER);
+        super.setType(Type.POLLABLE_CONSUMER);
     }
 }

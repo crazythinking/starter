@@ -1,6 +1,7 @@
 package net.engining.bustream.base.stream;
 
 import com.rabbitmq.client.Channel;
+import net.engining.bustream.base.BustreamHandler.Type;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,11 @@ import java.io.Serializable;
 public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
                                                     extends AbstractConsume4AmqpBustreamHandler<E> {
     PollableMessageSource pollableMessageSource;
+
+    public AbstractPollinputBustreamHandler() {
+        super();
+        super.setType(Type.POLLABLE_CONSUMER);
+    }
 
     @Autowired
     @Qualifier(StreamPollableInput.POLLINPUT)

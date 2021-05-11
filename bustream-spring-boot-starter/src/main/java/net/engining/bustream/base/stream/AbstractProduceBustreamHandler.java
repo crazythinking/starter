@@ -26,16 +26,31 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
 
     MessageChannel messageChannel;
 
+    Logger logger;
+
+    Type type;
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = Type.PRODUCER;
+    }
+
     protected void setMessageChannel(MessageChannel messageChannel) {
         this.messageChannel = messageChannel;
     }
 
     /**
      * 发送消息事件并返回结果，需要业务逻辑端显示调用
-     * @param event     消息事件
-     * @param headers   消息头信息
+     *
+     * @param event   消息事件
+     * @param headers 消息头信息
      */
-    public boolean send(E event, Map<String, Object> headers){
+    public boolean send(E event, Map<String, Object> headers) {
         boolean ret = false;
         before(event);
         try {
@@ -52,8 +67,19 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
 
     /**
      * 对要发送的消息事件进行自定义转换处理
+     *
      * @param event 消息事件
      */
     protected abstract void transform(E event, Map<String, Object> headers);
+
+    @Override
+    public void before(E event) {
+        defalutBefore(event, type, logger);
+    }
+
+    @Override
+    public void after(E event, boolean rt) {
+        defaultAfter(event, rt, type, logger);
+    }
 
 }

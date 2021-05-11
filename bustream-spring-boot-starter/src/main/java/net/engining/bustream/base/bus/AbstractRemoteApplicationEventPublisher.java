@@ -36,6 +36,16 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
     private ApplicationEventPublisher publisher;
 
     @Override
+    public void setLogger(Logger logger) {
+        //do nothing
+    }
+
+    @Override
+    public void setType(Type type) {
+        //do nothing
+    }
+
+    @Override
     public void before(E event) {
         defalutBefore(event, Type.PUBLISHER, LOGGER);
     }

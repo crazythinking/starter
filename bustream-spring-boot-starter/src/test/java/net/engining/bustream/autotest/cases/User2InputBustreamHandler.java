@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2021-05-04 11:16
  * @since :
  **/
-@Profile("stream.common.bindings.input")
+@Profile({"stream.common.bindings.input", "stream.common"})
 @Service
 public class User2InputBustreamHandler extends AbstractConsume4AmqpBustreamHandler<User2> {
 
@@ -55,13 +55,4 @@ public class User2InputBustreamHandler extends AbstractConsume4AmqpBustreamHandl
         }
     }
 
-    @Override
-    public void before(User2 event) {
-        defalutBefore(event, Type.CONSUMER, LOGGER);
-    }
-
-    @Override
-    public void after(User2 event, boolean rt) {
-        defaultAfter(event, rt, Type.CONSUMER, LOGGER);
-    }
 }

@@ -20,6 +20,16 @@ public abstract class AbstractRemoteApplicationEventListener<E extends Serializa
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteApplicationEventListener.class);
 
     @Override
+    public void setLogger(Logger logger) {
+        //do nothing
+    }
+
+    @Override
+    public void setType(Type type) {
+        //do nothing
+    }
+
+    @Override
     public void before(E event) {
         defalutBefore(event, Type.LISTENER, LOGGER);
     }

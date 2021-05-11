@@ -15,11 +15,25 @@ import java.util.Map;
  **/
 public abstract class AbstractConsumeBustreamHandler<E extends Serializable> implements BustreamHandler<E> {
 
+    Logger logger;
+
+    Type type = Type.CONSUMER;
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     /**
      * 接收到消息，并调用业务逻辑
      * @param event 消息事件
      */
-    boolean received(E event, Map<String, Object> headers){
+    protected boolean received(E event, Map<String, Object> headers){
         before(event);
         try {
             handler(event, headers);
@@ -38,5 +52,15 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * @param headers   头信息
      */
     protected abstract void handler(E event, Map<String, Object> headers) throws Exception;
+
+    @Override
+    public void before(E event) {
+        defalutBefore(event, type, logger);
+    }
+
+    @Override
+    public void after(E event, boolean rt) {
+        defaultAfter(event, rt, type, logger);
+    }
 
 }

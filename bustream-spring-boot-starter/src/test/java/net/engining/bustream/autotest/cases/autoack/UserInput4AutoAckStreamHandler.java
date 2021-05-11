@@ -1,10 +1,14 @@
-package net.engining.bustream.autotest.cases;
+package net.engining.bustream.autotest.cases.autoack;
 
+import net.engining.bustream.autotest.cases.User;
 import net.engining.bustream.base.stream.AbstractConsume4AmqpBustreamHandler;
+import net.engining.bustream.base.stream.AbstractConsumeBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
@@ -24,11 +28,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2020-10-31 18:52
  * @since :
  **/
-@Profile({"stream.common.bindings.input", "stream.common"})
+@Profile({"stream.common.bindings.input", "stream.common.autoack"})
 @Service
-public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<User> {
+public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserInputStreamHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInput4AutoAckStreamHandler.class);
 
     public List<User> users = new ArrayList<>();
 
@@ -37,9 +41,12 @@ public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<
     /**
      * 接收消息，无需显示调用，由监听器自动触发
      */
-    @StreamListener(value = Sink.INPUT, condition = "headers['messageType']=='type1'")
-    protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers){
-        receiving(event, headers);
+    @StreamListener(value = Sink.INPUT)
+    protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers) {
+        boolean ret = received(event, headers);
+        if (!ret){
+            throw new ErrorMessageException(ErrorCode.SystemError, "handle msg error");
+        }
     }
 
     @Override
@@ -52,5 +59,10 @@ public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<
             users.add(event);
             okCount.incrementAndGet();
         }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.setLogger(LOGGER);
     }
 }

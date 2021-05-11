@@ -1,11 +1,9 @@
 package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import net.engining.bustream.autotest.cases.autoack.UserInput4AutoAckStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,10 +26,10 @@ import java.util.Map;
         "stream.common.bindings.output",
         "stream.rabbit.bindings.input",
         "stream.rabbit.bindings.output",
-        "stream.common",
+        "stream.common.autoack",
         "stream.dev"
 })
-public class StreamTestCase extends AbstractTestCaseTemplate {
+public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     UserOutputStreamHandler userMsgOutputStreamHandler;
@@ -40,10 +38,7 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
     User2OutputStreamHandler user2MsgOutputStreamHandler;
 
     @Autowired
-    UserInputStreamHandler userMsgInputStreamHandler;
-
-    @Autowired
-    User2InputBustreamHandler user2InputBustreamHandler;
+    UserInput4AutoAckStreamHandler userMsgInputStreamHandler;
 
     @Autowired
     RabbitTemplate template;
@@ -55,50 +50,29 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void assertResult() throws Exception {
-        //for deadLetter;
-        //Assert.isTrue(
-        //        this.testAssertDataContext.get("user").equals(JSON.toJSONString(userMsgInputStreamHandler.user)),
-        //        "same user"
-        //);
 
-        //for normal
-        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==10, () -> "msg count != "+ 10);
-        Assert.isTrue(user2InputBustreamHandler.okCount.get()==1, () -> "msg count != 1");
+        //for autoAck, have one error
+        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==4, () -> "msg count != "+ 4);
 
     }
 
     @Override
     public void testProcess() throws Exception {
-        normal();
+        autoAck();
     }
 
-    private void normal() throws InterruptedException {
+    private void autoAck() throws InterruptedException {
         User user = setupUser();
         Map<String, Object> headerMap = Maps.newHashMap();
         headerMap.put("gender", user.getAge() % 2);
-        headerMap.put("messageType", "type1");
-        MessageProperties properties1 = new MessageProperties();
-        properties1.setContentType(MessageProperties.CONTENT_TYPE_JSON);
         int n = 5;
         for (int i = 0; i < n; i++) {
-            properties1.getHeaders().putAll(headerMap);
-            properties1.setHeader("sender", "RabbitTemplate");
-
-            //对比使用RabbitTemplate指定routingKey时，只有consumer也配置了相应binding-routing-key时才能收到消息；
-            //producer为配置binding-routing-key时默认为#, 如果consumer配置指定的非“#”的binding-routing-key, 该消息将丢失, 因为找不到相应的queue；
-            //但默认routing-key是“#”时，会消费所有，因此该案例会消费10个消息；
+            //last one set for error
+            if (i==n-1){
+                user.setAge(0);
+            }
             userMsgOutputStreamHandler.send(user, headerMap);
-            template.send(
-                    "bustream-test.default",
-                    "repayBack",
-                    new Message(JSON.toJSONString(user).getBytes(), properties1)
-            );
         }
-
-        Map<String, Object> headerMap2 = Maps.newHashMap();
-        User2 user2 = setupUser2();
-        headerMap2.put("messageType", "type2");
-        user2MsgOutputStreamHandler.send(user2, headerMap2);
 
         //等待另一个线程获取到消息并赋值
         Thread.sleep(20000);

@@ -90,6 +90,17 @@ public interface BustreamHandler<E extends Serializable> {
     String FAILED = "F";
 
     /**
+     * 设置logger
+     */
+    void setLogger(Logger logger);
+
+    /**
+     * 设置处理器类型
+     * @param type  {@link Type} 处理器类型
+     */
+    void setType(Type type);
+
+    /**
      * 消息事件发送或接收前处理切面
      * @param event 消息
      */
