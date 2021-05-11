@@ -42,11 +42,12 @@ public abstract class AbstractRemoteApplicationEventListener<E extends Serializa
     /**
      * 接收到消息事件后的处理逻辑
      * @param event 消息事件
+     * @return true: 业务逻辑处理成功
      */
     public abstract boolean handler(E event);
 
     @EventListener
-    protected void onEvent4Generic(GenericRemoteApplicationEvent<E> event) {
+    public void onEvent4Generic(GenericRemoteApplicationEvent<E> event) {
         before(event.getTarget());
         try {
             boolean rt = handler(event.getTarget());

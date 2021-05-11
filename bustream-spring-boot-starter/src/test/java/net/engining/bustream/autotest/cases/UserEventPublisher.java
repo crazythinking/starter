@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserEventPublisher extends AbstractRemoteApplicationEventPublisher<User> {
 
     @Override
-    public boolean transform(User event) {
-        return true;
+    public void transform(User event) {
     }
 }

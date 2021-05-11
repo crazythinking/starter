@@ -84,9 +84,9 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
     }
 
     /**
-     * 接收到消息事件后的处理逻辑
+     * 发布消息事件前的业务处理逻辑
      *
      * @param event 消息事件
      */
-    public abstract boolean transform(E event);
+    public abstract void transform(E event);
 }
