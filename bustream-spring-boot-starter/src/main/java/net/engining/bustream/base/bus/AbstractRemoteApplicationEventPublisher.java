@@ -47,12 +47,12 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
 
     @Override
     public void before(E event) {
-        defalutBefore(event, Type.PUBLISHER, LOGGER);
+        //do nothing
     }
 
     @Override
     public void after(E event, boolean rt) {
-        defaultAfter(event, rt, Type.PUBLISHER, LOGGER);
+        //do nothing
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
      *                    或 spring.application.name:applicationContextId(发布到指定微服务的指定实例)
      */
     public void publish(E event, String destination) {
-        before(event);
+        defalutBefore(event, Type.PUBLISHER, LOGGER);
         try {
             transform(event);
             if (ValidateUtilExt.isNullOrEmpty(destination)) {
@@ -75,11 +75,10 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
                     new GenericRemoteApplicationEvent<E>(this, event, busProperties.getId(), destination)
             );
 
-            after(event, true);
-
+            defaultAfter(event, true, Type.PUBLISHER, LOGGER);
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
-            after(event, false);
+            defaultAfter(event, false, Type.PUBLISHER, LOGGER);
         }
     }
 

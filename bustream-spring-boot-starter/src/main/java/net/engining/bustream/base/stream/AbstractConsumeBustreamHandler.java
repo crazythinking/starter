@@ -34,14 +34,14 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * @param event 消息事件
      */
     protected boolean received(E event, Map<String, Object> headers){
-        before(event);
+        defalutBefore(event, type, logger);
         try {
             handler(event, headers);
             after(event, true);
             return true;
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
-            after(event, false);
+            defaultAfter(event, false, type, logger);
         }
         return false;
     }
@@ -55,12 +55,12 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
 
     @Override
     public void before(E event) {
-        defalutBefore(event, type, logger);
+        //do nothing
     }
 
     @Override
     public void after(E event, boolean rt) {
-        defaultAfter(event, rt, type, logger);
+        //do nothing
     }
 
 }

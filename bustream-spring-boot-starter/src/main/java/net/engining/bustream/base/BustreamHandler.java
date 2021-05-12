@@ -119,6 +119,8 @@ public interface BustreamHandler<E extends Serializable> {
                 DEFAULT_BEFORE_MESSAGE_SUFFIX +
                 StringUtils.SPACE;
         logger.info(msg);
+
+        before(event);
     }
 
     /**
@@ -136,6 +138,8 @@ public interface BustreamHandler<E extends Serializable> {
      * @param logger 日志操作对象
      */
     default void defaultAfter(E event, boolean rt, Type type, Logger logger){
+        after(event, rt);
+
         StringBuilder msg = new StringBuilder();
         msg.append(DEFAULT_AFTER_MESSAGE_PREFIX);
         msg.append(type.label);

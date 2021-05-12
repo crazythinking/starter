@@ -31,12 +31,12 @@ public abstract class AbstractRemoteApplicationEventListener<E extends Serializa
 
     @Override
     public void before(E event) {
-        defalutBefore(event, Type.LISTENER, LOGGER);
+        //do nothing
     }
 
     @Override
     public void after(E event, boolean rt) {
-        defaultAfter(event, rt, Type.LISTENER, LOGGER);
+        //do nothing
     }
 
     /**
@@ -48,14 +48,13 @@ public abstract class AbstractRemoteApplicationEventListener<E extends Serializa
 
     @EventListener
     public void onEvent4Generic(GenericRemoteApplicationEvent<E> event) {
-        before(event.getTarget());
+        defalutBefore(event.getTarget(), Type.LISTENER, LOGGER);
         try {
             boolean rt = handler(event.getTarget());
-            after(event.getTarget(), rt);
-
+            defaultAfter(event.getTarget(), rt, Type.LISTENER, LOGGER);
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
-            after(event.getTarget(), false);
+            defaultAfter(event.getTarget(), false, Type.LISTENER, LOGGER);
         }
 
     }

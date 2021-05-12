@@ -52,15 +52,15 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
      */
     public boolean send(E event, Map<String, Object> headers) {
         boolean ret = false;
-        before(event);
+        defalutBefore(event, type, logger);
         try {
             transform(event, headers);
             ret = messageChannel.send(MessageBuilder.createMessage(event, new MessageHeaders(headers)));
-            after(event, true);
+            defaultAfter(event, ret, type, logger);
             return ret;
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
-            after(event, false);
+            defaultAfter(event, false, type, logger);
         }
         return ret;
     }
@@ -74,12 +74,12 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
 
     @Override
     public void before(E event) {
-        defalutBefore(event, type, logger);
+        //do nothing
     }
 
     @Override
     public void after(E event, boolean rt) {
-        defaultAfter(event, rt, type, logger);
+        //do nothing
     }
 
 }
