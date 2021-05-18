@@ -1,6 +1,6 @@
 spring:
   application:
-    name: distlock-starter-test
+    name: disruptor-starter-test
   main:
     allow-bean-definition-overriding: true
 

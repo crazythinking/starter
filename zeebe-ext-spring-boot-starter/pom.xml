@@ -14,7 +14,22 @@
 	<packaging>jar</packaging>
 
 	<properties>
+		<zeebe.version>1.0.0</zeebe.version>
+		<netty.version>4.1.63.Final</netty.version>
 	</properties>
+
+	<dependencyManagement>
+
+		<dependencies>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-bom</artifactId>
+				<version>${netty.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
@@ -24,11 +39,25 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.zeebe.spring</groupId>
+			<groupId>io.camunda</groupId>
 			<artifactId>spring-zeebe-starter</artifactId>
-			<version>0.26.2</version>
+			<version>${zeebe.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>zeebe-client-java</artifactId>
+					<groupId>io.camunda</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
+		<dependency>
+			<groupId>io.camunda</groupId>
+			<artifactId>zeebe-client-java</artifactId>
+			<version>${zeebe.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -38,6 +67,25 @@
 				<exclusion>
 					<artifactId>spring-boot-starter-logging</artifactId>
 					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>objenesis</artifactId>
+					<groupId>org.objenesis</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-support</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>animal-sniffer-annotations</artifactId>
+					<groupId>org.codehaus.mojo</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>error_prone_annotations</artifactId>
+					<groupId>com.google.errorprone</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>

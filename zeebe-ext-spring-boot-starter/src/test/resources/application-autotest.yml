@@ -1,5 +1,5 @@
 spring:
   application:
-    name: transflow-starter-test
+    name: zeebe-starter-test
   main:
     allow-bean-definition-overriding: true

@@ -1,7 +1,7 @@
-package net.engining.transflow.autoconfigure.autotest;
+package net.engining.zeebe.spring.client.ext.autotest;
 
+import io.camunda.zeebe.spring.client.annotation.ZeebeDeployment;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Lazy;
  * @author Eric Lu
  */
 @Configuration
-@EnableConfigurationProperties(value = {
+@ZeebeDeployment(classPathResources = {
+        "demoProcess.bpmn",
 })
 public class CombineContextConfig {
 
