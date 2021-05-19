@@ -1,7 +1,6 @@
 package net.engining.zeebe.spring.client.ext;
 
 import cn.hutool.core.util.StrUtil;
-import com.sun.istack.internal.NotNull;
 import io.camunda.zeebe.client.api.command.DeployProcessCommandStep1;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.Topology;
@@ -11,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
