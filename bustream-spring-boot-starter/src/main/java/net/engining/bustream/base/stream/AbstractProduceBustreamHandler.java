@@ -23,12 +23,14 @@ import java.util.Map;
  * @date 2020-10-29 18:16
  **/
 public abstract class AbstractProduceBustreamHandler<E extends Serializable> implements BustreamHandler<E> {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractProduceBustreamHandler.class);
 
     MessageChannel messageChannel;
 
-    Logger logger;
+    Logger logger = LOGGER;
 
-    Type type;
+    Type type = Type.PRODUCER;
 
     @Override
     public void setLogger(Logger logger) {
@@ -37,7 +39,7 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
 
     @Override
     public void setType(Type type) {
-        this.type = Type.PRODUCER;
+        this.type = type;
     }
 
     protected void setMessageChannel(MessageChannel messageChannel) {

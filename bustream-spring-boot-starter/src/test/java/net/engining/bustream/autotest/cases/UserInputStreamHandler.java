@@ -5,6 +5,7 @@ import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 @Profile({"stream.common.bindings.input", "stream.common"})
 @Service
-public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<User> {
+public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<User> implements InitializingBean {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInputStreamHandler.class);
 
@@ -52,5 +53,11 @@ public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<
             users.add(event);
             okCount.incrementAndGet();
         }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.setLogger(LOGGER);
+        super.setType(Type.CONSUMER);
     }
 }

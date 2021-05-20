@@ -28,10 +28,14 @@ import java.io.Serializable;
  **/
 public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
                                                     extends AbstractConsume4AmqpBustreamHandler<E> {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPollinputBustreamHandler.class);
+
     PollableMessageSource pollableMessageSource;
 
     public AbstractPollinputBustreamHandler() {
         super();
+        super.setLogger(LOGGER);
         super.setType(Type.POLLABLE_CONSUMER);
     }
 

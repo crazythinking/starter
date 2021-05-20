@@ -91,6 +91,7 @@ public interface BustreamHandler<E extends Serializable> {
 
     /**
      * 设置logger
+     * @param logger 子类的日志对象
      */
     void setLogger(Logger logger);
 

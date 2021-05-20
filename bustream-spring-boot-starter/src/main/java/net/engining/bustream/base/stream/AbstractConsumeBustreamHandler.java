@@ -3,6 +3,7 @@ package net.engining.bustream.base.stream;
 import net.engining.bustream.base.BustreamHandler;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,8 +15,10 @@ import java.util.Map;
  * @date 2020-10-29 18:16
  **/
 public abstract class AbstractConsumeBustreamHandler<E extends Serializable> implements BustreamHandler<E> {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConsumeBustreamHandler.class);
 
-    Logger logger;
+    Logger logger = LOGGER;
 
     Type type = Type.CONSUMER;
 

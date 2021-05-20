@@ -1,11 +1,9 @@
 package net.engining.bustream.autotest.cases.autoack;
 
 import net.engining.bustream.autotest.cases.User;
-import net.engining.bustream.base.stream.AbstractConsume4AmqpBustreamHandler;
 import net.engining.bustream.base.stream.AbstractConsumeBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
-import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -64,5 +62,6 @@ public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandl
     @Override
     public void afterPropertiesSet() throws Exception {
         super.setLogger(LOGGER);
+        super.setType(Type.CONSUMER);
     }
 }

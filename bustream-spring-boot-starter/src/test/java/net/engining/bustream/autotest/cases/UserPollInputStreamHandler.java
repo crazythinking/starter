@@ -40,6 +40,5 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
     @Override
     public void afterPropertiesSet() throws Exception {
         super.setLogger(LOGGER);
-        super.setType(Type.POLLABLE_CONSUMER);
     }
 }
