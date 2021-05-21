@@ -11,3 +11,4 @@ spring:
               acknowledgeMode: MANUAL
               ttl: 1800000 # ms, 默认不做限制, 消息在队列中最大的存活时间; 当消息滞留超过ttl时会被当成消费失败消息, 即会被转发到死信队列或丢弃
               autoBindDlq: true # 是否自动声明死信队列(DLQ)并将其绑定到死信交换机(DLX),默认是false
+              republish-to-dlq: true # 是否使用诊断标头将故障重新发布到DLQ, DLQ中的消息头上会记录异常消息; 默认false
