@@ -18,7 +18,7 @@ import java.util.Map;
  * @date : 2021-03-16 17:27
  * @since :
  **/
-public class DisruptorTest extends AbstractTestCaseTemplate {
+public class DisruptorTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     DisruptorTemplate bizDataEventDisruptorTemplate;

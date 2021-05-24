@@ -26,9 +26,9 @@ import javax.persistence.PersistenceContext;
 //		"druid.mysql",
 //		"hikari.mysql",
 })
-public class SimpleTest extends AbstractTestCaseTemplate {
+public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
 
     @PersistenceContext
     private EntityManager em;
