@@ -4,6 +4,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
 import net.engining.bustream.autotest.cases.autoack.UserInput4AutoAckStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -59,6 +61,17 @@ public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         autoAck();
+        unacceptableMsg();
+    }
+
+    private void unacceptableMsg() throws Exception {
+        MessageProperties properties1 = new MessageProperties();
+        properties1.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        template.send(
+                "bustream-test.default",
+                "repayBack",
+                new Message("1112333232323".getBytes(), properties1)
+        );
     }
 
     private void autoAck() throws InterruptedException {

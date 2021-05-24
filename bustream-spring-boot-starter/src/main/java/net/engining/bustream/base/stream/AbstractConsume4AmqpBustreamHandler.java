@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * 消费者子类，其只限用于AMQP协议的MQ；
+ * 同时注意：只用于ack机制为手动时使用：spring.cloud.stream.rabbit.bindings.input.consumer.acknowledge-mode=manual
  *
  * @author : Eric Lu
  * @version :
