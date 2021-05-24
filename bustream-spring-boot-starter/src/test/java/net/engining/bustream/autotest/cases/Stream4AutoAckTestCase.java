@@ -72,6 +72,9 @@ public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
                 "repayBack",
                 new Message("1112333232323".getBytes(), properties1)
         );
+
+        //等待另一个线程获取到消息并赋值
+        Thread.sleep(10000);
     }
 
     private void autoAck() throws InterruptedException {

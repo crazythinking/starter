@@ -1,6 +1,5 @@
 package net.engining.bustream.autotest;
 
-import net.engining.gm.config.GeneralContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.props.CommonProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;

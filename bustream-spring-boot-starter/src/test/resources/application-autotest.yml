@@ -3,3 +3,14 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: bustream-test
+
+#logging:
+#  config: classpath:log4j2.xml
+#  level:
+#    root: info
+#    net.engining: trace
+#    org:
+#      springframework:
+#        retry: trace
+
+

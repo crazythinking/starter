@@ -6,70 +6,27 @@
         <!-- 可设置自定义jvm参数通过-D指定，这里通过${sys:xxxxxx}获取 >> ${sys:log.path.prefix}-->
         <property name="LOG_HOME">./logs/</property>
         <!-- 日志输入级别 -->
-        <property name="LOG_LEVEL">${sys:log4j2.level:-WARN}</property>
+        <property name="LOG_LEVEL">${sys:log4j2.level:-INFO}</property>
     </properties>
 
     <Appenders>
         <!-- 标准输出 -->
         <Console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--<ThresholdFilter level="${LOG_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>-->
             <PatternLayout disableAnsi="false" charset="UTF-8"
-                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
+                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"
+            />
         </Console>
 
         <!--所有日志,异步输出,通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值-->
         <!--<RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" append="true"
                      filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
             <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
+                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="500MB"/>
         </RollingRandomAccessFile>
         <Async name="AsyncAllLog" bufferSize="256">
             <AppenderRef ref="AllLog"/>
-        </Async>-->
-
-        <!--DEBUG日志,拒绝info及以上级别,剩下的都接收-->
-        <!--<RollingRandomAccessFile name="DebugLog" fileName="${LOG_HOME}/debug.log" append="true"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd-HHmmss}.log.gz">
-            <Filters>
-                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
-            </Filters>
-            <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
-        </RollingRandomAccessFile>
-        <Async name="AsyncDebugLog" bufferSize="256">
-            <AppenderRef ref="DebugLog"/>
-        </Async>-->
-
-        <!--INFO日志,拒绝warn及以上级别,剩下的只接受info及以上级别-->
-        <!--<RollingRandomAccessFile name="InfoLog" fileName="${LOG_HOME}/info.log" append="true"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd-HHmmss}.log.gz">
-            <Filters>
-                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
-            <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
-        </RollingRandomAccessFile>
-        <Async name="AsyncInfoLog" bufferSize="256">
-            <AppenderRef ref="InfoLog"/>
-        </Async>-->
-
-        <!--ERROR日志,warn及以上级别都接收-->
-        <!--<RollingRandomAccessFile name="ErrLog" fileName="${LOG_HOME}/error.log" append="true"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd-HHmmss}.log.gz">
-            <Filters>
-                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
-            <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
-        </RollingRandomAccessFile>
-        <Async name="AsyncErrLog" bufferSize="256">
-            <AppenderRef ref="ErrLog"/>
         </Async>-->
 
     </Appenders>
@@ -78,23 +35,31 @@
         <Logger name="net.engining" level="TRACE" additivity="true"/>
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
-        <!--<Logger name="org.springframework.web" level="INFO" additivity="false"/>-->
-        <!--<Logger name="org.springframework.boot" level="TRACE" additivity="true"/>-->
-        <!--<Logger name="org.springframework.security" level="INFO" additivity="false"/>-->
-        <!--<Logger name="org.springframework.integration" level="TRACE" additivity="true"/>-->
-        <!--<Logger name="org.springframework.cloud.bus" level="TRACE" additivity="true"/>-->
-        <!--<Logger name="org.springframework.cloud.stream" level="TRACE" additivity="true"/>-->
+        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.cloud" level="INFO" additivity="true"/>
 
-        <!--<Logger name="com.alibaba.cloud.sentinel" level="TRACE" additivity="true"/>-->
+        <Logger name="org.springframework.core" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.beans" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.context" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.transaction" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.aop" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.web" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.security" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.amqp" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>
+        <Logger name="org.springframework.integration" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.kafka" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.messaging" level="INFO" additivity="true"/>
 
         <!--
             root：根logger，其他logger是其子，默认additivity="true"，会在根logger和子logger（其内需要配置AppenderRef）内都产生对应日志；
             而additivity="false"时，将不会在根logger内产生日志；
             此处子logger都没有配置对应的appender，因此只有additivity="true"时，才会在根logger内产生日志；
         -->
-        <root level="${LOG_LEVEL}">
+        <!--<root level="${LOG_LEVEL}">-->
+        <root>
             <AppenderRef ref="Console"/>
-            <!--<AppenderRef ref="AsyncAllLog"/>-->
+<!--            <AppenderRef ref="AsyncAllLog"/>-->
         </root>
     </Loggers>
 </Configuration>
