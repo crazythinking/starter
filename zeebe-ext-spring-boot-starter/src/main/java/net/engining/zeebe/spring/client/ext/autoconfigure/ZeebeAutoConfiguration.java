@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
  * @date : 2021-04-16 16:46
  **/
 @Configuration
-@PropertySource("classpath:application-zeebe.common.properties")
+@PropertySource("classpath:application-zeebe.yml")
 @EnableZeebeClient
 public class ZeebeAutoConfiguration {
 
