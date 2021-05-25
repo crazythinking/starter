@@ -1,7 +1,7 @@
 zeebe:
-    client:
-        broker:
-            gateway-address: 0.0.0.0:26500
-            keep-alive: PT45s
-        security:
-            plaintext: true
+  client:
+    broker:
+      gateway-address: 0.0.0.0:26500
+      keep-alive: PT45s
+    security:
+      plaintext: true

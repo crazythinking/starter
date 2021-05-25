@@ -3,6 +3,7 @@ package net.engining.zeebe.spring.client.ext.autotest.cases;
 import net.engining.zeebe.spring.client.ext.ZeebeSimpleAdminHandler;
 import net.engining.zeebe.spring.client.ext.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 /**
@@ -10,8 +11,10 @@ import org.springframework.test.context.ActiveProfiles;
  * @date : 2020-10-31 18:25
  **/
 @ActiveProfiles(profiles = {
+        "zeebe",
         "zeebe.dev"
 })
+@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class DemoProcessTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
