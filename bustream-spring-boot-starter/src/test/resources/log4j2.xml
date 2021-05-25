@@ -33,21 +33,21 @@
         <Logger name="net.engining" level="TRACE" additivity="true"/>
 
         <Logger name="org.springframework" level="INFO" additivity="true"/>
-<!--        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.cloud" level="INFO" additivity="true"/>-->
+        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.cloud" level="INFO" additivity="true"/>
 
-<!--        <Logger name="org.springframework.core" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.beans" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.context" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.transaction" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.aop" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.web" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.security" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.amqp" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>-->
-<!--        <Logger name="org.springframework.integration" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.kafka" level="INFO" additivity="true"/>-->
-<!--        <Logger name="org.springframework.messaging" level="INFO" additivity="true"/>-->
+        <Logger name="org.springframework.core" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.beans" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.context" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.transaction" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.aop" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.web" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.security" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.amqp" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>
+        <Logger name="org.springframework.integration" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.kafka" level="INFO" additivity="true"/>
+        <Logger name="org.springframework.messaging" level="INFO" additivity="true"/>
 
         <!--
             root：根logger，其他logger是其子，默认additivity="true"，会在根logger和子logger（其内需要配置AppenderRef）内都产生对应日志；

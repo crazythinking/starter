@@ -9,6 +9,7 @@ import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.util.DisruptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @date : 2021-03-16 17:27
  * @since :
  **/
+@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class DisruptorTestCase extends AbstractTestCaseTemplate {
 
     @Autowired

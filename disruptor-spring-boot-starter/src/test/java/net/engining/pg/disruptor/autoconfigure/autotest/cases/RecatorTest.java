@@ -3,6 +3,7 @@ package net.engining.pg.disruptor.autoconfigure.autotest.cases;
 import cn.hutool.core.lang.Console;
 import org.junit.Test;
 import org.reactivestreams.Subscriber;
+import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
