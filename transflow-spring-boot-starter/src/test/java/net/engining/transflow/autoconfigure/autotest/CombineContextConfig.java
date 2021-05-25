@@ -18,7 +18,6 @@ public class CombineContextConfig {
 
     /**
      * ApplicationContext的静态辅助Bean，建议项目必须注入
-     * @return
      */
     @Bean
     @Lazy(value=false)

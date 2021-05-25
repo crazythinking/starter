@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
@@ -28,6 +29,7 @@ import java.util.Map;
         "stream.common",
         "stream.dev"
 })
+@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamPollableTestCase extends AbstractTestCaseTemplate {
 
     @Autowired

@@ -12,18 +12,16 @@
     <Appenders>
         <!-- 标准输出 -->
         <Console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout disableAnsi="false" charset="UTF-8"
-                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"
-            />
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout disableAnsi="false" charset="UTF-8" pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
         </Console>
 
         <!--所有日志,异步输出,通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值-->
         <!--<RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" append="true"
                      filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
             <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="500MB"/>
+                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
         </RollingRandomAccessFile>
         <Async name="AsyncAllLog" bufferSize="256">
             <AppenderRef ref="AllLog"/>
@@ -46,7 +44,7 @@
 <!--        <Logger name="org.springframework.web" level="INFO" additivity="true"/>-->
 <!--        <Logger name="org.springframework.security" level="INFO" additivity="true"/>-->
 <!--        <Logger name="org.springframework.amqp" level="INFO" additivity="true"/>-->
-        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>
+<!--        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>-->
 <!--        <Logger name="org.springframework.integration" level="INFO" additivity="true"/>-->
 <!--        <Logger name="org.springframework.kafka" level="INFO" additivity="true"/>-->
 <!--        <Logger name="org.springframework.messaging" level="INFO" additivity="true"/>-->
@@ -57,9 +55,8 @@
             此处子logger都没有配置对应的appender，因此只有additivity="true"时，才会在根logger内产生日志；
         -->
         <root level="${LOG_LEVEL}">
-        <!--<root>-->
             <AppenderRef ref="Console"/>
-<!--            <AppenderRef ref="AsyncAllLog"/>-->
+            <!--<AppenderRef ref="AsyncAllLog"/>-->
         </root>
     </Loggers>
 </Configuration>

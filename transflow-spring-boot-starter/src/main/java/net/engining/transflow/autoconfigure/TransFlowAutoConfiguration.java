@@ -6,6 +6,7 @@ import net.engining.gm.config.props.TransFlowProperties;
 import net.engining.pg.support.utils.ThreadUtilsExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,9 @@ import java.util.concurrent.TimeUnit;
 })
 @EnableConfigurationProperties({
         TransFlowProperties.class
+})
+@EntityScan(basePackages = {
+        "net.engining.control.entity"
 })
 public class TransFlowAutoConfiguration {
 

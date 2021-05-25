@@ -5,7 +5,7 @@ spring:
     name: bustream-test
 
 #logging:
-#  config: classpath:log4j2.xml
+#  config: classpath:log4j2-spring.xml.bak
 #  level:
 #    root: info
 #    net.engining: trace

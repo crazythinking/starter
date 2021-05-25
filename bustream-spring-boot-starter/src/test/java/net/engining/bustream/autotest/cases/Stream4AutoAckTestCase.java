@@ -8,6 +8,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
@@ -31,6 +32,7 @@ import java.util.Map;
         "stream.common.autoack",
         "stream.dev"
 })
+@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
 
     @Autowired

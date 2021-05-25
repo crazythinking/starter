@@ -7,6 +7,7 @@ import net.engining.control.core.invoker.TransactionSeperator;
 import net.engining.control.core.invoker.WriteInboundJournal;
 import net.engining.control.core.invoker.WriteJournalUpdateResult;
 import net.engining.transflow.autoconfigure.autotest.support.IntValue2Key;
+import org.springframework.stereotype.Service;
 
 @FlowDefinition(
         code = "sample",
@@ -28,5 +29,6 @@ import net.engining.transflow.autoconfigure.autotest.support.IntValue2Key;
                 IntValue2Key.class
         }
 )
+@Service
 public class SampleFlow extends AbstractFlow {
 }
