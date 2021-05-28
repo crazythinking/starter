@@ -7,10 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 /**
+ * @param <E>
+ * @param <R>
  * @author Eric Lu
  * @date 2021-05-12 10:21
  **/
-public interface Handler<E> {
+public interface Handler<E, R> {
 
     /**
      * The default value prepended to the log message written <i>before</i> a request is
@@ -94,43 +96,35 @@ public interface Handler<E> {
     String getTypeId();
 
     /**
-     * Handler前处理切面
-     * @param event 消息
+     * Handler前处理切面; 该方法在发送消息到Zeebe Broker之前被调用;
+     * 通常用于执行当前节点相关的业务逻辑，并返回相应Response
+     * @param   event 消息
+     * @return  R response
      */
-    void before(E event);
+    R beforeHandler(E event);
 
     /**
      * 默认Handler前处理切面
      * @param event 消息
      * @param type  处理类所属的角色：生产者，消费者，轮询消费者
      * @param logger 日志操作对象
+     *
      */
-    default void defalutBefore(E event, Type type, Logger logger){
-        StringBuilder msg = new StringBuilder();
-        msg.append(DEFAULT_BEFORE_ZEEBE_PREFIX);
-        msg.append(type.label);
-        msg.append(StrUtil.DASHED);
-        msg.append(getTypeId());
-        msg.append(StrUtil.DASHED);
-        if (Type.ADMIN.equals(type)){
-            msg.append(event.toString());
-        }
-        else {
-            msg.append(event.getClass().getCanonicalName());
-        }
+    default R before(E event, Type type, Logger logger){
+        StringBuilder msg = logBuilder(event, type, DEFAULT_BEFORE_ZEEBE_PREFIX);
         msg.append(DEFAULT_BEFORE_ZEEBE_SUFFIX);
         msg.append(StringUtils.SPACE);
         logger.info(msg.toString());
 
-        before(event);
+        return beforeHandler(event);
     }
 
     /**
-     * Handler后处理切面
+     * Handler后处理切面; 该方法在发送消息到Zeebe Broker之后被调用
      * @param event 消息
      * @param rt 消息处理成功/失败
      */
-    void after(E event, boolean rt);
+    void afterHandler(E event, boolean rt);
 
     /**
      * 默认Handler后处理切面
@@ -139,21 +133,10 @@ public interface Handler<E> {
      * @param type  处理类所属的角色：生产者，消费者，轮询消费者
      * @param logger 日志操作对象
      */
-    default void defaultAfter(E event, boolean rt, Type type, Logger logger){
-        after(event, rt);
+    default void after(E event, boolean rt, Type type, Logger logger){
+        afterHandler(event, rt);
 
-        StringBuilder msg = new StringBuilder();
-        msg.append(DEFAULT_AFTER_ZEEBE_PREFIX);
-        msg.append(type.label);
-        msg.append(StrUtil.DASHED);
-        msg.append(getTypeId());
-        msg.append(StrUtil.DASHED);
-        if (Type.ADMIN.equals(type)){
-            msg.append(event.toString());
-        }
-        else {
-            msg.append(event.getClass().getCanonicalName());
-        }
+        StringBuilder msg = logBuilder(event, type, DEFAULT_AFTER_ZEEBE_PREFIX);
         msg.append(", ");
         if (rt){
             msg.append("TRADE_STATUS:").append(SUCCEED);
@@ -164,6 +147,19 @@ public interface Handler<E> {
         msg.append(DEFAULT_AFTER_ZEEBE_SUFFIX);
         msg.append(StringUtils.SPACE);
         logger.info(msg.toString());
+    }
+
+    default StringBuilder logBuilder(E event, Type type, String prefix) {
+        StringBuilder msg = new StringBuilder();
+        msg.append(prefix);
+        msg.append(type.label);
+        msg.append(StrUtil.DASHED);
+        msg.append(getTypeId());
+        if (Type.ADMIN.equals(type)){
+            msg.append(StrUtil.DASHED);
+            msg.append(event.toString());
+        }
+        return msg;
     }
 
 }

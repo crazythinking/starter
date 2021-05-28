@@ -2,13 +2,14 @@ package net.engining.zeebe.spring.client.ext;
 
 import io.camunda.zeebe.client.api.ZeebeFuture;
 import io.camunda.zeebe.client.api.command.CompleteJobCommandStep1;
-import io.camunda.zeebe.client.api.command.FinalCommandStep;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.worker.JobClient;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import net.engining.zeebe.spring.client.ext.bean.DefaultRequestHeader;
+import net.engining.zeebe.spring.client.ext.bean.ZeebeContext;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
@@ -18,48 +19,55 @@ import java.util.concurrent.TimeUnit;
  * @author : Eric Lu
  * @date : 2021-04-25 17:43
  **/
-public interface ZeebeWorkerHandler<E> extends Handler<E>{
+public interface ZeebeWorkerHandler<E, R> extends Handler<ZeebeContext<DefaultRequestHeader, E>, R> {
 
-    default void defaultWork(JobClient client, ActivatedJob job, E event,
-                             Integer requestTimeout, Integer returnTimeout){
+    /**
+     * Zeebe worker 的执行，发送指令到zeebe broker，推动相应service node 执行
+     * @param client        JobClient
+     * @param job           ActivatedJob
+     * @param event         发送到zeebe broker的variables
+     * @param returnTimeout 获取返回最大等待时间
+     */
+    default void defaultWork(JobClient client, ActivatedJob job,
+                             ZeebeContext<DefaultRequestHeader, E> event, Integer returnTimeout
+    ){
 
-        defalutBefore(event, Type.WORKER, getLogger());
+        before(event, Type.WORKER, getLogger());
 
-        FinalCommandStep<CompleteJobResponse> finalCommandStep;
+        R response = beforeHandler(event);
+        event.getNodeContext().put(getTypeId(), response);
+
         ZeebeFuture<CompleteJobResponse> zeebeFuture;
 
         try {
-            CompleteJobCommandStep1 step1 = client
-                    .newCompleteCommand(job.getKey())
-                    .variables(event);
+            CompleteJobCommandStep1 step1 = client.newCompleteCommand(job.getKey()).variables(event);
 
-            if (ValidateUtilExt.isNullOrEmpty(requestTimeout)) {
-                zeebeFuture = step1.send();
-            } else {
-                finalCommandStep = step1.requestTimeout(Duration.ofSeconds(requestTimeout));
-                zeebeFuture = finalCommandStep.send();
-            }
+            zeebeFuture = step1.send();
 
             if (ValidateUtilExt.isNotNullOrEmpty(returnTimeout)){
-                zeebeFuture.join(requestTimeout, TimeUnit.SECONDS);
+                zeebeFuture.join(returnTimeout, TimeUnit.SECONDS);
             }
             else {
                 zeebeFuture.join();
             }
 
             logJob(job);
-            defaultAfter(event, true, Type.WORKER, getLogger());
+            after(event, true, Type.WORKER, getLogger());
         }
         catch (Exception e){
-            defaultAfter(event, false, Type.WORKER, getLogger());
-            throw e;
+            after(event, false, Type.WORKER, getLogger());
+            ExceptionUtilsExt.dump(e);
         }
 
     }
 
+    /**
+     * 日志
+     * @param job   ActivatedJob
+     */
     default void logJob(ActivatedJob job){
         getLogger().debug(
-                "complete job [type: {}, key: {}, element: {}, workflow instance: {}] " +
+                "complete Zeebe handler [type: {}, key: {}, element: {}, workflow instance: {}] " +
                         "[deadline: {}] " +
                         "[headers: {}] " +
                         "[variables: {}]",

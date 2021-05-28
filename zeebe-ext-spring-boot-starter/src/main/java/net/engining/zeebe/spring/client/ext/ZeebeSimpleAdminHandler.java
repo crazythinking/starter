@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.command.DeployProcessCommandStep1;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.Topology;
 import io.camunda.zeebe.spring.client.ZeebeClientLifecycle;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Eric Lu
  * @date 2021-05-13 9:56
  **/
-public class ZeebeSimpleAdminHandler implements Handler<String> {
+public class ZeebeSimpleAdminHandler implements Handler<String, Void> {
 
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(ZeebeSimpleAdminHandler.class);
@@ -46,7 +47,7 @@ public class ZeebeSimpleAdminHandler implements Handler<String> {
         }
 
         String event = "Deploy-" + StringUtils.substringAfterLast(filename, StrUtil.SLASH);
-        defalutBefore(event, Type.ADMIN, getLogger());
+        before(event, Type.ADMIN, getLogger());
 
         try {
             DeployProcessCommandStep1 deployProcessCommandStep1 = getZeebeClientLifecycle().newDeployCommand();
@@ -60,12 +61,13 @@ public class ZeebeSimpleAdminHandler implements Handler<String> {
                             .map(wf -> String.format("<%s:%d>", wf.getBpmnProcessId(), wf.getVersion()))
                             .collect(Collectors.joining(",")));
 
-            defaultAfter(event, true, Type.ADMIN, getLogger());
+            after(event, true, Type.ADMIN, getLogger());
             return Optional.of(deploymentResult);
         }
         catch (Exception e) {
-            defaultAfter(event, false, Type.ADMIN, getLogger());
-            throw e;
+            after(event, false, Type.ADMIN, getLogger());
+            ExceptionUtilsExt.dump(e);
+            return Optional.empty();
         }
 
     }
@@ -82,7 +84,7 @@ public class ZeebeSimpleAdminHandler implements Handler<String> {
         }
 
         String event = "Topology";
-        defalutBefore(event, Type.ADMIN, getLogger());
+        before(event, Type.ADMIN, getLogger());
 
         try {
             Topology topology = getZeebeClientLifecycle().newTopologyRequest().send().join();
@@ -105,12 +107,13 @@ public class ZeebeSimpleAdminHandler implements Handler<String> {
                             });
             getLogger().info("Current Brokers status:" + StringUtils.LF + stringBuilder);
 
-            defaultAfter(event, true, Type.STARTER, getLogger());
+            after(event, true, Type.STARTER, getLogger());
             return Optional.of(topology);
         }
         catch (Exception e) {
-            defaultAfter(event, false, Type.ADMIN, getLogger());
-            throw e;
+            after(event, false, Type.ADMIN, getLogger());
+            ExceptionUtilsExt.dump(e);
+            return Optional.empty();
         }
 
     }
@@ -132,12 +135,13 @@ public class ZeebeSimpleAdminHandler implements Handler<String> {
     }
 
     @Override
-    public void before(String event) {
+    public Void beforeHandler(String event) {
         //do nothing
+        return null;
     }
 
     @Override
-    public void after(String event, boolean rt) {
+    public void afterHandler(String event, boolean rt) {
         //do nothing
     }
 

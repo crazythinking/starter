@@ -1,52 +1,43 @@
 package net.engining.zeebe.spring.client.ext.autotest.cases;
 
-import com.google.common.collect.Maps;
-import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.spring.client.ZeebeClientLifecycle;
-import net.engining.zeebe.spring.client.ext.ZeebeStarterHandler;
+import net.engining.zeebe.spring.client.ext.AbstractZeebeStarterHandler;
+import net.engining.zeebe.spring.client.ext.bean.ZeebeContext;
+import net.engining.zeebe.spring.client.ext.bean.ZeebeResponse;
+import net.engining.zeebe.spring.client.ext.bean.DefaultRequestHeader;
+import net.engining.zeebe.spring.client.ext.bean.DefaultResponseHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author : Eric Lu
  * @date : 2021-05-13 15:15
  **/
 @Service
-public class DemoProcessStarterService
-        implements ZeebeStarterHandler<Map<String, Object>> {
-
+public class StandardizingDemoProcessStarterService extends AbstractZeebeStarterHandler<Foo> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DemoProcessStarterService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StandardizingDemoProcessStarterService.class);
     public static final String PROCESS_ID = "demoProcess";
     public static final String PROCESS_WORKER = "demoProcess-worker";
 
     @Autowired
     private ZeebeClientLifecycle client;
 
-    /**
-     * non-block flow
-     */
-    public ProcessInstanceEvent startProcess() {
-        Map<String, Object> a = Maps.newHashMap();
-        Foo2 foo2 = new Foo2();
-        foo2.setUid(UUID.randomUUID().toString());
-        foo2.setF1("f1");
-        foo2.setF2(new BigDecimal("1000.25"));
-        a.put("a", foo2);
+    public ZeebeResponse<DefaultResponseHeader, Map<String, Object>> startProcessUntilCompletion(
+            ZeebeContext<DefaultRequestHeader, Foo> request
+    ) {
 
-        return defaultStart(
+        return start4Results(
                 PROCESS_ID,
-                a,
+                request,
                 null,
                 null,
                 null
-        ).orElse(null);
+        );
     }
 
     @Override
@@ -65,13 +56,14 @@ public class DemoProcessStarterService
     }
 
     @Override
-    public Void beforeHandler(Map<String, Object> event) {
+    public Void beforeHandler(ZeebeContext<DefaultRequestHeader, Foo> event) {
         //do nothing
         return null;
     }
 
     @Override
-    public void afterHandler(Map<String, Object> event, boolean rt) {
+    public void afterHandler(ZeebeContext<DefaultRequestHeader, Foo> event, boolean rt) {
         //do nothing
     }
+
 }

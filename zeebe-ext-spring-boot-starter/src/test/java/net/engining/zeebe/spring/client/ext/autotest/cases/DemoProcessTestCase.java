@@ -35,17 +35,12 @@ public class DemoProcessTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        starterService.startProcess();
-
-        //等待Worker线程获取到消息并处理
-        Thread.sleep(20000);
-
         //拓扑
-        zeebeSimpleAdminHandler.getTopology();
+        //zeebeSimpleAdminHandler.getTopology();
 
         //部署
         zeebeSimpleAdminHandler.deploy(
-                "D:/idea-workspace/power-gears/starter/zeebe-ext-spring-boot-starter/src/test/resources/test-process1.bpmn"
+                "D:/idea-workspace/power-gears/starter/zeebe-ext-spring-boot-starter/src/test/resources/demoProcess.bpmn"
         );
     }
 

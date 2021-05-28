@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Lazy;
  * @author Eric Lu
  */
 @Configuration
-@ZeebeDeployment(classPathResources = {
-        "demoProcess.bpmn",
-})
+//@ZeebeDeployment(classPathResources = {
+//        "demoProcess.bpmn",
+//})
 public class CombineContextConfig {
 
     /**

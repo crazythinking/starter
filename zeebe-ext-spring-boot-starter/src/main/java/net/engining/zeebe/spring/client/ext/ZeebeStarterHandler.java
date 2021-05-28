@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1;
 import io.camunda.zeebe.client.api.command.FinalCommandStep;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
 
 import javax.validation.constraints.NotNull;
@@ -18,11 +19,11 @@ import java.util.concurrent.TimeUnit;
  * @author : Eric Lu
  * @date : 2021-04-25 17:43
  **/
-public interface ZeebeStarterHandler<E> extends Handler<E>{
+public interface ZeebeStarterHandler<E> extends Handler<E,Void>{
 
     /**
      * 启动流程并直接返回
-     * @param processId         流程唯一ID
+     * @param processId         流程命名标识
      * @param event             流程启动事件对象
      * @param version           流程版本
      * @param requestTimeout    请求启动超时秒数
@@ -36,7 +37,7 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
             return Optional.empty();
         }
 
-        defalutBefore(event, Type.STARTER, getLogger());
+        before(event, Type.STARTER, getLogger());
 
         try {
             CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep2 step2 =
@@ -77,12 +78,13 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
                     processInstanceEvent.getVersion()
             );
 
-            defaultAfter(event, true, Type.STARTER, getLogger());
+            after(event, true, Type.STARTER, getLogger());
             return Optional.of(processInstanceEvent);
         }
         catch (Exception e){
-            defaultAfter(event, false, Type.STARTER, getLogger());
-            throw e;
+            after(event, false, Type.STARTER, getLogger());
+            ExceptionUtilsExt.dump(e);
+            return Optional.empty();
         }
 
     }
@@ -90,7 +92,7 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
     /**
      * 启动流程并阻塞当前线程，以等待流程执行结束返回结果
      *
-     * @param processId         流程唯一ID
+     * @param processId         流程命名标识
      * @param event             流程启动事件对象
      * @param version           流程版本
      * @param requestTimeout    请求启动超时秒数
@@ -104,7 +106,7 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
             return Optional.empty();
         }
 
-        defalutBefore(event, Type.STARTER, getLogger());
+        before(event, Type.STARTER, getLogger());
 
         try {
             CreateProcessInstanceCommandStep1.CreateProcessInstanceWithResultCommandStep1 step1;
@@ -136,7 +138,6 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
             }
             else {
                 processInstanceRet = zeebeFutureRet.join(requestTimeout, TimeUnit.SECONDS);
-
             }
 
             getLogger().debug(
@@ -148,12 +149,13 @@ public interface ZeebeStarterHandler<E> extends Handler<E>{
                     processInstanceRet.getVariables()
             );
 
-            defaultAfter(event, true, Type.STARTER, getLogger());
+            after(event, true, Type.STARTER, getLogger());
             return Optional.of(processInstanceRet);
         }
         catch (Exception e){
-            defaultAfter(event, false, Type.STARTER, getLogger());
-            throw e;
+            after(event, false, Type.STARTER, getLogger());
+            ExceptionUtilsExt.dump(e);
+            return Optional.empty();
         }
 
     }
