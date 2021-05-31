@@ -15,10 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
         "zeebe.dev"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
-public class DemoProcessTestCase extends AbstractTestCaseTemplate {
-
-    @Autowired
-    DemoProcessStarterService starterService;
+public class AdminTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     ZeebeSimpleAdminHandler zeebeSimpleAdminHandler;
@@ -36,7 +33,7 @@ public class DemoProcessTestCase extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         //拓扑
-        //zeebeSimpleAdminHandler.getTopology();
+        zeebeSimpleAdminHandler.getTopology();
 
         //部署
         zeebeSimpleAdminHandler.deploy(

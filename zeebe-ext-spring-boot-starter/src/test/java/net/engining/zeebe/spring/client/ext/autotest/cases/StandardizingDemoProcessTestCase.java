@@ -3,6 +3,7 @@ package net.engining.zeebe.spring.client.ext.autotest.cases;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSON;
 import net.engining.zeebe.spring.client.ext.ZeebeSimpleAdminHandler;
 import net.engining.zeebe.spring.client.ext.autotest.support.AbstractTestCaseTemplate;
 import net.engining.zeebe.spring.client.ext.bean.ZeebeContext;
@@ -68,7 +69,7 @@ public class StandardizingDemoProcessTestCase extends AbstractTestCaseTemplate {
 
         ZeebeResponse<DefaultResponseHeader, Map<String, Object>> response =
                 starterService.startProcessUntilCompletion(request);
-        Console.log(response);
+        Console.log(JSON.toJSONString(response));
 
         //等待Worker线程获取到消息并处理
         Thread.sleep(20000);
