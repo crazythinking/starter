@@ -32,9 +32,6 @@ import java.util.Map;
 public class StandardizingDemoProcessTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    ZeebeSimpleAdminHandler zeebeSimpleAdminHandler;
-
-    @Autowired
     StandardizingDemoProcessStarterService starterService;
 
     @Override
@@ -49,8 +46,6 @@ public class StandardizingDemoProcessTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        //拓扑
-        zeebeSimpleAdminHandler.getTopology();
 
         DefaultRequestHeader header = new DefaultRequestHeader();
         header.setGlobalId(UUID.fastUUID().toString());
@@ -67,8 +62,10 @@ public class StandardizingDemoProcessTestCase extends AbstractTestCaseTemplate {
                         .setRequestData(foo)
                 ;
 
-        ZeebeResponse<DefaultResponseHeader, Map<String, Object>> response =
-                starterService.startProcessUntilCompletion(request);
+        ZeebeResponse<DefaultResponseHeader, Map<String, Object>> response = starterService.startProcessUntilCompletion(
+                request,
+                null
+        );
         Console.log(JSON.toJSONString(response));
 
         //等待Worker线程获取到消息并处理

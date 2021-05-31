@@ -31,7 +31,7 @@ public interface ZeebeStarterHandler<E> extends Handler<E,Void>{
      * @return Optional<ProcessInstanceEvent> 可为空
      */
     default Optional<ProcessInstanceEvent> defaultStart(@NotNull String processId, @NotNull E event,
-                                                        Integer version, Integer requestTimeout, Integer returnTimeout){
+                                                        Integer version, Long requestTimeout, Long returnTimeout){
         if (!getZeebeClientLifecycle().isRunning()) {
             getLogger().warn("Zeebe Client is not running, cannot do anything!!!");
             return Optional.empty();
@@ -100,7 +100,7 @@ public interface ZeebeStarterHandler<E> extends Handler<E,Void>{
      * @return Optional<ProcessInstanceResult> 可为空
      */
     default Optional<ProcessInstanceResult> defaultStart4Results(@NotNull String processId, @NotNull E event,
-                                                                 Integer version, Integer requestTimeout, Integer returnTimeout){
+                                                                 Integer version, Long requestTimeout, Long returnTimeout){
         if (!getZeebeClientLifecycle().isRunning()) {
             getLogger().warn("Zeebe Client is not running, cannot do anything!!!");
             return Optional.empty();

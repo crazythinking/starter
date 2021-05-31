@@ -28,7 +28,7 @@ public abstract class AbstractZeebeStarterHandler<E>
 
     public ZeebeResponse<DefaultResponseHeader, Void> start(
             @NotNull String processId, @NotNull ZeebeContext<DefaultRequestHeader, E> event,
-            Integer version, Integer requestTimeout, Integer returnTimeout
+            Integer version, Long requestTimeout, Long returnTimeout
     ) {
 
         Optional<ProcessInstanceEvent> optional = this.defaultStart(
@@ -70,7 +70,7 @@ public abstract class AbstractZeebeStarterHandler<E>
 
     public ZeebeResponse<DefaultResponseHeader, Map<String, Object>> start4Results(
             @NotNull String processId, @NotNull ZeebeContext<DefaultRequestHeader, E> event,
-            Integer version, Integer requestTimeout, Integer returnTimeout
+            Integer version, Long requestTimeout, Long returnTimeout
     ) {
 
         Optional<ProcessInstanceResult> optional = this.defaultStart4Results(

@@ -29,7 +29,7 @@ public interface ZeebeWorkerHandler<E, R> extends Handler<ZeebeContext<DefaultRe
      * @param returnTimeout 获取返回最大等待时间
      */
     default void defaultWork(JobClient client, ActivatedJob job,
-                             ZeebeContext<DefaultRequestHeader, E> event, Integer returnTimeout
+                             ZeebeContext<DefaultRequestHeader, E> event, Long returnTimeout
     ){
 
         before(event, Type.WORKER, getLogger());

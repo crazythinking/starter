@@ -7,9 +7,11 @@ import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.ZeebeClientLifecycle;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import net.engining.zeebe.spring.client.ext.ZeebeWorkerHandler;
 import net.engining.zeebe.spring.client.ext.bean.DefaultRequestHeader;
 import net.engining.zeebe.spring.client.ext.bean.ZeebeContext;
+import net.engining.zeebe.spring.client.ext.prop.ZeebeExtProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class DemoProcessBarWorkerService implements ZeebeWorkerHandler<Foo, Stri
     public static final String TYPE_ID = "bar";
 
     @Autowired
+    private ZeebeExtProperties zeebeExtProperties;
+
+    @Autowired
     private ZeebeClientLifecycle client;
 
     /**
@@ -41,11 +46,7 @@ public class DemoProcessBarWorkerService implements ZeebeWorkerHandler<Foo, Stri
      */
     @ZeebeWorker(
             type = TYPE_ID,
-            name = StandardizingDemoProcessStarterService.PROCESS_WORKER,
-            timeout = -1,
-            requestTimeout = -1,
-            maxJobsActive = -1,
-            pollInterval = -1
+            name = StandardizingDemoProcessStarterService.PROCESS_WORKER
     )
     public void handleJob(final JobClient client, final ActivatedJob job){
         //获取当前流程的 context variables
@@ -53,13 +54,16 @@ public class DemoProcessBarWorkerService implements ZeebeWorkerHandler<Foo, Stri
                 job.getVariables(),
                 new TypeReference<ZeebeContext<DefaultRequestHeader, Foo>>(){}
         );
-
+        Long returnTimeout = null;
+        if (ValidateUtilExt.isNotNullOrEmpty(zeebeExtProperties.getWorkerEntities().get(TYPE_ID))){
+            returnTimeout = zeebeExtProperties.getWorkerEntities().get(TYPE_ID).getReturnTimeout();
+        }
         job.getElementInstanceKey();
         defaultWork(
                 client,
                 job,
                 event,
-                null
+                returnTimeout
         );
 
     }
