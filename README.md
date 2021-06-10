@@ -25,6 +25,17 @@ infrastructure gears based spring boot 2.1.4
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
 |1.2.0|1.2.0.RELEASE|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
+|1.3.0|1.3.0.RELEASE|1、调整队列配置<br>2、优化默认配置和换行符<br>3、修改测试案例<br>4、底层版本升级<br>5、zeebe组件添加|-|2021-06-10|
+
+# 1.3.0版本火车
+
+|包名|版本|说明|
+|----|----|----|
+|starter-parent|1.3.0.RELEASE|自身包|
+|project-parent|3.6.RELEASE|基础包|
+|pg|3.6.3.RELEASE|底层包|
+|gm|1.5.3.RELEASE|配置包|
+|control-parent|1.1.7.RELEASE|流程控制|
 
 # 1.2.0版本火车
 
