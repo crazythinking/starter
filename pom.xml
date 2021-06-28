@@ -54,11 +54,58 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>bustream-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>disruptor-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>distlock-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>kettle-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>redis-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>transflow-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>zeebe-ext-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+			<optional>true</optional>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<modules>

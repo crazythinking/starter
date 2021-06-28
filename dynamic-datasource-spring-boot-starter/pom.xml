@@ -41,6 +41,7 @@
 			<groupId>org.apache.shardingsphere</groupId>
 			<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
 			<version>${sharding.jdbc.version}</version>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- druid datasource pool -->
@@ -48,6 +49,7 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>${druid.spring.version}</version>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
