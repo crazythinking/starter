@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -41,8 +42,9 @@ public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     public void testProcess() throws Exception {
         List<Long> ids = dbService.dsTest4sharding();
         LOGGER.debug("get primery keys for datasource default: {}", ids);
-        this.testAssertDataContext.put("primerykeys4default", ids);
+        Assert.isTrue(ids.size()==3, "records size should be 3");
 
+        Assert.isTrue(dbService.dsTestQuery3().size()==0, "records size should be 0");
     }
 
     @Override
