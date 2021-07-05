@@ -18,7 +18,9 @@ import java.util.List;
         "autotest.sharding",
         "db.common",
         "db.sharding.common",
-        "db.sharding.hikari.h2"
+        //"db.sharding.hikari.h2"
+        //"db.sharding.hikari.mysql"
+        "db.sharding.hikari.oracle"
 })
 public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     /** logger */

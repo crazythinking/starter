@@ -49,8 +49,12 @@ import java.util.Map;
 
 /**
  * 因原生的{@link org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration}会造成spring-jpa的相关自动装配不符合条件；
- * 如：JdbcTemplateAutoConfiguration, HibernateJpaConfiguration,DataSourceTransactionManagerAutoConfiguration.DataSourceTransactionManagerConfiguration等；
- * Report如下：Did not match: - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) did not find a primary bean from beans 'shardingDataSource', 'dataSource'
+ * 如：JdbcTemplateAutoConfiguration, HibernateJpaConfiguration,
+ * DataSourceTransactionManagerAutoConfiguration.DataSourceTransactionManagerConfiguration等；
+ * Report如下：
+ * Did not match:
+ * - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all)
+ * did not find a primary bean from beans 'shardingDataSource', 'dataSource'
  * <br>
  * 注：只在设置spring.shardingsphere.enabled=true时才触发自动装配
  *
@@ -172,6 +176,7 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
      * @return sharding transaction type scanner
      */
     @Bean
+    @Primary
     public ShardingTransactionTypeScanner shardingTransactionTypeScanner() {
         return new ShardingTransactionTypeScanner();
     }
