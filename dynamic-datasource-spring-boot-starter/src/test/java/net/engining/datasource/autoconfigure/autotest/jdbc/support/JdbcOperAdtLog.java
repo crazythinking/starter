@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @since :
  **/
 @Table("OPER_ADT_LOG")
-public class OperAdtLog {
+public class JdbcOperAdtLog {
 
     @Id
     @Column("ID")
@@ -78,7 +78,7 @@ public class OperAdtLog {
         this.jpaVersion = jpaVersion;
     }
 
-    public OperAdtLog(Integer id, String loginId, String requestUri, String requestBody, LocalDateTime operTime, Integer jpaVersion) {
+    public JdbcOperAdtLog(Integer id, String loginId, String requestUri, String requestBody, LocalDateTime operTime, Integer jpaVersion) {
         this.id = id;
         this.loginId = loginId;
         this.requestUri = requestUri;

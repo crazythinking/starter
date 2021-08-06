@@ -1,14 +1,17 @@
-package net.engining.datasource.autoconfigure.autotest.jdbc.cases;
+package net.engining.datasource.autoconfigure.autotest.qsql.cases;
 
 import cn.hutool.core.util.RandomUtil;
-import net.engining.datasource.autoconfigure.autotest.jdbc.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.qsql.support.AbstractTestCaseTemplate;
 import net.engining.datasource.autoconfigure.autotest.support.OperationLogService;
 import net.engining.gm.entity.dto.OperAdtLogDto;
+import net.engining.pg.support.core.context.DataSourceContextHolder;
+import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * @author Eric Lu
@@ -17,8 +20,8 @@ import org.springframework.util.Assert;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
-		"hikari.clickhouse",
-        //"hikari.h2"
+		//"hikari.h2.qsql",
+        "hikari.clickhouse.qsql"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -34,21 +37,23 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void assertResult() throws Exception {
-        OperAdtLogDto operAdtLog = operationLogService.fetch((Integer) this.testAssertDataContext.get("insertKey4default"));
-        Assert.notNull(operAdtLog, "has record by default datasource");
+        List<Integer> ids = (List<Integer>) this.testAssertDataContext.get("ids");
+        OperAdtLogDto operAdtLogDto = operationLogService.fetch(ids.get(0));
+        LOGGER.debug(operAdtLogDto.toString());
     }
 
     @Override
     public void testProcess() throws Exception {
-        int id = RandomUtil.randomInt();
+        Integer id = RandomUtil.randomInt();
+        List<Integer> ids = Lists.newArrayList(id, id+1);
         operationLogService.dsTest(id);
-        this.testAssertDataContext.put("insertKey4default", id);
+        this.testAssertDataContext.put("ids", ids);
+        LOGGER.debug(ids.toString());
 
     }
 
-
     @Override
     public void end() throws Exception {
-
+        DataSourceContextHolder.removeCurrentDataSourceKey();
     }
 }

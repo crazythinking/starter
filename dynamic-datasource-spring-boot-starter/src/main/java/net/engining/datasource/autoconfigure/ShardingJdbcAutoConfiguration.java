@@ -1,6 +1,9 @@
 package net.engining.datasource.autoconfigure;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.shardingsphere.core.yaml.swapper.MasterSlaveRuleConfigurationYamlSwapper;
 import org.apache.shardingsphere.core.yaml.swapper.ShardingRuleConfigurationYamlSwapper;
@@ -34,6 +37,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
@@ -49,8 +53,11 @@ import java.util.Map;
 
 /**
  * 因原生的{@link org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration}会造成spring-jpa的相关自动装配不符合条件；
- * 如：JdbcTemplateAutoConfiguration, HibernateJpaConfiguration,DataSourceTransactionManagerAutoConfiguration.DataSourceTransactionManagerConfiguration等；
- * Report如下：Did not match: - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) did not find a primary bean from beans 'shardingDataSource', 'dataSource'
+ * 如：
+ * JdbcTemplateAutoConfiguration, HibernateJpaConfiguration,
+ * DataSourceTransactionManagerAutoConfiguration.DataSourceTransactionManagerConfiguration等；
+ * Report如下：Did not match: - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all)
+ * did not find a primary bean from beans 'shardingDataSource', 'dataSource'
  * <br>
  * 注：只在设置spring.shardingsphere.enabled=true时才触发自动装配
  *
@@ -70,6 +77,12 @@ import java.util.Map;
 })
 @ConditionalOnProperty(prefix = "spring.shardingsphere", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@Import({
+        DataSourceContextConfig.class,
+        JPAContextConfig.class,
+        MultipleJdbc4QuerydslContextConfig.class,
+        TransactionManagementContextConfig.class
+})
 public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 
     private final SpringBootShardingRuleConfigurationProperties shardingRule;
@@ -96,6 +109,13 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
         this.encryptRule = encryptRule;
         this.shadowRule = shadowRule;
         this.props = props;
+    }
+
+    Table<String, DbType, DataSource> dataSourceTable = HashBasedTable.create();
+
+    @Bean("multipleDataSourceTable")
+    public Table<String, DbType, DataSource> getDataSourceTable(){
+        return dataSourceTable;
     }
 
     /**
@@ -223,6 +243,8 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
                                         result
                                 )
                 );
+        String driverClassName = (String) dataSourceProps.get("driver-class-name");
+        Utils.populateDataSourceTable(dataSourceName, result, driverClassName, dataSourceTable);
         return result;
     }
 

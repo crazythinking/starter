@@ -1,7 +1,5 @@
-package net.engining.datasource.autoconfigure.autotest.jdbc;
+package net.engining.datasource.autoconfigure.autotest.qsql;
 
-import net.engining.datasource.autoconfigure.autotest.jdbc.support.BaseDao;
-import net.engining.datasource.autoconfigure.autotest.jdbc.support.Dao;
 import net.engining.datasource.autoconfigure.autotest.support.OperationLogService;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  * 通用Context配置
@@ -18,7 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  */
 @Configuration
 @EnableJdbcRepositories({
-        "net.engining.datasource.autoconfigure.autotest.jdbc.support"
+        "net.engining.datasource.autoconfigure.autotest.qsql.support"
 })
 @Import({
         OperationLogService.class
@@ -32,11 +29,6 @@ public class CombineContextConfig {
     @Lazy(value=false)
     public ApplicationContextHolder applicationContextHolder(){
         return new ApplicationContextHolder();
-    }
-
-    @Bean
-    public Dao daoDefault(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        return new BaseDao(namedParameterJdbcTemplate);
     }
 
 }

@@ -16,7 +16,8 @@
 	<properties>
 		<druid.spring.version>1.1.22</druid.spring.version>
 		<sharding.jdbc.version>4.1.1</sharding.jdbc.version>
-		<mysql-connector-java.version>8.0.16</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.25</mysql-connector-java.version>
+		<clickhouse-jdbc.version>0.3.1</clickhouse-jdbc.version>
 	</properties>
 
 	<dependencies>
@@ -86,8 +87,14 @@
 		<dependency>
 			<groupId>ru.yandex.clickhouse</groupId>
 			<artifactId>clickhouse-jdbc</artifactId>
-			<version>0.2.4</version>
+			<version>${clickhouse-jdbc.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
