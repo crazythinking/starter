@@ -71,6 +71,8 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
      * 对要发送的消息事件进行自定义转换处理
      *
      * @param event 消息事件
+     * @param headers Map
+     *
      */
     protected abstract void transform(E event, Map<String, Object> headers);
 

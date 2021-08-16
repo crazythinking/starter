@@ -82,16 +82,19 @@ public interface Handler<E, R> {
 
     /**
      * 设置Zeebe Client; 由实现类注入
+     * @return ZeebeClientLifecycle
      */
     ZeebeClientLifecycle getZeebeClientLifecycle();
 
     /**
      * 设置logger; 由实现类注入
+     * @return Logger
      */
     Logger getLogger();
 
     /**
      * 设置交易类型唯一标识，主要用于监控
+     * @return String
      */
     String getTypeId();
 
@@ -108,7 +111,7 @@ public interface Handler<E, R> {
      * @param event 消息
      * @param type  处理类所属的角色：生产者，消费者，轮询消费者
      * @param logger 日志操作对象
-     *
+     * @return R
      */
     default R before(E event, Type type, Logger logger){
         StringBuilder msg = logBuilder(event, type, DEFAULT_BEFORE_ZEEBE_PREFIX);
@@ -149,6 +152,12 @@ public interface Handler<E, R> {
         logger.info(msg.toString());
     }
 
+    /**
+     * @param event     E
+     * @param type      Type
+     * @param prefix    String
+     * @return          StringBuilder
+     */
     default StringBuilder logBuilder(E event, Type type, String prefix) {
         StringBuilder msg = new StringBuilder();
         msg.append(prefix);

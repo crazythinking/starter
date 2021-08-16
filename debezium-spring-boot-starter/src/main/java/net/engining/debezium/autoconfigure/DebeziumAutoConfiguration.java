@@ -107,8 +107,7 @@ public class DebeziumAutoConfiguration {
      *
      * @return configuration
      */
-    //@Bean
-    public io.debezium.config.Configuration debeziumMysqlConfig() {
+    private io.debezium.config.Configuration debeziumMysqlConfig() {
         return io.debezium.config.Configuration.create()
 //            连接器的Java类名称
                 .with("connector.class", MySqlConnector.class.getName())

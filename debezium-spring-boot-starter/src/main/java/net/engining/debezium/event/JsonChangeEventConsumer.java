@@ -116,6 +116,16 @@ public class JsonChangeEventConsumer implements DebeziumEngine.ChangeConsumer<Ch
             this.name = name;
         }
 
+        @Override
+        public String toString() {
+            return "SchemaDTO{" +
+                    "type='" + type + '\'' +
+                    ", fields=" + fields +
+                    ", optional=" + optional +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
+
         public static class FieldsDTO {
             @JsonProperty("type")
             private String type;
@@ -147,6 +157,15 @@ public class JsonChangeEventConsumer implements DebeziumEngine.ChangeConsumer<Ch
             public void setField(String field) {
                 this.field = field;
             }
+
+            @Override
+            public String toString() {
+                return "FieldsDTO{" +
+                        "type='" + type + '\'' +
+                        ", optional=" + optional +
+                        ", field='" + field + '\'' +
+                        '}';
+            }
         }
     }
 
@@ -160,6 +179,13 @@ public class JsonChangeEventConsumer implements DebeziumEngine.ChangeConsumer<Ch
 
         public void setId(Integer id) {
             this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return "PayloadDTO{" +
+                    "id=" + id +
+                    '}';
         }
     }
 }

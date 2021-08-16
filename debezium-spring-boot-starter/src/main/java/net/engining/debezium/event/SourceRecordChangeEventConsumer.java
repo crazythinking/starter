@@ -29,6 +29,7 @@ import static java.util.stream.Collectors.toMap;
  * @date : 2021-08-09 14:12
  * @since :
  **/
+@SuppressWarnings("AlibabaMethodTooLong")
 public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeConsumer<RecordChangeEvent<SourceRecord>> {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceRecordChangeEventConsumer.class);

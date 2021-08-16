@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
  * @author Administrator
  *
  */
+@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
 @Configuration
 @Import(value = {
 		JPA4H2ContextConfig.class

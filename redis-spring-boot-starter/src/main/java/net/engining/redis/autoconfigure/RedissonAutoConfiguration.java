@@ -107,6 +107,7 @@ public class RedissonAutoConfiguration {
         return Redisson.create(redissonConnectionConfiguration);
     }
 
+    @SuppressWarnings("AlibabaMethodTooLong")
     @Bean(name = RedisUtil.REDISSON_CONNECTION_CONFIGURATION)
     public RedissonConnectionConfiguration redissonConnectionConfiguration() throws MalformedURLException {
 

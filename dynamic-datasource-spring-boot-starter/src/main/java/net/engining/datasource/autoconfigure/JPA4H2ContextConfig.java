@@ -12,6 +12,7 @@ import java.sql.SQLException;
  * @author Administrator
  *
  */
+@SuppressWarnings({"AlibabaClassNamingShouldBeCamel"})
 @Configuration
 @Profile({"autotest"})
 public class JPA4H2ContextConfig {
