@@ -1,7 +1,10 @@
 package net.engining.debezium.autoconfigure;
 
 import io.debezium.engine.DebeziumEngine;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ThreadUtilsExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.Assert;
@@ -14,8 +17,16 @@ import java.util.concurrent.Executor;
  * @since 2021/6/2 10:45
  */
 public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerBootstrap.class);
 
-    private final Executor executor = ThreadUtilsExt.newSingleThreadExecutor("Debezium-Engine-", true);
+    protected boolean running = false;
+
+    private final Executor executor = ThreadUtilsExt.newSingleThreadExecutor(
+            "Debezium-Engine-",
+            false
+    );
+
     private DebeziumEngine<?> debeziumEngine;
 
     public Executor getExecutor() {
@@ -32,7 +43,11 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
 
     @Override
     public void start() {
-        executor.execute(debeziumEngine);
+        try {
+            executor.execute(debeziumEngine);
+        } finally {
+            running = true;
+        }
     }
 
     @Override
@@ -40,14 +55,16 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
         try {
             debeziumEngine.close();
         } catch (IOException e) {
-            //TODO
-            e.printStackTrace();
+            LOGGER.error("DebeziumEngine close failed: {}", e.getMessage());
+            ExceptionUtilsExt.dump(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
     public boolean isRunning() {
-        return false;
+        return running;
     }
 
     @Override

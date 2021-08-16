@@ -2,10 +2,16 @@ package net.engining.debezium.autoconfigure.autotest.cases;
 
 
 import net.engining.debezium.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Eric Lu
  **/
+@ActiveProfiles(profiles = {
+        "debezium.common"
+})
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
@@ -19,7 +25,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        Thread.sleep(10000);
+        TimeUnit.SECONDS.sleep(10000); //睡眠10秒
     }
 
     @Override

@@ -1,10 +1,9 @@
 package net.engining.debezium.autoconfigure.autotest;
 
-import net.engining.debezium.autoconfigure.DebeziumConfiguration;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 
 /**
@@ -13,17 +12,19 @@ import org.springframework.context.annotation.Lazy;
  * @author Eric Lu
  */
 @Configuration
-@Import({
-        DebeziumConfiguration.class
-})
+@ComponentScan(
+        basePackages = {
+                "net.engining.debezium.event"
+        }
+)
 public class CombineContextConfig {
 
     /**
      * ApplicationContext的静态辅助Bean，建议项目必须注入
      */
     @Bean
-    @Lazy(value=false)
-    public ApplicationContextHolder applicationContextHolder(){
+    @Lazy(value = false)
+    public ApplicationContextHolder applicationContextHolder() {
         return new ApplicationContextHolder();
     }
 
