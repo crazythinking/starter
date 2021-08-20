@@ -1,6 +1,5 @@
 package net.engining.datasource.autoconfigure;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;

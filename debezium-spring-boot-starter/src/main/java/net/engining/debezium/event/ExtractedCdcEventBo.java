@@ -19,6 +19,11 @@ public class ExtractedCdcEventBo implements Serializable {
     private long processTime;
 
     /**
+     * CDC事件发生的时间戳
+     */
+    private long eventTime;
+
+    /**
      * 操作符
      */
     private String operation;
@@ -57,6 +62,14 @@ public class ExtractedCdcEventBo implements Serializable {
      * 从targetSource中提取，schema名称
      */
     private String schema;
+
+    public long getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(long eventTime) {
+        this.eventTime = eventTime;
+    }
 
     public String getSchema() {
         return schema;
@@ -134,6 +147,7 @@ public class ExtractedCdcEventBo implements Serializable {
     public String toString() {
         return "ExtractedCdcEventBo{" +
                 "processTime=" + processTime +
+                ", eventTime=" + eventTime +
                 ", operation='" + operation + '\'' +
                 ", targetSource=" + targetSource +
                 ", targetTrancation=" + targetTrancation +
