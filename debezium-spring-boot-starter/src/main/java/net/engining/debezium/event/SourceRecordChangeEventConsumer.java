@@ -50,7 +50,6 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
     private void handleEvents(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
                               DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter)
             throws InterruptedException {
-        LOGGER.debug("captured events");
         recordChangeEvents.forEach(recordChangeEvent -> {
             //获取一条CDC事件信息
             SourceRecord sourceRecord = recordChangeEvent.record();
