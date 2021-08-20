@@ -59,7 +59,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
             Map<String, ?> offsetMap = sourceRecord.sourceOffset();
             //xxljob-mysql-cdc.xxljob.xxl_job_group
             String topic = sourceRecord.topic();
-            sourceRecord.kafkaPartition();
+            Integer partition = sourceRecord.kafkaPartition();
             //CDC事件的key对应的Schema：对应表的主键字段定义数据
             Schema keySchema = sourceRecord.keySchema();
             //CDC事件的key对应的具体数据：对应表的主键字段值数据
@@ -85,8 +85,8 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                 }
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
-                    ExtractedCdcEventBo extractedCdcEventDto = new ExtractedCdcEventBo();
-                    extractedCdcEventDto.setOperation(op);
+                    ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
+                    extractedCdcEventBo.setOperation(op);
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
                     Envelope.Operation operation = Envelope.Operation.forCode(op);
 
@@ -104,7 +104,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> recordDataStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, recordDataStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventDto.setTargetRecordData(targetRecordData);
+                            extractedCdcEventBo.setTargetRecordData(targetRecordData);
                         }
 
                         //CDC事件的数据源描述信息，可用于标识唯一性
@@ -115,12 +115,15 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> sourceStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, sourceStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventDto.setTargetSource(targetSource);
+                            extractedCdcEventBo.setTargetSource(targetSource);
+                            //CDC事件发生的时间戳: 取自value.source中的"ts_ms", 但该值的毫秒部分被舍弃了
+                            long eventTime = (long) targetSource.get(TIMESTAMP);
+                            extractedCdcEventBo.setEventTime(eventTime);
                         }
 
-                        //接收到CDC事件的时间戳
+                        //接收到CDC事件的时间戳: 取自value中的"ts_ms"
                         long processTime = (long) valueStruct.get(TIMESTAMP);
-                        extractedCdcEventDto.setProcessTime(processTime);
+                        extractedCdcEventBo.setProcessTime(processTime);
 
                         //CDC事件的事务相关描述信息
                         Struct trancationStruct = (Struct) valueStruct.get(TRANSACTION);
@@ -130,10 +133,10 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> trancationStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, trancationStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventDto.setTargetTrancation(targetTrancation);
+                            extractedCdcEventBo.setTargetTrancation(targetTrancation);
                         }
                     }
-                    extractedCdcEvent.setCdcEventBo(extractedCdcEventDto);
+                    extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
                 }
             }
 
