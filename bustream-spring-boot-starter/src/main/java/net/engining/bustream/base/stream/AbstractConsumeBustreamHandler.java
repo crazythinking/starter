@@ -53,6 +53,7 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * 接收到消息事件后的处理逻辑
      * @param event     消息事件
      * @param headers   头信息
+     * @exception       Exception
      */
     protected abstract void handler(E event, Map<String, Object> headers) throws Exception;
 

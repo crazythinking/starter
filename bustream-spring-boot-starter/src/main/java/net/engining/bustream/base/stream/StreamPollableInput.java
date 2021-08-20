@@ -13,6 +13,10 @@ public interface StreamPollableInput {
 
     String POLLINPUT = "pollableInput";
 
+    /**
+     * 轮询的Input消息通道
+     * @return PollableMessageSource
+     */
     @Input(StreamPollableInput.POLLINPUT)
     PollableMessageSource pollableInput();
 }

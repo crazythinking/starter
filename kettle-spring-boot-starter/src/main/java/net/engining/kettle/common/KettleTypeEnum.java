@@ -43,6 +43,7 @@ public enum KettleTypeEnum implements BaseEnum<String> {
         this.label=label;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

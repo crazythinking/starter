@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: debezium-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+    org.springframework.boot: info
+    io.debezium: info
+    org.apache.kafka.connect: info
+
+
+gm:
+  common:
+    async-excutor-thread-name-prefix: debezium-event-listener-

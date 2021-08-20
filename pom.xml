@@ -71,6 +71,7 @@
 		<module>transflow-spring-boot-starter</module>
 		<module>disruptor-spring-boot-starter</module>
 		<module>zeebe-ext-spring-boot-starter</module>
+		<module>debezium-spring-boot-starter</module>
 	</modules>
 
 	<build>
