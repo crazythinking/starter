@@ -34,7 +34,7 @@ import java.util.Map;
  * @create 2019-11-04 16:46
  **/
 @Configuration
-@ConditionalOnClass(DruidDataSource.class)
+@ConditionalOnClass(HikariDataSource.class)
 @ConditionalOnProperty(prefix = "pg.datasource.dynamic.hikari", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DynamicDruidDataSourceAutoConfigure.class)
 @EnableConfigurationProperties({
