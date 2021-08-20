@@ -15,6 +15,7 @@
 
 	<properties>
 		<debezium.version>1.6.1.Final</debezium.version>
+		<oracle.version>21.1.0.0.0</oracle.version>
 	</properties>
 
 	<dependencies>
@@ -66,17 +67,25 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-support</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-web</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
+		</dependency>
+
+		<!-- oracle -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>oracle8</artifactId>
+			<version>${oracle.version}</version>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -99,11 +108,7 @@
 
 	<build>
 		<plugins>
-			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
-			<!--<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-			</plugin>-->
+
 		</plugins>
 
 	</build>

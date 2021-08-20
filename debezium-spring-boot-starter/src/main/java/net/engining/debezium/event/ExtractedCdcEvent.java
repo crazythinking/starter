@@ -2,10 +2,8 @@ package net.engining.debezium.event;
 
 import org.springframework.context.ApplicationEvent;
 
-import java.util.Map;
-
 /**
- * 提取后的 CDC Event
+ * 提取后的 CDC ApplicationEvent
  *
  * @author : Eric Lu
  * @version :
@@ -15,29 +13,9 @@ import java.util.Map;
 public class ExtractedCdcEvent extends ApplicationEvent {
 
     /**
-     * 接收到CDC事件的时间戳
+     * CDC Event 数据对象
      */
-    long processTime;
-
-    /**
-     * 操作符
-     */
-    String operation;
-
-    /**
-     * CDC事件的数据源描述信息，可用于标识唯一性
-     */
-    Map<String, Object> targetSource;
-
-    /**
-     * CDC事件的事务相关描述信息
-     */
-    Map<String, Object> targetTrancation;
-
-    /**
-     * 表记录数据
-     */
-    Map<String, Object> targetRecordData;
+    private ExtractedCdcEventBo cdcEventBo;
 
     /**
      * Create a new {@code ApplicationEvent}.
@@ -49,44 +27,18 @@ public class ExtractedCdcEvent extends ApplicationEvent {
         super(source);
     }
 
-    public String getOperation() {
-        return operation;
+    public ExtractedCdcEventBo getCdcEventBo() {
+        return cdcEventBo;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public void setCdcEventBo(ExtractedCdcEventBo cdcEventBo) {
+        this.cdcEventBo = cdcEventBo;
     }
 
-    public void setProcessTime(long processTime) {
-        this.processTime = processTime;
+    @Override
+    public String toString() {
+        return "ExtractedCdcEvent{" +
+                "cdcEventBo=" + cdcEventBo +
+                '}';
     }
-
-    public void setTargetSource(Map<String, Object> targetSource) {
-        this.targetSource = targetSource;
-    }
-
-    public void setTargetTrancation(Map<String, Object> targetTrancation) {
-        this.targetTrancation = targetTrancation;
-    }
-
-    public void setTargetRecordData(Map<String, Object> targetRecordData) {
-        this.targetRecordData = targetRecordData;
-    }
-
-    public long getProcessTime() {
-        return processTime;
-    }
-
-    public Map<String, Object> getTargetSource() {
-        return targetSource;
-    }
-
-    public Map<String, Object> getTargetTrancation() {
-        return targetTrancation;
-    }
-
-    public Map<String, Object> getTargetRecordData() {
-        return targetRecordData;
-    }
-
 }

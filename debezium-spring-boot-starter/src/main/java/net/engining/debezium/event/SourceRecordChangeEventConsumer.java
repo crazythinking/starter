@@ -50,7 +50,6 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
     private void handleEvents(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
                               DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter)
             throws InterruptedException {
-        LOGGER.warn("starting consumer..........");
         recordChangeEvents.forEach(recordChangeEvent -> {
             //获取一条CDC事件信息
             SourceRecord sourceRecord = recordChangeEvent.record();
@@ -86,7 +85,8 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                 }
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
-                    extractedCdcEvent.setOperation(op);
+                    ExtractedCdcEventBo extractedCdcEventDto = new ExtractedCdcEventBo();
+                    extractedCdcEventDto.setOperation(op);
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
                     Envelope.Operation operation = Envelope.Operation.forCode(op);
 
@@ -104,7 +104,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> recordDataStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, recordDataStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEvent.setTargetRecordData(targetRecordData);
+                            extractedCdcEventDto.setTargetRecordData(targetRecordData);
                         }
 
                         //CDC事件的数据源描述信息，可用于标识唯一性
@@ -115,12 +115,12 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> sourceStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, sourceStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEvent.setTargetSource(targetSource);
+                            extractedCdcEventDto.setTargetSource(targetSource);
                         }
 
                         //接收到CDC事件的时间戳
                         long processTime = (long) valueStruct.get(TIMESTAMP);
-                        extractedCdcEvent.setProcessTime(processTime);
+                        extractedCdcEventDto.setProcessTime(processTime);
 
                         //CDC事件的事务相关描述信息
                         Struct trancationStruct = (Struct) valueStruct.get(TRANSACTION);
@@ -130,9 +130,10 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .filter(fieldName -> trancationStruct.get(fieldName) != null)
                                     .map(fieldName -> Pair.of(fieldName, trancationStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEvent.setTargetTrancation(targetTrancation);
+                            extractedCdcEventDto.setTargetTrancation(targetTrancation);
                         }
                     }
+                    extractedCdcEvent.setCdcEventBo(extractedCdcEventDto);
                 }
             }
 

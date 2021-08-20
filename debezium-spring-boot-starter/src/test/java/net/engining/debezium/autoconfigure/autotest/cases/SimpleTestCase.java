@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
  * @author Eric Lu
  **/
 @ActiveProfiles(profiles = {
-        "debezium.common"
+        "debezium.common",
+        "debezium.xxljob.mysql",
+        "debezium.xxljob.oracle"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 

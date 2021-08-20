@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 @ComponentScan(
         basePackages = {
-                "net.engining.debezium.event"
+                "net.engining.debezium.autoconfigure.autotest.support"
         }
 )
 public class CombineContextConfig {

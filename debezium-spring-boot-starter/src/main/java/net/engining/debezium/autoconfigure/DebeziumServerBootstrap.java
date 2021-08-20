@@ -1,5 +1,6 @@
 package net.engining.debezium.autoconfigure;
 
+import cn.hutool.core.util.StrUtil;
 import io.debezium.engine.DebeziumEngine;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ThreadUtilsExt;
@@ -20,14 +21,21 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerBootstrap.class);
 
+    private String suffix;
+
     protected boolean running = false;
 
-    private final Executor executor = ThreadUtilsExt.newSingleThreadExecutor(
-            "Debezium-Engine-",
-            false
-    );
+    private final Executor executor;
 
     private DebeziumEngine<?> debeziumEngine;
+
+    public DebeziumServerBootstrap(String suffix) {
+        this.suffix = suffix;
+        this.executor = ThreadUtilsExt.newSingleThreadExecutor(
+                "DBZ-Engine-"+ this.suffix + StrUtil.DASHED,
+                false
+        );
+    }
 
     public Executor getExecutor() {
         return executor;
