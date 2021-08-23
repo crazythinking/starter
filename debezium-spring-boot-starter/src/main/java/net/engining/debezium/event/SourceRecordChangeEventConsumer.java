@@ -44,7 +44,9 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
     public void handleBatch(
             List<RecordChangeEvent<SourceRecord>> records,
             DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> committer) throws InterruptedException {
+        LOGGER.info("Captured {} CDC Events, start processing!", records.size());
         handleEvents(records, committer);
+        LOGGER.info("CDC Events processing finished and committed!");
     }
 
     private void handleEvents(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
