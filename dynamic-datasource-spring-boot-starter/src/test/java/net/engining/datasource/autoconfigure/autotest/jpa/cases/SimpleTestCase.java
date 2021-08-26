@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
+        "db.jpa",
 		"hikari.h2",
 //		"druid.mysql",
 //		"hikari.mysql",
@@ -38,8 +39,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void initTestData() throws Exception {
-        //指定当前线程使用的数据库datasource
-        //DataSourceContextHolder.setCurrentDataSourceKey("one");
+
     }
 
     @Override
@@ -64,13 +64,13 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{
-            Long id2 = dbService.dsTest();
-            LOGGER.debug("get primery key for datasource one: {}", id2);
-            this.testAssertDataContext.put("primerykey4one", id2);
+        Long id2 = dbService.dsTest();
+        LOGGER.debug("get primery key for datasource one: {}", id2);
+        this.testAssertDataContext.put("primerykey4one", id2);
     }
 
     @Override
     public void end() throws Exception {
-        DataSourceContextHolder.removeCurrentDataSourceKey();
+
     }
 }
