@@ -1,10 +1,13 @@
 package net.engining.datasource.autoconfigure.autotest.qsql.support;
 
+import com.google.common.collect.Lists;
 import com.querydsl.core.Tuple;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.dml.SQLInsertClause;
-import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogDao;
+import net.engining.datasource.autoconfigure.autotest.jpa.support.OperAdtLogJpaRepository;
+import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
+import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.gm.entity.model.qsql.QSqlOperAdtLog;
@@ -13,7 +16,7 @@ import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,22 +29,30 @@ import java.util.Map;
  * @author Eric Lu
  * @date 2020-12-30 14:54
  **/
-@Repository
-public class OperAdtLogDaoImpl implements OperAdtLogDao {
+@Component
+public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OperAdtLogDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogRepositoriesServiceImpl.class);
 
     @Autowired
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
-    @SpecifiedDataSource("one")
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    @Autowired
+    OperAdtLogJpaRepository combinedOperAdtLogRepository;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogList){
+        return extractedSave(operAdtLogList);
+    }
+
+    private long extractedSave(List<OperAdtLogDto> operAdtLogList) {
         String key = DataSourceContextHolder.getCurrentDataSourceKey();
         SQLQueryFactory sqlQueryFactory = sqlQueryFactoryMap.get(key);
 
         QSqlOperAdtLog qSqlOperAdtLog = QSqlOperAdtLog.operAdtLog;
         SQLInsertClause insertClause = sqlQueryFactory.insert(qSqlOperAdtLog);
+        //设置insert为一条批量语句，而非多条insert语句
         insertClause.setBatchToBulk(true);
 
         for (OperAdtLogDto operAdtLog : operAdtLogList){
@@ -56,6 +67,7 @@ public class OperAdtLogDaoImpl implements OperAdtLogDao {
             insertClause.addBatch();
         }
 
+        //将参数值带入sql语句
         insertClause.setUseLiterals(true);
         for (SQLBindings sqlBindings : insertClause.getSQL()){
             LOGGER.debug(sqlBindings.getSQL());
@@ -64,9 +76,16 @@ public class OperAdtLogDaoImpl implements OperAdtLogDao {
         return insertClause.execute();
     }
 
+    @Override
     @SpecifiedDataSource("one")
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    public long save2Ck(List<OperAdtLogDto> operAdtLogList) {
+        return extractedSave(operAdtLogList);
+    }
+
+    @Override
     @Transactional(readOnly = true)
-    public OperAdtLogDto findByPrimeryKey(Integer id){
+    public OperAdtLogDto selectByPrimeryKey(Integer id){
         String key = DataSourceContextHolder.getCurrentDataSourceKey();
         SQLQueryFactory sqlQueryFactory = sqlQueryFactoryMap.get(key);
 
@@ -83,6 +102,41 @@ public class OperAdtLogDaoImpl implements OperAdtLogDao {
         return operAdtLogDto;
     }
 
+    @Override
+    public List<OperAdtLogProjection> fetchByLogin(String login){
+        return combinedOperAdtLogRepository.findByLoginId(
+                login,
+                OperAdtLogProjection.class
+        );
+    }
+
+    @Override
+    @SpecifiedDataSource("one")
+    @Transactional(readOnly = true)
+    public List<OperAdtLogDto> fetchByLogin4Ck(String login) {
+        String key = DataSourceContextHolder.getCurrentDataSourceKey();
+        SQLQueryFactory sqlQueryFactory = sqlQueryFactoryMap.get(key);
+
+        QSqlOperAdtLog qSqlOperAdtLog = QSqlOperAdtLog.operAdtLog;
+        List<Tuple> tuples = sqlQueryFactory
+                .select(qSqlOperAdtLog.id, qSqlOperAdtLog.loginId, qSqlOperAdtLog.operTime, qSqlOperAdtLog.requestUri)
+                .from(qSqlOperAdtLog)
+                .where(qSqlOperAdtLog.loginId.eq(login))
+                .fetch();
+
+        List<OperAdtLogDto> operAdtLogDtos = Lists.newArrayList();
+        tuples.forEach(tuple -> {
+            OperAdtLogDto operAdtLogDto = new OperAdtLogDto();
+            operAdtLogDto.setId(tuple.get(qSqlOperAdtLog.id));
+            operAdtLogDto.setLoginId(tuple.get(qSqlOperAdtLog.loginId));
+            operAdtLogDto.setOperTime(tuple.get(qSqlOperAdtLog.operTime));
+            operAdtLogDto.setRequestUri(tuple.get(qSqlOperAdtLog.requestUri));
+            operAdtLogDtos.add(operAdtLogDto);
+        });
+
+        return operAdtLogDtos;
+    }
+
     private static Timestamp getDate(Date date){
         if(ValidateUtilExt.isNotNullOrEmpty(date)){
             return new Timestamp(date.getTime());
@@ -90,4 +144,5 @@ public class OperAdtLogDaoImpl implements OperAdtLogDao {
             return null;
         }
     }
+
 }

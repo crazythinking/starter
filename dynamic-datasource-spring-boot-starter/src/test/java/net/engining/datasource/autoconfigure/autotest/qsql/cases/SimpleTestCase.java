@@ -1,8 +1,10 @@
 package net.engining.datasource.autoconfigure.autotest.qsql.cases;
 
 import cn.hutool.core.util.RandomUtil;
+import com.google.common.base.Joiner;
 import net.engining.datasource.autoconfigure.autotest.qsql.support.AbstractTestCaseTemplate;
-import net.engining.datasource.autoconfigure.autotest.support.OperationLogService;
+import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
+import net.engining.datasource.autoconfigure.autotest.support.OperationLogBizService;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.util.Lists;
@@ -20,15 +22,15 @@ import java.util.List;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
-		//"hikari.h2.qsql",
-        "hikari.clickhouse.qsql"
+		//"hikari.h2",
+        "hikari.clickhouse"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
 
     @Autowired
-    OperationLogService operationLogService;
+    OperationLogBizService operationLogBizService;
 
     @Override
     public void initTestData() throws Exception {
@@ -38,7 +40,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     @Override
     public void assertResult() throws Exception {
         List<Integer> ids = (List<Integer>) this.testAssertDataContext.get("ids");
-        OperAdtLogDto operAdtLogDto = operationLogService.fetch(ids.get(0));
+        OperAdtLogDto operAdtLogDto = operationLogBizService.fetch(ids.get(0));
         LOGGER.debug(operAdtLogDto.toString());
     }
 
@@ -46,9 +48,32 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     public void testProcess() throws Exception {
         Integer id = RandomUtil.randomInt();
         List<Integer> ids = Lists.newArrayList(id, id+1);
-        operationLogService.dsTest(id);
+        operationLogBizService.dsTest(id);
         this.testAssertDataContext.put("ids", ids);
         LOGGER.debug(ids.toString());
+        operationLogBizService.fetch("luxue").forEach(o -> {
+            OperAdtLogProjection operAdtLogProjection = (OperAdtLogProjection) o;
+            LOGGER.debug(Joiner.on(";")
+                    .join(
+                            operAdtLogProjection.getOperTime(),
+                            operAdtLogProjection.getId(),
+                            operAdtLogProjection.getLoginId(),
+                            operAdtLogProjection.getRequestUri()
+                    )
+            );
+        });
+
+        operationLogBizService.fetch4Ck("luxue").forEach(o -> {
+            OperAdtLogProjection operAdtLogProjection = (OperAdtLogProjection) o;
+            LOGGER.debug(Joiner.on(";")
+                    .join(
+                            operAdtLogProjection.getOperTime(),
+                            operAdtLogProjection.getId(),
+                            operAdtLogProjection.getLoginId(),
+                            operAdtLogProjection.getRequestUri()
+                    )
+            );
+        });
 
     }
 

@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
  * @since :
  **/
 @Table("OPER_ADT_LOG")
-public class JdbcOperAdtLog {
+public class OperAdtLog {
 
     @Id
     @Column("ID")
-    private final Integer id;
+    private Integer id;
 
     @Column("LOGIN_ID")
     private String loginId;
@@ -33,6 +33,10 @@ public class JdbcOperAdtLog {
 
     @Column("JPA_VERSION")
     private Integer jpaVersion;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -78,7 +82,7 @@ public class JdbcOperAdtLog {
         this.jpaVersion = jpaVersion;
     }
 
-    public JdbcOperAdtLog(Integer id, String loginId, String requestUri, String requestBody, LocalDateTime operTime, Integer jpaVersion) {
+    public OperAdtLog(Integer id, String loginId, String requestUri, String requestBody, LocalDateTime operTime, Integer jpaVersion) {
         this.id = id;
         this.loginId = loginId;
         this.requestUri = requestUri;

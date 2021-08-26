@@ -52,7 +52,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        Long id = dbService.dsTest4defautDataSource();
+        Long id = dbService.dsTest4defaultDataSource();
         LOGGER.debug("get primery key for datasource default: {}", id);
         this.testAssertDataContext.put("primerykey4default", id);
 
@@ -60,6 +60,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assertions.assertThatThrownBy(() -> callDbOpt4DataSourceOne4ThrowException())
                 .isInstanceOf(InvalidDataAccessResourceUsageException.class);
 
+        dbService.fetchByLogin("luxue");
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{

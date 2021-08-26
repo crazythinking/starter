@@ -1,18 +1,23 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc;
 
-import net.engining.datasource.autoconfigure.autotest.jdbc.support.BaseDao;
-import net.engining.datasource.autoconfigure.autotest.jdbc.support.Dao;
-import net.engining.datasource.autoconfigure.autotest.support.OperationLogService;
+import net.engining.datasource.autoconfigure.autotest.jdbc.support.OperAdtLogExtDto;
+import net.engining.datasource.autoconfigure.autotest.support.OperationLogBizService;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jdbc.repository.QueryMappingConfiguration;
+import org.springframework.data.jdbc.repository.config.DefaultQueryMappingConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
- * 通用Context配置
+ * 同时支持JPA+QueryDSL，QueryDSL-SQL，JDBC 三种存储层
  *
  * @author Eric Lu
  */
@@ -20,9 +25,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 @EnableJdbcRepositories({
         "net.engining.datasource.autoconfigure.autotest.jdbc.support"
 })
-@Import({
-        OperationLogService.class
+@EnableJpaRepositories({
+        "net.engining.datasource.autoconfigure.autotest.jpa.support"
 })
+@EntityScan(basePackages = {
+        "net.engining.gm.entity.model"
+})
+@ComponentScan(
+        basePackages = {
+                "net.engining.datasource.autoconfigure.autotest.support",
+                "net.engining.datasource.autoconfigure.autotest.jdbc.support"
+        }
+)
 public class CombineContextConfig {
 
     /**
@@ -35,8 +49,10 @@ public class CombineContextConfig {
     }
 
     @Bean
-    public Dao daoDefault(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        return new BaseDao(namedParameterJdbcTemplate);
+    public QueryMappingConfiguration rowMappers() {
+        return new DefaultQueryMappingConfiguration()
+                .registerRowMapper(OperAdtLogExtDto.class, new OperAdtLogExtDto.OperAdtLogExtDtoRowMapper())
+                ;
     }
 
 }

@@ -66,6 +66,10 @@
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-storage-clickhouse</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>net.engining.gm</groupId>

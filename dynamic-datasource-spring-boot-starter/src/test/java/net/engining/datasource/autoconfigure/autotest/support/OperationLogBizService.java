@@ -1,23 +1,22 @@
 package net.engining.datasource.autoconfigure.autotest.support;
 
 import com.google.common.collect.Lists;
-import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogDao;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.pg.support.utils.DateUtilsExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Eric Lu
- * @create 2019-11-05 18:56
  **/
 @Service
-public class OperationLogService {
+public class OperationLogBizService {
 
     @Autowired
-    private OperAdtLogDao operAdtLogDao;
+    private LogRepositoriesService logRepositoriesService;
 
     public long dsTest(int id){
         OperAdtLogDto operAdtLog = new OperAdtLogDto();
@@ -34,11 +33,21 @@ public class OperationLogService {
         operAdtLog2.setRequestBody("{key1:222}");
         operAdtLog2.setOperTime(DateUtilsExt.localDateTimeToDate(LocalDateTime.now()));
 
-        return operAdtLogDao.save(Lists.newArrayList(operAdtLog,operAdtLog2));
+        logRepositoriesService.save(Lists.newArrayList(operAdtLog,operAdtLog2));
+        logRepositoriesService.save2Ck(Lists.newArrayList(operAdtLog,operAdtLog2));
+        return 0;
     }
 
     public OperAdtLogDto fetch(Integer id) {
-        return operAdtLogDao.findByPrimeryKey(id);
+        return logRepositoriesService.selectByPrimeryKey(id);
+    }
+
+    public <T> List<T> fetch(String loginId) {
+        return logRepositoriesService.fetchByLogin(loginId);
+    }
+
+    public <T> List<T> fetch4Ck(String loginId) {
+        return logRepositoriesService.fetchByLogin4Ck(loginId);
     }
 
 }

@@ -10,8 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication(
         excludeName = {
-                "org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration",
-                "org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration"
+                "org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration"
         })
 public class AutoConfigureTestApplication {
 

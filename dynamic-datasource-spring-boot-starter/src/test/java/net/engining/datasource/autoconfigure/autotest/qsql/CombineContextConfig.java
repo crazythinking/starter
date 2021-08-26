@@ -1,24 +1,32 @@
 package net.engining.datasource.autoconfigure.autotest.qsql;
 
-import net.engining.datasource.autoconfigure.autotest.support.OperationLogService;
+import net.engining.datasource.autoconfigure.autotest.support.OperationLogBizService;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * 通用Context配置
+ * 同时支持JPA+QueryDSL，QueryDSL-SQL 两种存储层
  *
  * @author Eric Lu
  */
 @Configuration
 @EnableJdbcRepositories({
-        "net.engining.datasource.autoconfigure.autotest.qsql.support"
+
+})
+@EnableJpaRepositories({
+        "net.engining.datasource.autoconfigure.autotest.jpa.support"
+})
+@EntityScan(basePackages = {
+        "net.engining.gm.entity.model"
 })
 @Import({
-        OperationLogService.class
+        OperationLogBizService.class
 })
 public class CombineContextConfig {
 

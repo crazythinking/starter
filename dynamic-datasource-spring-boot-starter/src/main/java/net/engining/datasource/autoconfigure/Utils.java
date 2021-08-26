@@ -15,6 +15,15 @@ import javax.sql.DataSource;
  * @since :
  **/
 class Utils {
+
+    /**
+     * populate the two keys table of datasource
+     *
+     * @param s                 key of datasource
+     * @param dataSource        datasource
+     * @param driverClassName   DB driver full class name
+     * @param dataSourceTable   struct of dataSourceTable
+     */
     protected static void populateDataSourceTable(String s, DataSource dataSource, String driverClassName,
                                  Table<String, DbType, DataSource> dataSourceTable)
     {
