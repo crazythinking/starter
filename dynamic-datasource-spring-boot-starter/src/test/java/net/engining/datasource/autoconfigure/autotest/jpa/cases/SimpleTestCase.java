@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 
 /**
  * @author Eric Lu
@@ -23,6 +22,7 @@ import javax.persistence.PersistenceException;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
+        "db.jpa",
 		"hikari.h2",
 //		"druid.mysql",
 //		"hikari.mysql",
@@ -39,8 +39,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void initTestData() throws Exception {
-        //指定当前线程使用的数据库datasource
-        //DataSourceContextHolder.setCurrentDataSourceKey("one");
+
     }
 
     @Override
@@ -53,54 +52,25 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
-        Long id = dbService.dsTest4defautDataSource();
+        Long id = dbService.dsTest4defaultDataSource();
         LOGGER.debug("get primery key for datasource default: {}", id);
         this.testAssertDataContext.put("primerykey4default", id);
 
         //切换到数据库one，不存在该表抛异常
-        Assertions.assertThatThrownBy(this::switchDataSourceOne4InsertThrowException)
+        Assertions.assertThatThrownBy(() -> callDbOpt4DataSourceOne4ThrowException())
                 .isInstanceOf(InvalidDataAccessResourceUsageException.class);
 
-        //切换到数据库one，不存在该表抛异常
-        Assertions.assertThatThrownBy(this::switchDataSourceOne4QueryThrowException)
-                .isInstanceOf(PersistenceException.class);
-
-        //切换到数据库one，不存在该表抛异常
-        Assertions.assertThatThrownBy(this::switchDataSourceOne4QueryNoTransactionThrowException)
-                .isInstanceOf(PersistenceException.class);
-
-        //由于被上层事务包含，事务开启时即获取了到数据库的物理连接；
-        //因此DataSource切换未能影响最终的数据库连接，此时还在默认数据库连接上执行，不会产生异常
-        dbService.merge();
-
-        //虽然被上层事务包含，但其中dsTestQuery设置了事务传播机制“NOT_SUPPORTED”或“REQUIRES_NEW”；
-        //因此dsTestQuery中的数据库操作将不使用上层事务中的数据库连接，而是重新从DataSource获取新的数据库连接
-        //切换到数据库one，不存在该表抛异常
-        Assertions.assertThatThrownBy(() -> dbService.merge2())
-                .isInstanceOf(PersistenceException.class);
-
+        dbService.fetchByLogin("luxue");
     }
 
-    public void switchDataSourceOne4InsertThrowException() throws Exception{
-            Long id2 = dbService.dsTest();
-            LOGGER.debug("get primery key for datasource one: {}", id2);
-            this.testAssertDataContext.put("primerykey4one", id2);
-    }
-
-    public void switchDataSourceOne4QueryThrowException() throws Exception{
-        Long id2 = dbService.dsTestQuery();
-        LOGGER.debug("get primery key for datasource one: {}", id2);
-        this.testAssertDataContext.put("primerykey4one", id2);
-    }
-
-    public void switchDataSourceOne4QueryNoTransactionThrowException() throws Exception{
-        Long id2 = dbService.dsTestQuery2();
+    public void callDbOpt4DataSourceOne4ThrowException() throws Exception{
+        Long id2 = dbService.dsTest();
         LOGGER.debug("get primery key for datasource one: {}", id2);
         this.testAssertDataContext.put("primerykey4one", id2);
     }
 
     @Override
     public void end() throws Exception {
-        DataSourceContextHolder.removeCurrentDataSourceKey();
+
     }
 }

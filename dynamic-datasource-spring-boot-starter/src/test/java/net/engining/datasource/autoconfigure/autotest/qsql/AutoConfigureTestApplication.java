@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure.autotest.jdbc;
+package net.engining.datasource.autoconfigure.autotest.qsql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication(
         excludeName = {
-                "org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration"
+                "org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration",
         })
 public class AutoConfigureTestApplication {
 

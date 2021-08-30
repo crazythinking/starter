@@ -1,7 +1,11 @@
 package net.engining.datasource.autoconfigure.autotest.jpa;
 
+import cn.hutool.core.util.ArrayUtil;
+import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.List;
 
 /**
  *
@@ -15,7 +19,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AutoConfigureTestApplication {
 
     public static void main(String[] args) {
-    	SpringApplication.run(AutoConfigureTestApplication.class, args);
+    	SpringApplication
+                .run(AutoConfigureTestApplication.class, args);
 
     }
 

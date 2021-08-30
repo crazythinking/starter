@@ -1,0 +1,23 @@
+
+/* Create Tables */
+
+-- 操作审计日志表
+CREATE TABLE OPER_ADT_LOG
+(
+	-- ID
+	ID INT NOT NULL,
+	-- 用户登录ID
+	LOGIN_ID VARCHAR(64) NOT NULL,
+	-- 请求交易URI
+	REQUEST_URI VARCHAR(100) NOT NULL,
+	-- 请求报文
+	REQUEST_BODY VARCHAR(2500),
+	-- 操作时间
+	OPER_TIME TIMESTAMP NOT NULL,
+	-- 版本号
+	JPA_VERSION INT NOT NULL,
+	PRIMARY KEY (ID)
+);
+
+
+

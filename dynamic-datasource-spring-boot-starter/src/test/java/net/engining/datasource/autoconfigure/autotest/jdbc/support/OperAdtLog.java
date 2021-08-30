@@ -17,7 +17,7 @@ public class OperAdtLog {
 
     @Id
     @Column("ID")
-    private final Integer id;
+    private Integer id;
 
     @Column("LOGIN_ID")
     private String loginId;
@@ -33,6 +33,10 @@ public class OperAdtLog {
 
     @Column("JPA_VERSION")
     private Integer jpaVersion;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;

@@ -1,18 +1,18 @@
 package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
+import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.gm.aop.SpecifiedDataSource;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import java.util.List;
 
 /**
@@ -27,74 +27,26 @@ public class DbService {
     @PersistenceContext
     private EntityManager em;
 
-    @PersistenceUnit
-    private EntityManagerFactory emf;
+    @Autowired
+    OperAdtLogJpaRepository operAdtLogJpaRepository;
 
     @SpecifiedDataSource(value = "one")
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class)
     public Long dsTest(){
         PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
         pgIdTestEnt1.setBatchNumber("aa1111111");
         em.persist(pgIdTestEnt1);
-        log.debug("datasource one : dsTest");
+        log.debug("dsTest");
         return pgIdTestEnt1.getSnowFlakeId();
     }
 
-    @SpecifiedDataSource(value = "one")
-    public Long dsTest2(){
+    @Transactional(rollbackFor = Exception.class)
+    public Long dsTest4defaultDataSource(){
         PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
         pgIdTestEnt1.setBatchNumber("aa1111111");
         em.persist(pgIdTestEnt1);
-        log.debug("datasource one : dsTest");
+        log.debug("dsTest");
         return pgIdTestEnt1.getSnowFlakeId();
-    }
-
-    @SpecifiedDataSource(value = "one")
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED, readOnly = true)
-    //@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
-    public Long dsTestQuery(){
-        QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
-        List<PgIdTestEnt1> rs = new JPAQueryFactory(em).select(qPgIdTestEnt1).from(qPgIdTestEnt1).fetch();
-        log.debug("datasource one : dsTestQuery");
-        return rs.get(0).getSnowFlakeId();
-    }
-
-    @SpecifiedDataSource(value = "one")
-    public Long dsTestQuery2(){
-        QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
-        List<PgIdTestEnt1> rs = new JPAQueryFactory(em).select(qPgIdTestEnt1).from(qPgIdTestEnt1).fetch();
-        log.debug("datasource one : dsTestQuery");
-        return rs.get(0).getSnowFlakeId();
-    }
-
-    public List<PgIdTestEnt1> dsTestQuery3(){
-        QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
-        List<PgIdTestEnt1> rs = new JPAQueryFactory(em).select(qPgIdTestEnt1).from(qPgIdTestEnt1).fetch();
-        log.debug("datasource one : dsTestQuery");
-        return rs;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public Long dsTest4defautDataSource(){
-        PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
-        pgIdTestEnt1.setBatchNumber("aa1111111");
-        em.persist(pgIdTestEnt1);
-        log.debug("datasource default : dsTest4defautDataSource");
-        return pgIdTestEnt1.getSnowFlakeId();
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void merge(){
-        log.debug("datasource default : merge");
-        this.dsTest4defautDataSource();
-        this.dsTest2();
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void merge2(){
-        log.debug("datasource default : merge2");
-        this.dsTest4defautDataSource();
-        this.dsTestQuery();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -116,6 +68,17 @@ public class DbService {
         ids.add(pgIdTestEnt.getSnowFlakeId());
 
         return ids;
+    }
+
+    public OperAdtLogProjection fetchByLogin(String login){
+        List<OperAdtLogProjection> operAdtLogDtos = operAdtLogJpaRepository.findByLoginId(
+                login,
+                OperAdtLogProjection.class
+        );
+        if (ValidateUtilExt.isNullOrEmpty(operAdtLogDtos)){
+            return null;
+        }
+        return operAdtLogDtos.iterator().next();
     }
 
 

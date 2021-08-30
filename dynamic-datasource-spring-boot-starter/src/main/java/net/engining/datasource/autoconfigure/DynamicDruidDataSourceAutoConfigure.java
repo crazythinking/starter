@@ -8,11 +8,14 @@ import com.alibaba.druid.spring.boot.autoconfigure.stat.DruidSpringAopConfigurat
 import com.alibaba.druid.spring.boot.autoconfigure.stat.DruidStatViewServletConfiguration;
 import com.alibaba.druid.spring.boot.autoconfigure.stat.DruidWebStatFilterConfiguration;
 import com.google.common.base.Strings;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Table;
 import net.engining.pg.db.props.DruidDataSourceWrapper;
 import net.engining.pg.db.props.DynamicDruidDataSourceProperties;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
+import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.orm.jpa.vendor.Database;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -52,11 +56,33 @@ import java.util.Map;
         DruidSpringAopConfiguration.class,
         DruidStatViewServletConfiguration.class,
         DruidWebStatFilterConfiguration.class,
-        DruidFilterConfiguration.class
+        DruidFilterConfiguration.class,
+        DataSourceContextConfig.class,
+        JPAContextConfig.class,
+        MultipleJdbc4QuerydslContextConfig.class,
+        TransactionManagementContextConfig.class
 })
 public class DynamicDruidDataSourceAutoConfigure {
     /** logger */
     private static final Logger log = LoggerFactory.getLogger(DynamicDruidDataSourceAutoConfigure.class);
+
+    Map<Object, Object> dataSourceMap;
+
+    Table<String, DbType, DataSource> dataSourceTable = HashBasedTable.create();
+
+    @Bean("multipleDataSourceTable")
+    public Table<String, DbType, DataSource> getDataSourceTable(){
+        return dataSourceTable;
+    }
+
+    @Bean("dataSourceMap")
+    public Map<Database, DataSource> getDataSourceMap() {
+        Map<Database, DataSource> map = Maps.newHashMap();
+        for (Object key : dataSourceMap.keySet()){
+            DataSource dataSource = (DataSource) dataSourceMap.get(key);
+        }
+        return map;
+    }
 
     @Bean
     @Primary
@@ -69,6 +95,7 @@ public class DynamicDruidDataSourceAutoConfigure {
 
         // 装配默认DataSource
         DruidDataSourceWrapper defaultDs = dynamicDruidDataSourceWrapper.getDefaultDs();
+        populateDataSourceTable("default", defaultDs);
         try {
             defaultDs.init();
             log.info("init dynamic datasource:default success......");
@@ -95,12 +122,18 @@ public class DynamicDruidDataSourceAutoConfigure {
                 );
             }
             dataSourceMap.put(s, druidDataSourceWrapper);
+            populateDataSourceTable(s, druidDataSourceWrapper);
         });
         dynamicRoutingDataSource.setTargetDataSources(dataSourceMap);
 
         dynamicRoutingDataSource.afterPropertiesSet();
 
         return dynamicRoutingDataSource;
+    }
+
+    private void populateDataSourceTable(String s, DruidDataSourceWrapper druidDataSourceWrapper) {
+        String driverClassName = druidDataSourceWrapper.getDriverClassName();
+        Utils.populateDataSourceTable(s, druidDataSourceWrapper, driverClassName, dataSourceTable);
     }
 
 }

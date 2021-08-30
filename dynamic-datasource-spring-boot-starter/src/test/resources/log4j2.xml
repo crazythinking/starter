@@ -26,11 +26,10 @@
         <Async name="AsyncAllLog" bufferSize="256">
 	      <AppenderRef ref="AllLog"/>
 	    </Async>-->
-
+        
     </Appenders>
 
     <Loggers>
-        <!--只输入级别高于trace的日志-->
         <root level="${LOG_LEVEL}">
             <AppenderRef ref="Console"/>
             <!--<AppenderRef ref="AsyncAllLog"/>-->
