@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.gm.aop.SpecifiedDataSource;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,12 +70,14 @@ public class DbService {
         return ids;
     }
 
-    @SpecifiedDataSource(value = "one")
     public OperAdtLogProjection fetchByLogin(String login){
         List<OperAdtLogProjection> operAdtLogDtos = operAdtLogJpaRepository.findByLoginId(
                 login,
                 OperAdtLogProjection.class
         );
+        if (ValidateUtilExt.isNullOrEmpty(operAdtLogDtos)){
+            return null;
+        }
         return operAdtLogDtos.iterator().next();
     }
 
