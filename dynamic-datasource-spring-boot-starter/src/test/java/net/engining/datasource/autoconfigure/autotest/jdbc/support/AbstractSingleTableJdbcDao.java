@@ -25,6 +25,8 @@ public abstract class AbstractSingleTableJdbcDao {
 
     private SimpleJdbcInsert insert;
 
+    private SimpleJdbcInsert generatedKeyInsert;
+
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -34,8 +36,14 @@ public abstract class AbstractSingleTableJdbcDao {
     @Autowired
     public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = namedParameterJdbcTemplate.getJdbcTemplate();
+        //这里需要2种SimpleJdbcInsert，因为不是所有数据库都支持自动生成主键，且AbstractJdbcInsert不允许修改其属性一旦实例化后；
+        //而多数据源需要在运行时切换数据源，这里产生了矛盾，故只能产生2种Inser操作对象，并由getter方法路由；
         this.insert = new SimpleJdbcInsert(Objects.requireNonNull(this.jdbcTemplate.getDataSource()))
                 .withTableName(getTableName())
+        ;
+        this.generatedKeyInsert = new SimpleJdbcInsert(Objects.requireNonNull(this.jdbcTemplate.getDataSource()))
+                .withTableName(getTableName())
+                .usingGeneratedKeyColumns(getKeyColumns())
         ;
     }
 
@@ -43,7 +51,7 @@ public abstract class AbstractSingleTableJdbcDao {
      * 根据Bean ”multipleDataSourceTable“ 判断当前操作对应的数据库是否支持自增长的主键
      * @return  true=支持自增长
      */
-    public boolean isSupportGeneratedKey(){
+    private boolean isSupportGeneratedKey(){
         boolean isSupport = false;
         String key = DataSourceContextHolder.getCurrentDataSourceKey();
         for (DbType dbType : multipleDataSourceTable.row(key).keySet()){
@@ -71,6 +79,9 @@ public abstract class AbstractSingleTableJdbcDao {
     }
 
     public SimpleJdbcInsert getInsert() {
+        if (isSupportGeneratedKey()){
+            return generatedKeyInsert;
+        }
         return insert;
     }
 

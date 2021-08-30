@@ -64,7 +64,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         });
 
         operationLogBizService.fetch4Ck("luxue").forEach(o -> {
-            OperAdtLogProjection operAdtLogProjection = (OperAdtLogProjection) o;
+            OperAdtLogDto operAdtLogProjection = (OperAdtLogDto) o;
             LOGGER.debug(Joiner.on(";")
                     .join(
                             operAdtLogProjection.getOperTime(),
@@ -79,6 +79,5 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void end() throws Exception {
-        DataSourceContextHolder.removeCurrentDataSourceKey();
     }
 }
