@@ -22,8 +22,8 @@ import java.util.List;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
+        "hikari.mysql",
 		//"hikari.h2",
-        "hikari.clickhouse"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -64,7 +64,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         });
 
         operationLogBizService.fetch4Ck("luxue").forEach(o -> {
-            OperAdtLogProjection operAdtLogProjection = (OperAdtLogProjection) o;
+            OperAdtLogDto operAdtLogProjection = (OperAdtLogDto) o;
             LOGGER.debug(Joiner.on(";")
                     .join(
                             operAdtLogProjection.getOperTime(),
@@ -79,6 +79,5 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void end() throws Exception {
-        DataSourceContextHolder.removeCurrentDataSourceKey();
     }
 }

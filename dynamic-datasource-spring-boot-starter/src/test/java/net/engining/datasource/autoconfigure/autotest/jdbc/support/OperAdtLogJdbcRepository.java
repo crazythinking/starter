@@ -1,9 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -28,14 +25,5 @@ public interface OperAdtLogJdbcRepository extends PagingAndSortingRepository<Ope
             rowMapperClass = OperAdtLogExtDto.OperAdtLogExtDtoRowMapper.class
     )
     List<OperAdtLogExtDto> findByLoginId(@Param("loginId") String loginId);
-
-    /**
-     * 基于Named-SQL配置文件，默认在classpath下”META-INF/jdbc-named-queries.properties“
-     */
-    @Query(
-            name = "OperAdtLog.fetchWhereUri",
-            rowMapperClass = OperAdtLogExtDto.OperAdtLogExtDtoRowMapper.class
-    )
-    List<OperAdtLogExtDto> fetchWhereUri(@Param("uri") String uri);
 
 }

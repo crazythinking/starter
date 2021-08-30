@@ -46,7 +46,6 @@ public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
         LOGGER.debug("get primery keys for datasource default: {}", ids);
         Assert.isTrue(ids.size()==3, "records size should be 3");
 
-        Assert.isTrue(dbService.dsTestQuery3().size()==0, "records size should be 0");
     }
 
     @Override

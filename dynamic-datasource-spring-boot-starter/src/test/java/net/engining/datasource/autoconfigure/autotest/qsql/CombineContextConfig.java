@@ -16,9 +16,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author Eric Lu
  */
 @Configuration
-@EnableJdbcRepositories({
-
-})
 @EnableJpaRepositories({
         "net.engining.datasource.autoconfigure.autotest.jpa.support"
 })

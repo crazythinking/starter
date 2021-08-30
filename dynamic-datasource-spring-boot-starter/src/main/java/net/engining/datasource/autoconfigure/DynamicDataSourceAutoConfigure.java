@@ -6,7 +6,6 @@ import com.google.common.collect.Table;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
-import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;

@@ -1,20 +1,16 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc;
 
 import net.engining.datasource.autoconfigure.autotest.jdbc.support.OperAdtLogExtDto;
-import net.engining.datasource.autoconfigure.autotest.support.OperationLogBizService;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.jdbc.repository.QueryMappingConfiguration;
-import org.springframework.data.jdbc.repository.config.DefaultQueryMappingConfiguration;
+import org.springframework.data.jdbc.repository.RowMapperMap;
+import org.springframework.data.jdbc.repository.config.ConfigurableRowMapperMap;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  * 同时支持JPA+QueryDSL，QueryDSL-SQL，JDBC 三种存储层
@@ -49,9 +45,9 @@ public class CombineContextConfig {
     }
 
     @Bean
-    public QueryMappingConfiguration rowMappers() {
-        return new DefaultQueryMappingConfiguration()
-                .registerRowMapper(OperAdtLogExtDto.class, new OperAdtLogExtDto.OperAdtLogExtDtoRowMapper())
+    public RowMapperMap rowMappers() {
+        return new ConfigurableRowMapperMap()
+                .register(OperAdtLogExtDto.class, new OperAdtLogExtDto.OperAdtLogExtDtoRowMapper())
                 ;
     }
 

@@ -19,7 +19,7 @@ import org.springframework.util.Assert;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
-		"hikari.clickhouse",
+		"hikari.mysql",
         //"hikari.h2"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {

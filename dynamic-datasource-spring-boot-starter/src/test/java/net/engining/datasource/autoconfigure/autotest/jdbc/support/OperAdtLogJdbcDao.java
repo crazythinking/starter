@@ -48,15 +48,7 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
                     .addValue("JPA_VERSION", entity.getJpaVersion())
             ;
         }
-        if (isSupportGeneratedKey()){
-            getInsert()
-                    //指定了自动生成key的columns，insert会被排除
-                    .usingGeneratedKeyColumns(getKeyColumns())
-                    .executeBatch(batch);
-        }
-        else {
-            getInsert().executeBatch(batch);
-        }
+        getInsert().executeBatch(batch);
 
     }
 

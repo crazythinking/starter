@@ -1,10 +1,8 @@
 package net.engining.datasource.autoconfigure;
 
-import cn.hutool.db.dialect.DriverNamePool;
 import com.google.common.collect.Table;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
-import net.engining.pg.support.db.DbType;
 
 import javax.sql.DataSource;
 
@@ -41,9 +39,6 @@ class Utils {
             case DriverNamePool.DRIVER_ORACLE:
             case DriverNamePool.DRIVER_ORACLE_OLD:
                 dataSourceTable.put(s, DbType.Oracle, dataSource);
-                break;
-            case DriverNamePool.DRIVER_CLICK_HOUSE:
-                dataSourceTable.put(s, DbType.ClickHouse, dataSource);
                 break;
             default:
                 throw new ErrorMessageException(

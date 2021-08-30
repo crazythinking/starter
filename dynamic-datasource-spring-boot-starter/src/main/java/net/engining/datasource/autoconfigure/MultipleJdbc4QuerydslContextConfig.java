@@ -6,13 +6,10 @@ import com.querydsl.sql.DB2Templates;
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.MySQLTemplates;
 import com.querydsl.sql.OracleTemplates;
-import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.spring.SpringConnectionProvider;
 import com.querydsl.sql.spring.SpringExceptionTranslator;
-import net.engining.pg.storage.clickhouse.qsql.ClickHouseTemplates;
-import net.engining.pg.support.db.DbType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,8 +39,6 @@ public class MultipleJdbc4QuerydslContextConfig {
         map.put(DbType.MySQL, getConfiguration(MySQLTemplates.builder().build()));
         map.put(DbType.H2, getConfiguration(H2Templates.builder().build()));
         map.put(DbType.DB2, getConfiguration(DB2Templates.builder().build()));
-        map.put(DbType.PostgreSQL, getConfiguration(PostgreSQLTemplates.builder().build()));
-        map.put(DbType.ClickHouse, getConfiguration(ClickHouseTemplates.builder().build()));
         return map;
     }
 
