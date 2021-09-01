@@ -7,7 +7,7 @@ import net.engining.pg.support.enums.BaseEnum;
  *
  * @author Eric Lu
  */
-public enum DbType implements BaseEnum<String> {
+enum DbType implements BaseEnum<String> {
 	
 	DB2("DB2","DB2"),
 	

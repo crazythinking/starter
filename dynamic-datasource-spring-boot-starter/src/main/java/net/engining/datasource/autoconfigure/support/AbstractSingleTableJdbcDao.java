@@ -59,9 +59,6 @@ public abstract class AbstractSingleTableJdbcDao {
                     break;
                 case DB2:
                 case Oracle:
-                case H2:
-                case PostgreSQL:
-                case ClickHouse:
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + dbType);

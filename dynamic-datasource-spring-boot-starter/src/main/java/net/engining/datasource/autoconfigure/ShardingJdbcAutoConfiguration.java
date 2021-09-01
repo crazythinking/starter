@@ -5,7 +5,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import net.engining.gm.config.AsyncExtContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
-import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.shardingsphere.core.yaml.swapper.MasterSlaveRuleConfigurationYamlSwapper;
 import org.apache.shardingsphere.core.yaml.swapper.ShardingRuleConfigurationYamlSwapper;
@@ -100,8 +99,6 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
     private final SpringBootPropertiesConfigurationProperties props;
 
     private final Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
-
-    private final String jndiName = "jndi-name";
 
     public ShardingJdbcAutoConfiguration(SpringBootShardingRuleConfigurationProperties shardingRule,
                                          SpringBootMasterSlaveRuleConfigurationProperties masterSlaveRule,
@@ -232,6 +229,7 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
                 Map.class
         );
         Preconditions.checkState(!dataSourceProps.isEmpty(), "Wrong datasource properties!");
+        String jndiName = "jndi-name";
         if (dataSourceProps.containsKey(jndiName)) {
             return getJndiDataSource(dataSourceProps.get(jndiName).toString());
         }
