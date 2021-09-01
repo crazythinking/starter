@@ -1,10 +1,8 @@
-package net.engining.datasource.autoconfigure.autotest.jdbc.support;
+package net.engining.datasource.autoconfigure.support;
 
 import com.google.common.collect.Table;
-import net.engining.datasource.autoconfigure.DbType;
 import net.engining.pg.support.core.context.DataSourceContextHolder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import net.engining.pg.support.db.DbType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -17,24 +15,25 @@ import java.util.Objects;
  * <li> {@link SimpleJdbcInsert} 利用数据库 Metadata 进行插入操作
  * <li> {@link NamedParameterJdbcTemplate } 具有基本 JDBC 操作集的模板类，允许使用命名参数而不是传统的“?” 占位符
  * <li> {@link JdbcTemplate }
+ * @author Eric Lu
  */
 public abstract class AbstractSingleTableJdbcDao {
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private SimpleJdbcInsert insert;
+    private final Table<String, DbType, DataSource> multipleDataSourceTable;
 
-    private SimpleJdbcInsert generatedKeyInsert;
+    private final SimpleJdbcInsert insert;
 
-    private JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert generatedKeyInsert;
 
-    @Autowired
-    @Qualifier("multipleDataSourceTable")
-    Table<String, DbType, DataSource> multipleDataSourceTable;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate.getJdbcTemplate();
+    public AbstractSingleTableJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                                      Table<String, DbType, DataSource> multipleDataSourceTable) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.multipleDataSourceTable = multipleDataSourceTable;
+        this.jdbcTemplate = this.namedParameterJdbcTemplate.getJdbcTemplate();
         //这里需要2种SimpleJdbcInsert，因为不是所有数据库都支持自动生成主键，且AbstractJdbcInsert不允许修改其属性一旦实例化后；
         //而多数据源需要在运行时切换数据源，这里产生了矛盾，故只能产生2种Inser操作对象，并由getter方法路由；
         this.insert = new SimpleJdbcInsert(Objects.requireNonNull(this.jdbcTemplate.getDataSource()))
@@ -62,7 +61,10 @@ public abstract class AbstractSingleTableJdbcDao {
                 case Oracle:
                 case H2:
                 case PostgreSQL:
+                case ClickHouse:
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + dbType);
             }
         }
         return isSupport;

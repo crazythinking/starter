@@ -1,10 +1,17 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
+import com.google.common.collect.Table;
+import net.engining.datasource.autoconfigure.support.AbstractSingleTableJdbcDao;
+import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.DateUtilsExt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -23,6 +30,12 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
             , DateUtilsExt.dateToLocalDateTime(rs.getTimestamp("OPER_TIME"))
             , rs.getInt("JPA_VERSION")
     );
+
+    @Autowired
+    public OperAdtLogJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                             @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> multipleDataSourceTable) {
+        super(namedParameterJdbcTemplate, multipleDataSourceTable);
+    }
 
     public Integer insertAndReturnKey(OperAdtLog entity) {
         return getInsert().executeAndReturnKey(new MapSqlParameterSource()
@@ -48,7 +61,7 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
                     .addValue("JPA_VERSION", entity.getJpaVersion())
             ;
         }
-        getInsert().executeBatch(batch);
+            getInsert().executeBatch(batch);
 
     }
 

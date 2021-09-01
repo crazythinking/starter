@@ -8,6 +8,7 @@ import com.querydsl.sql.dml.SQLInsertClause;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.OperAdtLogJpaRepository;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
+import net.engining.datasource.autoconfigure.support.TransactionalEvent;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.gm.entity.model.qsql.QSqlOperAdtLog;
@@ -16,6 +17,7 @@ import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +42,19 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     @Autowired
     OperAdtLogJpaRepository combinedOperAdtLogRepository;
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogList){
-        return extractedSave(operAdtLogList);
+        long n = extractedSave(operAdtLogList);
+        //发布事件
+        for (OperAdtLogDto operAdtLogDto : operAdtLogList){
+            applicationContext.publishEvent(new TransactionalEvent<>(operAdtLogDto));
+        }
+        return n;
+
     }
 
     private long extractedSave(List<OperAdtLogDto> operAdtLogList) {
@@ -52,7 +63,7 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
 
         QSqlOperAdtLog qSqlOperAdtLog = QSqlOperAdtLog.operAdtLog;
         SQLInsertClause insertClause = sqlQueryFactory.insert(qSqlOperAdtLog);
-        //设置insert为一条批量语句，而非多条insert语句
+        //设置insert为一条批量语句，而非多条insert语句，可减少对数据库的IO操作，提高性能
         insertClause.setBatchToBulk(true);
 
         for (OperAdtLogDto operAdtLog : operAdtLogList){
