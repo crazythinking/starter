@@ -23,7 +23,7 @@ import java.sql.Connection;
 import java.util.Map;
 
 /**
- * Jdbc4QuerydslContextConfig
+ * QueryDSL-SQL基于JDBC的配置，支持多数据源
  *
  * @author luxue
  */

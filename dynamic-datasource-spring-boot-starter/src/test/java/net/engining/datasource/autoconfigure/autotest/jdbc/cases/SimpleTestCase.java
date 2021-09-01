@@ -71,6 +71,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
                     )
             );
         });
+
+        operationLogService.asyncTest();
     }
 
 

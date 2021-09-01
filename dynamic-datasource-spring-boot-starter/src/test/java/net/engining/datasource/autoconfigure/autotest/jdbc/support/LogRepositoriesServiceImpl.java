@@ -2,13 +2,13 @@ package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
 import com.google.common.collect.Lists;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
+import net.engining.datasource.autoconfigure.support.TransactionalEvent;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.pg.support.utils.DateUtilsExt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +31,18 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     @Autowired
     OperAdtLogJdbcDao operAdtLogJdbcDao;
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogs) {
-        return extractedSave(operAdtLogs);
+        long n = extractedSave(operAdtLogs);
+        //发布事件
+        for (OperAdtLogDto operAdtLogDto : operAdtLogs){
+            applicationContext.publishEvent(new TransactionalEvent<>(operAdtLogDto));
+        }
+        return n;
     }
 
     private int extractedSave(List<OperAdtLogDto> operAdtLogs) {

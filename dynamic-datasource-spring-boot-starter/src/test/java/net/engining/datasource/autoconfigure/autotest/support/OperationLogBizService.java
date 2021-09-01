@@ -3,7 +3,10 @@ package net.engining.datasource.autoconfigure.autotest.support;
 import com.google.common.collect.Lists;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.pg.support.utils.DateUtilsExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,11 +17,19 @@ import java.util.List;
  **/
 @Service
 public class OperationLogBizService {
-
+    /**
+     * logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationLogBizService.class);
     @Autowired
     private LogRepositoriesService logRepositoriesService;
 
-    public long dsTest(int id){
+    @Async
+    public void asyncTest() {
+        LOGGER.debug("async test");
+    }
+
+    public long dsTest(int id) {
         OperAdtLogDto operAdtLog = new OperAdtLogDto();
         operAdtLog.setId(id);
         operAdtLog.setLoginId("luxue");
@@ -27,14 +38,14 @@ public class OperationLogBizService {
         operAdtLog.setOperTime(DateUtilsExt.localDateTimeToDate(LocalDateTime.now()));
 
         OperAdtLogDto operAdtLog2 = new OperAdtLogDto();
-        operAdtLog2.setId(id+1);
+        operAdtLog2.setId(id + 1);
         operAdtLog2.setLoginId("luxue2");
         operAdtLog2.setRequestUri("/echo/mvc222");
         operAdtLog2.setRequestBody("{key1:222}");
         operAdtLog2.setOperTime(DateUtilsExt.localDateTimeToDate(LocalDateTime.now()));
 
-        logRepositoriesService.save(Lists.newArrayList(operAdtLog,operAdtLog2));
-        logRepositoriesService.save2Ck(Lists.newArrayList(operAdtLog,operAdtLog2));
+        logRepositoriesService.save(Lists.newArrayList(operAdtLog, operAdtLog2));
+        logRepositoriesService.save2Ck(Lists.newArrayList(operAdtLog, operAdtLog2));
         return 0;
     }
 

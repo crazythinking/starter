@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import net.engining.gm.config.AsyncExtContextConfig;
+import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
@@ -42,13 +44,15 @@ import java.util.Map;
 @AutoConfigureBefore(DynamicDruidDataSourceAutoConfigure.class)
 @EnableConfigurationProperties({
         DataSourceProperties.class,
-        DynamicHikariDataSourceProperties.class
+        DynamicHikariDataSourceProperties.class,
+        GmCommonProperties.class,
 })
 @Import({
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class
+        TransactionManagementContextConfig.class,
+        AsyncExtContextConfig.class
 })
 public class DynamicDataSourceAutoConfigure {
     /** logger */

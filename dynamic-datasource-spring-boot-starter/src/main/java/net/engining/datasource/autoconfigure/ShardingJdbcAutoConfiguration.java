@@ -3,6 +3,8 @@ package net.engining.datasource.autoconfigure;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.engining.gm.config.AsyncExtContextConfig;
+import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.shardingsphere.core.yaml.swapper.MasterSlaveRuleConfigurationYamlSwapper;
@@ -73,7 +75,8 @@ import java.util.Map;
         SpringBootMasterSlaveRuleConfigurationProperties.class,
         SpringBootEncryptRuleConfigurationProperties.class,
         SpringBootPropertiesConfigurationProperties.class,
-        SpringBootShadowRuleConfigurationProperties.class
+        SpringBootShadowRuleConfigurationProperties.class,
+        GmCommonProperties.class
 })
 @ConditionalOnProperty(prefix = "spring.shardingsphere", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
@@ -81,7 +84,8 @@ import java.util.Map;
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class
+        TransactionManagementContextConfig.class,
+        AsyncExtContextConfig.class
 })
 public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 

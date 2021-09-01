@@ -11,6 +11,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import net.engining.gm.config.AsyncExtContextConfig;
+import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DruidDataSourceWrapper;
 import net.engining.pg.db.props.DynamicDruidDataSourceProperties;
 import net.engining.pg.support.core.exception.ErrorCode;
@@ -50,7 +52,10 @@ import java.util.Map;
 @ConditionalOnProperty(prefix = "pg.datasource.dynamic.druid", name = "enabled", havingValue = "true")
 @AutoConfigureBefore(DruidDataSourceAutoConfigure.class)
 @EnableConfigurationProperties({
-        DruidStatProperties.class, DataSourceProperties.class, DynamicDruidDataSourceProperties.class
+        DruidStatProperties.class,
+        DataSourceProperties.class,
+        DynamicDruidDataSourceProperties.class,
+        GmCommonProperties.class,
 })
 @Import({
         DruidSpringAopConfiguration.class,
@@ -60,7 +65,8 @@ import java.util.Map;
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class
+        TransactionManagementContextConfig.class,
+        AsyncExtContextConfig.class
 })
 public class DynamicDruidDataSourceAutoConfigure {
     /** logger */
