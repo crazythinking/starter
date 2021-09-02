@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure;
+package net.engining.datasource.autoconfigure.support;
 
 import org.h2.tools.Server;
 import org.springframework.context.annotation.Bean;

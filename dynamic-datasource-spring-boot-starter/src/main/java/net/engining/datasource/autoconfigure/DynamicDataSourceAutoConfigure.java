@@ -5,6 +5,11 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import net.engining.datasource.autoconfigure.support.DataSourceContextConfig;
+import net.engining.datasource.autoconfigure.support.JPAContextConfig;
+import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
+import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
+import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.config.AsyncExtContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
@@ -79,7 +84,7 @@ public class DynamicDataSourceAutoConfigure {
 
         // 装配默认DataSource
         HikariConfig defaultCf = dynamicHikariDataSourceProperties.getDefaultCf();
-        HikariDataSource defaultDataSource = createDataSource(basicProperties, defaultCf);
+        HikariDataSource defaultDataSource = Utils.createDataSource(basicProperties, defaultCf);
         populateDataSourceTable("default", defaultCf, defaultDataSource);
         dynamicRoutingDataSource.setDefaultTargetDataSource(defaultDataSource);
 
@@ -87,7 +92,7 @@ public class DynamicDataSourceAutoConfigure {
         Map<String, HikariConfig> cfMap = dynamicHikariDataSourceProperties.getCfMap();
         if(ValidateUtilExt.isNotNullOrEmpty(cfMap)) {
             cfMap.forEach((s, config) -> {
-                HikariDataSource dataSource = createDataSource(basicProperties, config);
+                HikariDataSource dataSource = Utils.createDataSource(basicProperties, config);
                 dataSourceMap.put(s, dataSource);
                 populateDataSourceTable(s, config, dataSource);
 
@@ -104,26 +109,4 @@ public class DynamicDataSourceAutoConfigure {
         Utils.populateDataSourceTable(s, dataSource, config.getDriverClassName(), dataSourceTable);
     }
 
-    private HikariDataSource createDataSource(DataSourceProperties basicProperties, HikariConfig config) {
-
-        HikariDataSource dataSource = new HikariDataSource(config);
-        if (ValidateUtilExt.isNullOrEmpty(dataSource.getJdbcUrl())){
-            dataSource.setJdbcUrl(basicProperties.getUrl());
-        }
-        if (ValidateUtilExt.isNullOrEmpty(dataSource.getUsername())){
-            dataSource.setUsername(basicProperties.getUsername());
-        }
-        if (ValidateUtilExt.isNullOrEmpty(dataSource.getPassword())){
-            dataSource.setPassword(basicProperties.getPassword());
-        }
-        if (ValidateUtilExt.isNullOrEmpty(dataSource.getDriverClassName())){
-            dataSource.setDriverClassName(basicProperties.determineDriverClassName());
-        }
-
-        if (ValidateUtilExt.isNotNullOrEmpty(basicProperties.getName())) {
-            dataSource.setPoolName(basicProperties.getName());
-        }
-
-        return dataSource;
-    }
 }

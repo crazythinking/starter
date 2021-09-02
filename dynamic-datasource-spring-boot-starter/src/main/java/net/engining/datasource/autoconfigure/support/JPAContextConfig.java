@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure;
+package net.engining.datasource.autoconfigure.support;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

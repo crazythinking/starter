@@ -40,7 +40,7 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
     @Autowired
-    OperAdtLogJpaRepository combinedOperAdtLogRepository;
+    OperAdtLogJpaRepository operAdtLogJpaRepository;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -115,7 +115,7 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
 
     @Override
     public List<OperAdtLogProjection> fetchByLogin(String login){
-        return combinedOperAdtLogRepository.findByLoginId(
+        return operAdtLogJpaRepository.findByLoginId(
                 login,
                 OperAdtLogProjection.class
         );

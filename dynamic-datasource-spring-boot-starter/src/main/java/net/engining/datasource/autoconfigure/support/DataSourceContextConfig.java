@@ -1,4 +1,4 @@
-package net.engining.datasource.autoconfigure;
+package net.engining.datasource.autoconfigure.support;
 
 import net.engining.gm.aop.SpecifiedDataSourceHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-	<name>dynamic datasource starter</name>
+	<name>dynamic datasource starter - 底层Connection基于JDBC类型的数据库支持组件</name>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -51,6 +51,24 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>${druid.spring.version}</version>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<optional>true</optional>
 		</dependency>
 
