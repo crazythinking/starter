@@ -73,14 +73,19 @@ public class DynamicDataSourceAutoConfigure {
         return dataSourceTable;
     }
 
+    Map<Object, Object> dataSourceMap = Maps.newHashMap();
+
+    @Bean("dataSourceMap")
+    public Map<Object, Object> getDataSourceMap() {
+        return dataSourceMap;
+    }
+
     @Bean
     @Primary
     @ConditionalOnMissingBean
     public DataSource dataSource(DynamicHikariDataSourceProperties dynamicHikariDataSourceProperties) {
         log.info("starting init dynamic datasource......");
         DynamicRoutingDataSource dynamicRoutingDataSource = new DynamicRoutingDataSource();
-
-        Map<Object, Object> dataSourceMap = Maps.newHashMap();
 
         // 装配默认DataSource
         HikariConfig defaultCf = dynamicHikariDataSourceProperties.getDefaultCf();
@@ -99,7 +104,6 @@ public class DynamicDataSourceAutoConfigure {
             });
         }
         dynamicRoutingDataSource.setTargetDataSources(dataSourceMap);
-
         dynamicRoutingDataSource.afterPropertiesSet();
 
         return dynamicRoutingDataSource;

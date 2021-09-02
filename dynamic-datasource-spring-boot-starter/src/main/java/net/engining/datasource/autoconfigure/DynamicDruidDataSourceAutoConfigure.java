@@ -77,8 +77,6 @@ public class DynamicDruidDataSourceAutoConfigure {
     /** logger */
     private static final Logger log = LoggerFactory.getLogger(DynamicDruidDataSourceAutoConfigure.class);
 
-    Map<Object, Object> dataSourceMap;
-
     Table<String, DbType, DataSource> dataSourceTable = HashBasedTable.create();
 
     @Bean("multipleDataSourceTable")
@@ -86,13 +84,11 @@ public class DynamicDruidDataSourceAutoConfigure {
         return dataSourceTable;
     }
 
+    Map<Object, Object> dataSourceMap = Maps.newHashMap();
+
     @Bean("dataSourceMap")
-    public Map<Database, DataSource> getDataSourceMap() {
-        Map<Database, DataSource> map = Maps.newHashMap();
-        for (Object key : dataSourceMap.keySet()){
-            DataSource dataSource = (DataSource) dataSourceMap.get(key);
-        }
-        return map;
+    public Map<Object, Object> getDataSourceMap() {
+        return dataSourceMap;
     }
 
     @Bean
@@ -101,8 +97,6 @@ public class DynamicDruidDataSourceAutoConfigure {
     public DataSource dataSource(DynamicDruidDataSourceProperties dynamicDruidDataSourceWrapper) {
         log.info("starting init dynamic datasource......");
         DynamicRoutingDataSource dynamicRoutingDataSource = new DynamicRoutingDataSource();
-
-        Map<Object, Object> dataSourceMap = Maps.newHashMap();
 
         // 装配默认DataSource
         DruidDataSourceWrapper defaultDs = dynamicDruidDataSourceWrapper.getDefaultDs();
@@ -136,7 +130,6 @@ public class DynamicDruidDataSourceAutoConfigure {
             populateDataSourceTable(s, druidDataSourceWrapper);
         });
         dynamicRoutingDataSource.setTargetDataSources(dataSourceMap);
-
         dynamicRoutingDataSource.afterPropertiesSet();
 
         return dynamicRoutingDataSource;

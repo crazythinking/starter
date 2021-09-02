@@ -104,7 +104,12 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 
     private final SpringBootPropertiesConfigurationProperties props;
 
-    private final Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
+    Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
+
+    @Bean("dataSourceMap")
+    public Map<String, DataSource> getDataSourceMap() {
+        return dataSourceMap;
+    }
 
     private final String jndiName = "jndi-name";
 
