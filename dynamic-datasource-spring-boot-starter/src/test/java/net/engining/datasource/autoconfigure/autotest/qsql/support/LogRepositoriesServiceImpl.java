@@ -116,6 +116,11 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     }
 
     @Override
+    public <T> List<T> fetchByLogin4Ten(String login) {
+        return null;
+    }
+
+    @Override
     public List<OperAdtLogProjection> fetchByLogin(String login){
         return operAdtLogJpaRepository.findByLoginId(
                 login,

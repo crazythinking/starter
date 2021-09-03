@@ -14,6 +14,15 @@ import net.engining.pg.support.core.exception.ErrorMessageException;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import org.apache.shardingsphere.core.yaml.swapper.MasterSlaveRuleConfigurationYamlSwapper;
+import org.apache.shardingsphere.core.yaml.swapper.ShardingRuleConfigurationYamlSwapper;
+import org.apache.shardingsphere.shardingjdbc.api.MasterSlaveDataSourceFactory;
+import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
+import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
+import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.ShardingDataSource;
+import org.apache.shardingsphere.shardingjdbc.spring.boot.common.SpringBootPropertiesConfigurationProperties;
+import org.apache.shardingsphere.shardingjdbc.spring.boot.masterslave.SpringBootMasterSlaveRuleConfigurationProperties;
+import org.apache.shardingsphere.shardingjdbc.spring.boot.sharding.SpringBootShardingRuleConfigurationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +30,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.sql.DataSource;
@@ -36,6 +44,7 @@ import java.util.Map;
  * @date : 2021-09-01 14:31
  * @since :
  **/
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RestControllerEndpoint(id = "dynamicDataSource")
 public class DynamicDataSourceEndpoint {
     /** logger */
@@ -48,32 +57,27 @@ public class DynamicDataSourceEndpoint {
     @Autowired
     DataSourceProperties basicProperties;
 
+    @Autowired
     DataSource dataSource;
 
+    @Autowired
+    @Qualifier("multipleDataSourceTable")
     Table<String, DbType, DataSource> dataSourceTable;
 
+    @Autowired
+    @Qualifier("sqlQueryFactoryMap")
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
-    Map<Object, Object> dataSourceMap;
-
     @Autowired
-    public DynamicDataSourceEndpoint(DataSource dataSource,
-                                     @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> dataSourceTable,
-                                     @Qualifier("sqlQueryFactoryMap") Map<String, SQLQueryFactory> sqlQueryFactoryMap,
-                                     @Qualifier("dataSourceMap") Map<Object, Object> dataSourceMap
-    ) {
-        this.dataSource = dataSource;
-        this.dataSourceTable = dataSourceTable;
-        this.sqlQueryFactoryMap = sqlQueryFactoryMap;
-        this.dataSourceMap = dataSourceMap;
-    }
+    @Qualifier("dataSourceMap")
+    Map<Object, Object> dataSourceMap;
 
     /**
      * 调用此端点添加数据源时，需要确保key相关联的DataSource配置已添加到ApplicationContext内
      * @param key DataSource配置对应的key
      */
     @PostMapping("/add")
-    public void addDataSource(String key){
+    public void addDataSource(String key) {
         String hikariEnable = environment.getProperty("pg.datasource.dynamic.hikari.enabled");
         String druidEnable = environment.getProperty("pg.datasource.dynamic.druid.enabled");
         String shardingsphereEnable = environment.getProperty("spring.shardingsphere.enabled");
@@ -140,8 +144,10 @@ public class DynamicDataSourceEndpoint {
             ((DynamicRoutingDataSource) dataSource).setTargetDataSources(this.dataSourceMap);
             ((DynamicRoutingDataSource) dataSource).afterPropertiesSet();
         }
-        //TODO shardingsphere
-
+        else {
+            //shardingsphere 本身的实现不支持动态更新的入口，需要找到其DataSource IOC依赖的Beans
+            LOGGER.warn("ShardingSphere DataSource 不支持动态添加");
+        }
 
     }
 

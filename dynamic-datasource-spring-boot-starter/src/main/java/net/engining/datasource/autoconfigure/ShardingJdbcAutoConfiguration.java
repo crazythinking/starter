@@ -106,7 +106,7 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 
     Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
 
-    @Bean("dataSourceMap")
+    @Bean("shardingDataSourceMap")
     public Map<String, DataSource> getDataSourceMap() {
         return dataSourceMap;
     }

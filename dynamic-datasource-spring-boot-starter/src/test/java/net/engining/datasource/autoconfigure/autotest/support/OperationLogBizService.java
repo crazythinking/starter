@@ -2,6 +2,7 @@ package net.engining.datasource.autoconfigure.autotest.support;
 
 import com.google.common.collect.Lists;
 import net.engining.gm.entity.dto.OperAdtLogDto;
+import net.engining.pg.support.core.context.DataSourceContextHolder;
 import net.engining.pg.support.utils.DateUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,13 @@ public class OperationLogBizService {
 
     public OperAdtLogDto fetch(Integer id) {
         return logRepositoriesService.selectByPrimeryKey(id);
+    }
+
+    public <T> List<T> fetch4Ten(String loginId) {
+        DataSourceContextHolder.setCurrentDataSourceKey("ten");
+        List<T> list = logRepositoriesService.fetchByLogin4Ten(loginId);
+        DataSourceContextHolder.removeCurrentDataSourceKey();
+        return list;
     }
 
     public <T> List<T> fetch(String loginId) {

@@ -1,12 +1,10 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
 import com.google.common.collect.Table;
-import net.engining.datasource.autoconfigure.support.AbstractSingleTableJdbcDao;
 import net.engining.pg.support.db.DbType;
-import net.engining.pg.support.utils.DateUtilsExt;
+import net.engining.pg.support.db.jdbc.AbstractSingleTableJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -22,30 +20,10 @@ import java.util.List;
 @Component
 public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
 
-    public static final RowMapper<OperAdtLog> ROWMAPPER = (rs, rowNum) -> new OperAdtLog(
-            rs.getInt("ID")
-            , rs.getString("LOGIN_ID")
-            , rs.getString("REQUEST_URI")
-            , rs.getString("REQUEST_BODY")
-            , DateUtilsExt.dateToLocalDateTime(rs.getTimestamp("OPER_TIME"))
-            , rs.getInt("JPA_VERSION")
-    );
-
     @Autowired
     public OperAdtLogJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                              @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> multipleDataSourceTable) {
         super(namedParameterJdbcTemplate, multipleDataSourceTable);
-    }
-
-    public Integer insertAndReturnKey(OperAdtLog entity) {
-        return getInsert().executeAndReturnKey(new MapSqlParameterSource()
-                .addValue("ID", entity.getId())
-                .addValue("LOGIN_ID", entity.getLoginId())
-                .addValue("REQUEST_URI", entity.getRequestUri())
-                .addValue("REQUEST_BODY", entity.getRequestBody())
-                .addValue("OPER_TIME", entity.getOperTime())
-                .addValue("JPA_VERSION", entity.getJpaVersion())
-        ).intValue();
     }
 
     public void insertBatch(List<OperAdtLog> entitys) {
@@ -61,7 +39,7 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
                     .addValue("JPA_VERSION", entity.getJpaVersion())
             ;
         }
-            getInsert().executeBatch(batch);
+        getInsert().executeBatch(batch);
 
     }
 

@@ -5,6 +5,7 @@ import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesSer
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
+import net.engining.pg.support.core.context.DataSourceContextHolder;
 import net.engining.pg.support.utils.DateUtilsExt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,11 +78,22 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
         return operAdtLogDto;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<OperAdtLogExtDto> fetchByLogin4Ten(String login) {
+        //DataSourceContextHolder.setCurrentDataSourceKey("ten");
+        List<OperAdtLogExtDto> operAdtLogExtDtos = operAdtLogJdbcRepository.findByLoginId(login);
+        //DataSourceContextHolder.removeCurrentDataSourceKey();
+        return operAdtLogExtDtos;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public List<OperAdtLogExtDto> fetchByLogin(String login) {
         return operAdtLogJdbcRepository.findByLoginId(login);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SpecifiedDataSource("one")
     public List<OperAdtLogExtDto> fetchByLogin4Ck(String login) {
