@@ -1,9 +1,12 @@
 package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.gm.aop.SpecifiedDataSource;
+import net.engining.gm.entity.model.qsql.QSqlOperAdtLog;
+import net.engining.pg.support.core.context.OrganizationContextHolder;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,19 @@ public class DbService {
 
     @Autowired
     OperAdtLogJpaRepository operAdtLogJpaRepository;
+
+    @Transactional(readOnly = true)
+    public PgIdTestEnt1 fetch(Long snowFlakeId){
+        OrganizationContextHolder.enableOrgFilter(em);
+        QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
+        PgIdTestEnt1 pgIdTestEnt1 = new JPAQueryFactory(em)
+                .selectFrom(qPgIdTestEnt1)
+                .where(qPgIdTestEnt1.snowFlakeId.eq(snowFlakeId))
+                .fetchOne();
+
+        OrganizationContextHolder.disableOrgFilter(em);
+        return pgIdTestEnt1;
+    }
 
     @SpecifiedDataSource(value = "one")
     @Transactional(rollbackFor = Exception.class)
@@ -69,17 +85,5 @@ public class DbService {
 
         return ids;
     }
-
-    public OperAdtLogProjection fetchByLogin(String login){
-        List<OperAdtLogProjection> operAdtLogDtos = operAdtLogJpaRepository.findByLoginId(
-                login,
-                OperAdtLogProjection.class
-        );
-        if (ValidateUtilExt.isNullOrEmpty(operAdtLogDtos)){
-            return null;
-        }
-        return operAdtLogDtos.iterator().next();
-    }
-
 
 }

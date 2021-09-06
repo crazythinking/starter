@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -48,6 +49,10 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assert.notNull(pgIdTestEnt1, "has record by datasource default");
 
         Assert.isNull(this.testAssertDataContext.get("primerykey4one"), "has not record by datasource one");
+
+        Assert.isNull(
+                dbService.fetch((Long)this.testAssertDataContext.get("primerykey4default")),
+                "No entity should be found for query");
     }
 
     @Override
@@ -60,7 +65,6 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assertions.assertThatThrownBy(() -> callDbOpt4DataSourceOne4ThrowException())
                 .isInstanceOf(InvalidDataAccessResourceUsageException.class);
 
-        dbService.fetchByLogin("luxue");
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{
