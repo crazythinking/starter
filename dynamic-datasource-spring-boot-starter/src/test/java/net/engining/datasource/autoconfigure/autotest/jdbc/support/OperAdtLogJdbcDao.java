@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
 import com.google.common.collect.Table;
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.jdbc.AbstractSingleTableJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,12 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
         for (int i = 0; i < entitys.size(); i++) {
             OperAdtLog entity = entitys.get(i);
             batch[i] = new MapSqlParameterSource()
-                    .addValue("ID", entity.getId())
-                    .addValue("LOGIN_ID", entity.getLoginId())
-                    .addValue("REQUEST_URI", entity.getRequestUri())
-                    .addValue("REQUEST_BODY", entity.getRequestBody())
-                    .addValue("OPER_TIME", entity.getOperTime())
-                    .addValue("JPA_VERSION", entity.getJpaVersion())
+                    .addValue(OperAdtLog.P_ID, entity.getId())
+                    .addValue(OperAdtLog.P_LOGIN_ID, entity.getLoginId())
+                    .addValue(OperAdtLog.P_REQUEST_URI, entity.getRequestUri())
+                    .addValue(OperAdtLog.P_REQUEST_BODY, entity.getRequestBody())
+                    .addValue(OperAdtLog.P_OPER_TIME, entity.getOperTime())
+                    .addValue(OperAdtLog.P_JPA_VERSION, 0)
             ;
         }
         getInsert().executeBatch(batch);

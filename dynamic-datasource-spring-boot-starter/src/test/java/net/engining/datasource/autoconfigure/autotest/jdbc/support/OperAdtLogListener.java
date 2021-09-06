@@ -1,5 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.relational.core.conversion.AggregateChange;

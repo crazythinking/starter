@@ -1,9 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.context.event.EventListener;
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

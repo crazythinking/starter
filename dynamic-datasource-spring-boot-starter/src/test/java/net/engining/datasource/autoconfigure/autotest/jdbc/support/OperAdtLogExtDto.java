@@ -3,6 +3,7 @@ package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 import cn.hutool.core.util.HashUtil;
 import com.google.common.base.Joiner;
 import net.engining.gm.entity.dto.OperAdtLogDto;
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -31,17 +32,17 @@ public class OperAdtLogExtDto extends OperAdtLogDto {
         @Override
         public OperAdtLogExtDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             OperAdtLogExtDto operAdtLogExtDto = new OperAdtLogExtDto();
-            operAdtLogExtDto.setId(rs.getInt("ID"));
-            operAdtLogExtDto.setLoginId(rs.getString("LOGIN_ID"));
-            operAdtLogExtDto.setRequestUri(rs.getString("REQUEST_URI"));
-            operAdtLogExtDto.setOperTime(rs.getDate("OPER_TIME"));
-            operAdtLogExtDto.setRequestBody(rs.getString("REQUEST_BODY"));
+            operAdtLogExtDto.setId(rs.getInt(OperAdtLog.P_ID));
+            operAdtLogExtDto.setLoginId(rs.getString(OperAdtLog.P_LOGIN_ID));
+            operAdtLogExtDto.setRequestUri(rs.getString(OperAdtLog.P_REQUEST_URI));
+            operAdtLogExtDto.setOperTime(rs.getDate(OperAdtLog.P_OPER_TIME));
+            operAdtLogExtDto.setRequestBody(rs.getString(OperAdtLog.P_REQUEST_BODY));
             operAdtLogExtDto.setHashedRequestBody(
                     String.valueOf(
                             HashUtil.tianlHash(
                                     Joiner.on("|").join(
-                                            rs.getString("REQUEST_URI"),
-                                            rs.getString("REQUEST_BODY"))
+                                            rs.getString(OperAdtLog.P_REQUEST_URI),
+                                            rs.getString(OperAdtLog.P_REQUEST_BODY))
                             )
                     )
             );

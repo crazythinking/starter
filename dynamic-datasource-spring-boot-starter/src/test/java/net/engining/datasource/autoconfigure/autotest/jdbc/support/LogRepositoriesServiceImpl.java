@@ -5,8 +5,7 @@ import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesSer
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
-import net.engining.pg.support.core.context.DataSourceContextHolder;
-import net.engining.pg.support.utils.DateUtilsExt;
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -49,14 +48,12 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     private int extractedSave(List<OperAdtLogDto> operAdtLogs) {
         List<OperAdtLog> entitys = Lists.newArrayList();
         operAdtLogs.forEach(operAdtLogDto -> {
-            OperAdtLog entity = new OperAdtLog(
-                    operAdtLogDto.getId(),
-                    operAdtLogDto.getLoginId(),
-                    operAdtLogDto.getRequestUri(),
-                    operAdtLogDto.getRequestBody(),
-                    DateUtilsExt.dateToLocalDateTime(operAdtLogDto.getOperTime()),
-                    0
-            );
+            OperAdtLog entity = new OperAdtLog();
+            entity.setId(operAdtLogDto.getId());
+            entity.setLoginId(operAdtLogDto.getLoginId());
+            entity.setRequestUri(operAdtLogDto.getRequestUri());
+            entity.setRequestBody(operAdtLogDto.getRequestBody());
+            entity.setOperTime(operAdtLogDto.getOperTime());
             entitys.add(entity);
         });
         operAdtLogJdbcDao.insertBatch(entitys);
