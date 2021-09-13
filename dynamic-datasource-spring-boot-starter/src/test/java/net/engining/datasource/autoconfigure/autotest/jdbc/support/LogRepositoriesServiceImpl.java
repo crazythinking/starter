@@ -1,5 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
+import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Lists;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +36,24 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     @Autowired
     ApplicationContext applicationContext;
 
+    @Autowired
+    PgKeyContextJdbcRepository pgKeyContextJdbcRepository;
+
+    @Transactional(rollbackFor = Exception.class)
+    public long save1() {
+        PgKeyContext pgKeyContext = new PgKeyContext();
+        pgKeyContext.setPgKeyContextKey(new PgKeyContextKey(RandomUtil.randomInt(), RandomUtil.randomInt()));
+        pgKeyContext.setSetupDate(new Date());
+        pgKeyContext.setJpaVersion(0);
+        pgKeyContextJdbcRepository.save(pgKeyContext);
+        return 0;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogs) {
         long n = extractedSave(operAdtLogs);
+        save1();
         //发布事件
         for (OperAdtLogDto operAdtLogDto : operAdtLogs){
             applicationContext.publishEvent(new TransactionalEvent<>(operAdtLogDto));
