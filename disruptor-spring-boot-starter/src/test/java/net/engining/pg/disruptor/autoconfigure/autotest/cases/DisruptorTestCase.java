@@ -5,6 +5,7 @@ import net.engining.pg.disruptor.DisruptorTemplate;
 import net.engining.pg.disruptor.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.pg.disruptor.event.AbstractDisruptorEvent;
 import net.engining.pg.disruptor.event.DisruptorApplicationEvent;
+import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.util.DisruptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class DisruptorTestCase extends AbstractTestCaseTemplate {
     ApplicationContext applicationContext;
 
     @Autowired
-    Map<String, Disruptor<AbstractDisruptorEvent>> disruptors;
+    Map<String, Disruptor<DisruptorBizDataEvent<?>>> disruptors;
 
     @Override
     public void initTestData() throws Exception {
@@ -49,12 +50,14 @@ public class DisruptorTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws Exception {
+        //通过 spring application event 机制发布event；由disruptorApplicationEventListener进行监听；
         //DisruptorApplicationEvent<String> event = (DisruptorApplicationEvent<String>) this.testIncomeDataContext.get("event");
         //for (int i = 0; i < 10; i++) {
         //    event.setKey(StringUtils.substring(event.getKey(), 0, event.getKey().length()-1) + i);
         //    applicationContext.publishEvent(event);
         //}
 
+        //直接通过bizDataEventDisruptorTemplate发布event给Disruptor
         DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
         event2.setTopicKey(DisruptorUtils.topicKey("TestCase-Event2", ExecutionMode.SerialChain));
         event2.setKey("key1");

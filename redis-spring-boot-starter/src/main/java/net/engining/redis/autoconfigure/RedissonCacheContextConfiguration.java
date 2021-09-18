@@ -2,7 +2,7 @@ package net.engining.redis.autoconfigure;
 
 import cn.hutool.core.util.ArrayUtil;
 import net.engining.pg.config.RedisCacheContextConfig;
-import net.engining.pg.config.RedisConfigUtils;
+import net.engining.pg.config.support.RedisConfigUtils;
 import net.engining.pg.props.CommonProperties;
 import net.engining.pg.redis.props.CacheProperties;
 import net.engining.pg.redis.props.RedissonCacheProperties;

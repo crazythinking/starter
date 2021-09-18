@@ -10,8 +10,9 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import net.engining.pg.disruptor.DisruptorTemplate;
-import net.engining.pg.disruptor.event.AbstractDisruptorEvent;
 import net.engining.pg.disruptor.event.DisruptorApplicationEvent;
+import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
+import net.engining.pg.disruptor.event.DisruptorStartedEvent;
 import net.engining.pg.disruptor.event.handler.AbstractGroupedEventHandler;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.event.translator.BizDataEventOneArgTranslator;
@@ -44,6 +45,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author Eric Lu
  */
+@SuppressWarnings("rawtypes")
 @Configuration
 @ConditionalOnClass({Disruptor.class})
 @ConditionalOnProperty(prefix = DisruptorProperties.PREFIX, value = "enabled", havingValue = "true")
@@ -71,7 +73,7 @@ public class DisruptorAutoConfiguration {
     }
 
     /**
-     * 定义线程工厂
+     * 定义线程工厂：默认
      */
     @Bean(DEFAULT_DISRUPTOR_THREAD_FACTORY)
     @ConditionalOnMissingBean
@@ -89,28 +91,29 @@ public class DisruptorAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public EventFactory<AbstractDisruptorEvent> eventFactory() {
+    public EventFactory<DisruptorBizDataEvent> eventFactory() {
         return new DisruptorBizDataEventFactory();
     }
 
     @Bean(GROUPED_DISRUPTOR_HANDLERS)
-    public Map<String, Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>>> groupedDisruptorHandlers() {
+    public Map<String, Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>>> groupedDisruptorHandlers() {
 
         // key作为分组键
-        Map<String, Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>>> groupedHandlers = Maps.newHashMap();
-        // 所有实现DisruptorHandler的实例
+        Map<String, Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>>> groupedHandlers = Maps.newHashMap();
+        // 所有实现EventHandler的实例
         Map<String, EventHandler> beansOfType = applicationContext.getBeansOfType(EventHandler.class);
 
         if (ValidateUtilExt.isNotNullOrEmpty(beansOfType)) {
             //index为key, 按key自动排序
-            Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>> gpHandlersTreeMap;
+            Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>> gpHandlersTreeMap;
             //index相同的handlers
-            List<AbstractGroupedEventHandler<AbstractDisruptorEvent>> gpHandlers;
+            List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>> gpHandlers;
             for (EventHandler disruptorHandler : beansOfType.values()) {
                 //按AbstractNameableEventHandler的GroupKey属性分组
                 if (disruptorHandler instanceof AbstractGroupedEventHandler) {
-                    AbstractGroupedEventHandler<AbstractDisruptorEvent> gpHandler
-                            = (AbstractGroupedEventHandler<AbstractDisruptorEvent>) disruptorHandler;
+                    AbstractGroupedEventHandler<DisruptorBizDataEvent<?>> gpHandler
+                            = (AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>) disruptorHandler;
+                    //获取handler的TopicKey作为groupedHandlers的Key：“groupName-mode”
                     String gpkey = gpHandler.getTopicKey();
                     if (groupedHandlers.containsKey(gpkey)) {
                         gpHandlersTreeMap = groupedHandlers.get(gpkey);
@@ -136,8 +139,8 @@ public class DisruptorAutoConfiguration {
 
             // groupedHandlers内每个以listIndex为子组的Handler进行排序
             // 注意：依赖AbstractOrderedEventHandler并设置order
-            for (Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>> mps : groupedHandlers.values()) {
-                for (List<AbstractGroupedEventHandler<AbstractDisruptorEvent>> handlers : mps.values()){
+            for (Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>> mps : groupedHandlers.values()) {
+                for (List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>> handlers : mps.values()){
                     handlers.sort(new OrderComparator());
                 }
             }
@@ -148,25 +151,25 @@ public class DisruptorAutoConfiguration {
     }
 
     @Bean
-    public Map<String, Disruptor<AbstractDisruptorEvent>> disruptors(
+    public Map<String, Disruptor<DisruptorBizDataEvent<?>>> disruptors(
             DisruptorProperties properties,
             WaitStrategy waitStrategy,
             @Qualifier(DEFAULT_DISRUPTOR_THREAD_FACTORY) ThreadFactory threadFactory,
-            EventFactory<AbstractDisruptorEvent> eventFactory,
+            EventFactory<DisruptorBizDataEvent> eventFactory,
             @Qualifier(GROUPED_DISRUPTOR_HANDLERS)
-                    Map<String, Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>>> handlers){
+                    Map<String, Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>>> handlers){
 
-        Map<String, Disruptor<AbstractDisruptorEvent>> disruptors = Maps.newHashMap();
+        Map<String, Disruptor<DisruptorBizDataEvent<?>>> disruptors = Maps.newHashMap();
 
         for (String key : handlers.keySet()) {
-            Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>> handlersMap = handlers.get(key);
+            Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>> handlersMap = handlers.get(key);
             String mode = StringUtils.substringAfterLast(key, "-");
             disruptors.put(key, disruptor(properties, waitStrategy, threadFactory, eventFactory, mode, handlersMap));
         }
 
         disruptors.forEach((s, disruptor) -> {
             // 应用退出时，要调用shutdown来清理资源;
-            Runtime.getRuntime().addShutdownHook(new DisruptorShutdownHook(disruptor));
+            Runtime.getRuntime().addShutdownHook(new DisruptorShutdownHook(disruptor, applicationContext));
         });
 
         return disruptors;
@@ -187,17 +190,17 @@ public class DisruptorAutoConfiguration {
      * @param handlersMap   : handler组
      * @return {@link Disruptor} instance
      */
-    private Disruptor<AbstractDisruptorEvent> disruptor(
+    private Disruptor<DisruptorBizDataEvent<?>> disruptor(
             DisruptorProperties properties,
             WaitStrategy waitStrategy,
             ThreadFactory threadFactory,
-            EventFactory<AbstractDisruptorEvent> eventFactory,
+            EventFactory<DisruptorBizDataEvent> eventFactory,
             String mode,
-            Map<Integer, List<AbstractGroupedEventHandler<AbstractDisruptorEvent>>> handlersMap) {
+            Map<Integer, List<AbstractGroupedEventHandler<DisruptorBizDataEvent<?>>>> handlersMap) {
 
-        Disruptor<AbstractDisruptorEvent> disruptor;
+        Disruptor<DisruptorBizDataEvent<?>> disruptor;
         if (properties.isMultiProducer()) {
-            disruptor = new Disruptor<>(
+            disruptor = new Disruptor(
                     eventFactory,
                     properties.getRingBufferSize(),
                     threadFactory,
@@ -205,7 +208,7 @@ public class DisruptorAutoConfiguration {
                     waitStrategy
             );
         } else {
-            disruptor = new Disruptor<>(
+            disruptor = new Disruptor(
                     eventFactory,
                     properties.getRingBufferSize(),
                     threadFactory,
@@ -229,6 +232,8 @@ public class DisruptorAutoConfiguration {
 
         // 启动
         disruptor.start();
+        // 发布启动事件
+        applicationContext.publishEvent(new DisruptorStartedEvent(disruptor));
 
         return disruptor;
 
@@ -242,7 +247,7 @@ public class DisruptorAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public DisruptorTemplate bizDataEventDisruptorTemplate(Map<String, Disruptor<AbstractDisruptorEvent>> disruptors,
+    public DisruptorTemplate bizDataEventDisruptorTemplate(Map<String, Disruptor<DisruptorBizDataEvent>> disruptors,
                                                            @Qualifier(BIZ_DATA_EVENT_ONE_ARG_TRANSLATOR)
                                                                    EventTranslatorOneArg bizDataEventOneArgTranslator) {
         return new DisruptorTemplate(disruptors, bizDataEventOneArgTranslator);
