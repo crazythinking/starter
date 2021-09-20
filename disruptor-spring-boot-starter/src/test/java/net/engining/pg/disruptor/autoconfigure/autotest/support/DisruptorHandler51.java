@@ -22,13 +22,7 @@ public class DisruptorHandler51 extends AbstractMultiSerialChainGroupedEventHand
 
     public DisruptorHandler51(String groupName, int listIndex, int batchSize) {
         super(groupName, listIndex, batchSize);
-    }
-
-    @Override
-    public void setEnabled(DisruptorBizDataEvent<Integer> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
+        super.order = ORDER;
     }
 
     @Override
@@ -46,4 +40,8 @@ public class DisruptorHandler51 extends AbstractMultiSerialChainGroupedEventHand
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<Integer> event) {
+        return "en".equals(event.getTag());
+    }
 }

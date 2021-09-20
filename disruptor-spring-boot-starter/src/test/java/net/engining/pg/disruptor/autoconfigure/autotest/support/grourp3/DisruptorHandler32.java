@@ -1,8 +1,8 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
-import net.engining.pg.disruptor.event.handler.AbstractSerialChainGroupedEventHandler;
+import net.engining.pg.disruptor.event.handler.AbstractDiamondGroupedEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,21 +14,12 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler12 extends AbstractSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
+public class DisruptorHandler32 extends AbstractDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler12.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler32.class);
 
-    private static final int ORDER = 2;
-
-    public DisruptorHandler12(String groupName, int batchSize) {
-        super(groupName, batchSize);
-    }
-
-    @Override
-    public void setEnabled(DisruptorBizDataEvent<Integer> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
+    public DisruptorHandler32(String groupName, int listIndex, int batchSize) {
+        super(groupName, listIndex, batchSize);
     }
 
     @Override
@@ -36,7 +27,7 @@ public class DisruptorHandler12 extends AbstractSerialChainGroupedEventHandler<D
         LOGGER.info(
                 "disruptor event ({}), result={}",
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
-                event.getBizData()+ORDER
+                event.getBizData()+super.getListIndex()
         );
         Thread.sleep(1000);
     }
@@ -46,4 +37,8 @@ public class DisruptorHandler12 extends AbstractSerialChainGroupedEventHandler<D
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<Integer> event) {
+        return "en".equals(event.getTag());
+    }
 }

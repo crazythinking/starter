@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group1;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;

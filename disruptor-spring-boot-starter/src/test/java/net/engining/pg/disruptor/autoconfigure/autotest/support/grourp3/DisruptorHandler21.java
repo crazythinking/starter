@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
@@ -14,21 +14,12 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler22 extends AbstractDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
+public class DisruptorHandler21 extends AbstractDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler22.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler21.class);
 
-    private static final int ORDER = 3;
-
-    public DisruptorHandler22(String groupName, int listIndex, int batchSize) {
+    public DisruptorHandler21(String groupName, int listIndex, int batchSize) {
         super(groupName, listIndex, batchSize);
-    }
-
-    @Override
-    public void setEnabled(DisruptorBizDataEvent<Integer> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
     }
 
     @Override
@@ -36,7 +27,7 @@ public class DisruptorHandler22 extends AbstractDiamondGroupedEventHandler<Disru
         LOGGER.info(
                 "disruptor event ({}), result={}",
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
-                event.getBizData()+ORDER
+                event.getBizData()+super.getListIndex()
         );
         Thread.sleep(1000);
     }
@@ -46,4 +37,8 @@ public class DisruptorHandler22 extends AbstractDiamondGroupedEventHandler<Disru
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<Integer> event) {
+        return "en".equals(event.getTag());
+    }
 }

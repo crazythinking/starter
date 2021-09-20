@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group2;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
@@ -14,22 +14,17 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler11 extends AbstractSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>>{
+public class DisruptorHandler12 extends AbstractSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler11.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler12.class);
 
-    private static final int ORDER = 3;
+    private static final int ORDER = 2;
 
-    public DisruptorHandler11(String groupName, int batchSize) {
+    public DisruptorHandler12(String groupName, int batchSize) {
         super(groupName, batchSize);
+        super.order = ORDER;
     }
 
-    @Override
-    public void setEnabled(DisruptorBizDataEvent<Integer> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
-    }
 
     @Override
     protected void doHandlerInternal(DisruptorBizDataEvent<Integer> event) throws Exception {
@@ -46,4 +41,8 @@ public class DisruptorHandler11 extends AbstractSerialChainGroupedEventHandler<D
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<Integer> event) {
+        return "en".equals(event.getTag());
+    }
 }

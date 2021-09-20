@@ -1,8 +1,8 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group2;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
-import net.engining.pg.disruptor.event.handler.AbstractDiamondGroupedEventHandler;
+import net.engining.pg.disruptor.event.handler.AbstractSerialChainGroupedEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,21 +14,15 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler41 extends AbstractDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
+public class DisruptorHandler13 extends AbstractSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler41.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler13.class);
 
-    private static final int ORDER = 3;
+    private static final int ORDER = 1;
 
-    public DisruptorHandler41(String groupName, int listIndex, int batchSize) {
-        super(groupName, listIndex, batchSize);
-    }
-
-    @Override
-    public void setEnabled(DisruptorBizDataEvent<Integer> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
+    public DisruptorHandler13(String groupName, int batchSize) {
+        super(groupName, batchSize);
+        super.order = ORDER;
     }
 
     @Override
@@ -38,6 +32,7 @@ public class DisruptorHandler41 extends AbstractDiamondGroupedEventHandler<Disru
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
                 event.getBizData()+ORDER
         );
+        Thread.sleep(1000);
     }
 
     @Override
@@ -45,4 +40,8 @@ public class DisruptorHandler41 extends AbstractDiamondGroupedEventHandler<Disru
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<Integer> event) {
+        return !"en".equals(event.getTag());
+    }
 }

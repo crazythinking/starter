@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group1;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
@@ -23,13 +23,6 @@ public class DisruptorHandler2 extends AbstractParallelGroupedEventHandler<Disru
     }
 
     @Override
-    public void setEnabled(DisruptorBizDataEvent<String> event) {
-        if ("en".equals(event.getTag())){
-            this.enabled = true;
-        }
-    }
-
-    @Override
     protected void doHandlerInternal(DisruptorBizDataEvent<String> event) throws Exception {
         LOGGER.info(
                 "disruptor event ({})",
@@ -42,4 +35,8 @@ public class DisruptorHandler2 extends AbstractParallelGroupedEventHandler<Disru
 
     }
 
+    @Override
+    public boolean isEnabled(DisruptorBizDataEvent<String> event) {
+        return "en".equals(event.getTag());
+    }
 }
