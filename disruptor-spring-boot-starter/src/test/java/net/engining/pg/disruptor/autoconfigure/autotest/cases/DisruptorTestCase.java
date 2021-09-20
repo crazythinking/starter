@@ -1,18 +1,14 @@
 package net.engining.pg.disruptor.autoconfigure.autotest.cases;
 
-import com.lmax.disruptor.dsl.Disruptor;
-import net.engining.pg.disruptor.DisruptorTemplate;
+import net.engining.pg.disruptor.BizDataEventDisruptorTemplate;
 import net.engining.pg.disruptor.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.pg.disruptor.event.AbstractDisruptorEvent;
+import net.engining.pg.disruptor.autoconfigure.autotest.support.Event1ParallelDisruptor;
 import net.engining.pg.disruptor.event.DisruptorApplicationEvent;
-import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.util.DisruptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.Map;
 
 /**
  * @author : Eric Lu
@@ -24,18 +20,15 @@ import java.util.Map;
 public class DisruptorTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    DisruptorTemplate bizDataEventDisruptorTemplate;
+    BizDataEventDisruptorTemplate bizDataEventDisruptorTemplate;
 
     @Autowired
     ApplicationContext applicationContext;
 
-    @Autowired
-    Map<String, Disruptor<DisruptorBizDataEvent<?>>> disruptors;
-
     @Override
     public void initTestData() throws Exception {
         DisruptorApplicationEvent<String> event = new DisruptorApplicationEvent<>(this);
-        event.setTopicKey(DisruptorUtils.topicKey("TestCase-Event1", ExecutionMode.Parallel));
+        event.setTopicKey("TestCase-Event1");
         event.setKey("key1");
         event.setTag("en");
         event.setBind("this is biz data");
@@ -58,14 +51,14 @@ public class DisruptorTestCase extends AbstractTestCaseTemplate {
         //}
 
         //直接通过bizDataEventDisruptorTemplate发布event给Disruptor
-        DisruptorApplicationEvent<Integer> event2 = new DisruptorApplicationEvent<>(this);
-        event2.setTopicKey(DisruptorUtils.topicKey("TestCase-Event2", ExecutionMode.SerialChain));
+        DisruptorApplicationEvent<String> event2 = new DisruptorApplicationEvent<>(this);
+        event2.setTopicKey(Event1ParallelDisruptor.GROUP_NAME);
         event2.setKey("key1");
         event2.setTag("en");
-        event2.setBind(12345);
+        event2.setBind("12345");
         for (int i = 0; i < 10; i++) {
             event2.setBind(event2.getBind()+1);
-            bizDataEventDisruptorTemplate.publishEvent(event2);
+            applicationContext.publishEvent(event2);
         }
 
         //bizDataEventDisruptorTemplate.publishEvent(

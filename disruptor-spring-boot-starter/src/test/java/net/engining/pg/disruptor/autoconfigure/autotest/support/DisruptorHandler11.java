@@ -1,13 +1,12 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.cases;
+package net.engining.pg.disruptor.autoconfigure.autotest.support;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
-import net.engining.pg.disruptor.event.handler.AbstractDependenciesDiamondGroupedEventHandler;
 import net.engining.pg.disruptor.event.handler.AbstractSerialChainGroupedEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author : Eric Lu
@@ -15,16 +14,14 @@ import org.springframework.stereotype.Component;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-@Component
-public class DisruptorHandler21 extends AbstractDependenciesDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>>
-                                                                                        implements InitializingBean {
+public class DisruptorHandler11 extends AbstractSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>>{
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler21.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler11.class);
 
     private static final int ORDER = 3;
 
-    public DisruptorHandler21() {
-        super(0);
+    public DisruptorHandler11(String groupName, int batchSize) {
+        super(groupName, batchSize);
     }
 
     @Override
@@ -45,8 +42,8 @@ public class DisruptorHandler21 extends AbstractDependenciesDiamondGroupedEventH
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.groupName = "TestCase-Event3";
-        super.order = ORDER;
+    protected void doHandlerInternal(List<DisruptorBizDataEvent<Integer>> eventBuffer) throws Exception {
+
     }
+
 }

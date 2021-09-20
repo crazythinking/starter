@@ -1,12 +1,12 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.cases;
+package net.engining.pg.disruptor.autoconfigure.autotest.support;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.AbstractParallelGroupedEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author : Eric Lu
@@ -14,11 +14,13 @@ import org.springframework.stereotype.Component;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-@Component
-public class DisruptorHandler3 extends AbstractParallelGroupedEventHandler<DisruptorBizDataEvent<String>>
-                                                                                        implements InitializingBean {
+public class DisruptorHandler3 extends AbstractParallelGroupedEventHandler<DisruptorBizDataEvent<String>> {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler3.class);
+
+    public DisruptorHandler3(String groupName, int batchSize) {
+        super(groupName, batchSize);
+    }
 
     @Override
     public void setEnabled(DisruptorBizDataEvent<String> event) {
@@ -36,7 +38,8 @@ public class DisruptorHandler3 extends AbstractParallelGroupedEventHandler<Disru
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.groupName = "TestCase-Event1";
+    protected void doHandlerInternal(List<DisruptorBizDataEvent<String>> eventBuffer) throws Exception {
+
     }
+
 }
