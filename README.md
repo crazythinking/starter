@@ -76,6 +76,8 @@ infrastructure gears based spring boot 2.1.4
 ```
 
 ## TODO List
-1. disruptor-spring-boot-starter 目前只整合了EventHandler，因此对于每个独立的Event，其Handler都是单线程模型；下一步需要整合WorkHandler，支持多线程模型；
-2. distlock-spring-boot-starter 分布式锁；由于大部分金融级系统都需要分布式强一致性，因此从性能和一致性两方面考量推荐基于ZK实现；
+1. distlock-spring-boot-starter 分布式锁；由于大部分金融级系统都需要分布式强一致性，因此从性能和一致性两方面考量推荐基于ZK实现；
    但下一步会增加支持基于 Redis 和数据库的分布式锁；
+2. dynamic-datasource-spring-boot-starter 调整Async线程池定义方式，与业务用的隔离；另增加事务事件监听器的抽象类，封装模板代码；
+    增加存储层异步同步能力；
+3. debezium-spring-boot-starter 调整Async线程池定义方式，与业务用的隔离；
