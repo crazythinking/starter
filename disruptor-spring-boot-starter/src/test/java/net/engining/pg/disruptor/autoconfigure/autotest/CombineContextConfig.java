@@ -1,5 +1,6 @@
 package net.engining.pg.disruptor.autoconfigure.autotest;
 
+import net.engining.pg.disruptor.props.DisruptorProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Lazy;
  */
 @Configuration
 @EnableConfigurationProperties(value = {
+
 })
 @EnableCaching
 public class CombineContextConfig {

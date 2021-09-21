@@ -10,7 +10,10 @@ import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;
 import net.engining.pg.disruptor.props.DisruptorProperties;
+import net.engining.pg.disruptor.props.GroupedDisruptorProperties;
+import net.engining.pg.disruptor.util.DisruptorUtils;
 import net.engining.pg.disruptor.util.WaitStrategys;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -34,11 +37,9 @@ public class Event2SerialDisruptor extends AbstractBizDataEventDisruptorWrapper<
         super(
                 applicationContext,
                 GROUP_NAME,
-                BATCH_SIZE,
-                ExecutionMode.SerialChain,
-                WaitStrategys.YIELDING_WAIT,
-                properties.isMultiProducer()
+                ExecutionMode.SerialChain
         );
+        initProperties(properties);
     }
 
 
