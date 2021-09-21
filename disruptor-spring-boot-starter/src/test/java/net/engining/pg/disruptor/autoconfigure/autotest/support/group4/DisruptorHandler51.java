@@ -37,7 +37,7 @@ public class DisruptorHandler51 extends AbstractMultiSerialChainGroupedEventHand
 
     @Override
     protected void doHandlerInternal(List<DisruptorBizDataEvent<Integer>> eventBuffer) throws Exception {
-
+        throw new UnsupportedOperationException("unsupported batch events handler");
     }
 
     @Override

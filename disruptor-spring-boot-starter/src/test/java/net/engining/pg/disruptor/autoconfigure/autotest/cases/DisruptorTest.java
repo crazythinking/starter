@@ -82,7 +82,7 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
             );
         }
 
-        Thread.sleep(20000);
+        Thread.sleep(5000);
     }
 
     @Override
