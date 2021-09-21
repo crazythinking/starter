@@ -1,10 +1,10 @@
 package net.engining.pg.disruptor.autoconfigure.autotest.cases;
 
+import cn.hutool.core.util.RandomUtil;
 import net.engining.pg.disruptor.BizDataEventDisruptorTemplate;
 import net.engining.pg.disruptor.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.pg.disruptor.autoconfigure.autotest.support.group2.Event2SerialDisruptor;
-import net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3.Event3DiamondDisruptor;
-import net.engining.pg.disruptor.event.DisruptorApplicationEvent;
+import net.engining.pg.disruptor.autoconfigure.autotest.support.group3.Event3DiamondDisruptor;
+import net.engining.pg.disruptor.autoconfigure.autotest.support.group4.Event4MultiSerialDisruptor;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.util.DisruptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,19 +66,21 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
         //    applicationContext.publishEvent(event);
         //}
 
-        bizDataEventDisruptorTemplate.publishEvent(
-                this,
-                Event3DiamondDisruptor.GROUP_NAME,
-                "en",
-                12345
-        );
-
         //bizDataEventDisruptorTemplate.publishEvent(
         //        this,
-        //        DisruptorUtils.groupKey("TestCase-Event4", ExecutionMode.MultiSerialChain),
+        //        Event3DiamondDisruptor.GROUP_NAME,
         //        "en",
         //        12345
         //);
+
+        for (int i = 0; i < 3; i++) {
+            bizDataEventDisruptorTemplate.publishEvent(
+                    this,
+                    Event4MultiSerialDisruptor.GROUP_NAME,
+                    "en",
+                    RandomUtil.randomInt()
+            );
+        }
 
         Thread.sleep(20000);
     }

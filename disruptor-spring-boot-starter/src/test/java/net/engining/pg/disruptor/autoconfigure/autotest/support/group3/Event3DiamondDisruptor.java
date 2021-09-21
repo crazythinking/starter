@@ -1,11 +1,8 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group3;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;
 import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
-import net.engining.pg.disruptor.autoconfigure.autotest.support.group2.DisruptorHandler11;
-import net.engining.pg.disruptor.autoconfigure.autotest.support.group2.DisruptorHandler12;
-import net.engining.pg.disruptor.autoconfigure.autotest.support.group2.DisruptorHandler13;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;

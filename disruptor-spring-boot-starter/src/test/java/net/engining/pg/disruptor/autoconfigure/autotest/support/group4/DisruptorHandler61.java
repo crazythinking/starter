@@ -1,8 +1,8 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group4;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
-import net.engining.pg.disruptor.event.handler.AbstractDiamondGroupedEventHandler;
+import net.engining.pg.disruptor.event.handler.AbstractMultiSerialChainGroupedEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +14,15 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler22 extends AbstractDiamondGroupedEventHandler<DisruptorBizDataEvent<Integer>> {
+public class DisruptorHandler61 extends AbstractMultiSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>>{
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler22.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler61.class);
 
-    public DisruptorHandler22(String groupName, int listIndex, int batchSize) {
+    private static final int ORDER = 1;
+
+    public DisruptorHandler61(String groupName, int listIndex, int batchSize) {
         super(groupName, listIndex, batchSize);
+        super.order = ORDER;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class DisruptorHandler22 extends AbstractDiamondGroupedEventHandler<Disru
         LOGGER.info(
                 "disruptor event ({}), result={}",
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
-                event.getBizData()+super.getListIndex()
+                event.getBizData()+ORDER
         );
         Thread.sleep(1000);
     }

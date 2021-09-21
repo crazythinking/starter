@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support.grourp3;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group3;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;

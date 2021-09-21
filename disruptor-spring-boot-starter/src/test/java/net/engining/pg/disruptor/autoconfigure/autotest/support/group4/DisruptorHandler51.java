@@ -1,4 +1,4 @@
-package net.engining.pg.disruptor.autoconfigure.autotest.support;
+package net.engining.pg.disruptor.autoconfigure.autotest.support.group4;
 
 import cn.hutool.core.util.StrUtil;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
@@ -14,13 +14,13 @@ import java.util.List;
  * @date : 2021-03-16 17:13
  * @since :
  **/
-public class DisruptorHandler62 extends AbstractMultiSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>>{
+public class DisruptorHandler51 extends AbstractMultiSerialChainGroupedEventHandler<DisruptorBizDataEvent<Integer>>{
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler62.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisruptorHandler51.class);
 
-    private static final int ORDER = 2;
+    private static final int ORDER = 1;
 
-    public DisruptorHandler62(String groupName, int listIndex, int batchSize) {
+    public DisruptorHandler51(String groupName, int listIndex, int batchSize) {
         super(groupName, listIndex, batchSize);
         super.order = ORDER;
     }
