@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.0.RELEASE</version>
 	</parent>
 
 	<artifactId>zeebe-ext-spring-boot-starter</artifactId>
