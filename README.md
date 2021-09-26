@@ -28,6 +28,7 @@ infrastructure gears based spring boot 2.1.4
 |1.2.0|1.2.0.RELEASE|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
 |1.3.0|1.3.0.RELEASE|1、调整队列配置<br>2、优化默认配置和换行符<br>3、修改测试案例<br>4、底层版本升级<br>5、zeebe组件添加|-|2021-06-10|
 |1.4.0|1.4.0.RELEASE|1、增加cdc组件|-|2021-09-22|
+|1.4.1|1.4.1-SNAPSHOT|1、CDC排除op=r优化|-|2021-09-22|
 
 # 1.4.0版本火车
 
