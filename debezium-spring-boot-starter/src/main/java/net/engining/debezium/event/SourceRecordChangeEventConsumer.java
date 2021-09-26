@@ -87,15 +87,16 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                 }
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
-                    ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
-                    extractedCdcEventBo.setOperation(op);
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
                     Envelope.Operation operation = Envelope.Operation.forCode(op);
 
                     if (operation != Envelope.Operation.READ) {
+                        //不符合监控要求的操作不再创建事务，排除op=r
+                        ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
+                        extractedCdcEventBo.setOperation(op);
                         String record = (
                                 operation == Envelope.Operation.DELETE ||
-                                operation == Envelope.Operation.TRUNCATE
+                                        operation == Envelope.Operation.TRUNCATE
                         ) ? BEFORE : AFTER;
                         // 获取增删改对应的结构体数据
                         Struct recordDataStruct = (Struct) valueStruct.get(record);
@@ -137,12 +138,14 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .collect(toMap(Pair::getKey, Pair::getValue));
                             extractedCdcEventBo.setTargetTrancation(targetTrancation);
                         }
+                        extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
                     }
-                    extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
                 }
             }
-
-            applicationContext.publishEvent(extractedCdcEvent);
+            //判断需要发送的事务是否为空
+            if(ValidateUtilExt.isNotNullOrEmpty(extractedCdcEvent)) {
+                applicationContext.publishEvent(extractedCdcEvent);
+            }
 
             //置处理完成标志，通知框架完成offset记录
             try {
