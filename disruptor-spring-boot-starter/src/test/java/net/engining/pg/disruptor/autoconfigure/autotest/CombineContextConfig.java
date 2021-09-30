@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Lazy;
 @EnableConfigurationProperties(value = {
 
 })
-@EnableCaching
 public class CombineContextConfig {
 
     /**
