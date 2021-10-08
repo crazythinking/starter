@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnProperty(prefix = "pg.minio", name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(MinioProperties.class)
-class MinioCoreAutoConfig {
+class MinioCoreAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

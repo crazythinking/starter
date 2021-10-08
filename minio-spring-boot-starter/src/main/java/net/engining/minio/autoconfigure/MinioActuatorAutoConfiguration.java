@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 
 @ConditionalOnProperty(prefix = "pg.minio", name = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.annotation.Endpoint")
-@AutoConfigureAfter(MinioCoreAutoConfig.class)
-class MinioActuatorAutoConfig {
+@AutoConfigureAfter(MinioCoreAutoConfiguration.class)
+class MinioActuatorAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

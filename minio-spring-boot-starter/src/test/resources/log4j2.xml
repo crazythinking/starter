@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--log4j2内部插件的log打印级别-->
+<Configuration status="ERROR" monitorInterval="600" strict="true">
+    <properties>
+        <!-- 日志路径 -->
+        <!-- 可设置自定义jvm参数通过-D指定，这里通过${sys:xxxxxx}获取 >> ${sys:log.path.prefix}-->
+        <property name="LOG_HOME">./logs/</property>
+        <!-- 日志输入级别 -->
+        <property name="LOG_LEVEL">${sys:log4j2.level:-WARN}</property>
+    </properties>
+    
+    <Appenders>
+    	<!-- 标准输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout disableAnsi="false" charset="UTF-8" pattern="%highlight{[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=Bright cyan}"/>
+        </Console>
+        
+        <!--所有日志-->
+        <!-- 异步输出，通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值 -->
+        <!--<RollingFile name="AllLog" fileName="${LOG_HOME}/all.log" append="true" filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
+            <PatternLayout charset="UTF-8" pattern="[%-5level] [%d{DEFAULT}] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+        </RollingFile>-->
+        <!--<Async name="AsyncAllLog" bufferSize="256">
+	      <AppenderRef ref="AllLog"/>
+	    </Async>-->
+        
+    </Appenders>
+
+    <Loggers>
+
+        <!--只输入级别高于trace的日志-->
+        <root level="${LOG_LEVEL}">
+            <AppenderRef ref="Console"/>
+            <!--<AppenderRef ref="AsyncAllLog"/>-->
+        </root>
+    </Loggers>
+</Configuration>

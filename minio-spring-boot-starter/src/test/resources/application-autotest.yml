@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: minio-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+
+pg:
+  minio:
+    enabled: true
+    endpoint: http://ubuntu.wsl:9000
+    access-key: minio
+    secret-key: minio123
+    bucket: bucket-test1
+
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+    org.springframework.boot: info
