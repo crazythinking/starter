@@ -3,3 +3,8 @@ spring:
     name: transflow-starter-test
   main:
     allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace

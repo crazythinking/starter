@@ -29,10 +29,6 @@
     </Appenders>
 
     <Loggers>
-    	<Logger name="net.engining" level="TRACE" additivity="true"/>
-
-        <Logger name="org.springframework" level="INFO" additivity="true"/>
-        <!--<Logger name="org.springframework.boot" level="TRACE" additivity="true"/>-->
 
         <!--只输入级别高于trace的日志-->
         <root level="${LOG_LEVEL}">

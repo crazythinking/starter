@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class DisruptorAutoConfiguration {
      * DisruptorApplicationEvent的监听器：接收DisruptorApplicationEvent并将其携带的数据作为事件传递给Disruptor
      */
     @Bean
+    @ConditionalOnMissingBean
     public ApplicationListener<DisruptorApplicationEvent> disruptorApplicationEventListener(
             BizDataEventDisruptorTemplate bizDataEventDisruptorTemplate) {
 
