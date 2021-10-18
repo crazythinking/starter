@@ -5,6 +5,7 @@ import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
 import net.engining.pg.disruptor.BizDataEventDisruptorTemplate;
 import net.engining.pg.disruptor.event.DisruptorApplicationEvent;
 import net.engining.pg.disruptor.event.translator.BizDataEventOneArgTranslator;
+import net.engining.pg.disruptor.event.translator.BizKeyEventOneArgTranslator;
 import net.engining.pg.disruptor.props.DisruptorProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,6 +31,12 @@ public class DisruptorAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public BizKeyEventOneArgTranslator bizKeyEventOneArgTranslator() {
+        return new BizKeyEventOneArgTranslator();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public BizDataEventOneArgTranslator bizDataEventOneArgTranslator() {
         return new BizDataEventOneArgTranslator();
     }
@@ -42,9 +49,7 @@ public class DisruptorAutoConfiguration {
     ) {
         Map<String, AbstractBizDataEventDisruptorWrapper> disruptors =
                 applicationContext.getBeansOfType(AbstractBizDataEventDisruptorWrapper.class);
-        disruptors.forEach((s, abstractBizDataEventDisruptorWrapper) -> {
-            abstractBizDataEventDisruptorWrapper.start();
-        });
+        disruptors.forEach((s, abstractBizDataEventDisruptorWrapper) -> abstractBizDataEventDisruptorWrapper.start());
         return new BizDataEventDisruptorTemplate(disruptors, bizDataEventOneArgTranslator);
     }
 
@@ -56,10 +61,8 @@ public class DisruptorAutoConfiguration {
     public ApplicationListener<DisruptorApplicationEvent> disruptorApplicationEventListener(
             BizDataEventDisruptorTemplate bizDataEventDisruptorTemplate) {
 
-        return appEvent -> {
-            //利用Spring的ApplicationEvent机制，将ApplicationEvent作为Disruptor的事件数据载体，传递给Disruptor
-            bizDataEventDisruptorTemplate.publishEvent(appEvent);
-        };
+        //利用Spring的ApplicationEvent机制，将ApplicationEvent作为Disruptor的事件数据载体，传递给Disruptor
+        return bizDataEventDisruptorTemplate::publishEvent;
     }
 
 }

@@ -18,6 +18,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@SuppressWarnings("unchecked")
 @ActiveProfiles(profiles={
 		"data-sync"
 })
@@ -49,6 +50,15 @@ public class FlowDataSyncTestCase extends AbstractTestCaseTemplate {
 
 		testIncomeDataContext.put("request2", req);
 
+		req = Maps.newHashMap();
+		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
+		req.put(ChannelRequestSeqKey.class, "1234567890987654322");
+		req.put(ChannelKey.class, "test");
+		req.put(IntValue1Key.class, 4);
+		req.put(IntValue2Key.class, 0);
+
+		testIncomeDataContext.put("request3", req);
+
 	}
 
 	@Override
@@ -60,7 +70,7 @@ public class FlowDataSyncTestCase extends AbstractTestCaseTemplate {
 	}
 
 	@Override
-	public void testProcess() {
+	public void testProcess() throws InterruptedException {
 		Map<Class<? extends ContextKey<?>>, Object> resp = dispatcher.process(
 				"sample",
 				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request1")
@@ -72,7 +82,19 @@ public class FlowDataSyncTestCase extends AbstractTestCaseTemplate {
 				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request2")
 		);
 		testAssertDataContext.put("response2", resp2);
-		
+
+		Map<Class<? extends ContextKey<?>>, Object> resp3 = dispatcher.process(
+				"outboundsample",
+				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request3")
+		);
+
+		for (int i = 0; i < 10; i++) {
+			dispatcher.process(
+					"sample",
+					(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request2")
+			);
+		}
+		Thread.sleep(20000);
 	}
 
 	@Override
