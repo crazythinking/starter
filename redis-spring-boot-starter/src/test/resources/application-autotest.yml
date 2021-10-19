@@ -36,4 +36,9 @@ pg:
           max-size: 2
 
 
+logging:
+  level:
+    root: info
+    net.engining: trace
+
 

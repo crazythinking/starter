@@ -43,3 +43,8 @@ pg:
           params:
             a: b
             c: d
+
+logging:
+  level:
+    root: info
+    net.engining: trace

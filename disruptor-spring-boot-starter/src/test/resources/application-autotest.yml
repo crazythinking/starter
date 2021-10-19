@@ -15,3 +15,7 @@ pg:
         batch-size: 1
         ring-buffer-size: 3000
 
+logging:
+  level:
+    root: info
+    net.engining: trace
