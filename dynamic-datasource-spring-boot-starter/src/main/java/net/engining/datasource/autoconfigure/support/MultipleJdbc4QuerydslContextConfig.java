@@ -20,6 +20,7 @@ import java.util.Map;
 @Configuration
 public class MultipleJdbc4QuerydslContextConfig {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public Map<String, SQLQueryFactory> sqlQueryFactoryMap(
             @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> dataSourceTable
