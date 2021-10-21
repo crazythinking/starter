@@ -88,15 +88,13 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
-                    Envelope.Operation operation = Envelope.Operation.forCode(op);
-
-                    if (operation != Envelope.Operation.READ) {
+                    if (op != Envelope.Operation.READ.code()) {
                         //不符合监控要求的操作不再创建事务，排除op=r
                         ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
                         extractedCdcEventBo.setOperation(op);
                         String record = (
-                                operation == Envelope.Operation.DELETE ||
-                                        operation == Envelope.Operation.TRUNCATE
+                                op == Envelope.Operation.DELETE.code() ||
+                                        op == Envelope.Operation.TRUNCATE.code()
                         ) ? BEFORE : AFTER;
                         // 获取增删改对应的结构体数据
                         Struct recordDataStruct = (Struct) valueStruct.get(record);
