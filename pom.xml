@@ -119,6 +119,7 @@
 		<module>zeebe-ext-spring-boot-starter</module>
 		<module>debezium-spring-boot-starter</module>
 		<module>minio-spring-boot-starter</module>
+		<module>gm-spring-boot-starter</module>
 	</modules>
 
 	<build>
