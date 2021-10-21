@@ -59,16 +59,16 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
             Map<String, ?> partitionMap = sourceRecord.sourcePartition();
             //该Map内的值组合在一起用于标识唯一的CDC事件
             Map<String, ?> offsetMap = sourceRecord.sourceOffset();
-            //xxljob-mysql-cdc.xxljob.xxl_job_group
+            //主题，通常对应于kafka中topic
             String topic = sourceRecord.topic();
             Integer partition = sourceRecord.kafkaPartition();
-            //CDC事件的key对应的Schema：对应表的主键字段定义数据
+            //CDC事件的key对应的Schema：对应表主键字段定义的元数据
             Schema keySchema = sourceRecord.keySchema();
-            //CDC事件的key对应的具体数据：对应表的主键字段值数据
+            //CDC事件的key对应的具体数据：对应表主键字段值数据
             Struct keyStruct = (Struct) sourceRecord.key();
-            //CDC事件的value对应的Schema：对应表的字段定义数据
+            //CDC事件的value对应的Schema：对应表字段定义的元数据
             Schema valueSchema = sourceRecord.valueSchema();
-            //CDC事件的value对应的具体数据：对应表的字段值数据，包括before|after|source|op|ts_ms|transaction
+            //CDC事件的value对应的具体数据：对应表字段值数据，包括before|after|source|op|ts_ms|transaction
             Struct valueStruct = (Struct) sourceRecord.value();
             Long tsms = sourceRecord.timestamp();
             Headers headers = sourceRecord.headers();
@@ -143,14 +143,12 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                         applicationContext.publishEvent(extractedCdcEvent);
                     }
                     else {
-                        LOGGER.warn("only handle with insertion, deletion, or modification events");
+                        LOGGER.warn("only handle with insertion, deletion, or modification events; this op={}", op);
                     }
                 }
                 //not have "op"
-
             }
             //not have "valueStruct"
-
 
             //置处理完成标志，通知框架完成offset记录
             try {

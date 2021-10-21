@@ -4,6 +4,7 @@ import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Joiner;
 import net.engining.pg.support.db.DbConstants;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import net.engining.pg.web.CommonWithHeaderRequestBuilder;
 import net.engining.pg.web.bean.CommonWithHeaderRequest;
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * CDC数据提取封装后的事件监听器基类
+ *
  * @author : Eric Lu
  * @version :
  * @date : 2021-08-11 10:50
@@ -31,54 +34,57 @@ public abstract class AbstractExtractedCdcEventListener implements ApplicationLi
     @Async(DEBEZIUM_EVENT_LISTENER)
     @Override
     public void onApplicationEvent(ExtractedCdcEvent event) {
-
+        LOGGER.debug("Extracted CDC Event: {}", event);
         Map<String, Object> sourceMap = event.getCdcEventBo().getTargetSource();
         String identifyKey;
         String schema;
-        //针对mysql CDC event 处理
-        if (MYSQL.equals(sourceMap.get(CONNECTOR))){
-            identifyKey = Joiner.on("|").skipNulls()
-                    .join(
-                            sourceMap.get("file"),
-                            sourceMap.get("pos"),
-                            StrUtil.removeAll((String)sourceMap.get("gtid"), CharUtil.DASHED)
-                    );
-            schema = DbConstants.NULL;
-        }
-        //针对oracle CDC event 处理
-        else if (ORACLE.equals(sourceMap.get(CONNECTOR))){
-            identifyKey = Joiner.on("|").skipNulls()
-                    .join(
-                            sourceMap.get("scn"),
-                            sourceMap.get("txId")
-                    );
-            schema = (String) sourceMap.get("schema");
+        if (ValidateUtilExt.isNotNullOrEmpty(sourceMap)){
+            //针对mysql CDC event 处理
+            if (MYSQL.equals(sourceMap.get(CONNECTOR))){
+                identifyKey = Joiner.on("|").skipNulls()
+                        .join(
+                                sourceMap.get("file"),
+                                sourceMap.get("pos"),
+                                StrUtil.removeAll((String)sourceMap.get("gtid"), CharUtil.DASHED)
+                        );
+                schema = DbConstants.NULL;
+            }
+            //针对oracle CDC event 处理
+            else if (ORACLE.equals(sourceMap.get(CONNECTOR))){
+                identifyKey = Joiner.on("|").skipNulls()
+                        .join(
+                                sourceMap.get("scn"),
+                                sourceMap.get("txId")
+                        );
+                schema = (String) sourceMap.get("schema");
+            }
+            else {
+                throw new UnsupportedOperationException("not support CDC event for the DB type: "+sourceMap.get(CONNECTOR));
+            }
+            //设置组合后的Event唯一标识key
+            event.getCdcEventBo().setIdentifyKey(identifyKey);
+            event.getCdcEventBo().setDb((String) sourceMap.get("db"));
+            event.getCdcEventBo().setTable((String) sourceMap.get("table"));
+            event.getCdcEventBo().setSchema(schema);
+
+            //构造CommonWithHeaderRequest为后续Flow封装业务对象
+            DbzRequestHeader dbzRequestHeader = new DbzRequestHeader();
+            //用连接器逻辑名称作为渠道Id
+            dbzRequestHeader.setChannelId((String) sourceMap.get("name"));
+            dbzRequestHeader.setTxnSerialNo(identifyKey);
+            dbzRequestHeader.setTimestamp(new Date(event.getCdcEventBo().getProcessTime()));
+            CommonWithHeaderRequest<DbzRequestHeader, ExtractedCdcEventBo> request =
+                    new CommonWithHeaderRequestBuilder<DbzRequestHeader, ExtractedCdcEventBo>()
+                            .build()
+                            .setRequestHead(dbzRequestHeader)
+                            .setRequestData(event.getCdcEventBo())
+                    ;
+
+            eventDispatcher(request);
         }
         else {
-            throw new UnsupportedOperationException("not support CDC event for the DB type: "+sourceMap.get(CONNECTOR));
+            LOGGER.warn("The necessary information of Extracted CDC Event is incomplete, {}", event.getSource());
         }
-        //设置组合后的Event唯一标识key
-        event.getCdcEventBo().setIdentifyKey(identifyKey);
-        event.getCdcEventBo().setDb((String) sourceMap.get("db"));
-        event.getCdcEventBo().setTable((String) sourceMap.get("table"));
-        event.getCdcEventBo().setSchema(schema);
-
-        LOGGER.debug("CDC Event: {}", event);
-
-        //构造CommonWithHeaderRequest为后续Flow封装业务对象
-        DbzRequestHeader dbzRequestHeader = new DbzRequestHeader();
-        //用连接器逻辑名称作为渠道Id
-        dbzRequestHeader.setChannelId((String) sourceMap.get("name"));
-        dbzRequestHeader.setTxnSerialNo(identifyKey);
-        dbzRequestHeader.setTimestamp(new Date(event.getCdcEventBo().getProcessTime()));
-        CommonWithHeaderRequest<DbzRequestHeader, ExtractedCdcEventBo> request =
-                new CommonWithHeaderRequestBuilder<DbzRequestHeader, ExtractedCdcEventBo>()
-                        .build()
-                        .setRequestHead(dbzRequestHeader)
-                        .setRequestData(event.getCdcEventBo())
-                ;
-
-        eventDispatcher(request);
 
     }
 
