@@ -41,7 +41,6 @@ import java.util.Map;
  * 注：只在设置pg.datasource.dynamic.hikari.enabled=true时才触发自动装配
  *
  * @author Eric Lu
- * @create 2019-11-04 16:46
  **/
 @Configuration
 @ConditionalOnClass(HikariDataSource.class)
@@ -56,8 +55,7 @@ import java.util.Map;
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class,
-        AsyncExtContextConfig.class
+        TransactionManagementContextConfig.class
 })
 public class DynamicDataSourceAutoConfigure {
     /** logger */

@@ -1,3 +1,4 @@
 #配置自定义Starter的自动化配置
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.debezium.autoconfigure.DebeziumAutoConfiguration
+net.engining.debezium.autoconfigure.DebeziumAutoConfiguration,\
+net.engining.debezium.autoconfigure.AsyncExtAutoConfigure

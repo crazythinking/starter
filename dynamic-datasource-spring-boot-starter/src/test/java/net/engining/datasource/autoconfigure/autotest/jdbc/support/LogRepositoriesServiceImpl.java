@@ -53,7 +53,6 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogs) {
         long n = extractedSave(operAdtLogs);
-        save1();
         //发布事件
         for (OperAdtLogDto operAdtLogDto : operAdtLogs){
             applicationContext.publishEvent(new TransactionalEvent<>(operAdtLogDto));

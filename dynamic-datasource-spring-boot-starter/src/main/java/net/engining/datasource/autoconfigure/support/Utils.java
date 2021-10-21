@@ -35,6 +35,8 @@ import java.util.Map;
  **/
 public class Utils {
 
+    public static final String DB_EVENT_LISTENER = "DB-Event-Listener";
+
     public static final Map<DbType, Configuration> QUERYDSL_CONFIGURATION_MAP = Maps.newHashMap();
     static {
         QUERYDSL_CONFIGURATION_MAP.put(DbType.Oracle, getConfiguration(OracleTemplates.builder().build()));
@@ -106,8 +108,7 @@ public class Utils {
                                                            com.querydsl.sql.Configuration querydslConfiguration
     ) {
         Provider<Connection> provider = new SpringConnectionProvider(dataSource);
-        SQLQueryFactory sqlQueryFactory = new SQLQueryFactory(querydslConfiguration, provider);
-        return sqlQueryFactory;
+        return new SQLQueryFactory(querydslConfiguration, provider);
     }
 
     public static com.querydsl.sql.Configuration getConfiguration(SQLTemplates templates) {

@@ -89,8 +89,7 @@ import java.util.Map;
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class,
-        AsyncExtContextConfig.class
+        TransactionManagementContextConfig.class
 })
 public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 

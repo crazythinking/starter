@@ -73,9 +73,6 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
             Long tsms = sourceRecord.timestamp();
             Headers headers = sourceRecord.headers();
 
-            //封装到ApplicationEvent发布事件,原始数据向下传递,兼容下游处理
-            ExtractedCdcEvent extractedCdcEvent = new ExtractedCdcEvent(sourceRecord);
-
             if (ValidateUtilExt.isNotNullOrEmpty(valueStruct)) {
                 String op = null;
                 try {
@@ -87,16 +84,18 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                 }
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
-                    ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
-                    extractedCdcEventBo.setOperation(op);
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
-                    Envelope.Operation operation = Envelope.Operation.forCode(op);
+                    if (!op.equals(Envelope.Operation.READ.code())) {
+                        //封装到ApplicationEvent发布事件,原始数据向下传递,兼容下游处理
+                        ExtractedCdcEvent extractedCdcEvent = new ExtractedCdcEvent(sourceRecord);
+                        ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
+                        extractedCdcEventBo.setOperation(op);
 
-                    if (operation != Envelope.Operation.READ) {
                         String record = (
-                                operation == Envelope.Operation.DELETE ||
-                                operation == Envelope.Operation.TRUNCATE
+                                op.equals(Envelope.Operation.DELETE.code())
+                                || op.equals(Envelope.Operation.TRUNCATE.code())
                         ) ? BEFORE : AFTER;
+
                         // 获取增删改对应的结构体数据
                         Struct recordDataStruct = (Struct) valueStruct.get(record);
                         if (ValidateUtilExt.isNotNullOrEmpty(recordDataStruct)){
@@ -137,12 +136,21 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                                     .collect(toMap(Pair::getKey, Pair::getValue));
                             extractedCdcEventBo.setTargetTrancation(targetTrancation);
                         }
-                    }
-                    extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
-                }
-            }
 
-            applicationContext.publishEvent(extractedCdcEvent);
+                        //装载数据体
+                        extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
+                        //发布事件
+                        applicationContext.publishEvent(extractedCdcEvent);
+                    }
+                    else {
+                        LOGGER.warn("only handle with insertion, deletion, or modification events");
+                    }
+                }
+                //not have "op"
+
+            }
+            //not have "valueStruct"
+
 
             //置处理完成标志，通知框架完成offset记录
             try {

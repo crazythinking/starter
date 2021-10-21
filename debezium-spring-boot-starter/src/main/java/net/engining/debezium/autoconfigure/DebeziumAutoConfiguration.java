@@ -31,14 +31,12 @@ import java.util.Map;
  * @author n1
  * @since 2021 /6/1 17:01
  */
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Configuration
 @ConditionalOnProperty(prefix = "pg.debezium", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({
         GmCommonProperties.class,
         DebeziumProperties.class
-})
-@Import({
-        AsyncExtContextConfig.class
 })
 public class DebeziumAutoConfiguration {
 

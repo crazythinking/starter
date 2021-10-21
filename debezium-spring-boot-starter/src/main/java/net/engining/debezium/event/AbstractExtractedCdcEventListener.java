@@ -23,11 +23,12 @@ import java.util.Map;
 public abstract class AbstractExtractedCdcEventListener implements ApplicationListener<ExtractedCdcEvent> {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExtractedCdcEventListener.class);
+    public static final String DEBEZIUM_EVENT_LISTENER = "debezium-event-listener";
     public static final String MYSQL = "mysql";
     public static final String ORACLE = "oracle";
     public static final String CONNECTOR = "connector";
 
-    @Async
+    @Async(DEBEZIUM_EVENT_LISTENER)
     @Override
     public void onApplicationEvent(ExtractedCdcEvent event) {
 
