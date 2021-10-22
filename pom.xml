@@ -24,6 +24,16 @@
 	
 	<dependencyManagement>
 		<dependencies>
+			<!-- spring cloud -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- spring cloud alibaba -->
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -31,6 +41,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<!-- spring cloud netflix -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-netflix</artifactId>
+				<version>${spring-cloud-netflix.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>net.engining.pg</groupId>
 				<artifactId>pg-parent</artifactId>
@@ -93,6 +113,21 @@
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>zeebe-ext-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>gm-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>debezium-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>minio-spring-boot-starter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

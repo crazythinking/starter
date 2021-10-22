@@ -9,5 +9,8 @@ net.engining.gm.autoconfigure.SnowflakeSequenceAutoConfiguration,\
 net.engining.gm.autoconfigure.SwaggerAutoConfiguration,\
 net.engining.gm.autoconfigure.WebAutoConfiguration,\
 net.engining.gm.autoconfigure.WebMvcAutoConfiguration,\
-net.engining.gm.autoconfigure.WebFluxAutoConfiguration
+net.engining.gm.autoconfigure.WebFluxAutoConfiguration,\
+net.engining.gm.autoconfigure.SchedulingAutoConfiguration,\
+net.engining.gm.autoconfigure.WebSecurityAutoConfiguration,\
+net.engining.gm.autoconfigure.Oauth2ExtAutoConfiguration
 

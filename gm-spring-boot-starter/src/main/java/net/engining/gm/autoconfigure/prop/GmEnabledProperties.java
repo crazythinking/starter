@@ -20,6 +20,24 @@ public class GmEnabledProperties {
     boolean web = false;
     boolean webmvc = false;
     boolean webflux = false;
+    boolean security = false;
+    boolean oauth2 = false;
+
+    public boolean isOauth2() {
+        return oauth2;
+    }
+
+    public void setOauth2(boolean oauth2) {
+        this.oauth2 = oauth2;
+    }
+
+    public boolean isSecurity() {
+        return security;
+    }
+
+    public void setSecurity(boolean security) {
+        this.security = security;
+    }
 
     public boolean isAsync() {
         return async;
