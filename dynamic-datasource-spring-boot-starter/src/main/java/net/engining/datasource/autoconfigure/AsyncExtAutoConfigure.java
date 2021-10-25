@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since :
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "pg.datasource.dynamic.async", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "pg.datasource.dynamic.async", name = "enabled", matchIfMissing = true)
 @AutoConfigureAfter({
         DynamicDataSourceAutoConfigure.class,
         DynamicDruidDataSourceAutoConfigure.class,

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
  * @author 应卓
  * @since 1.0.0
  */
-@ConditionalOnProperty(prefix = "pg.minio", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "pg.minio", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties(MinioProperties.class)
 class MinioCoreAutoConfiguration {
 

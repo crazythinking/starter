@@ -1,0 +1,17 @@
+{
+  "properties": [
+    {
+      "name": "pg.debezium.async.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启 trans-flow."
+    },
+    {
+      "name": "pg.trans-flow.datasync.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启 trans-flow 的日志数据同步功能."
+    }
+  ],
+  "hints": []
+}

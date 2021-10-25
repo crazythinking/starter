@@ -25,7 +25,7 @@ import java.util.Map;
 @SuppressWarnings("rawtypes")
 @Configuration
 @ConditionalOnClass({Disruptor.class})
-@ConditionalOnProperty(prefix = DisruptorProperties.PREFIX, value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = DisruptorProperties.PREFIX, value = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({DisruptorProperties.class})
 public class DisruptorAutoConfiguration {
 

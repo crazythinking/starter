@@ -16,12 +16,12 @@ public class DdProperties {
     /**
      * 异步线程池的核心线程数大小
      */
-    private int asyncExcutorColePoolSize = 5;
+    private int asyncExcutorColePoolSize = 1;
 
     /**
      * 异步线程池的最大线程数大小
      */
-    private int asyncExcutorMaxPoolSize = 5;
+    private int asyncExcutorMaxPoolSize = 1;
 
     /**
      * 异步线程池的队列大小
