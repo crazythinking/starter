@@ -17,7 +17,6 @@ public class GmEnabledProperties {
     boolean snowflakeSequence = false;
     boolean swagger = false;
     boolean scheduling = false;
-    boolean web = false;
     boolean webmvc = false;
     boolean webflux = false;
     boolean security = false;
@@ -93,14 +92,6 @@ public class GmEnabledProperties {
 
     public void setScheduling(boolean scheduling) {
         this.scheduling = scheduling;
-    }
-
-    public boolean isWeb() {
-        return web;
-    }
-
-    public void setWeb(boolean web) {
-        this.web = web;
     }
 
     public boolean isWebmvc() {
