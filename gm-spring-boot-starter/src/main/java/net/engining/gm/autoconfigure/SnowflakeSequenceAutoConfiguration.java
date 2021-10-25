@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
  * @since :
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "gm.config.enabled", name = "snowflakeSequence", havingValue = "true")
+@ConditionalOnProperty(prefix = "gm.config.enabled", name = "snowflake-sequence", havingValue = "true")
 @Import(value = {
         SnowflakeSequenceIDContextConfig.class
 })

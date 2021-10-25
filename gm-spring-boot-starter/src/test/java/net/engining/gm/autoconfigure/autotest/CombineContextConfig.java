@@ -1,5 +1,8 @@
 package net.engining.gm.autoconfigure.autotest;
 
+import net.engining.gm.autoconfigure.autotest.support.Bean2Inter;
+import net.engining.gm.autoconfigure.autotest.support.BeanInter;
+import net.engining.gm.autoconfigure.autotest.support.Inter;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,4 +26,13 @@ public class CombineContextConfig {
         return new ApplicationContextHolder();
     }
 
+    @Bean
+    public BeanInter inter(){
+        return new BeanInter();
+    }
+
+    @Bean
+    public Inter inter2(){
+        return new Bean2Inter();
+    }
 }
