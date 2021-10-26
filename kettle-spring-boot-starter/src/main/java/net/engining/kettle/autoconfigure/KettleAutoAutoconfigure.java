@@ -45,8 +45,7 @@ public class KettleAutoAutoconfigure {
     @Bean
     public KettleManagerService kettleManagerService() {
         checkProperties();
-        KettleManagerService kettleManagerService = new KettleManagerService();
-        return kettleManagerService;
+        return new KettleManagerService();
     }
 
     /**
