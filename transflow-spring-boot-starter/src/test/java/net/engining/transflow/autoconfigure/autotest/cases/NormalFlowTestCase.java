@@ -1,18 +1,11 @@
 package net.engining.transflow.autoconfigure.autotest.cases;
 
-import com.google.common.collect.Maps;
-import net.engining.control.api.ContextKey;
-import net.engining.control.api.FlowDispatcher;
-import net.engining.control.api.key.ChannelKey;
-import net.engining.control.api.key.ChannelRequestSeqKey;
-import net.engining.control.api.key.OnlineDataKey;
+import net.engining.control.sdk.FlowTransProcessorTemplate;
 import net.engining.transflow.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.transflow.autoconfigure.autotest.support.IntValue1Key;
-import net.engining.transflow.autoconfigure.autotest.support.IntValue2Key;
+import net.engining.transflow.autoconfigure.autotest.support.SampleFlowRequest;
+import net.engining.transflow.autoconfigure.autotest.support.SimpleFlowResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,52 +14,34 @@ import static org.hamcrest.Matchers.equalTo;
 public class NormalFlowTestCase extends AbstractTestCaseTemplate {
 
 	@Autowired
-	private FlowDispatcher dispatcher;
+	FlowTransProcessorTemplate flowTransProcessorTemplate;
 
 	@Override
 	public void initTestData() {
 		
-		Map<Class<? extends ContextKey<?>>, Object> req = Maps.newHashMap();
-		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
-		req.put(ChannelRequestSeqKey.class, "1234567890987654321");
-		req.put(ChannelKey.class, "test");
-		req.put(IntValue1Key.class, 4);
-		req.put(IntValue2Key.class, 0);
-		
-		testIncomeDataContext.put("request1", req);
-
-		//重复的交易，测试幂等
-		req = Maps.newHashMap();
-		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
-		req.put(ChannelRequestSeqKey.class, "1234567890987654321");
-		req.put(ChannelKey.class, "test");
-		req.put(IntValue1Key.class, 4);
-		req.put(IntValue2Key.class, 0);
-
-		testIncomeDataContext.put("request2", req);
-
 	}
 
 	@Override
 	public void assertResult() {
-		Map<Class<? extends ContextKey<?>>, Object> resp =
-				(Map<Class<? extends ContextKey<?>>, Object>) testAssertDataContext.get("response1");
-		assertThat(resp.get(IntValue2Key.class), equalTo(16));
+		SimpleFlowResponse resp = (SimpleFlowResponse) testAssertDataContext.get("response1");
+		assertThat(resp.getIntValue2(), equalTo(16));
 
 	}
 
 	@Override
 	public void testProcess() {
-		Map<Class<? extends ContextKey<?>>, Object> resp = dispatcher.process(
-				"sample",
-				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request1")
-		);
+		SampleFlowRequest request = new SampleFlowRequest();
+		request.setOnlineData("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+		request.setChannelRequestSeq("1234567890987654321");
+		request.setChannel("test");
+		request.setIntValue1(4);
+		request.setIntValue2(0);
+
+		SimpleFlowResponse resp = flowTransProcessorTemplate.process(request, SimpleFlowResponse.class);
 		testAssertDataContext.put("response1", resp);
 
-		Map<Class<? extends ContextKey<?>>, Object> resp2 = dispatcher.process(
-				"sample",
-				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request2")
-		);
+		//重复的交易，测试幂等
+		SimpleFlowResponse resp2 = flowTransProcessorTemplate.process(request, SimpleFlowResponse.class);
 		testAssertDataContext.put("response2", resp2);
 		
 	}
