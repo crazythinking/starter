@@ -8,8 +8,9 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import java.util.Objects;
 
 /**
- * @author 应卓
- * @since 1.0.0
+ * 健康指标
+ *
+ * @author Eric Lu
  */
 public class MinioHealthIndicator implements HealthIndicator {
 

@@ -4,7 +4,7 @@
       "name": "gm.trans-flow.enabled",
       "type": "java.lang.Boolean",
       "defaultValue": true,
-      "description": "是否开启 debezium-event-listener 异步线程池."
+      "description": "是否开启Trans-Flow支持."
     }
   ],
   "hints": []
