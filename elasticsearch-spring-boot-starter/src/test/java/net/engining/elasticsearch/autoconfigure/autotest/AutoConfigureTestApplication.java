@@ -1,4 +1,4 @@
-package net.engining.rocksdb.autoconfigure.autotest;
+package net.engining.elasticsearch.autoconfigure.autotest;
 
 
 import org.springframework.boot.SpringApplication;

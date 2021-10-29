@@ -1,7 +1,7 @@
-package net.engining.rocksdb.autoconfigure.autotest.support;
+package net.engining.elasticsearch.autoconfigure.autotest.support;
 
+import net.engining.elasticsearch.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
-import net.engining.rocksdb.autoconfigure.autotest.AutoConfigureTestApplication;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;

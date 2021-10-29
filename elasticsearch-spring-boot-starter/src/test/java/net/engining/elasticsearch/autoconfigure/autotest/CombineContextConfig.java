@@ -1,4 +1,4 @@
-package net.engining.rocksdb.autoconfigure.autotest;
+package net.engining.elasticsearch.autoconfigure.autotest;
 
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
