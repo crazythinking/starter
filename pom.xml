@@ -130,6 +130,16 @@
 				<artifactId>minio-spring-boot-starter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>rocksdb-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>elasticsearch-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -155,6 +165,8 @@
 		<module>debezium-spring-boot-starter</module>
 		<module>minio-spring-boot-starter</module>
 		<module>gm-spring-boot-starter</module>
+		<module>elasticsearch-spring-boot-starter</module>
+		<module>rocksdb-spring-boot-starter</module>
 	</modules>
 
 	<build>
