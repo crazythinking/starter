@@ -1,17 +1,17 @@
 package net.engining.rocksdb.autoconfigure;
 
 import com.google.common.collect.Maps;
-import net.engining.pg.rocksdb.props.RocksdbOptionProperties;
+import net.engining.pg.rocksdb.props.BasedOptionsProperties;
 import net.engining.pg.rocksdb.props.RocksdbProperties;
-import net.engining.pg.storage.RocksDBKeyValueAdapter;
+import net.engining.pg.storage.RocksdbKeyValueAdapter;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import org.rocksdb.CompressionType;
 import org.rocksdb.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.keyvalue.core.KeyValueAdapter;
 import org.springframework.data.keyvalue.core.KeyValueOperations;
 import org.springframework.data.keyvalue.core.KeyValueTemplate;
@@ -44,16 +44,28 @@ public class RocksdbAutoConfiguration {
         if (ValidateUtilExt.isNotNullOrEmpty(properties.getOptions())){
             Map<String, Options> optionsMap = Maps.newHashMap();
             for (String key : properties.getOptions().keySet()) {
-                RocksdbOptionProperties optionProperties = properties.getOptions().get(key);
+                BasedOptionsProperties optionProperties = properties.getOptions().get(key);
                 Options options = new Options();
+                optionProperties.getBlockSize();
+                //optionProperties.getBottommostCompressionType();
+                //options.setBottommostCompressionType()
+                options.setBytesPerSync(optionProperties.getBytesPerSync());
+                //optionProperties.getCompressionType();
+                options.setMaxBackgroundJobs(optionProperties.getMaxBackgroundJobs());
+                options.setMaxOpenFiles(optionProperties.getMaxOpenFiles());
+                options.setMaxWriteBufferNumber(optionProperties.getMaxWriteBufferNumber());
+                options.setWriteBufferSize(optionProperties.getWriteBufferSize());
+                //optionProperties.isCacheIndexAndFilterBlocks();
                 options.setCreateIfMissing(optionProperties.isCreateIfMissing());
+                //optionProperties.isEnableLevelCompactionDynamicLevelBytes();
+                //optionProperties.isPinL0FilterAndIndexBlocksInCache();
 
                 optionsMap.put(key, options);
             }
-            return new RocksDBKeyValueAdapter(optionsMap, properties.getBaseStoragePath());
+            return new RocksdbKeyValueAdapter(optionsMap, properties.getBaseStoragePath());
 
         }
-        return new RocksDBKeyValueAdapter(null, properties.getBaseStoragePath());
+        return new RocksdbKeyValueAdapter(null, properties.getBaseStoragePath());
     }
 
 }
