@@ -6,10 +6,9 @@ import net.engining.pg.rocksdb.props.RocksdbProperties;
 import net.engining.pg.storage.RocksdbKeyValueAdapter;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.rocksdb.BlockBasedTableConfig;
+import org.rocksdb.CompactionPriority;
 import org.rocksdb.CompressionType;
 import org.rocksdb.Options;
-import org.rocksdb.TableFormatConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +39,7 @@ public class RocksdbAutoConfiguration {
 
     @Bean
     public KeyValueAdapter keyValueAdapter(RocksdbProperties properties) {
-        if (ValidateUtilExt.isNotNullOrEmpty(properties.getOptions())){
+        if (ValidateUtilExt.isNotNullOrEmpty(properties.getOptions())) {
             Map<String, Options> optionsMap = Maps.newHashMap();
             for (String key : properties.getOptions().keySet()) {
                 BasedOptionsProperties optionProperties = properties.getOptions().get(key);
@@ -57,6 +56,7 @@ public class RocksdbAutoConfiguration {
                 options.setMaxOpenFiles(optionProperties.getMaxOpenFiles());
                 options.setMaxWriteBufferNumber(optionProperties.getMaxWriteBufferNumber());
                 options.setWriteBufferSize(optionProperties.getWriteBufferSize());
+                options.setCompactionPriority(transform(optionProperties.getCompactionPriority()));
                 options.setCreateIfMissing(optionProperties.isCreateIfMissing());
                 options.setLevelCompactionDynamicLevelBytes(optionProperties.isEnableLevelCompactionDynamicLevelBytes());
 
@@ -67,7 +67,22 @@ public class RocksdbAutoConfiguration {
         }
         return new RocksdbKeyValueAdapter(null, properties.getBaseStoragePath());
     }
-    
+
+    private CompactionPriority transform(net.engining.pg.rocksdb.props.CompactionPriority compactionPriority) {
+        switch (compactionPriority) {
+            case ByCompensatedSize:
+                return CompactionPriority.ByCompensatedSize;
+            case OldestLargestSeqFirst:
+                return CompactionPriority.OldestLargestSeqFirst;
+            case OldestSmallestSeqFirst:
+                return CompactionPriority.OldestSmallestSeqFirst;
+            case MinOverlappingRatio:
+                return CompactionPriority.MinOverlappingRatio;
+            default:
+                throw new IllegalStateException("Unexpected value: " + compactionPriority);
+        }
+    }
+
     private CompressionType transform(net.engining.pg.rocksdb.props.CompressionType compressionType) {
         switch (compressionType) {
             case NO_COMPRESSION:
