@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 /**
  * 通用Context配置
@@ -12,7 +13,8 @@ import org.springframework.context.annotation.Lazy;
  * @author Eric Lu
  */
 @Configuration
-@EnableConfigurationProperties(value = {
+@EnableElasticsearchRepositories({
+        "net.engining.elasticsearch.autoconfigure.autotest.support"
 })
 public class CombineContextConfig {
 

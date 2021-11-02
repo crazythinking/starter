@@ -28,6 +28,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-data-elasticsearch</artifactId>
+					<groupId>org.springframework.data</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-storage-elasticsearch</artifactId>
 		</dependency>
