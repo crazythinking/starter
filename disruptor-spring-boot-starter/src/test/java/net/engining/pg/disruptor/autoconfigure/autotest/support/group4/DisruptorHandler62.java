@@ -32,7 +32,7 @@ public class DisruptorHandler62 extends AbstractMultiSerialChainGroupedEventHand
                 event.toString()+ StrUtil.COMMA + " bizData :" +event.getBizData().toString(),
                 event.getBizData()+ORDER
         );
-        Thread.sleep(1000);
+        Thread.sleep(100);
     }
 
     @Override

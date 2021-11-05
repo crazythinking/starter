@@ -73,7 +73,7 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
         //        12345
         //);
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 30; i++) {
             bizDataEventDisruptorTemplate.publishEvent(
                     this,
                     Event4MultiSerialDisruptor.GROUP_NAME,
@@ -82,11 +82,11 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
             );
         }
 
-        Thread.sleep(5000);
+        Thread.sleep(10000);
     }
 
     @Override
-    public void end() throws Exception {
+    public void end() {
 
     }
 }
