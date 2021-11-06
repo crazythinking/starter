@@ -32,7 +32,10 @@ public class DisruptorHandler3 extends AbstractParallelGroupedEventHandler<Disru
 
     @Override
     protected void doHandlerInternal(List<DisruptorBizDataEvent<String>> eventBuffer) throws Exception {
-
+        LOGGER.info(
+                "disruptor ({}) events",
+                eventBuffer.size()
+        );
     }
 
     @Override

@@ -17,4 +17,4 @@ pg:
 logging:
   level:
     root: info
-    net.engining: trace
+    net.engining: info

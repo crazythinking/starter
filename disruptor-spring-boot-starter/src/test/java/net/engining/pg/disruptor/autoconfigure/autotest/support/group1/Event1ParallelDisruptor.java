@@ -7,10 +7,6 @@ import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;
 import net.engining.pg.disruptor.props.DisruptorProperties;
-import net.engining.pg.disruptor.props.GroupedDisruptorProperties;
-import net.engining.pg.disruptor.util.DisruptorUtils;
-import net.engining.pg.disruptor.util.WaitStrategys;
-import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -22,7 +18,9 @@ public class Event1ParallelDisruptor extends AbstractBizDataEventDisruptorWrappe
 
     public final static String GROUP_NAME="Event1-Group";
 
-    final static int BATCH_SIZE=1;
+    private final List<EventHandler<DisruptorBizDataEvent<String>>> eventHandlers = Lists.newArrayList();
+
+    private DisruptorBizDataEventFactory<String> eventFactory;
 
     /**
      * 通用的服务于{@link DisruptorBizDataEvent}的Disruptor构造函数
@@ -37,21 +35,22 @@ public class Event1ParallelDisruptor extends AbstractBizDataEventDisruptorWrappe
                 ExecutionMode.Parallel
         );
         initProperties(properties);
-    }
+        this.eventFactory = new DisruptorBizDataEventFactory<>();
 
+        //setup event handlers
+        this.eventHandlers.add(new DisruptorHandler1(GROUP_NAME, this.getBatchSize()));
+        this.eventHandlers.add(new DisruptorHandler2(GROUP_NAME, this.getBatchSize()));
+        this.eventHandlers.add(new DisruptorHandler3(GROUP_NAME, this.getBatchSize()));
+    }
 
     @Override
     public List<? extends EventHandler<DisruptorBizDataEvent<String>>> getEventHandlers() {
-        List<EventHandler<DisruptorBizDataEvent<String>>> eventHandlers = Lists.newArrayList();
-        eventHandlers.add(new DisruptorHandler1(GROUP_NAME, BATCH_SIZE));
-        eventHandlers.add(new DisruptorHandler2(GROUP_NAME, BATCH_SIZE));
-        eventHandlers.add(new DisruptorHandler3(GROUP_NAME, BATCH_SIZE));
         return eventHandlers;
     }
 
     @Override
     public DisruptorBizDataEventFactory<String> getEventFactory() {
-        return new DisruptorBizDataEventFactory<>();
+        return eventFactory;
     }
 
 }

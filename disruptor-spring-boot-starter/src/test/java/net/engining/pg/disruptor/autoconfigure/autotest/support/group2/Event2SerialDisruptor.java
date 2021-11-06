@@ -25,7 +25,9 @@ public class Event2SerialDisruptor extends AbstractBizDataEventDisruptorWrapper<
 
     public final static String GROUP_NAME="Event2-Group";
 
-    final static int BATCH_SIZE=1;
+    private final List<EventHandler<DisruptorBizDataEvent<Integer>>> eventHandlers = Lists.newArrayList();
+
+    private DisruptorBizDataEventFactory<Integer> eventFactory;
 
     /**
      * 通用的服务于{@link DisruptorBizDataEvent}的Disruptor构造函数
@@ -40,21 +42,24 @@ public class Event2SerialDisruptor extends AbstractBizDataEventDisruptorWrapper<
                 ExecutionMode.SerialChain
         );
         initProperties(properties);
+        this.eventFactory = new DisruptorBizDataEventFactory<>();
+
+        //setup event handlers
+        eventHandlers.add(new DisruptorHandler11(GROUP_NAME, this.getBatchSize()));
+        eventHandlers.add(new DisruptorHandler12(GROUP_NAME, this.getBatchSize()));
+        eventHandlers.add(new DisruptorHandler13(GROUP_NAME, this.getBatchSize()));
+
     }
 
 
     @Override
     public List<? extends EventHandler<DisruptorBizDataEvent<Integer>>> getEventHandlers() {
-        List<EventHandler<DisruptorBizDataEvent<Integer>>> eventHandlers = Lists.newArrayList();
-        eventHandlers.add(new DisruptorHandler11(GROUP_NAME, BATCH_SIZE));
-        eventHandlers.add(new DisruptorHandler12(GROUP_NAME, BATCH_SIZE));
-        eventHandlers.add(new DisruptorHandler13(GROUP_NAME, BATCH_SIZE));
         return eventHandlers;
     }
 
     @Override
     public DisruptorBizDataEventFactory<Integer> getEventFactory() {
-        return new DisruptorBizDataEventFactory<>();
+        return eventFactory;
     }
 
 }

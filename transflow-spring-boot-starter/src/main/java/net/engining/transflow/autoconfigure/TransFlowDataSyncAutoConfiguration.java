@@ -18,6 +18,7 @@ import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.GenericDisruptorApplicationEvent;
 import net.engining.pg.disruptor.event.KeyDisruptorApplicationEvent;
 import net.engining.pg.disruptor.event.translator.BizDataEventOneArgTranslator;
+import net.engining.pg.storage.core.disruptor.DataSyncEngine;
 import net.engining.pg.storage.props.StorageDataSyncProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,31 +90,47 @@ public class TransFlowDataSyncAutoConfiguration {
         return new BizDataEventOneArgTranslator();
     }
 
-    @Bean(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
-    @ConditionalOnMissingBean(name = DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
-    public Disruptor<DisruptorBizDataEvent<CtInboundJournal>> inboundJournalDisruptor (
-            ApplicationContext applicationContext, StorageDataSyncProperties properties,
+    @Bean
+    public DataSyncEngine<CtInboundJournal> inboundJournalDataSyncEngine(
+            ApplicationContext applicationContext,
+            StorageDataSyncProperties properties,
             InboundJournalRepositoriesService inboundJournalRepositoriesService
     ) {
         return DataSyncDisruptorUtils.inboundJournalDataSyncEngine(
                 applicationContext,
                 properties,
                 inboundJournalRepositoriesService
-        ).start();
+        );
+    }
+
+    @Bean(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
+    @ConditionalOnMissingBean(name = DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
+    public Disruptor<DisruptorBizDataEvent<CtInboundJournal>> inboundJournalDisruptor (
+            DataSyncEngine<CtInboundJournal> inboundJournalDataSyncEngine
+    ) {
+        return inboundJournalDataSyncEngine.start();
+    }
+
+    @Bean
+    public DataSyncEngine<CtOutboundJournalExt> outboundJournalDataSyncEngine(
+            ApplicationContext applicationContext,
+            StorageDataSyncProperties properties,
+            OutboundJournalRepositoriesService outboundJournalRepositoriesService
+    ){
+        return DataSyncDisruptorUtils.outboundJournalDataSyncEngine(
+                applicationContext,
+                properties,
+                outboundJournalRepositoriesService
+        );
     }
 
     @Bean(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)
     @ConditionalOnMissingBean(name = DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)
     public Disruptor<DisruptorBizDataEvent<CtOutboundJournalExt>> outboundJournalDisruptor (
-            ApplicationContext applicationContext, StorageDataSyncProperties properties,
-            OutboundJournalRepositoriesService outboundJournalRepositoriesService
+            DataSyncEngine<CtOutboundJournalExt> outboundJournalDataSyncEngine
     ) {
 
-        return DataSyncDisruptorUtils.outboundJournalDataSyncEngine(
-                applicationContext,
-                properties,
-                outboundJournalRepositoriesService
-        ).start();
+        return outboundJournalDataSyncEngine.start();
     }
 
     /**

@@ -33,7 +33,10 @@ public class DisruptorHandler41 extends AbstractDiamondGroupedEventHandler<Disru
 
     @Override
     protected void doHandlerInternal(List<DisruptorBizDataEvent<Integer>> eventBuffer) throws Exception {
-
+        LOGGER.info(
+                "disruptor ({}) events",
+                eventBuffer.size()
+        );
     }
 
     @Override

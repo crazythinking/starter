@@ -38,7 +38,7 @@ public class DisruptorHandler1 extends AbstractParallelGroupedEventHandler<Disru
 
     @Override
     protected void doHandlerInternal(List<DisruptorBizDataEvent<String>> eventBuffer) throws Exception {
-
+        throw new UnsupportedOperationException("not support batch processing");
     }
 
     @Override
