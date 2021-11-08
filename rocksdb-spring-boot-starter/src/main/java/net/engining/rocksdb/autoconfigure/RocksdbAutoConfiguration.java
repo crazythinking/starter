@@ -3,7 +3,7 @@ package net.engining.rocksdb.autoconfigure;
 import com.google.common.collect.Maps;
 import net.engining.pg.rocksdb.props.BasedOptionsProperties;
 import net.engining.pg.rocksdb.props.RocksdbProperties;
-import net.engining.pg.storage.RocksdbKeyValueAdapter;
+import net.engining.pg.storage.rocksdb.RocksdbKeyValueAdapter;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.rocksdb.BlockBasedTableConfig;
 import org.rocksdb.CompactionPriority;

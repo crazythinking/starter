@@ -1,6 +1,6 @@
 package net.engining.rocksdb.autoconfigure.autotest.support;
 
-import net.engining.pg.storage.RocksdbKeyValueRepository;
+import net.engining.pg.storage.rocksdb.RocksdbKeyValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.keyvalue.core.KeyValueOperations;
 import org.springframework.stereotype.Repository;
