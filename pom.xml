@@ -10,13 +10,13 @@
 	<groupId>net.engining.starter</groupId>
 	<artifactId>starter-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.4.1.RELEASE</version>
 	<description>自定义spring-boot-starter组件</description>
 	
 	<properties>
 		<pmd.skip>true</pmd.skip>
 
-		<pg.version>3.6.4.RELEASE</pg.version>
+		<pg.version>3.6.5.RELEASE</pg.version>
 		<control.version>1.1.7.RELEASE</control.version>
 		<gm.version>1.5.3.RELEASE</gm.version>
 
