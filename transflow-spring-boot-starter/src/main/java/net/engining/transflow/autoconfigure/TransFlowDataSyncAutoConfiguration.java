@@ -90,47 +90,36 @@ public class TransFlowDataSyncAutoConfiguration {
         return new BizDataEventOneArgTranslator();
     }
 
-    @Bean
+    @Bean(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
     public DataSyncEngine<CtInboundJournal> inboundJournalDataSyncEngine(
             ApplicationContext applicationContext,
             StorageDataSyncProperties properties,
             InboundJournalRepositoriesService inboundJournalRepositoriesService
     ) {
-        return DataSyncDisruptorUtils.inboundJournalDataSyncEngine(
-                applicationContext,
-                properties,
-                inboundJournalRepositoriesService
-        );
+        DataSyncEngine<CtInboundJournal> inboundJournalDataSyncEngine =
+                DataSyncDisruptorUtils.inboundJournalDataSyncEngine(
+                        applicationContext,
+                        properties,
+                        inboundJournalRepositoriesService
+                );
+        inboundJournalDataSyncEngine.start();
+        return inboundJournalDataSyncEngine;
     }
 
-    @Bean(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
-    @ConditionalOnMissingBean(name = DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC)
-    public Disruptor<DisruptorBizDataEvent<CtInboundJournal>> inboundJournalDisruptor (
-            DataSyncEngine<CtInboundJournal> inboundJournalDataSyncEngine
-    ) {
-        return inboundJournalDataSyncEngine.start();
-    }
-
-    @Bean
+    @Bean(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)
     public DataSyncEngine<CtOutboundJournalExt> outboundJournalDataSyncEngine(
             ApplicationContext applicationContext,
             StorageDataSyncProperties properties,
             OutboundJournalRepositoriesService outboundJournalRepositoriesService
     ){
-        return DataSyncDisruptorUtils.outboundJournalDataSyncEngine(
-                applicationContext,
-                properties,
-                outboundJournalRepositoriesService
-        );
-    }
-
-    @Bean(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)
-    @ConditionalOnMissingBean(name = DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)
-    public Disruptor<DisruptorBizDataEvent<CtOutboundJournalExt>> outboundJournalDisruptor (
-            DataSyncEngine<CtOutboundJournalExt> outboundJournalDataSyncEngine
-    ) {
-
-        return outboundJournalDataSyncEngine.start();
+        DataSyncEngine<CtOutboundJournalExt> outboundJournalDataSyncEngine =
+                DataSyncDisruptorUtils.outboundJournalDataSyncEngine(
+                        applicationContext,
+                        properties,
+                        outboundJournalRepositoriesService
+                );
+        outboundJournalDataSyncEngine.start();
+        return outboundJournalDataSyncEngine;
     }
 
     /**
@@ -140,8 +129,8 @@ public class TransFlowDataSyncAutoConfiguration {
     @ConditionalOnMissingBean(name = "dataSyncApplicationEventListener")
     public ApplicationListener<KeyDisruptorApplicationEvent> dataSyncApplicationEventListener(
             BizDataEventOneArgTranslator bizDataEventOneArgTranslator,
-            @Qualifier(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC) Disruptor inboundJournalDisruptor,
-            @Qualifier(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC) Disruptor outboundJournalDisruptor,
+            @Qualifier(DataSyncDisruptorUtils.INBOUND_JOURNAL_DATA_SYNC) DataSyncEngine inboundJournalDataSyncEngine,
+            @Qualifier(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC) DataSyncEngine outboundJournalDataSyncEngine,
             InboundJournalRepositoriesService inboundJournalRepositoriesService,
             OutboundJournalRepositoriesService outboundJournalRepositoriesService
     ) {
@@ -163,7 +152,7 @@ public class TransFlowDataSyncAutoConfiguration {
                 CtInboundJournal ctInboundJournal4Es = new CtInboundJournal();
                 BeanUtils.copyProperties(ctInboundJournalDto, ctInboundJournal4Es);
                 event.setBind(ctInboundJournal4Es);
-                inboundJournalDisruptor.publishEvent(bizDataEventOneArgTranslator, event);
+                inboundJournalDataSyncEngine.getDisruptor().publishEvent(bizDataEventOneArgTranslator, event);
             }
             else if (appEvent.getTopicKey().equals(DataSyncDisruptorUtils.OUTBOUND_JOURNAL_DATA_SYNC)){
                 GenericDisruptorApplicationEvent<CtOutboundJournalExt> event = new GenericDisruptorApplicationEvent<>(
@@ -178,7 +167,7 @@ public class TransFlowDataSyncAutoConfiguration {
                 CtOutboundJournalExt ctOutboundJournal4Es = new CtOutboundJournalExt();
                 BeanUtils.copyProperties(ctOutboundJournalDto, ctOutboundJournal4Es);
                 event.setBind(ctOutboundJournal4Es);
-                outboundJournalDisruptor.publishEvent(bizDataEventOneArgTranslator, event);
+                outboundJournalDataSyncEngine.getDisruptor().publishEvent(bizDataEventOneArgTranslator, event);
             }
         };
     }

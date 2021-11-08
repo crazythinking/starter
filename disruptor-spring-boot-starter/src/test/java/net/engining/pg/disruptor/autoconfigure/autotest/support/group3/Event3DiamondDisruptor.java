@@ -2,16 +2,11 @@ package net.engining.pg.disruptor.autoconfigure.autotest.support.group3;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;
-import com.lmax.disruptor.WaitStrategy;
-import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
+import net.engining.pg.disruptor.AbstractBizDataEventDisruptorEngine;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;
 import net.engining.pg.disruptor.props.DisruptorProperties;
-import net.engining.pg.disruptor.props.GroupedDisruptorProperties;
-import net.engining.pg.disruptor.util.DisruptorUtils;
-import net.engining.pg.disruptor.util.WaitStrategys;
-import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -19,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component(Event3DiamondDisruptor.GROUP_NAME)
-public class Event3DiamondDisruptor extends AbstractBizDataEventDisruptorWrapper<Integer> {
+public class Event3DiamondDisruptor extends AbstractBizDataEventDisruptorEngine<Integer> {
 
     public final static String GROUP_NAME="Event3-Group";
 

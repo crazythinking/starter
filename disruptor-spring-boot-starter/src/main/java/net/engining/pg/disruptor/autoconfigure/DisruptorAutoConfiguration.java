@@ -1,7 +1,7 @@
 package net.engining.pg.disruptor.autoconfigure;
 
 import com.lmax.disruptor.dsl.Disruptor;
-import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
+import net.engining.pg.disruptor.AbstractBizDataEventDisruptorEngine;
 import net.engining.pg.disruptor.BizDataEventDisruptorTemplate;
 import net.engining.pg.disruptor.event.translator.BizDataEventOneArgTranslator;
 import net.engining.pg.disruptor.event.translator.BizKeyEventOneArgTranslator;
@@ -48,8 +48,8 @@ public class DisruptorAutoConfiguration {
             ApplicationContext applicationContext,
             BizDataEventOneArgTranslator bizDataEventOneArgTranslator
     ) {
-        Map<String, AbstractBizDataEventDisruptorWrapper> disruptors =
-                applicationContext.getBeansOfType(AbstractBizDataEventDisruptorWrapper.class);
+        Map<String, AbstractBizDataEventDisruptorEngine> disruptors =
+                applicationContext.getBeansOfType(AbstractBizDataEventDisruptorEngine.class);
         disruptors.forEach((s, abstractBizDataEventDisruptorWrapper) -> abstractBizDataEventDisruptorWrapper.start());
         return new BizDataEventDisruptorTemplate(disruptors, bizDataEventOneArgTranslator);
     }

@@ -2,12 +2,11 @@ package net.engining.pg.disruptor.autoconfigure.autotest.support.group4;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;
-import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
+import net.engining.pg.disruptor.AbstractBizDataEventDisruptorEngine;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;
 import net.engining.pg.disruptor.props.DisruptorProperties;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component(Event4MultiSerialDisruptor.GROUP_NAME)
-public class Event4MultiSerialDisruptor extends AbstractBizDataEventDisruptorWrapper<Integer> {
+public class Event4MultiSerialDisruptor extends AbstractBizDataEventDisruptorEngine<Integer> {
 
     public final static String GROUP_NAME="Event4-Group";
 

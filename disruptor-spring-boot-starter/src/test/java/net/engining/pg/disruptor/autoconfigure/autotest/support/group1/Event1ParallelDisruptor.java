@@ -2,7 +2,7 @@ package net.engining.pg.disruptor.autoconfigure.autotest.support.group1;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;
-import net.engining.pg.disruptor.AbstractBizDataEventDisruptorWrapper;
+import net.engining.pg.disruptor.AbstractBizDataEventDisruptorEngine;
 import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.handler.ExecutionMode;
 import net.engining.pg.disruptor.factory.DisruptorBizDataEventFactory;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component(Event1ParallelDisruptor.GROUP_NAME)
-public class Event1ParallelDisruptor extends AbstractBizDataEventDisruptorWrapper<String> {
+public class Event1ParallelDisruptor extends AbstractBizDataEventDisruptorEngine<String> {
 
     public final static String GROUP_NAME="Event1-Group";
 
