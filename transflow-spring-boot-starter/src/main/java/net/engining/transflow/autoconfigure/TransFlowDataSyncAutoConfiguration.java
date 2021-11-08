@@ -1,6 +1,5 @@
 package net.engining.transflow.autoconfigure;
 
-import com.lmax.disruptor.dsl.Disruptor;
 import net.engining.control.core.service.InboundJournalDao;
 import net.engining.control.core.service.OutboundJournalDao;
 import net.engining.control.core.storage.DataSyncDisruptorUtils;
@@ -14,7 +13,6 @@ import net.engining.control.core.storage.es.OutboundJournalRepositoriesServiceIm
 import net.engining.control.entity.dto.CtInboundJournalDto;
 import net.engining.control.entity.dto.ext.CtOutboundJournalDtoExt;
 import net.engining.control.entity.model.elasticsearch.CtInboundJournal;
-import net.engining.pg.disruptor.event.DisruptorBizDataEvent;
 import net.engining.pg.disruptor.event.GenericDisruptorApplicationEvent;
 import net.engining.pg.disruptor.event.KeyDisruptorApplicationEvent;
 import net.engining.pg.disruptor.event.translator.BizDataEventOneArgTranslator;
