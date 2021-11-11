@@ -88,13 +88,13 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
 
                 if (ValidateUtilExt.isNotNullOrEmpty(op)){
                     //只关心操作符枚举内定义的操作,判断操作的类型.过滤掉读,只处理增删改
-                    if (op != Envelope.Operation.READ.code()) {
+                    if (op.equals(Envelope.Operation.READ.code())) {
                         //不符合监控要求的操作不再创建事务，排除op=r
                         ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
                         extractedCdcEventBo.setOperation(op);
                         String record = (
-                                op == Envelope.Operation.DELETE.code() ||
-                                        op == Envelope.Operation.TRUNCATE.code()
+                                op.equals(Envelope.Operation.DELETE.code()) ||
+                                        op.equals(Envelope.Operation.TRUNCATE.code())
                         ) ? BEFORE : AFTER;
                         // 获取增删改对应的结构体数据
                         Struct recordDataStruct = (Struct) valueStruct.get(record);
@@ -102,7 +102,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                             // 将变更的行封装为Map
                             Map<String, Object> targetRecordData = recordDataStruct.schema().fields().stream()
                                     .map(Field::name)
-                                    .filter(fieldName -> recordDataStruct.get(fieldName) != null)
+                                    .filter(fieldName -> ValidateUtilExt.isNotNullOrEmpty(recordDataStruct.get(fieldName)))
                                     .map(fieldName -> Pair.of(fieldName, recordDataStruct.get(fieldName)))
                                     .collect(toMap(Pair::getKey, Pair::getValue));
                             extractedCdcEventBo.setTargetRecordData(targetRecordData);
