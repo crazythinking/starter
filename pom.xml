@@ -167,6 +167,7 @@
 		<module>gm-spring-boot-starter</module>
 		<module>elasticsearch-spring-boot-starter</module>
 		<module>rocksdb-spring-boot-starter</module>
+		<module>drools-spring-boot-starter</module>
 	</modules>
 
 	<build>

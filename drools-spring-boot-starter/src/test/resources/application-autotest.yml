@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: drools-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+
+pg:
+  drools:
+    base-path: "D:/drools-rules/"
+    gav-drools-properties:
+      "g1:a1:1.0": {
+        mode: stream
+        dir-path: "kjar1/"
+      }
+
