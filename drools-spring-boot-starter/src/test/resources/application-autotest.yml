@@ -12,9 +12,18 @@ logging:
 pg:
   drools:
     base-path: "D:/drools-rules/"
+    interval: 1000
+    monitor: true
+    update: true
     gav-drools-properties:
-      "g1:a1:1.0": {
-        mode: stream
-        dir-path: "kjar1/"
-      }
+      "sacl-drools":
+        type: kjar
+        path: "kjar1/"
+        gav: "net.engining.sacl:sacl-drools:0.2.0"
+        pool-size: 15
+      "sacl-drools-script":
+        type: script
+        path: "script1/"
+        gav: "net.engining.sacl:sacl-drools:0.2.0"
+        pool-size: 15
 
