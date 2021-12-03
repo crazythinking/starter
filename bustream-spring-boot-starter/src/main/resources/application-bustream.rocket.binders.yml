@@ -4,4 +4,3 @@ spring:
       binders:
         rocketCluster:
           type: rocketmq
-      default-binder: rocketCluster

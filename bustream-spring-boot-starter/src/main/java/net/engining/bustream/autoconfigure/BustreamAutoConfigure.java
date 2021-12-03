@@ -4,17 +4,30 @@ import net.engining.bustream.config.BusCommonBindingsInputConfig;
 import net.engining.bustream.config.BusCommonBindingsOutputConfig;
 import net.engining.bustream.config.BusDisableConfig;
 import net.engining.bustream.config.BusEnableConfig;
+import net.engining.bustream.config.BusKafkaBindingsInputConfig;
+import net.engining.bustream.config.BusKafkaBindingsOutputConfig;
 import net.engining.bustream.config.BusRabbitBindingsInputConfig;
-import net.engining.bustream.config.BusRabbitBindingsOutPutConfig;
+import net.engining.bustream.config.BusRabbitBindingsOutputConfig;
 import net.engining.bustream.config.BustreamKafkaBindersConfig;
 import net.engining.bustream.config.BustreamRabbitBindersConfig;
 import net.engining.bustream.config.BustreamRocketBindersConfig;
 import net.engining.bustream.config.StreamCommonBindingsInputConfig;
 import net.engining.bustream.config.StreamCommonBindingsOutputConfig;
 import net.engining.bustream.config.StreamCommonBindingsPollinputConfig;
+import net.engining.bustream.config.StreamKafkaBindingsInputConfig;
+import net.engining.bustream.config.StreamKafkaBindingsOutputConfig;
+import net.engining.bustream.config.StreamKafkaBindingsPollinputConfig;
 import net.engining.bustream.config.StreamRabbitBindingsInputConfig;
 import net.engining.bustream.config.StreamRabbitBindingsOutputConfig;
 import net.engining.bustream.config.StreamRabbitBindingsPollinputConfig;
+import net.engining.bustream.config.combine.ChannelBusInput4KafkaConfig;
+import net.engining.bustream.config.combine.ChannelBusInput4RabbitConfig;
+import net.engining.bustream.config.combine.ChannelInput4KafkaConfig;
+import net.engining.bustream.config.combine.ChannelInput4RabbitConfig;
+import net.engining.bustream.config.combine.ChannelOutput4KafkaConfig;
+import net.engining.bustream.config.combine.ChannelOutput4RabbitConfig;
+import net.engining.bustream.config.combine.ChannelPollinput4KafkaConfig;
+import net.engining.bustream.config.combine.ChannelPollinput4RabbitConfig;
 import net.engining.gm.config.props.BustreamProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,21 +52,34 @@ import java.io.IOException;
         BustreamProperties.class
 })
 @Import(value = {
+        BusDisableConfig.class,
+        BusEnableConfig.class,
         BustreamRabbitBindersConfig.class,
         BustreamKafkaBindersConfig.class,
         BustreamRocketBindersConfig.class,
-        BusDisableConfig.class,
-        BusEnableConfig.class,
         BusCommonBindingsInputConfig.class,
         BusCommonBindingsOutputConfig.class,
         BusRabbitBindingsInputConfig.class,
-        BusRabbitBindingsOutPutConfig.class,
+        BusKafkaBindingsInputConfig.class,
+        BusRabbitBindingsOutputConfig.class,
+        BusKafkaBindingsOutputConfig.class,
         StreamCommonBindingsInputConfig.class,
         StreamCommonBindingsOutputConfig.class,
         StreamCommonBindingsPollinputConfig.class,
         StreamRabbitBindingsInputConfig.class,
+        StreamKafkaBindingsInputConfig.class,
         StreamRabbitBindingsOutputConfig.class,
+        StreamKafkaBindingsOutputConfig.class,
         StreamRabbitBindingsPollinputConfig.class,
+        StreamKafkaBindingsPollinputConfig.class,
+        ChannelBusInput4KafkaConfig.class,
+        ChannelBusInput4RabbitConfig.class,
+        ChannelInput4RabbitConfig.class,
+        ChannelInput4KafkaConfig.class,
+        ChannelOutput4RabbitConfig.class,
+        ChannelOutput4KafkaConfig.class,
+        ChannelPollinput4RabbitConfig.class,
+        ChannelPollinput4KafkaConfig.class,
 
 })
 @ConditionalOnProperty(prefix = "gm.bustream", name = "enabled", matchIfMissing = true)

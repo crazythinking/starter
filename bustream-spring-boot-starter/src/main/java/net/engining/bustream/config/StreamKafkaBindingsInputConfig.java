@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  * @date : 2020-10-29 14:20
  * @since :
  **/
-@Profile("bus.rabbit.bindings.output")
-@PropertySource("classpath:application-bus.rabbit.bindings.output.yml")
-public class BusRabbitBindingsOutPutConfig {
+@Profile("stream.kafka.bindings.input")
+@PropertySource("classpath:application-stream.kafka.bindings.input.yml")
+public class StreamKafkaBindingsInputConfig {
 }

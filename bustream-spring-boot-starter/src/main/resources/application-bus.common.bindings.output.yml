@@ -1,8 +1,9 @@
-# Spring cloud bus 默认约定配置： 生产者和消费者的默认能力
+# Spring cloud bus 默认生产者(springCloudBusOutput)的约定配置
 spring:
   cloud:
     stream:
       bindings:
+        #以Channel的BeanName为Key所对应的Binding(BindingServiceProperties#bindings)的定义
         springCloudBusOutput:
           destination: ${spring.application.name}.default # exchange 或 topic 用生产者的applicationName做前缀
           contentType: application/json

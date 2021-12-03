@@ -1,9 +1,11 @@
-# Spring cloud bus 默认消费者的约定配置
+# Spring cloud bus 默认消费者(springCloudBusInput)的约定配置
 spring:
   cloud:
     stream:
       bindings:
+        #以Channel的BeanName为Key所对应的Binding(BindingServiceProperties)的定义
         springCloudBusInput:
+          #在多Binder环境下用于指定非默认的Binder
 #          binder: rabbitCluster
           destination: ${gm.bustream.default-producer-name}.default # exchange 或 topic 用生产者的applicationName做前缀
 #          group: xxx # queue的后缀,带业务含义; 由各业务系统自身定义

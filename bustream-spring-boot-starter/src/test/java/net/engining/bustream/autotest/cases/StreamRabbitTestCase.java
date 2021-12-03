@@ -30,10 +30,13 @@ import java.util.Map;
         "stream.rabbit.bindings.input",
         "stream.rabbit.bindings.output",
         "stream.common",
-        "stream.dev"
+        "channel.input.common",
+        "channel.input.dev",
+        "channel.output.common",
+        "channel.output.dev",
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
-public class StreamTestCase extends AbstractTestCaseTemplate {
+public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     UserOutputStreamHandler userMsgOutputStreamHandler;

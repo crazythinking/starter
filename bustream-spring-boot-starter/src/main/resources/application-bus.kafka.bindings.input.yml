@@ -1,0 +1,42 @@
+# Spring cloud bus 默认约定配置： 消费者的Binding属性，针对于Kafka的特性
+spring:
+  cloud:
+    stream:
+      #属于特定于Kafka的Binding(KafkaExtendedBindingProperties),不是通用的; 如果涉及到mq的转换则不可用; 同样以key的方式指定配置，默认为default
+      kafka:
+        bindings:
+          springCloudBusInput: # binding的key为springCloudBusInput
+            consumer:
+              #默认true，Topic分区在ConsumerGroup的成员之间自动重新平衡。如果false，则每个consumer需要配置相应的instanceCount和instanceIndex
+              autoRebalanceEnabled: true
+              #是否自动提交Offset，默认true；
+              autoCommitOffset: ${spring.kafka.consumer.enable-auto-commit}
+              #仅当autoCommitOffset设置为true时才有效;
+              #如果为false，它会抑制导致错误Event的自动提交，并且仅对成功Event进行提交。 它允许流从最后成功处理的Event自动重播，以防出现持续故障。
+              #如果true，则它始终自动提交（如果启用了自动提交）。
+              #如果未设置（默认），它实际上具有与enableDlq作用相同，如果错误消息被发送到DLQ则自动提交，否则不提交
+              #autoCommitOnError:
+              #默认false；如果true，且当autoCommitOffset为true，则每消费一个Event都会Ack，对性能有影响，但可避免重复消费
+              ackEachRecord: false
+              #是否将consumer的偏移量重置为startOffset提供的值。如果提供了KafkaBindingRebalanceListener则该参数必须为false
+              resetOffsets: false
+              #当Kafka中没有初始偏移量或服务器上不再存在当前consumer对应偏移量时的策略；
+              startOffset: ${spring.kafka.consumer.auto-offset-reset}
+              #是否启用DLQ，默认false；如果打开DLQ，其默认TopicName为error.<destination>.<group>，且失败的Event会被发送到DLQ中与原始Event相同的分区号
+              enableDlq: true
+              #作为DLQ的Producer配置，默认使用 Default Kafka producer properties
+              #dlqProducerProperties:
+              #其他附加的 Kafka consumer properties
+              #configuration:
+              #指示是否需要填充标准Header，允许值：none, id, timestamp, or both；默认none
+              standardHeaders: both
+              #RecordMessageConverter实现的BeanName，用于替换默认的MessagingMessageConverter
+              #converterBeanName:
+              #指定间隔毫秒时间内未收到任何消息时产生事件(ListenerContainerIdleEvent)，默认30000；
+              idleEventInterval: 30000
+              #附加的TopicProperties
+              #topic.properties:
+              #以Map<Integer, List<Integer>>的形式分配Partition与ReplicaAssignment的映射关系
+              #topic.replicas-assignment:
+              #副本数量，默认none，当topic.replicas-assignment配置时，此参数无效
+              #topic.replication-factor:

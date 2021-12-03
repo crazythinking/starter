@@ -1,7 +1,9 @@
+#RabbitMq特定的Binder(BindingServiceProperties)配置
 spring:
   cloud:
     stream:
       binders:
+        #以Binder的名称为Key所对应的(BindingServiceProperties#binders->BinderProperties)
         rabbitCluster:
           type: rabbit
           environment:
@@ -18,4 +20,3 @@ spring:
                 password: ${spring.rabbitmq.password}
                 username: ${spring.rabbitmq.username}
                 virtual-host: ${spring.rabbitmq.virtual-host}
-      default-binder: rabbitCluster
