@@ -21,16 +21,16 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "rabbit.common",
-        "rabbit.dev",
         "bus.disable",
-        "bustream.rabbit.binders",
-        "stream.common.bindings.input",
-        "stream.common.bindings.output",
-        "stream.rabbit.bindings.input",
-        "stream.rabbit.bindings.output",
-        "stream.common.autoack",
-        "stream.dev"
+        "channel.stream.input.rabbit",
+        "channel.stream.output.rabbit",
+        //"channel.stream.input.kafka",
+        //"channel.stream.output.kafka",
+        "rabbit.dev",
+        //"kafka.dev",
+        "stream.common",
+        "channel.input.dev",
+        "channel.output.dev",
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {

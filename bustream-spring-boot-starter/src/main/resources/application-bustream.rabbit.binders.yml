@@ -20,3 +20,6 @@ spring:
                 password: ${spring.rabbitmq.password}
                 username: ${spring.rabbitmq.username}
                 virtual-host: ${spring.rabbitmq.virtual-host}
+  profiles:
+    include:
+    - bustream.rabbit.bindings.default

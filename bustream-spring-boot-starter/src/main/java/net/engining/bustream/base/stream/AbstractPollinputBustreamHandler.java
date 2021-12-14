@@ -1,25 +1,18 @@
 package net.engining.bustream.base.stream;
 
-import com.rabbitmq.client.Channel;
-import net.engining.bustream.base.BustreamHandler.Type;
-import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.Assert;
 
 import java.io.Serializable;
 
 /**
- * 费者子类，此类默认绑定了Channel -> POLLINPUT；
- * 如果业务类需要监听其他自定义的Channel时，需要自行实现{@link AbstractConsume4AmqpBustreamHandler}；
+ * 轮询消费者子类，此类默认绑定了Channel -> POLLINPUT；
+ * 如果业务类需要监听其他自定义的Channel时，需要自行实现{@link AbstractConsume4ManualAckBustreamHandler}；
  *
  * @author : Eric Lu
  * @version :
@@ -27,7 +20,7 @@ import java.io.Serializable;
  * @since :
  **/
 public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
-                                                    extends AbstractConsume4AmqpBustreamHandler<E> {
+                                                    extends AbstractConsumeBustreamHandler<E> {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPollinputBustreamHandler.class);
 
@@ -49,7 +42,7 @@ public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
     public void pollConsume4ChannelPollinput(){
         pollableMessageSource.poll(
                 message -> {
-                    receiving((E) message.getPayload(), message.getHeaders());
+                    received((E) message.getPayload(), message.getHeaders());
                 },
                 getParameterizedTypeReference()
         );

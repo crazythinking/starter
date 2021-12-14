@@ -113,7 +113,7 @@ public interface BustreamHandler<E extends Serializable> {
      * @param type  处理类所属的角色：生产者，消费者，轮询消费者
      * @param logger 日志操作对象
      */
-    default void defalutBefore(E event, Type type, Logger logger){
+    default void defaultBefore(E event, Type type, Logger logger){
         String msg = DEFAULT_BEFORE_MESSAGE_PREFIX +
                 type.label +
                 event.getClass().getCanonicalName() +

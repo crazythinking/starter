@@ -9,10 +9,18 @@ spring:
           environment:
             #Kafka特定的Binder(KafkaBinderConfigurationProperties)
             #KafkaBinderConfigurationProperties会自动注入KafkaProperties
-            spring.cloud.stream.kafka.binder.brokers: ${spring.kafka.bootstrap-servers}
-            spring.cloud.stream.kafka.binder.healthTimeout: 5
-            spring.cloud.stream.kafka.binder.autoCreateTopics: false
-
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: ${spring.kafka.bootstrap-servers}
+                      healthTimeout: 5
+                      autoCreateTopics: true
+  profiles:
+    include:
+    - kafka
+    - bustream.kafka.bindings.default
 
 
 

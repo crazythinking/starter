@@ -64,7 +64,7 @@ public abstract class AbstractRemoteApplicationEventPublisher<E extends Serializ
      *                    或 spring.application.name:applicationContextId(发布到指定微服务的指定实例)
      */
     public void publish(E event, String destination) {
-        defalutBefore(event, Type.PUBLISHER, LOGGER);
+        defaultBefore(event, Type.PUBLISHER, LOGGER);
         try {
             transform(event);
             if (ValidateUtilExt.isNullOrEmpty(destination)) {

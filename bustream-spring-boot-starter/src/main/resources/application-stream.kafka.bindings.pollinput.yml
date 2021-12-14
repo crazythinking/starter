@@ -29,7 +29,7 @@ spring:
               #其他附加的 Kafka consumer properties
               #configuration:
               #指示是否需要填充标准Header，允许值：none, id, timestamp, or both；默认none
-              standardHeaders: none
+              standardHeaders: both
               #RecordMessageConverter实现的BeanName，用于替换默认的MessagingMessageConverter
               #converterBeanName:
               #指定间隔毫秒时间内未收到任何消息时产生事件(ListenerContainerIdleEvent)，默认30000；

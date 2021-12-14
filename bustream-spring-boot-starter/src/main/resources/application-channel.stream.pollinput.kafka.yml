@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include:
+    - bustream.kafka.binders
+    - stream.common.bindings.pollinput
+    - stream.Kafka.bindings.pollinput

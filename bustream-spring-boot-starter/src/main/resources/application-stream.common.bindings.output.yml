@@ -4,7 +4,7 @@ spring:
     stream:
       bindings:
         output: # binding的key为output
-#          binder: rabbitCluster # 指定某个binder, 通常不需要, 由default-binder配置
+#          binder: # 指定某个binder, 不指定时使用default-binder的配置
           destination: ${spring.application.name}.default
-#          group: saclGroup # queue的后缀,带业务含义; 由各业务系统自身定义
+#          group: # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json

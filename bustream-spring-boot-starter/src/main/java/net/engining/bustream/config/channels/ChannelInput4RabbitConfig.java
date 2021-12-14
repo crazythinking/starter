@@ -1,21 +1,23 @@
-package net.engining.bustream.config;
+package net.engining.bustream.config.channels;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 /**
+ * 针对RabbitMq的 Channel：input 的组合配置
  *
  * @author : Eric Lu
  * @version :
- * @date : 2020-10-29 14:20
+ * @date : 2021-12-03 15:27
  * @since :
  **/
-@Profile("stream.common.bindings.input")
+@Configuration
+@Profile("channel.stream.input.rabbit")
 @EnableBinding({
         Sink.class
 })
-@PropertySource("classpath:application-stream.common.bindings.input.yml")
-public class StreamCommonBindingsInputConfig {
+public class ChannelInput4RabbitConfig {
 }

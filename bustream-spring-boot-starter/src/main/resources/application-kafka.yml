@@ -47,9 +47,11 @@ spring:
       #是否自动提交offset
       #true，可能存在消费过程未成功（比如抛出异常），commit消息已经提交了，此时消息就丢失了；
       #false，可以保证消息“至少被消费一次”(at least once)，但此时需要在消费端需要解决幂等问题；
+      #注意，在Kafka-Binder中不支持true，即固定为false，但可在consumer-binding上配置autoCommitOffset为true
+      #另设为true后建议打开死信队列，确保消费失败的消息自动存入死信队列，也可保消息不丢；
       enable-auto-commit: true
       #周期性自动提交的间隔，单位毫秒
-      #auto-commit-interval: 2000 #默认值：5000
+      auto-commit-interval: 2000 #默认值：5000
       #允许消费者指定从broker读取消息时最小的Payload的字节数。
       #当消费者从broker读取消息时，如果数据字节数小于这个阈值，broker会等待直到有足够的数据，然后才返回给消费者。
       #对于写入量不高的主题来说，其可以减少broker和消费者的压力，因为减少了往返的时间。而对于有大量消费者的主题来说，则可以明显减轻broker压力。
@@ -62,9 +64,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
     listener:
-      #创建多少个consumer，值必须小于等于Kafka Topic的分区数。
-      ack-mode: MANUAL_IMMEDIATE
-      concurrency: 1  #推荐设置为topic的分区数
+      ack-mode: count_time
+      ack-count: 10
+      ack-time: PT2S
+      #创建多少个consumer，值必须小于等于Kafka Topic的分区数，推荐设置为Topic的分区数
+      concurrency: 1
 
     template:
       default-topic: ${spring.application.name}

@@ -7,6 +7,7 @@ import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
@@ -20,13 +21,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 /**
  * @author : Eric Lu
  * @version :
  * @date : 2020-10-31 18:52
  * @since :
  **/
-@Profile({"stream.common.bindings.input", "stream.common.autoack"})
+@Profile({
+        "channel.stream.input.rabbit & !not.auto.ack",
+        "channel.stream.input.kafka & !not.auto.ack",
+})
+@ConditionalOnProperty(
+        name = {"spring.kafka.consumer.enable-auto-commit"},
+        havingValue = "false"
+        //name = {"spring.cloud.stream.rabbit.bindings.input.consumer.acknowledge-mode"},
+        //havingValue = "manual"
+)
 @Service
 public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
     /** logger */

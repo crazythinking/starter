@@ -15,6 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
  * @since :
  **/
 @ActiveProfiles(profiles={
+        "bus.disable",
+        "bustream.kafka.binders",
         "kafka.dev"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)

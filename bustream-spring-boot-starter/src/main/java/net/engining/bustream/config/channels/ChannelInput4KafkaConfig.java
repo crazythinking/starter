@@ -1,5 +1,8 @@
-package net.engining.bustream.config.combine;
+package net.engining.bustream.config.channels;
 
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
@@ -11,13 +14,10 @@ import org.springframework.context.annotation.PropertySource;
  * @date : 2021-12-03 15:27
  * @since :
  **/
+@Configuration
 @Profile("channel.stream.input.kafka")
-@PropertySource(value = {
-        "classpath:application-kafka.yml",
-        "classpath:application-bustream.kafka.binders.yml",
-        "classpath:application-stream.common.bindings.input.yml",
-        "classpath:application-stream.kafka.bindings.input.yml",
-
+@EnableBinding({
+        Sink.class
 })
 public class ChannelInput4KafkaConfig {
 }

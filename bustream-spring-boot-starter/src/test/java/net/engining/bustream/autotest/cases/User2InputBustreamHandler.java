@@ -1,6 +1,6 @@
 package net.engining.bustream.autotest.cases;
 
-import net.engining.bustream.base.stream.AbstractConsume4AmqpBustreamHandler;
+import net.engining.bustream.base.stream.AbstractConsume4ManualAckBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -25,9 +26,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2021-05-04 11:16
  * @since :
  **/
-@Profile({"stream.common.bindings.input", "stream.common"})
+@Profile({
+        "channel.stream.input.rabbit",
+        "channel.stream.input.kafka",
+        "not.auto.ack"
+})
 @Service
-public class User2InputBustreamHandler extends AbstractConsume4AmqpBustreamHandler<User2> implements InitializingBean {
+public class User2InputBustreamHandler extends AbstractConsume4ManualAckBustreamHandler<User2> implements InitializingBean {
 
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(User2InputBustreamHandler.class);
@@ -40,7 +45,7 @@ public class User2InputBustreamHandler extends AbstractConsume4AmqpBustreamHandl
      * 接收消息，无需显示调用，由监听器自动触发
      */
     @StreamListener(value = Sink.INPUT, condition = "headers['messageType']=='type2'")
-    protected void consume4ChannelInput(@Payload User2 event, @Headers MessageHeaders headers){
+    protected void consume4ChannelInput(@Payload User2 event, @Headers MessageHeaders headers) {
         receiving(event, headers);
     }
 

@@ -96,6 +96,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         m.put("2", "b");
         RedisUtil.getStringHandler().mset(m);
 
+        RedisUtil.getNumberHandler();
+
         String a = redissonCacheService.cachable("-test-cache");
         Console.log(a);
         String b = redissonCacheService.cachable2("-test-cache");

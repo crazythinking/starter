@@ -23,16 +23,19 @@ import java.util.Map;
  **/
 @ActiveProfiles(profiles = {
         "bus.disable",
-        "channel.stream.input.rabbit",
-        "channel.stream.output.rabbit",
-        "rabbit.dev",
+        //"channel.stream.input.rabbit",
+        //"channel.stream.output.rabbit",
+        "channel.stream.input.kafka",
+        "channel.stream.output.kafka",
+        //"rabbit.dev",
+        "kafka.dev",
         "stream.common",
         "channel.input.dev",
         "channel.output.dev",
         "not.auto.ack"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
-public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
+public class StreamTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     UserOutputStreamHandler userMsgOutputStreamHandler;
@@ -45,9 +48,6 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     User2InputBustreamHandler user2InputBustreamHandler;
-
-    @Autowired
-    RabbitTemplate rabbitTemplate;
 
     @Override
     public void initTestData() throws Exception {
@@ -63,7 +63,7 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
         //);
 
         //for normal
-        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==10, () -> "msg count != "+ 10);
+        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==5, () -> "msg count != "+ 5);
         Assert.isTrue(user2InputBustreamHandler.okCount.get()==0, () -> "msg count != 0");
 
     }
@@ -84,16 +84,6 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
         for (int i = 0; i < n; i++) {
             properties1.getHeaders().putAll(headerMap);
             userMsgOutputStreamHandler.send(user, headerMap);
-
-            //对比使用RabbitTemplate指定routingKey时，只有consumer也配置了相应binding-routing-key时才能收到消息；
-            //producer为配置binding-routing-key时默认为#, 如果consumer配置指定的非“#”的binding-routing-key, 该消息将丢失, 因为找不到相应的queue；
-            //但默认routing-key是“#”时，会消费所有，因此该案例会消费10个消息；
-            rabbitTemplate.send(
-                    "bustream-test.default",
-                    "repayBack",
-                    new Message(JSON.toJSONString(user).getBytes(), properties1)
-            );
-
         }
 
         Map<String, Object> headerMap2 = Maps.newHashMap();

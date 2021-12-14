@@ -33,7 +33,6 @@
 
     <Loggers>
 
-        <!--只输入级别高于trace的日志-->
         <AsyncRoot level="${LOG_LEVEL}">
             <AppenderRef ref="Console"/>
             <!--<AppenderRef ref="AllLog"/>-->

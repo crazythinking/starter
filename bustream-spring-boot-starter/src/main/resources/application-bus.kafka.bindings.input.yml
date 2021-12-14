@@ -1,4 +1,4 @@
-# Spring cloud bus 默认约定配置： 消费者的Binding属性，针对于Kafka的特性
+# Spring cloud bus 生产者和消费者的Binding属性的默认约定配置： 针对于Kafka的特性
 spring:
   cloud:
     stream:
