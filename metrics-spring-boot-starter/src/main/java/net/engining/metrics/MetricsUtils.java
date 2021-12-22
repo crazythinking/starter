@@ -40,13 +40,21 @@ public class MetricsUtils {
 
     public static MeterRegistry determinedMeterRegistry(ConfigurableApplicationContext applicationContext) {
         //获取容器内已实例化的MeterRegistry
+        //注意：MeterRegistryPostProcessor已将Spring容器中的所有MeterRegistry加入Metrics.globalRegistry，
+        //但存在CompositeMeterRegistry时Metrics.globalRegistry中会存在两层CompositeMeterRegistry，内层的是Spring容器管理的；
+        //如：Metrics.globalRegistry.getRegistries()
+        //      0 = {CompositeMeterRegistry@9608}
+        //      1 = {StoredStepMeterRegistry@9613}
+        //      2 = {StoredPushMeterRegistry@7808}
+        //      3 = {PrometheusMeterRegistry@9634}
+        //而：CompositeMeterRegistry@9608.getRegistries()
+        //      0 = {StoredStepMeterRegistry@9613}
+        //      1 = {StoredPushMeterRegistry@7808}
+        //      2 = {PrometheusMeterRegistry@9634}
         if (ValidateUtilExt.isNotNullOrEmpty(applicationContext.getBean(COMPOSITE_METER_REGISTRY))){
             return (CompositeMeterRegistry) applicationContext.getBean(COMPOSITE_METER_REGISTRY);
         }
         else {
-            applicationContext.getBeansOfType(MeterRegistry.class).forEach((beanName, meterRegistry) -> {
-                Metrics.addRegistry(meterRegistry);
-            });
             return Metrics.globalRegistry;
         }
     }

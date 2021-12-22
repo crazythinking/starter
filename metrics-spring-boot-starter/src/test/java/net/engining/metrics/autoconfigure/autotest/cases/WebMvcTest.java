@@ -3,6 +3,7 @@ package net.engining.metrics.autoconfigure.autotest.cases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.search.Search;
 import net.engining.metrics.autoconfigure.autotest.support.AbstractTestCaseTemplate;
@@ -104,6 +105,10 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
 
     @Override
     public void assertResult() throws Exception {
+        if (Metrics.globalRegistry.getRegistries().equals(compositeMeterRegistry.getRegistries())){
+            LOGGER.warn("CompositeMeterRegistry is same");
+        }
+
         meterRegistrys.forEach(meterRegistry -> {
             //Search.in(meterRegistry)
             // .meters().forEach(each -> {
@@ -122,7 +127,7 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
                     Search.in(meterRegistry).meters().size());
         });
 
-        //Thread.sleep(20000L);
+
     }
 
     @Override

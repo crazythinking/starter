@@ -1,11 +1,7 @@
 package net.engining.metrics.autoconfigure.autotest.support;
 
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Statistic;
-import io.micrometer.core.instrument.Tags;
-import io.micrometer.core.instrument.binder.BaseUnits;
 import net.engining.metrics.support.MeterDto;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import org.slf4j.Logger;
