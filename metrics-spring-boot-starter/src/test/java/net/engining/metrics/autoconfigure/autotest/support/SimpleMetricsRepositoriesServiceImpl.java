@@ -1,6 +1,5 @@
 package net.engining.metrics.autoconfigure.autotest.support;
 
-import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import net.engining.metrics.support.MeterDto;
 import net.engining.metrics.support.MetricsRepositoriesService;
@@ -39,21 +38,9 @@ public class SimpleMetricsRepositoriesServiceImpl implements MetricsRepositories
         //load from storage
         double call1 = 20;
         double call2 = 20;
-        Counter.builder("biz.mvc.total.call1")
-                .tags(
-                        "uri", "/mvcecho/111",
-                        "type", "cumulative"
-                )
-                .register(meterRegistry)
-                .increment(call1);
 
-        Counter.builder("biz.mvc.total.call2")
-                .tags(
-                        "uri", "mvcecho3",
-                        "type", "cumulative"
-                )
-                .register(meterRegistry)
-                .increment(call2);
+        BizMetrics.requestTotalTimes("/mvcecho/111").register(meterRegistry).increment(call1);
+        BizMetrics.requestTotalTimes("/mvcecho3").register(meterRegistry).increment(call2);
 
     }
 }

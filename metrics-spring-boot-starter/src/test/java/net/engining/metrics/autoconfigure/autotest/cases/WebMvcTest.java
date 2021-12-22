@@ -8,6 +8,7 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.search.Search;
 import net.engining.metrics.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.metrics.autoconfigure.autotest.support.AdditionalOb;
+import net.engining.metrics.autoconfigure.autotest.support.BizMetrics;
 import net.engining.metrics.support.StoredPushMeterRegistry;
 import net.engining.metrics.support.StoredStepMeterRegistry;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
     private ObjectMapper mapper;
 
     @Autowired
-    private List<MeterRegistry> meterRegistrys;
+    private List<MeterRegistry> meterRegistries;
 
     @Autowired
     private CompositeMeterRegistry compositeMeterRegistry;
@@ -65,41 +66,11 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
                 .webAppContextSetup(context)
                 .build();
 
-        counter1 = Counter.builder("biz.mvc.call1")
-                .tags(
-                        "uri", "/mvcecho/111",
-                        "type", "step"
-                )
-                .register(storedStepMeterRegistry)
-                //.register(compositeMeterRegistry)
-        ;
+        counter1 = BizMetrics.requestStepTimes("/mvcecho/111").register(storedStepMeterRegistry);
+        counter2 = BizMetrics.requestStepTimes("/mvcecho3").register(storedStepMeterRegistry);
 
-        counter2 = Counter.builder("biz.mvc.call2")
-                .tags(
-                        "uri", "mvcecho3",
-                        "type", "step"
-                )
-                .register(storedStepMeterRegistry)
-                //.register(compositeMeterRegistry)
-        ;
-
-        counter3 = Counter.builder("biz.mvc.total.call1")
-                .tags(
-                        "uri", "/mvcecho/111",
-                        "type", "cumulative"
-                )
-                .register(storedPushMeterRegistry)
-                //.register(compositeMeterRegistry)
-        ;
-
-        counter4 = Counter.builder("biz.mvc.total.call2")
-                .tags(
-                        "uri", "mvcecho3",
-                        "type", "cumulative"
-                )
-                .register(storedPushMeterRegistry)
-                //.register(compositeMeterRegistry)
-        ;
+        counter3 = BizMetrics.requestTotalTimes("/mvcecho/111").register(storedPushMeterRegistry);
+        counter4 = BizMetrics.requestTotalTimes("/mvcecho3").register(storedPushMeterRegistry);
 
     }
 
@@ -109,24 +80,12 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
             LOGGER.warn("CompositeMeterRegistry is same");
         }
 
-        meterRegistrys.forEach(meterRegistry -> {
-            //Search.in(meterRegistry)
-            // .meters().forEach(each -> {
-            //    StringBuilder builder = new StringBuilder();
-            //    builder.append("name:")
-            //            .append(each.getId().getName())
-            //            .append(",tags:")
-            //            .append(each.getId().getTags())
-            //            .append(",type:").append(each.getId().getType())
-            //            .append(",value:").append(each.measure());
-            //})
-            //;
+        meterRegistries.forEach(meterRegistry -> {
             LOGGER.warn(
                     "the meter registry[{}] number of total meters: {} ",
                     meterRegistry.getClass().getName(),
                     Search.in(meterRegistry).meters().size());
         });
-
 
     }
 

@@ -1,5 +1,6 @@
 package net.engining.metrics.autoconfigure.autotest;
 
+import net.engining.metrics.autoconfigure.autotest.support.BizMetrics;
 import net.engining.metrics.autoconfigure.autotest.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class CombineContextConfig {
 
     @Bean
-    public MetricsRepositoriesService metricsRepositoriesService(){
+    public MetricsRepositoriesService metricsRepositoriesService() {
         return new SimpleMetricsRepositoriesServiceImpl();
     }
 
