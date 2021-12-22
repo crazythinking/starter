@@ -10,7 +10,6 @@ import net.engining.datasource.autoconfigure.support.JPAContextConfig;
 import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
 import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
 import net.engining.datasource.autoconfigure.support.Utils;
-import net.engining.gm.config.AsyncExtContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
 import net.engining.pg.support.db.DbType;
@@ -45,7 +44,7 @@ import java.util.Map;
 @Configuration
 @ConditionalOnClass(HikariDataSource.class)
 @ConditionalOnProperty(prefix = "pg.datasource.dynamic.hikari", name = "enabled", havingValue = "true")
-@AutoConfigureBefore(DynamicDruidDataSourceAutoConfigure.class)
+@AutoConfigureBefore(DynamicDruidDataSourceAutoConfiguration.class)
 @EnableConfigurationProperties({
         DataSourceProperties.class,
         DynamicHikariDataSourceProperties.class,
@@ -57,9 +56,9 @@ import java.util.Map;
         MultipleJdbc4QuerydslContextConfig.class,
         TransactionManagementContextConfig.class
 })
-public class DynamicDataSourceAutoConfigure {
+public class DynamicDataSourceAutoConfiguration {
     /** logger */
-    private static final Logger log = LoggerFactory.getLogger(DynamicDataSourceAutoConfigure.class);
+    private static final Logger log = LoggerFactory.getLogger(DynamicDataSourceAutoConfiguration.class);
 
     @Autowired
     DataSourceProperties basicProperties;

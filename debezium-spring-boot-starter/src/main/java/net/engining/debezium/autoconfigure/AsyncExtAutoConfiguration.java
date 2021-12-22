@@ -1,7 +1,7 @@
-package net.engining.datasource.autoconfigure;
+package net.engining.debezium.autoconfigure;
 
-import net.engining.datasource.autoconfigure.prop.DdProperties;
-import net.engining.datasource.autoconfigure.support.Utils;
+import net.engining.debezium.event.AbstractExtractedCdcEventListener;
+import net.engining.debezium.prop.DebeziumProperties;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.support.utils.ThreadUtilsExt;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -23,26 +22,27 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since :
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "pg.datasource.dynamic.async", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "pg.debezium.async", name = "enabled", matchIfMissing = true)
 @AutoConfigureAfter({
-        DynamicDataSourceAutoConfigure.class,
-        DynamicDruidDataSourceAutoConfigure.class,
-        ShardingJdbcAutoConfiguration.class
+        DebeziumAutoConfiguration.class
 })
 @EnableConfigurationProperties({
-        GmCommonProperties.class,
-        DdProperties.class
+        DebeziumProperties.class,
+        GmCommonProperties.class
 })
 @EnableAsync(mode = AdviceMode.ASPECTJ)
-public class AsyncExtAutoConfigure {
+public class AsyncExtAutoConfiguration {
 
-    @Bean(Utils.DB_EVENT_LISTENER)
-    public AsyncTaskExecutor getAsyncExecutor(GmCommonProperties gmCommonProperties, DdProperties ddProperties) {
+
+    @Bean(AbstractExtractedCdcEventListener.DEBEZIUM_EVENT_LISTENER)
+    public AsyncTaskExecutor getAsyncExecutor(GmCommonProperties gmCommonProperties,
+                                              DebeziumProperties debeziumProperties
+    ) {
         return ThreadUtilsExt.newSpringThreadPoolTaskExecutor(
-                ddProperties.getAsyncExcutorColePoolSize(),
-                ddProperties.getAsyncExcutorMaxPoolSize(),
-                ddProperties.getAsyncExcutorQueueCapacity(),
-                Utils.DB_EVENT_LISTENER + "-",
+                debeziumProperties.getAsyncExcutorColePoolSize(),
+                debeziumProperties.getAsyncExcutorMaxPoolSize(),
+                debeziumProperties.getAsyncExcutorQueueCapacity(),
+                AbstractExtractedCdcEventListener.DEBEZIUM_EVENT_LISTENER + "-",
                 gmCommonProperties.getAwaitTerminationSeconds(),
                 null,
                 //线程池对拒绝任务（无线程可用）的处理策略:直接抛出java.util.concurrent.RejectedExecutionException异常

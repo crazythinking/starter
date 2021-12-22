@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.kettle.autoconfigure.KettleAutoAutoconfigure
+net.engining.kettle.autoconfigure.KettleAutoAutoConfiguration

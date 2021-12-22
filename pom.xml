@@ -140,6 +140,11 @@
 				<artifactId>elasticsearch-spring-boot-starter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>metrics-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -156,7 +161,6 @@
 	<modules>
 		<module>dynamic-datasource-spring-boot-starter</module>
 		<module>redis-spring-boot-starter</module>
-		<module>kettle-spring-boot-starter</module>
 		<module>bustream-spring-boot-starter</module>
 		<module>distlock-spring-boot-starter</module>
 		<module>transflow-spring-boot-starter</module>
@@ -168,6 +172,8 @@
 		<module>elasticsearch-spring-boot-starter</module>
 		<module>rocksdb-spring-boot-starter</module>
 		<module>drools-spring-boot-starter</module>
+		<module>metrics-spring-boot-starter</module>
+		<module>kettle-spring-boot-starter</module>
 	</modules>
 
 	<build>

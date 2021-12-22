@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(prefix = "pg.datasource.dynamic.actuator", name = "enabled", havingValue = "true")
 @AutoConfigureAfter({
-        DynamicDataSourceAutoConfigure.class,
-        DynamicDruidDataSourceAutoConfigure.class,
+        DynamicDataSourceAutoConfiguration.class,
+        DynamicDruidDataSourceAutoConfiguration.class,
         ShardingJdbcAutoConfiguration.class
 })
-public class ActuatorAutoConfigure {
+public class ActuatorAutoConfiguration {
 
     @Bean
     DynamicDataSourceEndpoint dynamicDataSourceEndpoint(){

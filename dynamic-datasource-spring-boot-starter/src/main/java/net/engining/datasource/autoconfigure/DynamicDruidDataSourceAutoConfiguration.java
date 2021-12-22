@@ -16,7 +16,6 @@ import net.engining.datasource.autoconfigure.support.JPAContextConfig;
 import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
 import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
 import net.engining.datasource.autoconfigure.support.Utils;
-import net.engining.gm.config.AsyncExtContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DruidDataSourceWrapper;
 import net.engining.pg.db.props.DynamicDruidDataSourceProperties;
@@ -36,7 +35,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.orm.jpa.vendor.Database;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -72,9 +70,9 @@ import java.util.Map;
         MultipleJdbc4QuerydslContextConfig.class,
         TransactionManagementContextConfig.class
 })
-public class DynamicDruidDataSourceAutoConfigure {
+public class DynamicDruidDataSourceAutoConfiguration {
     /** logger */
-    private static final Logger log = LoggerFactory.getLogger(DynamicDruidDataSourceAutoConfigure.class);
+    private static final Logger log = LoggerFactory.getLogger(DynamicDruidDataSourceAutoConfiguration.class);
 
     Table<String, DbType, DataSource> dataSourceTable = HashBasedTable.create();
 

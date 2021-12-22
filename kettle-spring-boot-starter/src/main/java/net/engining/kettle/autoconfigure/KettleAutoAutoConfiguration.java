@@ -30,7 +30,7 @@ import java.util.Map;
         KettleContextProperties.class
 })
 @ConditionalOnProperty(prefix = "pg.kettle", name = "enabled", matchIfMissing = true)
-public class KettleAutoAutoconfigure {
+public class KettleAutoAutoConfiguration {
     /**
      * kettle 配置参数
      */

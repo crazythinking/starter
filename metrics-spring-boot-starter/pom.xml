@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>net.engining.starter</groupId>
+		<artifactId>starter-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>metrics-spring-boot-starter</artifactId>
+	<name>metrics starter</name>
+	<packaging>jar</packaging>
+
+	<properties>
+		<micrometer.version>1.8.1</micrometer.version>
+		<micrometer-jvm.version>0.2.2</micrometer-jvm.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!--暴露各种指标 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>micrometer-core</artifactId>
+					<groupId>io.micrometer</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-core</artifactId>
+			<version>${micrometer.version}</version>
+		</dependency>
+		<!--暴露prometheus指标-->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<version>${micrometer.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>micrometer-core</artifactId>
+					<groupId>io.micrometer</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-elastic</artifactId>
+			<version>${micrometer.version}</version>
+		</dependency>-->
+		<!--用于进程内存使用图表-->
+		<dependency>
+			<groupId>io.github.mweirauch</groupId>
+			<artifactId>micrometer-jvm-extras</artifactId>
+			<version>${micrometer-jvm.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>micrometer-core</artifactId>
+					<groupId>io.micrometer</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-servlet</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-storage-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>objenesis</artifactId>
+					<groupId>org.objenesis</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Sentinel流控管理 -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+			<scope>test</scope>
+		</dependency>
+		<!-- undertow -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-web</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
+			<!--<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+			</plugin>-->
+		</plugins>
+
+	</build>
+</project>

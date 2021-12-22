@@ -39,11 +39,11 @@ import java.io.IOException;
 
 })
 @ConditionalOnProperty(prefix = "gm.bustream", name = "enabled", matchIfMissing = true)
-public class BustreamAutoConfigure {
+public class BustreamAutoConfiguration {
     /**
      * logger
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BustreamAutoConfigure.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BustreamAutoConfiguration.class);
 
     /**
      * 全局统一的 Stream message Handler: 异常处理
