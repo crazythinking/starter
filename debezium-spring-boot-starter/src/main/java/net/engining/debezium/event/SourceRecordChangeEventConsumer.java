@@ -3,6 +3,7 @@ package net.engining.debezium.event;
 import io.debezium.data.Envelope;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
+import net.engining.debezium.prop.DebeziumProperties;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.connect.data.Field;
@@ -52,7 +53,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
     private void handleEvents(List<RecordChangeEvent<SourceRecord>> recordChangeEvents,
                               DebeziumEngine.RecordCommitter<RecordChangeEvent<SourceRecord>> recordCommitter)
             throws InterruptedException {
-        recordChangeEvents.forEach(recordChangeEvent -> {
+        for (RecordChangeEvent<SourceRecord> recordChangeEvent : recordChangeEvents) {
             //获取一条CDC事件信息
             SourceRecord sourceRecord = recordChangeEvent.record();
             //解析CDC事件
@@ -91,56 +92,75 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
                         ExtractedCdcEventBo extractedCdcEventBo = new ExtractedCdcEventBo();
                         extractedCdcEventBo.setOperation(op);
 
-                        String record = (
-                                op.equals(Envelope.Operation.DELETE.code())
-                                || op.equals(Envelope.Operation.TRUNCATE.code())
-                        ) ? BEFORE : AFTER;
+                        String record = null;
+                        if (op.equals(Envelope.Operation.DELETE.code()) || op.equals(Envelope.Operation.TRUNCATE.code())){
+                            record = BEFORE;
+                        }
+                        else if (op.equals(Envelope.Operation.CREATE.code())) {
+                            record = AFTER;
+                        }
+                        //for update operation
+                        else {
+                            Struct before = (Struct) valueStruct.get(BEFORE);
+                            Struct after = (Struct) valueStruct.get(AFTER);
+                            if (before.equals(after)){
+                                //丢弃不需要处理
+                                LOGGER.warn("The values of the included columns of update operation are the same, drop it!");
+                            }
+                            else {
+                                record = AFTER;
+                            }
+                        }
 
                         // 获取增删改对应的结构体数据
-                        Struct recordDataStruct = (Struct) valueStruct.get(record);
-                        if (ValidateUtilExt.isNotNullOrEmpty(recordDataStruct)){
-                            // 将变更的行封装为Map
-                            Map<String, Object> targetRecordData = recordDataStruct.schema().fields().stream()
-                                    .map(Field::name)
-                                    .filter(fieldName -> recordDataStruct.get(fieldName) != null)
-                                    .map(fieldName -> Pair.of(fieldName, recordDataStruct.get(fieldName)))
-                                    .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventBo.setTargetRecordData(targetRecordData);
+                        if (ValidateUtilExt.isNotNullOrEmpty(record)){
+                            Struct recordDataStruct = (Struct) valueStruct.get(record);
+                            if (ValidateUtilExt.isNotNullOrEmpty(recordDataStruct)){
+                                // 将变更的行封装为Map
+                                Map<String, Object> targetRecordData = recordDataStruct.schema().fields().stream()
+                                        .map(Field::name)
+                                        .filter(fieldName -> recordDataStruct.get(fieldName) != null)
+                                        .map(fieldName -> Pair.of(fieldName, recordDataStruct.get(fieldName)))
+                                        .collect(toMap(Pair::getKey, Pair::getValue));
+                                extractedCdcEventBo.setTargetRecordData(targetRecordData);
+                            }
+
+                            //CDC事件的数据源描述信息，可用于标识唯一性
+                            Struct sourceStruct = (Struct) valueStruct.get(SOURCE);
+                            if (ValidateUtilExt.isNotNullOrEmpty(sourceStruct)){
+                                Map<String, Object> targetSource = sourceStruct.schema().fields().stream()
+                                        .map(Field::name)
+                                        .filter(fieldName -> sourceStruct.get(fieldName) != null)
+                                        .map(fieldName -> Pair.of(fieldName, sourceStruct.get(fieldName)))
+                                        .collect(toMap(Pair::getKey, Pair::getValue));
+                                extractedCdcEventBo.setTargetSource(targetSource);
+                                //CDC事件发生的时间戳: 取自value.source中的"ts_ms", 但该值的毫秒部分被舍弃了
+                                long eventTime = (long) targetSource.get(TIMESTAMP);
+                                extractedCdcEventBo.setEventTime(eventTime);
+                            }
+
+                            //接收到CDC事件的时间戳: 取自value中的"ts_ms"
+                            long processTime = (long) valueStruct.get(TIMESTAMP);
+                            extractedCdcEventBo.setProcessTime(processTime);
+
+                            //CDC事件的事务相关描述信息
+                            Struct transactionStruct = (Struct) valueStruct.get(TRANSACTION);
+                            if (ValidateUtilExt.isNotNullOrEmpty(transactionStruct)){
+                                Map<String, Object> targetTrancation = transactionStruct.schema().fields().stream()
+                                        .map(Field::name)
+                                        .filter(fieldName -> transactionStruct.get(fieldName) != null)
+                                        .map(fieldName -> Pair.of(fieldName, transactionStruct.get(fieldName)))
+                                        .collect(toMap(Pair::getKey, Pair::getValue));
+                                extractedCdcEventBo.setTargetTrancation(targetTrancation);
+                            }
+
+                            //装载数据体
+                            extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
+                            //发布事件
+                            applicationContext.publishEvent(extractedCdcEvent);
                         }
+                        //not have valid record
 
-                        //CDC事件的数据源描述信息，可用于标识唯一性
-                        Struct sourceStruct = (Struct) valueStruct.get(SOURCE);
-                        if (ValidateUtilExt.isNotNullOrEmpty(sourceStruct)){
-                            Map<String, Object> targetSource = sourceStruct.schema().fields().stream()
-                                    .map(Field::name)
-                                    .filter(fieldName -> sourceStruct.get(fieldName) != null)
-                                    .map(fieldName -> Pair.of(fieldName, sourceStruct.get(fieldName)))
-                                    .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventBo.setTargetSource(targetSource);
-                            //CDC事件发生的时间戳: 取自value.source中的"ts_ms", 但该值的毫秒部分被舍弃了
-                            long eventTime = (long) targetSource.get(TIMESTAMP);
-                            extractedCdcEventBo.setEventTime(eventTime);
-                        }
-
-                        //接收到CDC事件的时间戳: 取自value中的"ts_ms"
-                        long processTime = (long) valueStruct.get(TIMESTAMP);
-                        extractedCdcEventBo.setProcessTime(processTime);
-
-                        //CDC事件的事务相关描述信息
-                        Struct trancationStruct = (Struct) valueStruct.get(TRANSACTION);
-                        if (ValidateUtilExt.isNotNullOrEmpty(trancationStruct)){
-                            Map<String, Object> targetTrancation = trancationStruct.schema().fields().stream()
-                                    .map(Field::name)
-                                    .filter(fieldName -> trancationStruct.get(fieldName) != null)
-                                    .map(fieldName -> Pair.of(fieldName, trancationStruct.get(fieldName)))
-                                    .collect(toMap(Pair::getKey, Pair::getValue));
-                            extractedCdcEventBo.setTargetTrancation(targetTrancation);
-                        }
-
-                        //装载数据体
-                        extractedCdcEvent.setCdcEventBo(extractedCdcEventBo);
-                        //发布事件
-                        applicationContext.publishEvent(extractedCdcEvent);
                     }
                     else {
                         LOGGER.warn("only handle with insertion, deletion, or modification events; this op={}", op);
@@ -156,7 +176,7 @@ public class SourceRecordChangeEventConsumer implements DebeziumEngine.ChangeCon
             } catch (InterruptedException e) {
                 LOGGER.error("mark record event processed failed");
             }
-        });
+        }
         recordCommitter.markBatchFinished();
     }
 }

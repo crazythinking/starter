@@ -1,6 +1,5 @@
 package net.engining.metrics.autoconfigure.autotest;
 
-import net.engining.metrics.autoconfigure.autotest.support.BizMetrics;
 import net.engining.metrics.autoconfigure.autotest.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import org.springframework.context.annotation.Bean;
