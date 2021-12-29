@@ -3,7 +3,6 @@ package net.engining.debezium.event;
 import io.debezium.data.Envelope;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
-import net.engining.debezium.prop.DebeziumProperties;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.connect.data.Field;
