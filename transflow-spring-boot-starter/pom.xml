@@ -59,6 +59,7 @@
 		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-storage-elasticsearch</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.engining.gm</groupId>

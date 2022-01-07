@@ -3,7 +3,6 @@ package net.engining.datasource.autoconfigure.support;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.querydsl.sql.SQLQueryFactory;
-import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.pg.support.db.DbType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
