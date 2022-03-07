@@ -79,9 +79,14 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- HikariCP datasource 及其监控指标 -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-healthchecks</artifactId>
 		</dependency>
 
 		<dependency>
