@@ -3,7 +3,6 @@ package net.engining.datasource.autoconfigure.autotest.jpa.cases;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdTestEnt1;
-import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -50,9 +48,13 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
         Assert.isNull(this.testAssertDataContext.get("primerykey4one"), "has not record by datasource one");
 
+        PgIdTestEnt1 pgIdTestEnt2 = dbService.fetch4Org((Long)this.testAssertDataContext.get("primerykey4default"));
         Assert.isNull(
-                dbService.fetch((Long)this.testAssertDataContext.get("primerykey4default")),
+                pgIdTestEnt2,
                 "No entity should be found for query");
+        Assert.notNull(
+                dbService.fetch((Long)this.testAssertDataContext.get("primerykey4default")),
+                "entity should be found for query");
     }
 
     @Override

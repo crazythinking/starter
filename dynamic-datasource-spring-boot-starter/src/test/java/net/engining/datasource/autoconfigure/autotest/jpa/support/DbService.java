@@ -2,12 +2,8 @@ package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
-import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
+import net.engining.datasource.autoconfigure.aop.SwitchOrg4HibernateFilter;
 import net.engining.gm.aop.SpecifiedDataSource;
-import net.engining.gm.entity.model.qsql.QSqlOperAdtLog;
-import net.engining.pg.support.core.context.OrganizationContextHolder;
-import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +29,32 @@ public class DbService {
     @Autowired
     OperAdtLogJpaRepository operAdtLogJpaRepository;
 
-    @Transactional(readOnly = true)
-    public PgIdTestEnt1 fetch(Long snowFlakeId){
-        OrganizationContextHolder.enableOrgFilter(em);
+    private PgIdTestEnt1 doFetch(Long snowFlakeId){
         QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
         PgIdTestEnt1 pgIdTestEnt1 = new JPAQueryFactory(em)
                 .selectFrom(qPgIdTestEnt1)
                 .where(qPgIdTestEnt1.snowFlakeId.eq(snowFlakeId))
                 .fetchOne();
 
-        OrganizationContextHolder.disableOrgFilter(em);
+        return pgIdTestEnt1;
+    }
+
+    @Transactional(readOnly = true)
+    public PgIdTestEnt1 fetch(Long snowFlakeId){
+        return doFetch(snowFlakeId);
+    }
+
+    @Transactional(readOnly = true)
+    public PgIdTestEnt1 fetch4Org(Long snowFlakeId){
+        //确保 org filter 的操作被包在 Transaction 内
+        return doFetch4Org(snowFlakeId);
+    }
+
+    @SwitchOrg4HibernateFilter
+    private PgIdTestEnt1 doFetch4Org(Long snowFlakeId){
+        //OrganizationContextHolder.enableOrgFilter(em);
+        PgIdTestEnt1 pgIdTestEnt1 = doFetch(snowFlakeId);
+        //OrganizationContextHolder.disableOrgFilter(em);
         return pgIdTestEnt1;
     }
 
