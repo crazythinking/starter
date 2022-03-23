@@ -55,6 +55,14 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assert.notNull(
                 dbService.fetch((Long)this.testAssertDataContext.get("primerykey4default")),
                 "entity should be found for query");
+        //无事务时抛异常
+        try {
+            dbService.doFetch4Org((Long)this.testAssertDataContext.get("primerykey4default"));
+        }
+        catch (Throwable e) {
+            LOGGER.debug("should throw exception: {}", e.getMessage());
+        }
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.engining.datasource.autoconfigure.aop.SwitchOrg4HibernateFilter;
 import net.engining.gm.aop.SpecifiedDataSource;
+import net.engining.pg.support.core.context.OrganizationContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,11 @@ public class DbService {
         return doFetch4Org(snowFlakeId);
     }
 
-    @SwitchOrg4HibernateFilter
-    private PgIdTestEnt1 doFetch4Org(Long snowFlakeId){
-        //OrganizationContextHolder.enableOrgFilter(em);
+    //@SwitchOrg4HibernateFilter
+    public PgIdTestEnt1 doFetch4Org(Long snowFlakeId){
+        OrganizationContextHolder.enableOrgFilter(em);
         PgIdTestEnt1 pgIdTestEnt1 = doFetch(snowFlakeId);
-        //OrganizationContextHolder.disableOrgFilter(em);
+        OrganizationContextHolder.disableOrgFilter(em);
         return pgIdTestEnt1;
     }
 
