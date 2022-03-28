@@ -51,11 +51,11 @@ public class DbService {
         return doFetch4Org(snowFlakeId);
     }
 
-    //@SwitchOrg4HibernateFilter
+    @SwitchOrg4HibernateFilter
     public PgIdTestEnt1 doFetch4Org(Long snowFlakeId){
-        OrganizationContextHolder.enableOrgFilter(em);
+        //OrganizationContextHolder.enableOrgFilter(em);
         PgIdTestEnt1 pgIdTestEnt1 = doFetch(snowFlakeId);
-        OrganizationContextHolder.disableOrgFilter(em);
+        //OrganizationContextHolder.disableOrgFilter(em);
         return pgIdTestEnt1;
     }
 
