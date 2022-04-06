@@ -1,5 +1,6 @@
 package net.engining.metrics.prop;
 
+import com.google.common.collect.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class MetricsRegistryProperties {
     /**
      * StorageStepMeterRegistry需要被持久化的指标名称前缀
      */
-    private List<String> stepMeterRegistryPrefixes;
+    private List<String> stepMeterRegistryPrefixes = Lists.newArrayList();
 
     /**
      * StorageStepMeterRegistry存储触发的时间间隔(秒)
@@ -26,7 +27,7 @@ public class MetricsRegistryProperties {
     /**
      * StoragePushMeterRegistry需要被持久化的指标名称前缀
      */
-    private List<String> pushMeterRegistryPrefixes;
+    private List<String> pushMeterRegistryPrefixes = Lists.newArrayList();;
 
     /**
      * StoragePushMeterRegistry存储触发的时间间隔(秒)
