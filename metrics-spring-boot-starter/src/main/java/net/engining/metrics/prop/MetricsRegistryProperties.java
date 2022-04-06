@@ -27,7 +27,7 @@ public class MetricsRegistryProperties {
     /**
      * StoragePushMeterRegistry需要被持久化的指标名称前缀
      */
-    private List<String> pushMeterRegistryPrefixes = Lists.newArrayList();;
+    private List<String> pushMeterRegistryPrefixes = Lists.newArrayList();
 
     /**
      * StoragePushMeterRegistry存储触发的时间间隔(秒)
