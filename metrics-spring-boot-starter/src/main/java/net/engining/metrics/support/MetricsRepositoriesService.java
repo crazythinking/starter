@@ -11,5 +11,10 @@ import net.engining.pg.storage.core.RepositoriesService;
  **/
 public interface MetricsRepositoriesService extends RepositoriesService {
 
+    /**
+     * 启动时初始化指标的值，通常从指标数据的存储层获取
+     *
+     * @param meterRegistry 指标注册器
+     */
     void initializeMeters(MeterRegistry meterRegistry);
 }

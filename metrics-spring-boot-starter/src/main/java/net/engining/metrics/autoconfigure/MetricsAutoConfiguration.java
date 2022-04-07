@@ -6,6 +6,7 @@ import io.micrometer.core.instrument.util.NamedThreadFactory;
 import net.engining.metrics.prop.MetricsRegistryProperties;
 import net.engining.metrics.sentinel.SentinelMetrics;
 import net.engining.metrics.support.MetricsRepositoriesService;
+import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
 import net.engining.metrics.support.StoredStepMeterRegistry;
 import net.engining.metrics.undertow.UndertowMetrics;
@@ -39,6 +40,15 @@ public class MetricsAutoConfiguration {
     @ConditionalOnProperty(prefix = "pg.metrics.undertow", name = "enabled", matchIfMissing = true)
     public UndertowMetrics undertowMetrics(){
         return new UndertowMetrics();
+    }
+
+    /**
+     * 声明指标服务
+     * @return 指标服务
+     */
+    @Bean
+    public MetricsRepositoriesService  simpleMetricsRepositoriesService() {
+        return new SimpleMetricsRepositoriesServiceImpl();
     }
 
     /**

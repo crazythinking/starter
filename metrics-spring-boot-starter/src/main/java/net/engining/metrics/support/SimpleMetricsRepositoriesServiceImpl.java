@@ -1,8 +1,6 @@
-package net.engining.metrics.autoconfigure.autotest.support;
+package net.engining.metrics.support;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import net.engining.metrics.support.MeterDto;
-import net.engining.metrics.support.MetricsRepositoriesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,24 +21,20 @@ public class SimpleMetricsRepositoriesServiceImpl implements MetricsRepositories
         entities.forEach(o -> {
             if (o instanceof MeterDto){
                 MeterDto meter = (MeterDto) o;
-                LOGGER.warn(meter.toString());
+                if (LOGGER.isTraceEnabled()){
+                    LOGGER.trace(meter.toString());
+                }
             }
         });
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        //do nothing
     }
 
     @Override
     public void initializeMeters(MeterRegistry meterRegistry) {
-        //load from storage
-        double call1 = 20;
-        double call2 = 20;
-
-        BizMetrics.requestTotalTimes("/mvcecho/111").register(meterRegistry).increment(call1);
-        BizMetrics.requestTotalTimes("/mvcecho3").register(meterRegistry).increment(call2);
-
+        //do nothing
     }
 }
