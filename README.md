@@ -30,6 +30,7 @@ infrastructure gears based spring boot 2.1.4
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
 |1.2.0|1.2.0.RELEASE|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
+|2.0.0|2.0.0.RELEASE|1、oracle方言<br>2、org增强aop<br>3、starter自动注入和适配|-|-|
 
 # 1.2.0版本火车
 
