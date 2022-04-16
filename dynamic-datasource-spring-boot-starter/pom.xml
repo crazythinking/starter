@@ -16,7 +16,7 @@
 	<properties>
 		<druid.spring.version>1.1.22</druid.spring.version>
 		<sharding.jdbc.version>4.1.1</sharding.jdbc.version>
-		<mysql-connector-java.version>8.0.25</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<oracle.version>21.3.0.0.0</oracle.version>
 		<clickhouse-jdbc.version>0.3.1</clickhouse-jdbc.version>
 	</properties>
