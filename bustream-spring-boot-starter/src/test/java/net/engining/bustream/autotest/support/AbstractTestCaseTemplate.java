@@ -2,12 +2,11 @@ package net.engining.bustream.autotest.support;
 
 import net.engining.bustream.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
-import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithServlet;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import net.engining.pg.support.testcase.support.TestCommonLogic;
 import org.h2.tools.Server;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +37,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 *
 	 * @throws Exception
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void init4Test() throws Exception {
 
 	}
@@ -48,7 +47,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 *
 	 * @throws Exception
 	 */
-	@AfterClass
+	@AfterAll
 	public static void tearDown4Test() throws Exception {
 		//使用H2的测试需要关闭
 		TestCommonLogic.closeH2();

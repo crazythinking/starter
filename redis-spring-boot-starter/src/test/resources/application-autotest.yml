@@ -6,21 +6,42 @@ spring:
   cache:
     type: redis
 
+
 pg:
   redisson:
     enabled: true
     #默认是single，生产必须按实际情况指定
 #    model: single
     model: cluster
-    #linux环境使用epoll代替Nio
     keep-alive: true
     client-name: ${spring.application.name}
-#    transport-mode: epoll
-    codec: org.redisson.codec.SmileJacksonCodec
+    #linux环境使用epoll代替Nio
+    transport-mode: nio
+#    codec: org.redisson.codec.SmileJacksonCodec
+    idle-connection-timeout: 10000
+    connect-timeout: 10000
+    timeout: 3000
+    retry-attempts: 3
+    retry-interval: 1500
+    password: bitnami
+    subscriptions-per-connection: 5
+    #0表示current_processors_amount * 2
+    netty-threads: 0
+    #0表示current_processors_amount * 2
+    threads: 0
     multiple-server-properties:
-      master-connection-pool-size: 100
-      slave-connection-pool-size: 100
-#    single-server-properties:
+      master-connection-pool-size: 64
+      master-connection-minimum-idle-size: 32
+      slave-connection-pool-size: 32
+      slave-connection-minimum-idle-size: 16
+      node-addresses:
+        - "redis://ubuntu2004.wsl:7000"
+        - "redis://ubuntu2004.wsl:7001"
+        - "redis://ubuntu2004.wsl:7002"
+      scan-interval: 1000
+      load-balancer: org.redisson.connection.balancer.RoundRobinLoadBalancer
+      read-mode: slave
+    #    single-server-properties:
 #      address: ubuntu.wsl:6379
 #      database: 0
 #      connection-minimum-idle-size: 5
@@ -36,9 +57,12 @@ pg:
           max-size: 2
 
 
+
 logging:
   level:
     root: info
+    org.springframework: info
+    org.springframework.boot: debug
     net.engining: trace
 
 

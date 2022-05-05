@@ -1,6 +1,6 @@
 package net.engining.gm.autoconfigure;
 
-import net.engining.gm.config.Swagger2ContextConfig;
+import net.engining.gm.config.Swagger3ContextConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnProperty(prefix = "gm.config.enabled", name = "swagger", havingValue = "true")
 @Import(value = {
-        Swagger2ContextConfig.class
+        Swagger3ContextConfig.class
 })
 public class SwaggerAutoConfiguration {
 }

@@ -65,14 +65,14 @@ public class DynamicDataSourceAutoConfiguration {
 
     Table<String, DbType, DataSource> dataSourceTable = HashBasedTable.create();
 
-    @Bean("multipleDataSourceTable")
+    @Bean(Utils.MULTIPLE_DATA_SOURCE_TABLE)
     public Table<String, DbType, DataSource> getDataSourceTable(){
         return dataSourceTable;
     }
 
     Map<Object, Object> dataSourceMap = Maps.newHashMap();
 
-    @Bean("dataSourceMap")
+    @Bean(Utils.DATA_SOURCE_MAP)
     public Map<Object, Object> getDataSourceMap() {
         return dataSourceMap;
     }

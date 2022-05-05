@@ -2,8 +2,8 @@ package net.engining.kettle.test.support;
 
 import net.engining.kettle.test.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +35,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
      *
      * @throws Exception
      */
-    @BeforeClass
+    @BeforeAll
     public static void init4Test() throws Exception {
 
     }
@@ -45,7 +45,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
      *
      * @throws Exception
      */
-    @AfterClass
+    @AfterAll
     public static void tearDown4Test() throws Exception {
 
     }

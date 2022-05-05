@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter({
         DynamicDataSourceAutoConfiguration.class,
         DynamicDruidDataSourceAutoConfiguration.class,
-        ShardingJdbcAutoConfiguration.class
+        EnhanceShardingSphereAutoConfiguration.class
 })
 public class ActuatorAutoConfiguration {
 

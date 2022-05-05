@@ -6,11 +6,12 @@ import net.engining.datasource.autoconfigure.autotest.qsql.support.AbstractTestC
 import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.datasource.autoconfigure.autotest.support.OperationLogBizService;
 import net.engining.gm.entity.dto.OperAdtLogDto;
-import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -20,10 +21,10 @@ import java.util.List;
  * @date 2019-09-21 23:58
  **/
 @ActiveProfiles(profiles={
-        "autotest.hikari",
+        "dynamic.hikari.enable",
         "db.common",
-		//"hikari.h2",
-        "hikari.clickhouse"
+		"hikari.h2",
+        //"hikari.clickhouse"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -31,6 +32,9 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     OperationLogBizService operationLogBizService;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public void initTestData() throws Exception {
@@ -56,24 +60,25 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             LOGGER.debug(Joiner.on(";")
                     .join(
                             operAdtLogProjection.getOperTime(),
-                            operAdtLogProjection.getId(),
-                            operAdtLogProjection.getLoginId(),
+                            operAdtLogProjection.getFullId(),
                             operAdtLogProjection.getRequestUri()
                     )
             );
         });
 
-        operationLogBizService.fetch4Ck("luxue").forEach(o -> {
-            OperAdtLogDto operAdtLogProjection = (OperAdtLogDto) o;
-            LOGGER.debug(Joiner.on(";")
-                    .join(
-                            operAdtLogProjection.getOperTime(),
-                            operAdtLogProjection.getId(),
-                            operAdtLogProjection.getLoginId(),
-                            operAdtLogProjection.getRequestUri()
-                    )
-            );
-        });
+        if (environment.acceptsProfiles(Profiles.of("hikari.clickhouse"))) {
+            operationLogBizService.fetch4Ck("luxue").forEach(o -> {
+                OperAdtLogDto operAdtLogProjection = (OperAdtLogDto) o;
+                LOGGER.debug(Joiner.on(";")
+                        .join(
+                                operAdtLogProjection.getOperTime(),
+                                operAdtLogProjection.getId(),
+                                operAdtLogProjection.getLoginId(),
+                                operAdtLogProjection.getRequestUri()
+                        )
+                );
+            });
+        }
 
     }
 

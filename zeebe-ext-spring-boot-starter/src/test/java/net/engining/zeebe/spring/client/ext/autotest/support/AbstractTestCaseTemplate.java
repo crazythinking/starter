@@ -2,8 +2,8 @@ package net.engining.zeebe.spring.client.ext.autotest.support;
 
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import net.engining.zeebe.spring.client.ext.autotest.AutoConfigureTestApplication;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,7 +30,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 *
 	 * @throws Exception
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void init4Test() throws Exception {
 
 	}
@@ -40,7 +40,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 *
 	 * @throws Exception
 	 */
-	@AfterClass
+	@AfterAll
 	public static void tearDown4Test() throws Exception {
 		//使用H2的测试需要关闭
 		//TestCommonLogic.closeH2();

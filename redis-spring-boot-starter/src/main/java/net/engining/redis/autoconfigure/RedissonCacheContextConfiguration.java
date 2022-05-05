@@ -35,7 +35,13 @@ import java.util.Map;
 @Configuration
 public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
 
-    Logger logger = LoggerFactory.getLogger(RedissonCacheContextConfiguration.class);
+    /**
+     * Bean name of {@link CacheManager} for Redisson;
+     * 该缓存管理器可根据cache name 进行细粒度配置，如设置缓存过期时间，缓存大小等；
+     */
+    public static final String REDISSON_CACHE_MANAGER = "redissonCacheManager";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedissonCacheContextConfiguration.class);
 
     @Autowired
     CommonProperties commonProperties;
@@ -70,13 +76,13 @@ public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
      *
      */
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Bean("redissonCacheManager")
+    @Bean(REDISSON_CACHE_MANAGER)
     public CacheManager redissonCacheManager(RedissonClient redissonClient) {
         Map<String, CacheConfig> configMap = new HashMap<>(8);
         List<CacheProperties> cachePropertiesList = redissonCacheProperties.getCachePropertiesList();
         for (CacheProperties cacheProperties : cachePropertiesList) {
             String[] names = cacheProperties.getNames();
-            logger.debug("init redisson spring cache config for cache names: {}", ArrayUtil.join(names, ","));
+            LOGGER.debug("init redisson spring cache config for cache names: {}", ArrayUtil.join(names, ","));
             CacheConfig cacheConfig = new CacheConfig(cacheProperties.getTtl(), cacheProperties.getMaxIdleTime());
             cacheConfig.setMaxSize(cacheProperties.getMaxSize());
             for (String name : names) {

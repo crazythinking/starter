@@ -1,8 +1,6 @@
 package net.engining.drools.autoconfigure.props;
 
-import cn.hutool.core.text.StrSpliter;
-import cn.hutool.core.util.StrUtil;
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.text.StrSplitter;
 import org.kie.api.management.GAV;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.converter.Converter;
@@ -24,7 +22,7 @@ public class GavConverter implements Converter<String, GAV> {
     }
 
     public static GAV getGav(String source) {
-        List<String> gav = StrSpliter.split(source, ":", true, true);
+        List<String> gav = StrSplitter.split(source, ":", true, true);
         return new GAV(gav.get(0), gav.get(1), gav.get(2));
     }
 }

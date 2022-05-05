@@ -26,6 +26,7 @@ import javax.inject.Provider;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author : Eric Lu
@@ -38,6 +39,11 @@ public class Utils {
     public static final String DB_EVENT_LISTENER = "DB-Event-Listener";
 
     public static final Map<DbType, Configuration> QUERYDSL_CONFIGURATION_MAP = Maps.newHashMap();
+    public static final String MULTIPLE_DATA_SOURCE_TABLE = "multipleDataSourceTable";
+    public static final String SHARDING_DATA_SOURCE_MAP = "shardingDataSourceMap";
+    public static final String DATA_SOURCE_MAP = "dataSourceMap";
+    public static final String SQL_QUERY_FACTORY_MAP = "sqlQueryFactoryMap";
+
     static {
         QUERYDSL_CONFIGURATION_MAP.put(DbType.Oracle, getConfiguration(OracleTemplates.builder().build()));
         QUERYDSL_CONFIGURATION_MAP.put(DbType.MySQL, getConfiguration(MySQLTemplates.builder().build()));
@@ -107,7 +113,7 @@ public class Utils {
     public static SQLQueryFactory createSQLQueryFactory(DataSource dataSource,
                                                            com.querydsl.sql.Configuration querydslConfiguration
     ) {
-        Provider<Connection> provider = new SpringConnectionProvider(dataSource);
+        Supplier<Connection> provider = new SpringConnectionProvider(dataSource);
         return new SQLQueryFactory(querydslConfiguration, provider);
     }
 

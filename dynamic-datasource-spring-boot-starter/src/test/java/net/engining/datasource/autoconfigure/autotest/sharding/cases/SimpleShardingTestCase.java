@@ -1,7 +1,8 @@
-package net.engining.datasource.autoconfigure.autotest.jpa.cases;
+package net.engining.datasource.autoconfigure.autotest.sharding.cases;
 
-import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
-import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
+import net.engining.datasource.autoconfigure.autotest.sharding.support.AbstractTestCaseTemplate;
+import net.engining.datasource.autoconfigure.autotest.sharding.support.DbService;
+import net.engining.datasource.autoconfigure.autotest.sharding.support.TOrderItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ import java.util.List;
  * @date 2019-09-21 23:58
  **/
 @ActiveProfiles(profiles={
-        "autotest.sharding",
+        "shardingsphere.enable",
         "db.common",
         "db.sharding.common",
-        "db.sharding.hikari.h2"
+        "db.sharding.hikari.mysql"
 })
 public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -28,8 +29,7 @@ public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void initTestData() throws Exception {
-        //指定当前线程使用的数据库datasource
-        //DataSourceContextHolder.setCurrentDataSourceKey("one");
+
     }
 
     @Override
@@ -40,9 +40,8 @@ public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         List<Long> ids = dbService.dsTest4sharding();
-        LOGGER.debug("get primery keys for datasource default: {}", ids);
-        this.testAssertDataContext.put("primerykeys4default", ids);
-
+        List<TOrderItem> tOrderItems = dbService.doFetch(ids.get(0));
+        LOGGER.info("tOrderItems: {}", tOrderItems);
     }
 
     @Override

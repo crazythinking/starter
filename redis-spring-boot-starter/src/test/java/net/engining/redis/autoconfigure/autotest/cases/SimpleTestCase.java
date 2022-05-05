@@ -12,7 +12,6 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -30,7 +29,6 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     RedissonObjectOperation redissonObject;
 
     @Autowired
-    @Resource(name = RedisUtil.REDIS_TEMPLATE)
     RedisTemplate<String, Serializable> redisTemplate;
 
     @Autowired
@@ -69,8 +67,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assert.isTrue(b, "状态不相等");
         boolean b2 = RedisUtil.getBitmapHandler().get("loginId", 4L);
         Assert.isTrue(!b2, "状态不相等");
-        boolean b3 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
-        Assert.isTrue(!b3, "状态不相等");
+        //boolean b3 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
+        //Assert.isTrue(!b3, "状态不相等");
     }
 
     @Override
@@ -82,8 +80,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //默认DbIndex
         RedisUtil.getBitmapHandler().set("loginId", 3L, true);
         //这里会触发创建新的一套连接池到指定的DbIndex
-        RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
-        RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
+        //RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
+        //RedisUtil.getBitmapHandler(5).set("loginId", 4L, false);
 
         RedisUtil.getBitmapHandler().set("loginId2", 1L, false, Duration.ofMinutes(10));
 

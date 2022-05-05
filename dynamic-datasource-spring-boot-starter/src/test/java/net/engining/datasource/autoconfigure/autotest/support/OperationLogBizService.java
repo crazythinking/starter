@@ -8,6 +8,8 @@ import net.engining.pg.support.utils.DateUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class OperationLogBizService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationLogBizService.class);
     @Autowired
     private LogRepositoriesService logRepositoriesService;
+
+    @Autowired
+    private Environment environment;
 
     @Async(Utils.DB_EVENT_LISTENER)
     public void asyncTest() {
@@ -47,7 +52,9 @@ public class OperationLogBizService {
         operAdtLog2.setOperTime(DateUtilsExt.localDateTimeToDate(LocalDateTime.now()));
 
         logRepositoriesService.save(Lists.newArrayList(operAdtLog, operAdtLog2));
-        logRepositoriesService.save2Ck(Lists.newArrayList(operAdtLog, operAdtLog2));
+        if (environment.acceptsProfiles(Profiles.of("hikari.clickhouse")))
+            logRepositoriesService.save2Ck(Lists.newArrayList(operAdtLog, operAdtLog2));
+
         return 0;
     }
 
