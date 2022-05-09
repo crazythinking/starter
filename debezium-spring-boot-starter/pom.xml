@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>2.0.1-SNAPSHOT</version>
+		<version>2.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<debezium.version>1.9.0.Final</debezium.version>
+		<debezium.version>1.9.2.Final</debezium.version>
 		<oracle.version>21.3.0.0.0</oracle.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 	</properties>
@@ -83,6 +83,24 @@
 			<artifactId>pg-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-storage-rheakv</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>disruptor</artifactId>
+					<groupId>com.lmax</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jna-platform</artifactId>
+					<groupId>net.java.dev.jna</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jna</artifactId>
+					<groupId>net.java.dev.jna</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
 		</dependency>
@@ -116,6 +134,10 @@
 				<exclusion>
 					<artifactId>spring-boot-starter-logging</artifactId>
 					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>asm</artifactId>
+					<groupId>org.ow2.asm</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
