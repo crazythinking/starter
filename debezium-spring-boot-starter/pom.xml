@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<debezium.version>1.9.0.Final</debezium.version>
+		<debezium.version>1.9.2.Final</debezium.version>
 		<oracle.version>21.3.0.0.0</oracle.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 	</properties>
@@ -73,6 +73,10 @@
 			<artifactId>pg-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-storage-rheakv</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
 		</dependency>
@@ -110,27 +114,6 @@
 
 	<build>
 		<plugins>
-			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<configuration>
-					<verbose>true</verbose><!-- Emit messages about accessed/processed compilation units -->
-					<privateScope>true</privateScope><!-- Shows all classes and members. -->
-					<showWeaveInfo>true</showWeaveInfo><!-- Emit messages about weaving -->
-					<aspectLibraries>
-						<aspectLibrary><!-- 这里与spring-aspects配合使用；项目中springJPA事务管理就是使用Spring + AspectJ Annotation进行编译时Weave -->
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-aspects</artifactId>
-						</aspectLibrary>
-					</aspectLibraries>
-					<!-- Generate aop.xml file for load-time weaving with default name (/META-INF/aop.xml). -->
-					<outxml>true</outxml>
-					<complianceLevel>${jdk.version}</complianceLevel>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-				</configuration>
-			</plugin>
 		</plugins>
 
 	</build>

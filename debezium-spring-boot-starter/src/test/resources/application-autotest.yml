@@ -11,4 +11,5 @@ logging:
     net.engining: trace
     org.springframework.boot: info
     io.debezium: info
-    org.apache.kafka.connect: info
+#    org.apache.kafka.connect: info
+    com.alipay.sofa.jraft: warn

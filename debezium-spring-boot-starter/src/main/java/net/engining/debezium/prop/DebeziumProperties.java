@@ -20,6 +20,8 @@ public class DebeziumProperties {
 
     private String dataPath;
 
+    private boolean enabledJRaft = false;
+
     private Map<String, Map<String, String>> namedProperties = new HashMap<>();
 
     /**
@@ -36,6 +38,14 @@ public class DebeziumProperties {
      * 异步线程池的队列大小
      */
     private int asyncExcutorQueueCapacity = 10;
+
+    public boolean isEnabledJRaft() {
+        return enabledJRaft;
+    }
+
+    public void setEnabledJRaft(boolean enabledJRaft) {
+        this.enabledJRaft = enabledJRaft;
+    }
 
     public int getAsyncExcutorColePoolSize() {
         return asyncExcutorColePoolSize;

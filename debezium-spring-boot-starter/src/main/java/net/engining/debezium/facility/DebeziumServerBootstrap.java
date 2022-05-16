@@ -1,4 +1,4 @@
-package net.engining.debezium.autoconfigure;
+package net.engining.debezium.facility;
 
 import cn.hutool.core.util.StrUtil;
 import io.debezium.engine.DebeziumEngine;
@@ -37,16 +37,10 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
         );
     }
 
-    public Executor getExecutor() {
-        return executor;
-    }
-
-    public DebeziumEngine<?> getDebeziumEngine() {
-        return debeziumEngine;
-    }
-
-    public void setDebeziumEngine(DebeziumEngine<?> debeziumEngine) {
-        this.debeziumEngine = debeziumEngine;
+    @Override
+    public boolean isAutoStartup() {
+        //不自动启动
+        return false;
     }
 
     @Override
@@ -78,5 +72,17 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(debeziumEngine, "debeziumEngine must not be null");
+    }
+
+    public Executor getExecutor() {
+        return executor;
+    }
+
+    public DebeziumEngine<?> getDebeziumEngine() {
+        return debeziumEngine;
+    }
+
+    public void setDebeziumEngine(DebeziumEngine<?> debeziumEngine) {
+        this.debeziumEngine = debeziumEngine;
     }
 }
