@@ -20,10 +20,13 @@
         <!--所有日志-->
         <!-- 异步输出，通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值 -->
         <RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" immediateFlush="false"
-                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log">
             <PatternLayout charset="UTF-8"
                            pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="100MB"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
         </RollingRandomAccessFile>
         <!--<Async name="AsyncAllLog" bufferSize="256">
 	      <AppenderRef ref="AllLog"/>
@@ -33,6 +36,7 @@
 
     <Loggers>
 
+        <!--只输入级别高于trace的日志-->
         <AsyncRoot level="${LOG_LEVEL}">
             <AppenderRef ref="Console"/>
             <!--<AppenderRef ref="AllLog"/>-->
