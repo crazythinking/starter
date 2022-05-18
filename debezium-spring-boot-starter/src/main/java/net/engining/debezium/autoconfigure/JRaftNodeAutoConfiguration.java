@@ -1,6 +1,9 @@
 package net.engining.debezium.autoconfigure;
 
 import com.alipay.sofa.jraft.rhea.StateListener;
+import com.alipay.sofa.jraft.rhea.options.RegionEngineOptions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.engining.debezium.facility.BootstrapLeaderStateListener;
 import net.engining.debezium.facility.DebeziumServerBootstrap;
 import net.engining.pg.rheakv.props.KvServerProperties;
@@ -23,16 +26,25 @@ import static net.engining.debezium.autoconfigure.DebeziumAutoConfiguration.DEBE
 public class JRaftNodeAutoConfiguration {
 
     @Bean
-    public StateListener bootstrapLeaderStateListener(
-            @Qualifier(DEBEZIUM_SERVER_BOOTSTRAP_MAP) Map<String, DebeziumServerBootstrap> debeziumServerBootstraps) {
-        return new BootstrapLeaderStateListener(debeziumServerBootstraps);
-    }
-
-    @Bean
     @ConditionalOnProperty(prefix = "pg.rheakv.server", name = "enabled", havingValue = "true")
-    public KvServer server(KvServerProperties kvServerProperties,
-                           Environment environment, List<StateListener> stateListeners) {
-        KvServer kvServer = new KvServer(kvServerProperties, environment, stateListeners);
+    public KvServer server(KvServerProperties kvServerProperties, Environment environment,
+                           @Qualifier(DEBEZIUM_SERVER_BOOTSTRAP_MAP) Map<String, DebeziumServerBootstrap> bootstrapMap
+    ) {
+        Map<Long, List<StateListener>> map = Maps.newHashMap();
+        List<RegionEngineOptions> optionsList =
+                kvServerProperties.getStoreOptions().getStoreEngineOptions().getRegionEngineOptionsList();
+        bootstrapMap.forEach((k, v) -> optionsList.forEach(
+                regionEngineOptions -> {
+                    if (k.equals(regionEngineOptions.getStartKey())) {
+                        map.put(
+                                regionEngineOptions.getRegionId(),
+                                Lists.newArrayList(new BootstrapLeaderStateListener(v))
+                        );
+                    }
+                }
+
+        ));
+        KvServer kvServer = new KvServer(kvServerProperties, environment, map);
         kvServer.start();
         return kvServer;
     }

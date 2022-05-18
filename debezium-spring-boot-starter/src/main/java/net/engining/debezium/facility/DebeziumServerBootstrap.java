@@ -85,4 +85,8 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
     public void setDebeziumEngine(DebeziumEngine<?> debeziumEngine) {
         this.debeziumEngine = debeziumEngine;
     }
+
+    public String getSuffix() {
+        return suffix;
+    }
 }

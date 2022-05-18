@@ -47,6 +47,7 @@ public class JRaftDatabaseHistory extends AbstractDatabaseHistory {
             throw new IllegalStateException("JRaft Database history already initialized to " + this.kvServer);
         }
         super.configure(config, comparator, listener, useCatalogBeforeSchema);
+        //INTERNAL_CONNECTOR_ID是从配置项DATABASE_SERVER_NAME获取的
         this.key = config.getString(INTERNAL_CONNECTOR_ID.name()) + StrUtil.DASHED + HISTORY_FILE_SUFFIX;
     }
 

@@ -58,10 +58,11 @@ public class LeaderShiftConnectorCallback implements DebeziumEngine.ConnectorCal
             LOGGER.warn("No peer to transfer leader");
             return;
         }
+        //因为PD是Fake的，所以不需要refreshConf
         boolean s = defaultRheaKVStore.getPlacementDriverClient().transferLeader(
                 regionId,
                 JRaftHelper.toPeer(targetPeer),
-                true
+                false
         );
         if (!s) {
             LOGGER.warn("Transfer leader failed");

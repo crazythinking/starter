@@ -55,6 +55,7 @@ public class DebeziumAutoConfiguration {
     private static final String OFFSET_STORAGE = EmbeddedEngine.OFFSET_STORAGE.name();
     private static final String DATABASE_HISTORY = HistorizedRelationalDatabaseConnectorConfig.DATABASE_HISTORY.name();
     public static final String DEBEZIUM_SERVER_BOOTSTRAP_MAP = "debeziumServerBootstrapMap";
+    public static final String DATABASE_SERVER_NAME = "database.server.name";
 
     @Autowired
     DebeziumProperties debeziumProperties;
@@ -100,8 +101,11 @@ public class DebeziumAutoConfiguration {
             }
 
             propertyMap.forEach(builder::with);
-            //name参数直接统一用map的key,保持逻辑上的一致性,即使外部配置了也会被覆盖
+            //name参数直接统一用map的key,保持逻辑上的一致性,即使外部配置了也会被覆盖;
+            //Connector’s name when registered with the Kafka Connect service.
+            //注意其与"database.server.name"的差异，该配置在内部被作为ConnectorId，因此建议保持一致
             builder.with(ConnectorConfig.NAME_CONFIG, key);
+            builder.with(DATABASE_SERVER_NAME, key);
             //作为Embedded CDC 不需要数据库全部的DDL，只需要被指定监控表的DDL
             builder.with(DatabaseHistory.STORE_ONLY_CAPTURED_TABLES_DDL.name(), "true");
             configs.put(key, builder.build());
@@ -121,7 +125,7 @@ public class DebeziumAutoConfiguration {
                             .using(configuration.asProperties())
                             .notifying(new SourceRecordChangeEventConsumer(applicationContext));
             if (debeziumProperties.isEnabledJRaft()){
-                String name = configuration.getString("database.server.name");
+                String name = configuration.getString(DATABASE_SERVER_NAME);
                 Assert.isTrue(
                         ValidateUtilExt.isNotNullOrEmpty(name),
                         "database.server.name must be set when enabled JRaft"

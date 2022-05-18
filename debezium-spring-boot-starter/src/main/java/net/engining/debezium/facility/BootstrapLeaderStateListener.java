@@ -13,27 +13,39 @@ public class BootstrapLeaderStateListener implements LeaderStateListener {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapLeaderStateListener.class);
 
-    private final Map<String, DebeziumServerBootstrap> debeziumServerBootstrapMap;
+    private final DebeziumServerBootstrap debeziumServerBootstrap;
 
-    public BootstrapLeaderStateListener(Map<String, DebeziumServerBootstrap> debeziumServerBootstrapMap) {
-        this.debeziumServerBootstrapMap = debeziumServerBootstrapMap;
+    public BootstrapLeaderStateListener(DebeziumServerBootstrap debeziumServerBootstrap) {
+        this.debeziumServerBootstrap = debeziumServerBootstrap;
     }
 
     @Override
     public void onLeaderStart(long newTerm) {
-        LOGGER.info("this Node is leader now, newTerm: {}; will start debezium", newTerm);
+        LOGGER.info(
+                "this Node is leader now, newTerm: {}; will start debezium {}",
+                newTerm,
+                debeziumServerBootstrap.getSuffix()
+        );
         //启动DebeziumServerBootstrap
-        debeziumServerBootstrapMap.forEach((k, v) -> {
-            v.start();
-        });
+        if (debeziumServerBootstrap.isRunning()) {
+            LOGGER.warn("debezium {} is already running, will not start again", debeziumServerBootstrap.getSuffix());
+            return;
+        }
+        debeziumServerBootstrap.start();
     }
 
     @Override
     public void onLeaderStop(long oldTerm) {
-        LOGGER.info("this Node is not leader now, oldTerm: {}; will stop debezium", oldTerm);
+        LOGGER.info(
+                "this Node is not leader now, oldTerm: {}; will stop debezium {}",
+                oldTerm,
+                debeziumServerBootstrap.getSuffix()
+        );
         //停止DebeziumServerBootstrap
-        debeziumServerBootstrapMap.forEach((k, v) -> {
-            v.stop();
-        });
+        if (!debeziumServerBootstrap.isRunning()) {
+            LOGGER.warn("debezium {} is already stopped, will not stop again", debeziumServerBootstrap.getSuffix());
+            return;
+        }
+        debeziumServerBootstrap.stop();
     }
 }

@@ -10,7 +10,7 @@ pg:
         store-engine-options:
           # 本机地址，必须配置
           ip: 127.0.0.1
-          port: 30001
+          port: 30003
           # raft log存储目录
           raft-data-path: ${pg.debezium.data-path}/rheakv-raft/
           #在没有真实PD的情况下, 必须指定；一般数据量较大时，需要设置分片规则
@@ -20,15 +20,23 @@ pg:
               #每个Debezium Engine对应一个region, 如此每个Debezium Engine所对应的JRaft group都是隔离的；
               start-key: ${pg.debezium.named-properties.xxljob-mysql.database.server.name}
               initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
-#            - region-id: 2
-#              start-key: "xxljob_oralce_cdc"
-#              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+            - region-id: 2
+              #key的前缀必须与pg.debezium.named-properties对应的database.server.name保持一致；
+              #每个Debezium Engine对应一个region, 如此每个Debezium Engine所对应的JRaft group都是隔离的；
+              start-key: ${pg.debezium.named-properties.demods0-mysql.database.server.name}
+              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
           storage-type: rocksdb
           rocksdb-options:
             # kv数据存储目录
             db-path: ${pg.debezium.data-path}/rheakv-rocksdb/
-            # 是否同步刷盘, 默认为 true, 异步刷盘性能更好, 但是在机器掉电时有丢数据风险
+            # 是否同步刷盘, 默认为 false, 异步刷盘性能更好, 但是在机器掉电时有丢数据风险；
+            # 生产环境断点可能性极低，即使出线也只影响offset和history的持久化，重启后可以从上次offset处继续处理，业务数据不会丢失，做好幂等即可
             sync: false
+            # 默认false，因RheaKV本身会基于raft-log+snapshot确保数据一致性，所以为了更好的性能，对于kv数据就不必再做WAL了；
+            disable-w-a-l: false
+          common-node-options:
+            # raft log snapshot 罗盘间隔时间，默认为3600s
+            snapshot-interval-secs: 60
         use-parallel-compress: true
         # 是否只从 leader 节点读取数据, 默认为true, 当然从follower节点读也能保证线性一致读, 但是如果一个 follower 节点在同步数据时落后较多的情况下
         # 将导致读请求超时, 从而导致 rheaKV 客户端 failover 逻辑启动重新从 leader 节点上尝试读取, 最终结果就是读请求延时较长

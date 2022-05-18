@@ -1,6 +1,7 @@
 package net.engining.debezium.facility;
 
 import cn.hutool.core.util.StrUtil;
+import net.engining.debezium.autoconfigure.DebeziumAutoConfiguration;
 import net.engining.pg.storage.rheakv.KvServer;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -30,7 +31,7 @@ public class JRaftOffsetBackingStore extends MemoryOffsetBackingStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(JRaftOffsetBackingStore.class);
 
     private static final String OFFSET_FILE_SUFFIX="2-offsets";
-    private static final String DATABASE_SERVER_NAME = "database.server.name";
+    private static final String DATABASE_SERVER_NAME = DebeziumAutoConfiguration.DATABASE_SERVER_NAME;
 
     private String key;
     private KvServer kvServer;
