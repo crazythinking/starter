@@ -37,6 +37,8 @@ pg:
           common-node-options:
             # raft log snapshot 罗盘间隔时间，默认为3600s
             snapshot-interval-secs: 60
+            enable-metrics: true
+#            metric-registry:
         use-parallel-compress: true
         # 是否只从 leader 节点读取数据, 默认为true, 当然从follower节点读也能保证线性一致读, 但是如果一个 follower 节点在同步数据时落后较多的情况下
         # 将导致读请求超时, 从而导致 rheaKV 客户端 failover 逻辑启动重新从 leader 节点上尝试读取, 最终结果就是读请求延时较长
