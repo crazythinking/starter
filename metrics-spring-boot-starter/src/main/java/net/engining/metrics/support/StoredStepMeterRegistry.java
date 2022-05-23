@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * 基于数据存储层的指标注册器，可将监控指标数据发布到数据存储层；
  * 注意：
- * <li>该指标注册器适用于按周期间隔记录指标的场景，其间隔周期与发布的间隔周期相同，即都由Interval参数控制；
+ * <li>其指标都是按指定步长的累计值；
+ * <li>Interval参数同时控制其指标计算的间隔周期与数据发布的间隔周期；
  *
  * @author : Eric Lu
  * @version :

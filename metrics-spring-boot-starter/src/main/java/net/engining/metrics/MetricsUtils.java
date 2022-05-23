@@ -7,7 +7,6 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import net.engining.metrics.support.MeterDto;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import net.engining.pg.support.utils.ValidateUtilExt;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.List;

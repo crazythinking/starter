@@ -3,8 +3,11 @@ package net.engining.metrics.autoconfigure;
 import com.alibaba.csp.sentinel.metric.extension.MetricExtension;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
+import net.engining.metrics.config.SentinelMetricsContextConfig;
+import net.engining.metrics.config.UndertowMetricsContextConfig;
 import net.engining.metrics.prop.MetricsRegistryProperties;
 import net.engining.metrics.sentinel.SentinelMetrics;
+import net.engining.metrics.config.DropwizardMetricsContextConfig;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
@@ -17,6 +20,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author : Eric Lu
@@ -26,21 +30,12 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 @EnableConfigurationProperties({MetricsRegistryProperties.class})
+@Import({
+        DropwizardMetricsContextConfig.class,
+        SentinelMetricsContextConfig.class,
+        UndertowMetricsContextConfig.class
+})
 public class MetricsAutoConfiguration {
-
-    @Bean
-    @ConditionalOnClass(MetricExtension.class)
-    @ConditionalOnProperty(prefix = "pg.metrics.sentinel", name = "enabled", matchIfMissing = true)
-    public SentinelMetrics sentinelMetrics(){
-        return new SentinelMetrics();
-    }
-
-    @Bean
-    @ConditionalOnClass(UndertowWebServer.class)
-    @ConditionalOnProperty(prefix = "pg.metrics.undertow", name = "enabled", matchIfMissing = true)
-    public UndertowMetrics undertowMetrics(){
-        return new UndertowMetrics();
-    }
 
     /**
      * 声明指标服务
@@ -84,4 +79,5 @@ public class MetricsAutoConfiguration {
         storedPushMeterRegistry.start(new NamedThreadFactory("cumulative-metrics-storage-publisher"));
         return storedPushMeterRegistry;
     }
+
 }
