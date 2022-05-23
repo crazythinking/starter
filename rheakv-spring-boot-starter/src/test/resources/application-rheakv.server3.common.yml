@@ -1,0 +1,14 @@
+pg:
+  rheakv:
+    server:
+      store-options:
+        #在没有真实PD的情况下, 必须指定
+        initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+        store-engine-options:
+          # 本机地址，必须配置，默认端口29001
+          ip: 127.0.0.1
+          port: 30003
+          #在没有真实PD的情况下, 必须指定；一般数据量较大时，需要设置分片规则
+          region-engine-options-list:
+            - region-id: -1
+              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003

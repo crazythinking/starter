@@ -1,0 +1,13 @@
+pg:
+  rheakv:
+    client:
+      enabled: true
+      store-options:
+        #在没有真实PD的情况下, 必须指定; 默认使用无独立PD的方式
+        placement-driver-options:
+          fake: true
+        # 是否只从 leader 节点读取数据, 默认为true, 当然从follower节点读也能保证线性一致读, 但是如果一个 follower 节点在同步数据时落后较多的情况下
+        # 将导致读请求超时, 从而导致 rheaKV 客户端 failover 逻辑启动重新从 leader 节点上尝试读取, 最终结果就是读请求延时较长
+        only-leader-read: false
+        # 失败重试次数, 默认为2
+        failover-retries: 3

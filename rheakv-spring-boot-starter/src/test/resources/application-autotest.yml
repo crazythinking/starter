@@ -6,5 +6,6 @@ spring:
 
 logging:
   level:
-    root: info
+    root: warn
     net.engining: trace
+    org.springframework.boot: info

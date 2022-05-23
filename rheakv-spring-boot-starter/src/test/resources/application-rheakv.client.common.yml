@@ -1,0 +1,9 @@
+pg:
+  rheakv:
+    client:
+      store-options:
+        placement-driver-options:
+          #由于PD默认使用fake模式，故取决于 RheaKV Server 的 region-engine-options-list配置，需要保持一致
+          region-route-table-options-list:
+            - region-id: -1
+              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
