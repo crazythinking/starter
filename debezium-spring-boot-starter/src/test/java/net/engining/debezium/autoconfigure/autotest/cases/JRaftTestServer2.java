@@ -27,6 +27,7 @@ import static net.engining.debezium.autoconfigure.DebeziumAutoConfiguration.DEBE
         "debezium.common",
         "debezium.xxljob.mysql",
         "debezium.demods0.mysql",
+        "rheakv.server.default",
         "rheakv.server2.common"
 })
 public class JRaftTestServer2 extends AbstractTestCaseTemplate {

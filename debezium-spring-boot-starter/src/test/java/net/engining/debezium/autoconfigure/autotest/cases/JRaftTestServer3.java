@@ -20,6 +20,7 @@ import static com.alipay.sofa.jraft.util.BytesUtil.readUtf8;
         "debezium.common",
         "debezium.xxljob.mysql",
         "debezium.demods0.mysql",
+        "rheakv.server.default",
         "rheakv.server3.common"
 })
 public class JRaftTestServer3 extends AbstractTestCaseTemplate {

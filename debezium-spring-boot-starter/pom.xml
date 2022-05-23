@@ -65,6 +65,10 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.engining.starter</groupId>
+			<artifactId>metrics-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-support</artifactId>
 		</dependency>
