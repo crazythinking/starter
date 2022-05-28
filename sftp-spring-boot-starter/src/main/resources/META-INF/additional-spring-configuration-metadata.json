@@ -1,0 +1,17 @@
+{
+  "properties": [
+    {
+      "name": "pg.sftp.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启SFTP功能."
+    },
+    {
+      "name": "pg.sftp.synchronizer.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启SFTP同步器功能."
+    }
+  ],
+  "hints": []
+}

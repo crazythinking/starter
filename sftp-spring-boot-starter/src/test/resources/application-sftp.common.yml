@@ -1,0 +1,15 @@
+pg:
+  sftp:
+    muti:
+      default-sftp-properties:
+        host: ubuntu2004.wsl
+        port: 2222
+        user: luxue
+        password: 123456
+        default-remote-directory: /home/luxue/sftp-test
+        sync-enabled: false
+        sync-file-name-regex: .*\\.txt$
+    synchronizer:
+          enabled: true
+
+

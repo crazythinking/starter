@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: sftp-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+
+logging:
+  level:
+    root: info
+    net.engining: info
+    org.springframework.integration: trace
+    com.jcraft.jsch: trace
+

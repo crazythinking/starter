@@ -175,6 +175,7 @@
 		<module>metrics-spring-boot-starter</module>
 		<module>kettle-spring-boot-starter</module>
 		<module>rheakv-spring-boot-starter</module>
+		<module>sftp-spring-boot-starter</module>
 	</modules>
 
 	<build>
