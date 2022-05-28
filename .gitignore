@@ -41,3 +41,4 @@ HELP.md
 hs_err_pid*
 /rheakv-spring-boot-starter/rheakv-raft/
 /rheakv-spring-boot-starter/rheakv-rocksdb/
+/sftp-spring-boot-starter/sftpinput/
