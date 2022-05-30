@@ -3,7 +3,6 @@ package net.engining.sftp.autoconfigure.autotest.cases;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.ssh.JschSessionPool;
 import cn.hutool.extra.ssh.JschUtil;
-import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -20,7 +19,8 @@ import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.*;
+import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.DEFAULT;
+import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.SFTP_REMOTE_FILE_TEMPLATE_MAP;
 
 /**
  * @author Eric Lu
@@ -37,9 +37,6 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Resource(name = SFTP_REMOTE_FILE_TEMPLATE_MAP)
     Map<String, SftpRemoteFileTemplate> sftpRemoteFileTemplateMap;
-
-    @Resource(name = SSH_EXEC_MAP)
-    Map<String, ChannelExec> channelExecMap;
 
     @Autowired
     MutiSftpProperties mutiSftpProperties;
