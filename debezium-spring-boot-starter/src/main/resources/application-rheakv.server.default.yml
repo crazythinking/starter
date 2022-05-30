@@ -1,0 +1,38 @@
+pg:
+  debezium:
+    #开启 JRaft storage
+    enabled-j-raft: true
+  rheakv:
+    server:
+      enabled: true
+      store-options:
+        placement-driver-options:
+          fake: true
+        store-engine-options:
+          # 本机地址，必须配置
+          port: 29001
+          # raft log存储目录
+          raft-data-path: ${pg.debezium.data-path}/debezium-raft/
+          storage-type: rocksdb
+          rocksdb-options:
+            # kv数据存储目录
+            db-path: ${pg.debezium.data-path}/debezium-rocksdb/
+            # 是否同步刷盘, 默认为 false, 异步刷盘性能更好, 但是在机器掉电时有丢数据风险；
+            # 生产环境断电可能性极低，即使出线也只影响offset和history的持久化，重启后可以从上次offset处继续处理，业务数据不会丢失，做好幂等即可;
+            sync: false
+            # 默认false，因RheaKV本身会基于raft-log+snapshot确保数据一致性，所以为了更好的性能，对于kv数据就不必再做WAL了；
+            disable-w-a-l: false
+          common-node-options:
+            # raft log snapshot 落盘间隔时间，默认为3600s
+            snapshot-interval-secs: 3600
+            enable-metrics: true
+        use-parallel-compress: true
+        # 是否只从 leader 节点读取数据, 默认为true, 当然从follower节点读也能保证线性一致读;
+        # 但是如果一个 follower 节点在同步数据时落后较多的情况下, 将导致读请求超时;
+        # 从而导致rheaKV client failover逻辑启动重新从leader节点上尝试读取, 最终结果就是读请求延时较长, 但大部分情况下leader的压力不会过大;
+        # 但在debezium的场景下只有当前leader会进行offset数据的读写，因此设为true更为合理;
+        only-leader-read: true
+        # 失败重试次数, 默认为2
+        failover-retries: 2
+
+

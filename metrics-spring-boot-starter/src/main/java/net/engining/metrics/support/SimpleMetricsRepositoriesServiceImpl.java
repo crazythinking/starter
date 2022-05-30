@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
+ * 指标数据存储层简单例子，只是输出指标数据到日志
+ *
  * @author : Eric Lu
  * @version :
  * @date : 2021-12-17 13:58

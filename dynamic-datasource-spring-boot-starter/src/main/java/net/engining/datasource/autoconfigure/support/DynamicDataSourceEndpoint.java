@@ -52,15 +52,15 @@ public class DynamicDataSourceEndpoint {
     DataSource dataSource;
 
     @Autowired
-    @Qualifier("multipleDataSourceTable")
+    @Qualifier(Utils.MULTIPLE_DATA_SOURCE_TABLE)
     Table<String, DbType, DataSource> dataSourceTable;
 
     @Autowired
-    @Qualifier("sqlQueryFactoryMap")
+    @Qualifier(Utils.SQL_QUERY_FACTORY_MAP)
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
     @Autowired
-    @Qualifier("dataSourceMap")
+    @Qualifier(Utils.DATA_SOURCE_MAP)
     Map<Object, Object> dataSourceMap;
 
     /**
@@ -71,7 +71,6 @@ public class DynamicDataSourceEndpoint {
     public void addDataSource(String key) {
         String hikariEnable = environment.getProperty("pg.datasource.dynamic.hikari.enabled");
         String druidEnable = environment.getProperty("pg.datasource.dynamic.druid.enabled");
-        String shardingsphereEnable = environment.getProperty("spring.shardingsphere.enabled");
 
         if (dataSource instanceof DynamicRoutingDataSource){
             if (ValidateUtilExt.isNotNullOrEmpty(hikariEnable) && TRUE.equals(hikariEnable)){

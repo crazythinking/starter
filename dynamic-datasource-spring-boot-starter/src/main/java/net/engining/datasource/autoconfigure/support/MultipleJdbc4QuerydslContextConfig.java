@@ -20,9 +20,9 @@ import java.util.Map;
 public class MultipleJdbc4QuerydslContextConfig {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Bean
+    @Bean(Utils.SQL_QUERY_FACTORY_MAP)
     public Map<String, SQLQueryFactory> sqlQueryFactoryMap(
-            @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> dataSourceTable
+            @Qualifier(Utils.MULTIPLE_DATA_SOURCE_TABLE) Table<String, DbType, DataSource> dataSourceTable
     ) {
         Map<String, SQLQueryFactory> sqlQueryFactoryMap = Maps.newHashMap();
         for (String key : dataSourceTable.rowKeySet()){

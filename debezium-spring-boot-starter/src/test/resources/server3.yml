@@ -1,0 +1,19 @@
+enabled: true
+storeOptions:
+  initialServerList: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+  placementDriverOptions:
+    fake: true
+  storeEngineOptions:
+    ip: 127.0.0.1
+    port: 30003
+    raftDataPath: D:/tmp/rheakv-raft/
+    regionEngineOptionsList:
+      #      - regionId: -1
+      #        initialServerList: 127.0.0.1:8181,127.0.0.1:8182,127.0.0.1:8183
+      - regionId: 1
+        startKey: "xxljob-mysql"
+        initialServerList: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+    rocksDBOptions:
+      dbPath: D:/tmp/rheakv-rocksdb/
+    storageType: RocksDB
+  useParallelCompress: true

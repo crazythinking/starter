@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<drools.version>7.61.0.Final</drools.version>
+		<drools.version>7.67.0.Final</drools.version>
 	</properties>
 
 	<dependencies>
@@ -74,11 +74,6 @@
 
 	<build>
 		<plugins>
-			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
-			<!--<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-			</plugin>-->
 		</plugins>
 
 	</build>

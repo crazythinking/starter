@@ -2,7 +2,6 @@ package net.engining.metrics.autoconfigure.autotest.support;
 
 import net.engining.metrics.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithServlet;
-import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;

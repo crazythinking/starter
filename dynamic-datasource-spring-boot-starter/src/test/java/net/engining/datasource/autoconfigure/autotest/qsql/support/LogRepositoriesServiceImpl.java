@@ -9,6 +9,7 @@ import net.engining.datasource.autoconfigure.autotest.jpa.support.OperAdtLogJpaR
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
+import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import net.engining.gm.entity.model.qsql.QSqlOperAdtLog;
@@ -32,13 +33,14 @@ import java.util.Map;
  * @author Eric Lu
  * @date 2020-12-30 14:54
  **/
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Component
 public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepositoriesServiceImpl.class);
 
     @Autowired
-    @Qualifier("sqlQueryFactoryMap")
+    @Qualifier(Utils.SQL_QUERY_FACTORY_MAP)
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
     @Autowired

@@ -15,8 +15,9 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<micrometer.version>1.8.1</micrometer.version>
+		<micrometer.version>1.9.0</micrometer.version>
 		<micrometer-jvm.version>0.2.2</micrometer-jvm.version>
+		<prometheus.version>0.12.0</prometheus.version>
 	</properties>
 
 	<dependencies>
@@ -90,6 +91,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Collector of data from Dropwizard metrics library. -->
+		<dependency>
+			<groupId>io.prometheus</groupId>
+			<artifactId>simpleclient_dropwizard</artifactId>
+			<version>${prometheus.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
@@ -169,11 +178,6 @@
 
 	<build>
 		<plugins>
-			<!-- 切面weave支持；这里默认对spring事务管理通过weave的方式切入，因此涉及到JPA事务管理必须加入；另其他切面支持，需要增加相应配置 -->
-			<!--<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-			</plugin>-->
 		</plugins>
 
 	</build>

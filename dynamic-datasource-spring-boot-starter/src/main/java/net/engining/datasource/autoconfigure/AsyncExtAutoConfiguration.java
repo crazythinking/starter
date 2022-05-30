@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @AutoConfigureAfter({
         DynamicDataSourceAutoConfiguration.class,
         DynamicDruidDataSourceAutoConfiguration.class,
-        ShardingJdbcAutoConfiguration.class
+        EnhanceShardingSphereAutoConfiguration.class
 })
 @EnableConfigurationProperties({
         GmCommonProperties.class,
