@@ -8,7 +8,7 @@ spring:
 logging:
   level:
     root: info
-    net.engining: info
-    org.springframework.integration: trace
-    com.jcraft.jsch: trace
+    net.engining: trace
+    org.springframework.integration: info
+    com.jcraft.jsch: warn
 

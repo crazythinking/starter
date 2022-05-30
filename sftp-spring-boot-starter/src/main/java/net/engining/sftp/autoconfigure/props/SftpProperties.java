@@ -71,17 +71,42 @@ public class SftpProperties {
     private boolean deleteRemoteFiles;
 
     /**
+     * 是否启用同步器
+     */
+    private boolean syncEnabled = false;
+
+    /**
      * 需同步文件的其名称的正则表达式
      */
     private String syncFileNameRegex;
 
+    /**
+     * 同步器每次轮询抓取文件最大数量
+     */
     private int maxFetchSize = 10;
 
+    /**
+     * 同步器轮询间隔毫秒数
+     */
     private long pollingInterval = 1000;
 
+    /**
+     * 同步器每次轮询发出的最大消息（文件）数量
+     */
     private int maxMessagesPerPoll = 10;
 
-    private boolean syncEnabled = false;
+    /**
+     * 是否启用ChannelExec
+     */
+    private boolean execEnabled = false;
+
+    public boolean isExecEnabled() {
+        return execEnabled;
+    }
+
+    public void setExecEnabled(boolean execEnabled) {
+        this.execEnabled = execEnabled;
+    }
 
     public boolean isSyncEnabled() {
         return syncEnabled;

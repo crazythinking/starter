@@ -11,6 +11,7 @@ import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
+import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
 import org.springframework.integration.file.filters.LastModifiedFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
@@ -22,6 +23,9 @@ import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 import java.io.File;
 import java.time.Duration;
 import java.util.Properties;
+import java.util.function.Consumer;
+
+import static org.springframework.integration.context.IntegrationContextUtils.ERROR_CHANNEL_BEAN_NAME;
 
 public final class SftpConfigUtils {
     /** logger */
@@ -29,6 +33,7 @@ public final class SftpConfigUtils {
 
     public static final String TEMPORARY_FILE_SUFFIX = ".writing";
     public static final String SFTP_REMOTE_FILE_TEMPLATE_MAP = "sftpRemoteFileTemplateMap";
+    public static final String SSH_EXEC_MAP = "sshExecMap";
     public static final String DEFAULT = "default";
 
     public static final String SFTP_SYNCHRONIZER_INBOUND_CHANNEL_ADAPTER = "SftpSyncInboundChannelAdapter";
@@ -114,6 +119,7 @@ public final class SftpConfigUtils {
                                         .poller(
                                                 Pollers.fixedDelay(sftpProperties.getPollingInterval())
                                                         .maxMessagesPerPoll(sftpProperties.getMaxMessagesPerPoll())
+                                                        .errorChannel(ERROR_CHANNEL_BEAN_NAME)
                                         )
                 )
                 //此处监听的事件是上面设置的本地目录内文件变化事件，只监听了Create和Modify

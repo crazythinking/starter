@@ -1,7 +1,10 @@
 package net.engining.sftp.autoconfigure;
 
+import cn.hutool.extra.ssh.JschSessionPool;
+import cn.hutool.extra.ssh.JschUtil;
 import com.google.common.collect.Maps;
 import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.Session;
 import net.engining.sftp.autoconfigure.config.FileSynchronizerContextConfig;
 import net.engining.sftp.autoconfigure.props.MutiSftpProperties;
 import net.engining.sftp.autoconfigure.support.SftpConfigUtils;
@@ -47,6 +50,9 @@ public class SftpIntegrationAutoConfiguration {
             sessionFactoryMap.put(name, SftpConfigUtils.buildCachingSessionFactory(sftpProperties));
         });
 
+        //缓存session
+        populateJschSessionPool(mutiSftpProperties);
+
         return new DelegatingSessionFactory<>(sessionFactoryMap, defaultCachingSessionFactory);
     }
 
@@ -79,6 +85,35 @@ public class SftpIntegrationAutoConfiguration {
         });
 
         return sftpRemoteFileTemplateMap;
+    }
+
+    private void populateJschSessionPool(MutiSftpProperties mutiSftpProperties) {
+        if (mutiSftpProperties.getDefaultSftpProperties().isExecEnabled()) {
+            Session session = JschUtil.openSession(
+                    mutiSftpProperties.getDefaultSftpProperties().getHost(),
+                    mutiSftpProperties.getDefaultSftpProperties().getPort(),
+                    mutiSftpProperties.getDefaultSftpProperties().getUser(),
+                    mutiSftpProperties.getDefaultSftpProperties().getPassword(),
+                    mutiSftpProperties.getDefaultSftpProperties().getTimeout()
+            );
+            //放入缓存
+            JschSessionPool.INSTANCE.put(DEFAULT, session);
+        }
+
+        mutiSftpProperties.getNamedSftpProperties().forEach((s, sftpProperties) -> {
+            if (sftpProperties.isExecEnabled()) {
+                Session session = JschUtil.openSession(
+                        sftpProperties.getHost(),
+                        sftpProperties.getPort(),
+                        sftpProperties.getUser(),
+                        sftpProperties.getPassword(),
+                        sftpProperties.getTimeout()
+                );
+                //放入缓存
+                JschSessionPool.INSTANCE.put(s, session);
+            }
+        });
+
     }
 
 
