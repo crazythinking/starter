@@ -7,6 +7,8 @@ pg:
         user: luxue
         password: luxue1981
         default-remote-directory: /home/luxue/sftp-test
+        default-local-directory: ./sftpinput/
+        #当同步能力打开时，需要指定对应的Disruptor，否则会出现事件无发分发的异常，同时事件将丢失
         sync-enabled: true
         sync-file-name-regex: ".*\\.txt$"
         exec-enabled: true
@@ -17,6 +19,7 @@ pg:
           user: luxue
           password: luxue1981
           default-remote-directory: /home/luxue/sftp-test1
+          default-local-directory: ./sftpinput1/
           sync-enabled: true
           sync-file-name-regex: ".*\\.txt$"
           exec-enabled: false

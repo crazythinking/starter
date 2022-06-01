@@ -1,23 +1,17 @@
 package net.engining.metrics.autoconfigure;
 
-import com.alibaba.csp.sentinel.metric.extension.MetricExtension;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
+import net.engining.metrics.config.DropwizardMetricsContextConfig;
 import net.engining.metrics.config.SentinelMetricsContextConfig;
 import net.engining.metrics.config.UndertowMetricsContextConfig;
 import net.engining.metrics.prop.MetricsRegistryProperties;
-import net.engining.metrics.sentinel.SentinelMetrics;
-import net.engining.metrics.config.DropwizardMetricsContextConfig;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
 import net.engining.metrics.support.StoredStepMeterRegistry;
-import net.engining.metrics.undertow.UndertowMetrics;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

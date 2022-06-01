@@ -2,16 +2,19 @@ package net.engining.sftp.autoconfigure.support;
 
 import com.google.common.base.Preconditions;
 import com.jcraft.jsch.ChannelSftp;
+import net.engining.pg.disruptor.event.GenericDisruptorApplicationEvent;
+import net.engining.pg.support.core.exception.ErrorCode;
+import net.engining.pg.support.core.exception.ErrorMessageException;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import net.engining.sftp.autoconfigure.props.SftpProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
-import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
 import org.springframework.integration.file.filters.LastModifiedFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
@@ -19,11 +22,12 @@ import org.springframework.integration.sftp.dsl.Sftp;
 import org.springframework.integration.sftp.dsl.SftpInboundChannelAdapterSpec;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
+import org.springframework.messaging.Message;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Properties;
-import java.util.function.Consumer;
 
 import static org.springframework.integration.context.IntegrationContextUtils.ERROR_CHANNEL_BEAN_NAME;
 
@@ -33,7 +37,6 @@ public final class SftpConfigUtils {
 
     public static final String TEMPORARY_FILE_SUFFIX = ".writing";
     public static final String SFTP_REMOTE_FILE_TEMPLATE_MAP = "sftpRemoteFileTemplateMap";
-    public static final String SSH_EXEC_MAP = "sshExecMap";
     public static final String DEFAULT = "default";
 
     public static final String SFTP_SYNCHRONIZER_INBOUND_CHANNEL_ADAPTER = "SftpSyncInboundChannelAdapter";
@@ -91,7 +94,8 @@ public final class SftpConfigUtils {
     }
 
     public static IntegrationFlow buildIntegrationFlow(String key, SftpProperties sftpProperties,
-                                                       SessionFactory<ChannelSftp.LsEntry> cachingSessionFactory
+                                                       SessionFactory<ChannelSftp.LsEntry> cachingSessionFactory,
+                                                       ApplicationContext applicationContext
     ) {
         SftpInboundChannelAdapterSpec inboundChannelAdapterSpec =
                 Sftp.inboundAdapter(cachingSessionFactory)
@@ -114,7 +118,7 @@ public final class SftpConfigUtils {
                 .from(
                         inboundChannelAdapterSpec,
                         sourcePollingChannelAdapterSpec ->
-                                sourcePollingChannelAdapterSpec.id(key+SFTP_SYNCHRONIZER_INBOUND_CHANNEL_ADAPTER)
+                                sourcePollingChannelAdapterSpec.id(key + SFTP_SYNCHRONIZER_INBOUND_CHANNEL_ADAPTER)
                                         .autoStartup(true)
                                         .poller(
                                                 Pollers.fixedDelay(sftpProperties.getPollingInterval())
@@ -124,12 +128,26 @@ public final class SftpConfigUtils {
                 )
                 //此处监听的事件是上面设置的本地目录内文件变化事件，只监听了Create和Modify
                 .handle(message -> {
-                    //TODO generate a event
-                    LOGGER.warn(
+                    LOGGER.debug(
                             "Received message headers:{}, payload:{}",
                             message.getHeaders(),
                             message.getPayload()
                     );
+                    //文件的操作通常都比较重，因此使用Disruptor来处理，避免阻塞
+                    if (ValidateUtilExt.isNotNullOrEmpty(message.getHeaders().getId())){
+                        GenericDisruptorApplicationEvent<File> event =
+                                new GenericDisruptorApplicationEvent<>(message);
+                        event.setTopicKey(key);
+                        event.setKey(message.getHeaders().getId().toString());
+                        event.setBind((File) message.getPayload());
+                        applicationContext.publishEvent(event);
+                    }
+                    else {
+                        throw new ErrorMessageException(
+                                ErrorCode.CheckError,
+                                "message.getHeaders().getId() should not be null");
+                    }
+
                 })
                 .get();
     }
