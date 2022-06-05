@@ -119,10 +119,6 @@
 
 		<dependency>
 			<groupId>net.engining.pg</groupId>
-			<artifactId>pg-support</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-storage-common</artifactId>
 		</dependency>
 
@@ -134,10 +130,6 @@
 				<exclusion>
 					<artifactId>spring-boot-starter-logging</artifactId>
 					<groupId>org.springframework.boot</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>objenesis</artifactId>
-					<groupId>org.objenesis</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>

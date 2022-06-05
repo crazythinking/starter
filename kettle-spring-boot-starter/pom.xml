@@ -31,13 +31,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- 自身依赖 -->
-
-        <dependency>
-            <groupId>net.engining.pg</groupId>
-            <artifactId>pg-support</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>pentaho-kettle</groupId>
             <artifactId>kettle-core</artifactId>
@@ -114,10 +107,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
-                <exclusion>
-                    <artifactId>objenesis</artifactId>
-                    <groupId>org.objenesis</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>spring-boot-starter-logging</artifactId>
                     <groupId>org.springframework.boot</groupId>
