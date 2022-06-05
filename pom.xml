@@ -19,7 +19,7 @@
 		<pg.version>4.0.0-SNAPSHOT</pg.version>
 		<control.version>2.0.0-SNAPSHOT</control.version>
 		<gm.version>2.0.0-SNAPSHOT</gm.version>
-
+		<starter.version>3.0.0-SNAPSHOT</starter.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -78,72 +78,72 @@
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>bustream-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>disruptor-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>distlock-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>kettle-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>redis-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>transflow-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>zeebe-ext-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>gm-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>debezium-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>minio-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>rocksdb-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>elasticsearch-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>metrics-spring-boot-starter</artifactId>
-				<version>${project.version}</version>
+				<version>${starter.version}</version>
 			</dependency>
 
 		</dependencies>
