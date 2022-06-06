@@ -15,11 +15,10 @@
 	
 	<properties>
 		<pmd.skip>true</pmd.skip>
-
+		<starter.version>3.0.0-SNAPSHOT</starter.version>
 		<pg.version>4.0.0-SNAPSHOT</pg.version>
 		<control.version>2.0.0-SNAPSHOT</control.version>
 		<gm.version>2.0.0-SNAPSHOT</gm.version>
-		<starter.version>3.0.0-SNAPSHOT</starter.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -143,6 +142,21 @@
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>metrics-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>drools-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>rheakv-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>sftp-spring-boot-starter</artifactId>
 				<version>${starter.version}</version>
 			</dependency>
 
