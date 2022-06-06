@@ -145,6 +145,11 @@
 				<artifactId>metrics-spring-boot-starter</artifactId>
 				<version>${starter.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>drools-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
