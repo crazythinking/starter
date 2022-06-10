@@ -10,6 +10,8 @@ import net.engining.metrics.support.MetricsRepositoriesService;
 import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
 import net.engining.metrics.support.StoredStepMeterRegistry;
+import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import org.springframework.context.annotation.Import;
  * @since :
  **/
 @Configuration
+@AutoConfigureBefore(CompositeMeterRegistryAutoConfiguration.class)
 @EnableConfigurationProperties({MetricsRegistryProperties.class})
 @Import({
         DropwizardMetricsContextConfig.class,

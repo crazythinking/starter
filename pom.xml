@@ -19,6 +19,8 @@
 		<pg.version>4.0.0-SNAPSHOT</pg.version>
 		<control.version>2.0.0-SNAPSHOT</control.version>
 		<gm.version>2.0.0-SNAPSHOT</gm.version>
+
+		<jasypt.version>3.0.4</jasypt.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -48,6 +50,13 @@
 				<version>${spring-cloud-netflix.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<!-- jasypt -->
+			<dependency>
+				<groupId>com.github.ulisesbocchio</groupId>
+				<artifactId>jasypt-spring-boot-starter</artifactId>
+				<version>${jasypt.version}</version>
 			</dependency>
 
 			<dependency>
@@ -164,6 +173,7 @@
 	</dependencyManagement>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-support</artifactId>
