@@ -1,4 +1,4 @@
-package net.engining.pg.lock.autoconfigure;
+package net.engining.pg.lock.autoconfigure.autotest.cases;
 
 import net.engining.pg.lock.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.pg.lock.autoconfigure.autotest.support.User;
