@@ -99,6 +99,11 @@
 			<version>${prometheus.version}</version>
 		</dependency>
 
+		<!-- expose JMX -->
+		<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>

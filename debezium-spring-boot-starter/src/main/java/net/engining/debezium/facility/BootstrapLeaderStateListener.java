@@ -4,10 +4,9 @@ import com.alipay.sofa.jraft.rhea.LeaderStateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
  * 使 DebeziumServerBootstrap 的启动依赖于Sofa-JRaft LeaderStateListener，当前节点为Leader时启动，否则停止；
+ * @author Eric Lu
  */
 public class BootstrapLeaderStateListener implements LeaderStateListener {
     /** logger */

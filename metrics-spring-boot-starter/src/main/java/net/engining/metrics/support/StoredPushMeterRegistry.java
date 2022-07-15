@@ -45,11 +45,6 @@ import java.util.function.ToLongFunction;
  **/
 public class StoredPushMeterRegistry extends PushMeterRegistry implements InitializingBean {
     /**
-     * logger
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoredPushMeterRegistry.class);
-
-    /**
      * 数据存储层
      */
     private final MetricsRepositoriesService repositoriesService;
