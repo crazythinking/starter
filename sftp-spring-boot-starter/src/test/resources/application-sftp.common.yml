@@ -2,8 +2,8 @@ pg:
   sftp:
     muti:
       default-sftp-properties:
-        host: ubuntu2004.wsl
-        port: 2222
+        host: ubuntu.wsl
+        port: 22
         user: luxue
         password: luxue1981
         default-remote-directory: /home/luxue/sftp-test
@@ -14,8 +14,8 @@ pg:
         exec-enabled: true
       named-sftp-properties:
         sftp-test1:
-          host: ubuntu2004.wsl
-          port: 2222
+          host: ubuntu.wsl
+          port: 222
           user: luxue
           password: luxue1981
           default-remote-directory: /home/luxue/sftp-test1
@@ -24,8 +24,8 @@ pg:
           sync-file-name-regex: ".*\\.txt$"
           exec-enabled: false
         sftp-test2:
-          host: ubuntu2004.wsl
-          port: 2222
+          host: ubuntu.wsl
+          port: 22
           user: luxue
           password: luxue1981
           default-remote-directory: /home/luxue/sftp-test2

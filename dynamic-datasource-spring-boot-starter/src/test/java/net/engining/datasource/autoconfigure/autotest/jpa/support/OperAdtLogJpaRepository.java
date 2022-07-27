@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 组合Repository，可继承多个Repository，且不要做任何实现，交由Spring AOP处理；R** 生成的Reop也不要做实现；
+ * 组合Repository，可继承多个Repository，且不要做任何实现，交由Spring AOP处理；R** 生成的Repo也不要做实现；
  * CustomrizedRepository可用于自行实现数据库存储逻辑；
  *
  * @author Eric Lu
