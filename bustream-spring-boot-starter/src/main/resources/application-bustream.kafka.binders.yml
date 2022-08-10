@@ -1,7 +1,26 @@
+#Kafka特定的Binder(BindingServiceProperties)配置
 spring:
   cloud:
     stream:
       binders:
+        #以Binder的名称为Key所对应的(BindingServiceProperties#binders->BinderProperties)
         kafkaCluster:
           type: kafka
-      default-binder: kafkaCluster
+          environment:
+            #Kafka特定的Binder(KafkaBinderConfigurationProperties)
+            #KafkaBinderConfigurationProperties会自动注入KafkaProperties
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: ${spring.kafka.bootstrap-servers}
+                      healthTimeout: 5
+                      autoCreateTopics: true
+  profiles:
+    include:
+    - kafka
+    - bustream.kafka.bindings.default
+
+
+

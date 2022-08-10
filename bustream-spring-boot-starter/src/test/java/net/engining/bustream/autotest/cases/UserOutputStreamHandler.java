@@ -15,7 +15,10 @@ import java.util.Map;
  * @date : 2020-10-31 18:20
  * @since :
  **/
-@Profile("stream.common.bindings.output")
+@Profile({
+        "channel.stream.output.rabbit",
+        "channel.stream.output.kafka",
+})
 @Service
 public class UserOutputStreamHandler extends AbstractOutputBustreamHandler<User> implements InitializingBean {
 

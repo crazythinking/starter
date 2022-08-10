@@ -12,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AutoConfigureTestApplication {
 
     public static void main(String[] args) {
-    	SpringApplication.run(AutoConfigureTestApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(AutoConfigureTestApplication.class);
+        springApplication.setAdditionalProfiles();
+        springApplication.run(args);
 
     }
 }

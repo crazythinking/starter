@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,16 +22,17 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "rabbit.common",
-        "rabbit.dev",
         "bus.disable",
-        "bustream.rabbit.binders",
-        "stream.common.bindings.input",
-        "stream.common.bindings.output",
-        "stream.rabbit.bindings.input",
-        "stream.rabbit.bindings.output",
+        //"channel.stream.input.rabbit",
+        //"channel.stream.output.rabbit",
+        "channel.stream.input.kafka",
+        "channel.stream.output.kafka",
+        //"rabbit.dev",
+        "kafka.dev",
         "stream.common",
-        "stream.dev"
+        "channel.input.dev",
+        "channel.output.dev",
+        "not.auto.ack"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamTestCase extends AbstractTestCaseTemplate {
@@ -47,9 +49,6 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
     @Autowired
     User2InputBustreamHandler user2InputBustreamHandler;
 
-    @Autowired
-    RabbitTemplate template;
-
     @Override
     public void initTestData() throws Exception {
 
@@ -64,8 +63,8 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
         //);
 
         //for normal
-        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==10, () -> "msg count != "+ 10);
-        Assert.isTrue(user2InputBustreamHandler.okCount.get()==1, () -> "msg count != 1");
+        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==5, () -> "msg count != "+ 5);
+        Assert.isTrue(user2InputBustreamHandler.okCount.get()==0, () -> "msg count != 0");
 
     }
 
@@ -84,21 +83,12 @@ public class StreamTestCase extends AbstractTestCaseTemplate {
         int n = 5;
         for (int i = 0; i < n; i++) {
             properties1.getHeaders().putAll(headerMap);
-            properties1.setHeader("sender", "RabbitTemplate");
-
-            //对比使用RabbitTemplate指定routingKey时，只有consumer也配置了相应binding-routing-key时才能收到消息；
-            //producer为配置binding-routing-key时默认为#, 如果consumer配置指定的非“#”的binding-routing-key, 该消息将丢失, 因为找不到相应的queue；
-            //但默认routing-key是“#”时，会消费所有，因此该案例会消费10个消息；
             userMsgOutputStreamHandler.send(user, headerMap);
-            template.send(
-                    "bustream-test.default",
-                    "repayBack",
-                    new Message(JSON.toJSONString(user).getBytes(), properties1)
-            );
         }
 
         Map<String, Object> headerMap2 = Maps.newHashMap();
         User2 user2 = setupUser2();
+        user2.setAge(0);
         headerMap2.put("messageType", "type2");
         user2MsgOutputStreamHandler.send(user2, headerMap2);
 

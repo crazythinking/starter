@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: gm-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace

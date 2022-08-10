@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include:
+    - bustream.rabbit.binders
+    - stream.common.bindings.pollinput
+    - stream.rabbit.bindings.pollinput

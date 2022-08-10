@@ -4,13 +4,8 @@ spring:
   application:
     name: bustream-test
 
-#logging:
-#  config: classpath:log4j2-spring.xml.bak
-#  level:
-#    root: info
-#    net.engining: trace
-#    org:
-#      springframework:
-#        retry: trace
-
-
+logging:
+  level:
+    root: warn
+    org.springframework: info
+    net.engining: debug

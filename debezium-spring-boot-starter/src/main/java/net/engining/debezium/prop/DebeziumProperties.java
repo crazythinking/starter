@@ -22,6 +22,45 @@ public class DebeziumProperties {
 
     private Map<String, Map<String, String>> namedProperties = new HashMap<>();
 
+    /**
+     * 异步线程池的核心线程数大小
+     */
+    private int asyncExcutorColePoolSize = 5;
+
+    /**
+     * 异步线程池的最大线程数大小
+     */
+    private int asyncExcutorMaxPoolSize = 5;
+
+    /**
+     * 异步线程池的队列大小
+     */
+    private int asyncExcutorQueueCapacity = 10;
+
+    public int getAsyncExcutorColePoolSize() {
+        return asyncExcutorColePoolSize;
+    }
+
+    public void setAsyncExcutorColePoolSize(int asyncExcutorColePoolSize) {
+        this.asyncExcutorColePoolSize = asyncExcutorColePoolSize;
+    }
+
+    public int getAsyncExcutorMaxPoolSize() {
+        return asyncExcutorMaxPoolSize;
+    }
+
+    public void setAsyncExcutorMaxPoolSize(int asyncExcutorMaxPoolSize) {
+        this.asyncExcutorMaxPoolSize = asyncExcutorMaxPoolSize;
+    }
+
+    public int getAsyncExcutorQueueCapacity() {
+        return asyncExcutorQueueCapacity;
+    }
+
+    public void setAsyncExcutorQueueCapacity(int asyncExcutorQueueCapacity) {
+        this.asyncExcutorQueueCapacity = asyncExcutorQueueCapacity;
+    }
+
     public String getDataPath() {
         return dataPath;
     }

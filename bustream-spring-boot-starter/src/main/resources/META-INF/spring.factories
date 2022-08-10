@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.bustream.autoconfigure.BustreamAutoConfigure
+net.engining.bustream.autoconfigure.BustreamAutoConfiguration

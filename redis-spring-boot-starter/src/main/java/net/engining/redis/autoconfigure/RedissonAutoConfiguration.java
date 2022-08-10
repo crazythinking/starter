@@ -44,7 +44,10 @@ import java.net.MalformedURLException;
  * @author Eric Lu
  */
 @Configuration
-@EnableConfigurationProperties(value = RedissonCommonProperties.class)
+@EnableConfigurationProperties({
+        CommonProperties.class,
+        RedissonCommonProperties.class
+})
 @ConditionalOnClass(RedissonCommonProperties.class)
 @ConditionalOnProperty(prefix = "pg.redisson", name = "enabled", matchIfMissing = true)
 @Import({

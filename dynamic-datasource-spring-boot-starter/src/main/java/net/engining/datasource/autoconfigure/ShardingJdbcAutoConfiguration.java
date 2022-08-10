@@ -3,6 +3,11 @@ package net.engining.datasource.autoconfigure;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.engining.datasource.autoconfigure.support.DataSourceContextConfig;
+import net.engining.datasource.autoconfigure.support.JPAContextConfig;
+import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
+import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
+import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.config.AsyncExtContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -83,8 +88,7 @@ import java.util.Map;
         DataSourceContextConfig.class,
         JPAContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
-        TransactionManagementContextConfig.class,
-        AsyncExtContextConfig.class
+        TransactionManagementContextConfig.class
 })
 public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 
@@ -98,7 +102,12 @@ public class ShardingJdbcAutoConfiguration implements EnvironmentAware {
 
     private final SpringBootPropertiesConfigurationProperties props;
 
-    private final Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
+    Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
+
+    @Bean("shardingDataSourceMap")
+    public Map<String, DataSource> getDataSourceMap() {
+        return dataSourceMap;
+    }
 
     public ShardingJdbcAutoConfiguration(SpringBootShardingRuleConfigurationProperties shardingRule,
                                          SpringBootMasterSlaveRuleConfigurationProperties masterSlaveRule,

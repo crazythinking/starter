@@ -11,27 +11,27 @@ import java.util.concurrent.TimeUnit;
  **/
 @ActiveProfiles(profiles = {
         "debezium.common",
-        "debezium.xxljob.mysql",
-        //"debezium.xxljob.oracle"
+        //"debezium.xxljob.mysql",
+        "debezium.xxljob.oracle"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
-    public void initTestData() throws Exception {
+    public void initTestData() {
 
     }
 
     @Override
-    public void assertResult() throws Exception {
+    public void assertResult() {
     }
 
     @Override
     public void testProcess() throws Exception {
-        TimeUnit.SECONDS.sleep(10000); //睡眠10秒
+        TimeUnit.SECONDS.sleep(1000); //睡眠100秒
     }
 
     @Override
-    public void end() throws Exception {
+    public void end() {
 
     }
 

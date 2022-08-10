@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.support;
 
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
+import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.entity.dto.OperAdtLogDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,10 @@ public class TransactionalListener {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionalListener.class);
 
-    @Async
+    @Async(Utils.DB_EVENT_LISTENER)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterSavedOperAdtLog(TransactionalEvent<OperAdtLogDto> event){
+        assert event.getEntity() != null;
         LOGGER.debug(event.getEntity().toString());
     }
 }

@@ -48,7 +48,7 @@ public abstract class AbstractRemoteApplicationEventListener<E extends Serializa
 
     @EventListener
     public void onEvent4Generic(GenericRemoteApplicationEvent<E> event) {
-        defalutBefore(event.getTarget(), Type.LISTENER, LOGGER);
+        defaultBefore(event.getTarget(), Type.LISTENER, LOGGER);
         try {
             boolean rt = handler(event.getTarget());
             defaultAfter(event.getTarget(), rt, Type.LISTENER, LOGGER);

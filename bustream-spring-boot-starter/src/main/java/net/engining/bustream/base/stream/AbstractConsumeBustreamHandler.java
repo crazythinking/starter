@@ -37,10 +37,10 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * @param event 消息事件
      */
     protected boolean received(E event, Map<String, Object> headers){
-        defalutBefore(event, type, logger);
+        defaultBefore(event, type, logger);
         try {
             handler(event, headers);
-            after(event, true);
+            defaultAfter(event, true, type, logger);
             return true;
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);

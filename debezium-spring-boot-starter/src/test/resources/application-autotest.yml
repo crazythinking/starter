@@ -12,8 +12,3 @@ logging:
     org.springframework.boot: info
     io.debezium: info
     org.apache.kafka.connect: info
-
-
-gm:
-  common:
-    async-excutor-thread-name-prefix: debezium-event-listener-

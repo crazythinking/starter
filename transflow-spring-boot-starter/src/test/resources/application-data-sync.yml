@@ -1,0 +1,29 @@
+spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    rest:
+      uris: ubuntu.wsl:19200
+      connection-timeout: 10s
+      read-timeout: 30s
+#      password:
+#      username:
+
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+
+
+pg:
+  trans-flow:
+    datasync:
+      enabled: true
+  storage:
+    datasync:
+      batch-size: 10
+      flush-interval: 5
+

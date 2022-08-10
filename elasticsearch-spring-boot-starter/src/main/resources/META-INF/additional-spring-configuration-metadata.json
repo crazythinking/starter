@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "pg.elasticsearch.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启Elasticsearch功能."
+    }
+  ],
+  "hints": []
+}

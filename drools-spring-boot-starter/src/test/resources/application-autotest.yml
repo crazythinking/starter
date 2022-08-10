@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: drools-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+    org.kie: info
+
+pg:
+  drools:
+    base-path: "D:/drools-rules/"
+    interval: 1000
+    monitor: true
+    update: true
+    gav-drools-properties:
+      "sacl-drools":
+        type: kjar
+        path: "kjar1/"
+        gav: "net.engining.sacl:sacl-drools:0.2.0"
+        pool-size: 15
+      "sacl-drools-script":
+        type: script
+        path: "script1/"
+        gav: "net.engining.sacl:sacl-drools:0.2.0"
+        pool-size: 15
+

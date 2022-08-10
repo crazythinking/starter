@@ -1,4 +1,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-net.engining.datasource.autoconfigure.DynamicDruidDataSourceAutoConfigure,\
-net.engining.datasource.autoconfigure.DynamicDataSourceAutoConfigure,\
-net.engining.datasource.autoconfigure.ShardingJdbcAutoConfiguration
+net.engining.datasource.autoconfigure.DynamicDruidDataSourceAutoConfiguration,\
+net.engining.datasource.autoconfigure.DynamicDataSourceAutoConfiguration,\
+net.engining.datasource.autoconfigure.ShardingJdbcAutoConfiguration,\
+net.engining.datasource.autoconfigure.ActuatorAutoConfiguration,\
+net.engining.datasource.autoconfigure.AsyncExtAutoConfiguration
+org.springframework.data.jdbc.repository.config.DialectResolver$JdbcDialectProvider=\
+net.engining.datasource.autoconfigure.dialect.OracleDialectResolver

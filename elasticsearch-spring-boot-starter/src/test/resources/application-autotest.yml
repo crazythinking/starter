@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: elasticsearch-starter-test
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+  elasticsearch:
+    rest:
+      uris: ubuntu.wsl:19200
+      connection-timeout: 10s
+      read-timeout: 30s
+
+logging:
+  level:
+    root: info
+    net.engining: trace

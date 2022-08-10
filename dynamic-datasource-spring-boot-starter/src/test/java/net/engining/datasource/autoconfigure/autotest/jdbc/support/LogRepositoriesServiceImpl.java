@@ -1,17 +1,19 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
+import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Lists;
 import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
 import net.engining.datasource.autoconfigure.support.TransactionalEvent;
 import net.engining.gm.aop.SpecifiedDataSource;
 import net.engining.gm.entity.dto.OperAdtLogDto;
-import net.engining.pg.support.utils.DateUtilsExt;
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,19 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     @Autowired
     ApplicationContext applicationContext;
 
+    @Autowired
+    PgKeyContextJdbcRepository pgKeyContextJdbcRepository;
+
+    @Transactional(rollbackFor = Exception.class)
+    public long save1() {
+        PgKeyContext pgKeyContext = new PgKeyContext();
+        pgKeyContext.setPgKeyContextKey(new PgKeyContextKey(RandomUtil.randomInt(), RandomUtil.randomInt()));
+        pgKeyContext.setSetupDate(new Date());
+        pgKeyContext.setJpaVersion(0);
+        pgKeyContextJdbcRepository.save(pgKeyContext);
+        return 0;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long save(List<OperAdtLogDto> operAdtLogs) {
@@ -48,14 +63,12 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     private int extractedSave(List<OperAdtLogDto> operAdtLogs) {
         List<OperAdtLog> entitys = Lists.newArrayList();
         operAdtLogs.forEach(operAdtLogDto -> {
-            OperAdtLog entity = new OperAdtLog(
-                    operAdtLogDto.getId(),
-                    operAdtLogDto.getLoginId(),
-                    operAdtLogDto.getRequestUri(),
-                    operAdtLogDto.getRequestBody(),
-                    DateUtilsExt.dateToLocalDateTime(operAdtLogDto.getOperTime()),
-                    0
-            );
+            OperAdtLog entity = new OperAdtLog();
+            entity.setId(operAdtLogDto.getId());
+            entity.setLoginId(operAdtLogDto.getLoginId());
+            entity.setRequestUri(operAdtLogDto.getRequestUri());
+            entity.setRequestBody(operAdtLogDto.getRequestBody());
+            entity.setOperTime(operAdtLogDto.getOperTime());
             entitys.add(entity);
         });
         operAdtLogJdbcDao.insertBatch(entitys);
@@ -77,11 +90,22 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
         return operAdtLogDto;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<OperAdtLogExtDto> fetchByLogin4Ten(String login) {
+        //DataSourceContextHolder.setCurrentDataSourceKey("ten");
+        List<OperAdtLogExtDto> operAdtLogExtDtos = operAdtLogJdbcRepository.findByLoginId(login);
+        //DataSourceContextHolder.removeCurrentDataSourceKey();
+        return operAdtLogExtDtos;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public List<OperAdtLogExtDto> fetchByLogin(String login) {
         return operAdtLogJdbcRepository.findByLoginId(login);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SpecifiedDataSource("one")
     public List<OperAdtLogExtDto> fetchByLogin4Ck(String login) {

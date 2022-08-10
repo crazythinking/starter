@@ -14,3 +14,8 @@ pg:
       connection-timeout: 5000
       max-retries: 3
       session-timeout: 30000
+
+logging:
+  level:
+    root: info
+    net.engining: trace

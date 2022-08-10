@@ -1,10 +1,10 @@
 package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
-import net.engining.datasource.autoconfigure.autotest.support.LogRepositoriesService;
-import net.engining.datasource.autoconfigure.autotest.support.OperAdtLogProjection;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import net.engining.datasource.autoconfigure.aop.SwitchOrg4HibernateFilter;
 import net.engining.gm.aop.SpecifiedDataSource;
-import net.engining.pg.support.utils.ValidateUtilExt;
+import net.engining.pg.support.core.context.OrganizationContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,35 @@ public class DbService {
 
     @Autowired
     OperAdtLogJpaRepository operAdtLogJpaRepository;
+
+    private PgIdTestEnt1 doFetch(Long snowFlakeId){
+        QPgIdTestEnt1 qPgIdTestEnt1 = QPgIdTestEnt1.pgIdTest;
+        PgIdTestEnt1 pgIdTestEnt1 = new JPAQueryFactory(em)
+                .selectFrom(qPgIdTestEnt1)
+                .where(qPgIdTestEnt1.snowFlakeId.eq(snowFlakeId))
+                .fetchOne();
+
+        return pgIdTestEnt1;
+    }
+
+    @Transactional(readOnly = true)
+    public PgIdTestEnt1 fetch(Long snowFlakeId){
+        return doFetch(snowFlakeId);
+    }
+
+    @Transactional(readOnly = true)
+    public PgIdTestEnt1 fetch4Org(Long snowFlakeId){
+        //确保 org filter 的操作被包在 Transaction 内
+        return doFetch4Org(snowFlakeId);
+    }
+
+    @SwitchOrg4HibernateFilter
+    public PgIdTestEnt1 doFetch4Org(Long snowFlakeId){
+        //OrganizationContextHolder.enableOrgFilter(em);
+        PgIdTestEnt1 pgIdTestEnt1 = doFetch(snowFlakeId);
+        //OrganizationContextHolder.disableOrgFilter(em);
+        return pgIdTestEnt1;
+    }
 
     @SpecifiedDataSource(value = "one")
     @Transactional(rollbackFor = Exception.class)
@@ -69,17 +98,5 @@ public class DbService {
 
         return ids;
     }
-
-    public OperAdtLogProjection fetchByLogin(String login){
-        List<OperAdtLogProjection> operAdtLogDtos = operAdtLogJpaRepository.findByLoginId(
-                login,
-                OperAdtLogProjection.class
-        );
-        if (ValidateUtilExt.isNullOrEmpty(operAdtLogDtos)){
-            return null;
-        }
-        return operAdtLogDtos.iterator().next();
-    }
-
 
 }

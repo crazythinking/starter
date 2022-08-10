@@ -1,0 +1,35 @@
+# Spring cloud bus 默认约定配置： 消费者的Binding属性，针对于Kafka的特性
+spring:
+  cloud:
+    stream:
+      #属于特定于Kafka的Binding(KafkaExtendedBindingProperties),不是通用的; 如果涉及到mq的转换则不可用; 同样以key的方式指定配置，默认为default
+      kafka:
+        bindings:
+          springCloudBusOutput:
+            producer:
+              bufferSize: ${spring.kafka.producer.batch-size}
+              #是否同步，默认false
+              sync: false
+              #接受SpEL表达式，用于评估启用同步Publish(sync=true)时等待Ack的时间；
+              #sendTimeoutExpression: none
+              #默认0，指定producer在发送批量消息前等待的时间
+              batchTimeout: ${spring.kafka.properties.linger.ms}
+              #接受SpEL表达式，用于从Spring Messaging Headers中指定的key填充到Kafka Producer Header中，默认none
+              #messageKeyExpression:
+              #默认*，用于过滤Spring Messaging Headers中的Key的表达式；如：“!ask,as*”，Header中将包含“ash”，而排除“ask”
+              #headerPatterns:
+              #其他附加的 Kafka producer properties
+              #configuration:
+              #附加的TopicProperties
+              #topic.properties:
+              #以Map<Integer, List<Integer>>的形式分配Partition与ReplicaAssignment的映射关系
+              #topic.replicas-assignment:
+              #副本数量，默认none，当topic.replicas-assignment配置时，此参数无效
+              #topic.replication-factor:
+              #默认false，为true时将使用MessageHeader中“KafkaHeaders.TOPIC”的值替换默认的TopicName
+              useTopicHeader: false
+              #成功的发送结果Event发送到指定的MessageChannel(BeanName)；Bean必须存在于应用程序上下文中。默认null
+              #recordMetadataChannel:
+              compression: ${spring.kafka.producer.compression-type}
+              #当关闭producer时等待的超时时间，默认30秒
+              closeTimeout: 30

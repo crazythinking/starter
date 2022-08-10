@@ -3,7 +3,6 @@ package net.engining.datasource.autoconfigure.autotest.jpa.cases;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdTestEnt1;
-import net.engining.pg.support.core.context.DataSourceContextHolder;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +47,22 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assert.notNull(pgIdTestEnt1, "has record by datasource default");
 
         Assert.isNull(this.testAssertDataContext.get("primerykey4one"), "has not record by datasource one");
+
+        PgIdTestEnt1 pgIdTestEnt2 = dbService.fetch4Org((Long)this.testAssertDataContext.get("primerykey4default"));
+        Assert.isNull(
+                pgIdTestEnt2,
+                "No entity should be found for query");
+        Assert.notNull(
+                dbService.fetch((Long)this.testAssertDataContext.get("primerykey4default")),
+                "entity should be found for query");
+        //无事务时抛异常
+        try {
+            dbService.doFetch4Org((Long)this.testAssertDataContext.get("primerykey4default"));
+        }
+        catch (Throwable e) {
+            LOGGER.debug("should throw exception: {}", e.getMessage());
+        }
+
     }
 
     @Override
@@ -60,7 +75,6 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         Assertions.assertThatThrownBy(() -> callDbOpt4DataSourceOne4ThrowException())
                 .isInstanceOf(InvalidDataAccessResourceUsageException.class);
 
-        dbService.fetchByLogin("luxue");
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{

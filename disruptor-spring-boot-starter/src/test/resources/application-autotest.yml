@@ -6,4 +6,15 @@ spring:
 
 pg:
   disruptor:
-    enabled: true
+    grouped-disruptor:
+      Event1-Group:
+        batch-size: 1
+        ring-buffer-size: 2048
+      Event2-Group:
+        batch-size: 1
+        ring-buffer-size: 3000
+
+logging:
+  level:
+    root: info
+    net.engining: info

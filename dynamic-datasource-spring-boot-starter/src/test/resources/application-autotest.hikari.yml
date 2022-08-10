@@ -11,7 +11,3 @@ pg:
         enabled: false
       hikari:
         enabled: true
-
-gm:
-  common:
-    async-excutor-thread-name-prefix: db-event-listener-

@@ -20,4 +20,6 @@ public interface LogRepositoriesService {
     <T> List<T> fetchByLogin(String login);
 
     <T> List<T> fetchByLogin4Ck(String login);
+
+    <T> List<T> fetchByLogin4Ten(String login);
 }

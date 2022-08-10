@@ -1,5 +1,6 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
+import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,5 +26,14 @@ public interface OperAdtLogJdbcRepository extends PagingAndSortingRepository<Ope
             rowMapperClass = OperAdtLogExtDto.OperAdtLogExtDtoRowMapper.class
     )
     List<OperAdtLogExtDto> findByLoginId(@Param("loginId") String loginId);
+
+    /**
+     * 基于Named-SQL配置文件，默认在classpath下”META-INF/jdbc-named-queries.properties“
+     */
+    @Query(
+            name = "OperAdtLog.fetchWhereUri",
+            rowMapperClass = OperAdtLogExtDto.OperAdtLogExtDtoRowMapper.class
+    )
+    List<OperAdtLogExtDto> fetchWhereUri(@Param("uri") String uri);
 
 }

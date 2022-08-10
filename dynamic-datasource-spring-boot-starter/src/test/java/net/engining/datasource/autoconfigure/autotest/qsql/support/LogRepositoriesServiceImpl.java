@@ -17,6 +17,7 @@ import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,10 +38,11 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepositoriesServiceImpl.class);
 
     @Autowired
+    @Qualifier("sqlQueryFactoryMap")
     Map<String, SQLQueryFactory> sqlQueryFactoryMap;
 
     @Autowired
-    OperAdtLogJpaRepository combinedOperAdtLogRepository;
+    OperAdtLogJpaRepository operAdtLogJpaRepository;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -114,8 +116,13 @@ public class LogRepositoriesServiceImpl implements LogRepositoriesService {
     }
 
     @Override
+    public <T> List<T> fetchByLogin4Ten(String login) {
+        return null;
+    }
+
+    @Override
     public List<OperAdtLogProjection> fetchByLogin(String login){
-        return combinedOperAdtLogRepository.findByLoginId(
+        return operAdtLogJpaRepository.findByLoginId(
                 login,
                 OperAdtLogProjection.class
         );

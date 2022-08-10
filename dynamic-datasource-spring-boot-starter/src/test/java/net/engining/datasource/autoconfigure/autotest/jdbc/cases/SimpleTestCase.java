@@ -19,8 +19,7 @@ import org.springframework.util.Assert;
 @ActiveProfiles(profiles={
         "autotest.hikari",
         "db.common",
-		"hikari.mysql",
-        //"hikari.h2"
+		"hikari.clickhouse",
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -30,18 +29,20 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     OperationLogBizService operationLogService;
 
     @Override
-    public void initTestData() throws Exception {
+    public void initTestData() {
 
     }
 
     @Override
-    public void assertResult() throws Exception {
+    public void assertResult() {
         OperAdtLogDto operAdtLog = operationLogService.fetch((Integer) this.testAssertDataContext.get("insertKey4default"));
         Assert.notNull(operAdtLog, "has record by default datasource");
     }
 
     @Override
-    public void testProcess() throws Exception {
+    public void testProcess() {
+        operationLogService.asyncTest();
+
         int id = RandomUtil.randomInt();
         operationLogService.dsTest(id);
         this.testAssertDataContext.put("insertKey4default", id);
@@ -72,12 +73,11 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             );
         });
 
-        operationLogService.asyncTest();
     }
 
 
     @Override
-    public void end() throws Exception {
+    public void end() {
 
     }
 }

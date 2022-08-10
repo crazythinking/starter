@@ -8,55 +8,34 @@
         <!-- 日志输入级别 -->
         <property name="LOG_LEVEL">${sys:log4j2.level:-WARN}</property>
     </properties>
-
+    
     <Appenders>
-        <!-- 标准输出 -->
+    	<!-- 标准输出 -->
         <Console name="Console" target="SYSTEM_OUT">
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout disableAnsi="false" charset="UTF-8" pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
+            <PatternLayout disableAnsi="false" charset="UTF-8"
+                           pattern="%highlight{[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c{1.}:%line:%method]) %msg%n}{FATAL=Bright red, ERROR=Red, WARN=Bright yellow, INFO=Bright green, DEBUG=green, TRACE=cyan}"/>
         </Console>
-
-        <!--所有日志,异步输出,通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值-->
-        <!--<RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" append="true"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
+        
+        <!--所有日志-->
+        <!-- 异步输出，通常情况下缓存256效率最高，但是对于大型项目，可以选2048以上值 -->
+        <RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" immediateFlush="false"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log.gz">
             <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%MDC] ([%c:%line:%method]) %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
+                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
         </RollingRandomAccessFile>
-        <Async name="AsyncAllLog" bufferSize="256">
-            <AppenderRef ref="AllLog"/>
-        </Async>-->
+        <!--<Async name="AsyncAllLog" bufferSize="256">
+	      <AppenderRef ref="AllLog"/>
+	    </Async>-->
 
     </Appenders>
 
     <Loggers>
-        <Logger name="net.engining" level="TRACE" additivity="true"/>
 
-        <Logger name="org.springframework" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.boot" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.cloud" level="INFO" additivity="true"/>
-
-        <Logger name="org.springframework.core" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.beans" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.context" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.transaction" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.aop" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.web" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.security" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.amqp" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.retry" level="DEBUG" additivity="true"/>
-        <Logger name="org.springframework.integration" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.kafka" level="INFO" additivity="true"/>
-        <Logger name="org.springframework.messaging" level="INFO" additivity="true"/>
-
-        <!--
-            root：根logger，其他logger是其子，默认additivity="true"，会在根logger和子logger（其内需要配置AppenderRef）内都产生对应日志；
-            而additivity="false"时，将不会在根logger内产生日志；
-            此处子logger都没有配置对应的appender，因此只有additivity="true"时，才会在根logger内产生日志；
-        -->
-        <root level="${LOG_LEVEL}">
+        <AsyncRoot level="${LOG_LEVEL}">
             <AppenderRef ref="Console"/>
-            <!--<AppenderRef ref="AsyncAllLog"/>-->
-        </root>
+            <!--<AppenderRef ref="AllLog"/>-->
+        </AsyncRoot>
     </Loggers>
 </Configuration>

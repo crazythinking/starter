@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>1.4.1.RELEASE</version>
+		<version>2.0.0.RELEASE</version>
 	</parent>
 
 	<artifactId>transflow-spring-boot-starter</artifactId>
@@ -28,6 +28,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
@@ -39,6 +51,15 @@
 		<dependency>
 			<groupId>net.engining.control</groupId>
 			<artifactId>control-sdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-disruptor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.pg</groupId>
+			<artifactId>pg-storage-elasticsearch</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.engining.gm</groupId>

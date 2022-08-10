@@ -1,0 +1,5 @@
+#配置自定义Starter的自动化配置
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+net.engining.minio.autoconfigure.MinioCoreAutoConfiguration,\
+net.engining.minio.autoconfigure.MinioActuatorAutoConfiguration,\
+net.engining.minio.autoconfigure.MinioWebAutoConfiguration

@@ -7,14 +7,18 @@ infrastructure gears based spring boot 2.1.4
 |模块|模块名|简介|
 |----|----|----|
 |bustream-spring-boot-starter|消息队列组件|-|
+|debezium-spring-boot-starter|CDC中间件|-|
+|disruptor-spring-boot-starter|Disruptor+Spring的编程模型组件|-|
 |distlock-spring-boot-starter|分布式锁组件|-|
-|dynamic-datasource-spring-boot-starter|动态数据库组件|-|
-|kettle-spring-boot-starter|kettle中间件|-|
-|redis-spring-boot-starter|redis中间件|-|
-|transflow-spring-boot-starter|可编排的交易流程中间件|-|
-|disruptor-spring-boot-starter|整合Disruptor与Spring的编程模型组件|-|
-|debezium-spring-boot-starter|CDC组件|-|
-
+|dynamic-datasource-spring-boot-starter|动态数据库及存储支持组件|-|
+|elasticsearch-spring-boot-starter|Elasticsearch中间件|-|
+|gm-spring-boot-starter|通用工程的自动化配置组件|-|
+|kettle-spring-boot-starter|Kettle中间件|-|
+|minio-spring-boot-starter|Minio中间件|-|
+|redis-spring-boot-starter|Redis中间件|-|
+|rocksdb-spring-boot-starter|Rocksdb中间件|-|
+|transflow-spring-boot-starter|进程内可编排的交易流程中间件|-|
+|zeebe-spring-boot-starter|微服务间交易流程编排中间件|-|
 
 
 ---
@@ -26,45 +30,13 @@ infrastructure gears based spring boot 2.1.4
 |1.0.0|1.0.0.RELEASE|1、kettle 初始化|-|-|
 |1.1.0|1.1.0.RELEASE|1、kettle  <br> -   reop入参bug修改|-|-|
 |1.2.0|1.2.0.RELEASE|1、添加分布式锁服务distlock<br>2、增加transflow并发处理|-|-|
-|1.3.0|1.3.0.RELEASE|1、调整队列配置<br>2、优化默认配置和换行符<br>3、修改测试案例<br>4、底层版本升级<br>5、zeebe组件添加|-|2021-06-10|
-|1.4.0|1.4.0.RELEASE|1、增加cdc组件|-|2021-09-22|
-|1.4.1|1.4.1.RELEASE|1、CDC排除op=r优化|-|2021-09-22|
-
-# 1.4.1版本火车
-
-|包名|版本|说明|
-|----|----|----|
-|starter-parent|1.4.1.RELEASE|自身包|
-|project-parent|3.6.RELEASE|基础包|
-|pg|3.6.5.RELEASE|底层包|
-|gm|1.5.3.RELEASE|配置包|
-|control-parent|1.1.7.RELEASE|流程控制|
-
-# 1.4.0版本火车
-
-|包名|版本|说明|
-|----|----|----|
-|starter-parent|1.4.0.RELEASE|自身包|
-|project-parent|3.6.RELEASE|基础包|
-|pg|3.6.4.RELEASE|底层包|
-|gm|1.5.3.RELEASE|配置包|
-|control-parent|1.1.7.RELEASE|流程控制|
-
-# 1.3.0版本火车
-
-|包名|版本|说明|
-|----|----|----|
-|starter-parent|1.3.0.RELEASE|自身包|
-|project-parent|3.6.RELEASE|基础包|
-|pg|3.6.3.RELEASE|底层包|
-|gm|1.5.3.RELEASE|配置包|
-|control-parent|1.1.7.RELEASE|流程控制|
+|2.0.0|2.0.0.RELEASE|1、oracle方言<br>2、org增强aop<br>3、starter自动注入和适配|-|-|
 
 # 1.2.0版本火车
 
 |包名|版本|说明|
 |----|----|----|
-|starter-parent|1.1.0.RELEASE|自身包|
+|starter-parent|1.1.0-SNAPSHOT|自身包|
 |project-parent|3.6.RELEASE|基础包|
 |pg|3.6.2.RELEASE|底层包|
 |gm|1.5.2.RELEASE|配置包|
@@ -74,7 +46,7 @@ infrastructure gears based spring boot 2.1.4
 
 |包名|版本|说明|
 |----|----|----|
-|starter-parent|1.1.0.RELEASE|自身包|
+|starter-parent|1.1.0-SNAPSHOT|自身包|
 |project-parent|3.6.RELEASE|基础包|
 |pg|3.6.1.RELEASE|底层包|
 |gm|1.5.1.RELEASE|配置包|
@@ -110,6 +82,11 @@ infrastructure gears based spring boot 2.1.4
 ```
 
 ## TODO List
-1. disruptor-spring-boot-starter 目前只整合了EventHandler，因此对于每个独立的Event，其Handler都是单线程模型；下一步需要整合WorkHandler，支持多线程模型；
-2. distlock-spring-boot-starter 分布式锁；由于大部分金融级系统都需要分布式强一致性，因此从性能和一致性两方面考量推荐基于ZK实现；
+1. distlock-spring-boot-starter 分布式锁；由于大部分金融级系统都需要分布式强一致性，因此从性能和一致性两方面考量推荐基于ZK实现；
    但下一步会增加支持基于 Redis 和数据库的分布式锁；
+2. ~~dynamic-datasource-spring-boot-starter 调整Async线程池定义方式，与业务用的隔离；另增加事务事件监听器的抽象类，封装模板代码；
+    增加存储层异步同步能力；~~
+3. ~~debezium-spring-boot-starter 调整Async线程池定义方式，与业务用的隔离；~~
+4. ~~transflow-spring-boot-starter 增加Journal多级存储同步能力，默认同步到Elasticsearch；~~
+5. debezium-spring-boot-starter 整合sofa-jRaft；增加WAL机制，确保数据不可丢失性； 增加多活选主能力；
+6. rocksdb-spring-boot-starter 增加事务机制的支持；

@@ -1,0 +1,17 @@
+{
+  "properties": [
+    {
+      "name": "pg.datasource.dynamic.async.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启 DB-Event-Listener 异步线程池."
+    },
+    {
+      "name": "pg.datasource.dynamic.actuator.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启 Dynamic-Datasource 相关管理端点."
+    }
+  ],
+  "hints": []
+}

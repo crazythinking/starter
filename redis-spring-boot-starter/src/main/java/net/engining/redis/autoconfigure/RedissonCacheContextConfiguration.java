@@ -2,7 +2,7 @@ package net.engining.redis.autoconfigure;
 
 import cn.hutool.core.util.ArrayUtil;
 import net.engining.pg.config.RedisCacheContextConfig;
-import net.engining.pg.config.RedisConfigUtils;
+import net.engining.pg.config.support.RedisConfigUtils;
 import net.engining.pg.props.CommonProperties;
 import net.engining.pg.redis.props.CacheProperties;
 import net.engining.pg.redis.props.RedissonCacheProperties;
@@ -12,6 +12,7 @@ import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,11 @@ import java.util.Map;
  *
  * @author Eric Lu
  */
+@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection"})
+@EnableConfigurationProperties({
+        CommonProperties.class,
+        RedissonCacheProperties.class
+})
 @Configuration
 public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
 
@@ -63,6 +69,7 @@ public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
      * 因此需要在使用{@link org.springframework.cache.annotation.CacheConfig}时指定redissonKeyGenerator
      *
      */
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean("redissonCacheManager")
     public CacheManager redissonCacheManager(RedissonClient redissonClient) {
         Map<String, CacheConfig> configMap = new HashMap<>(8);

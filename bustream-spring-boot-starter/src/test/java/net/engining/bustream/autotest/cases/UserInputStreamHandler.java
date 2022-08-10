@@ -1,6 +1,6 @@
 package net.engining.bustream.autotest.cases;
 
-import net.engining.bustream.base.stream.AbstractConsume4AmqpBustreamHandler;
+import net.engining.bustream.base.stream.AbstractConsume4ManualAckBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -25,9 +26,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2020-10-31 18:52
  * @since :
  **/
-@Profile({"stream.common.bindings.input", "stream.common"})
+@Profile({
+        "channel.stream.input.rabbit",
+        "channel.stream.input.kafka",
+        "not.auto.ack"
+})
 @Service
-public class UserInputStreamHandler extends AbstractConsume4AmqpBustreamHandler<User> implements InitializingBean {
+public class UserInputStreamHandler extends AbstractConsume4ManualAckBustreamHandler<User> implements InitializingBean {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInputStreamHandler.class);
 

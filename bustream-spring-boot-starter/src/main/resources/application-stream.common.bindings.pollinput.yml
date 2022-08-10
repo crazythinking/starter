@@ -4,8 +4,9 @@ spring:
     stream:
       bindings:
         pollableInput:
+#          binder: # 指定某个binder, 不指定时使用default-binder的配置
           destination: ${gm.bustream.default-producer-name}.default # exchange 用生产者的applicationName做前缀
-#          group: xxx # queue的后缀,带业务含义; 由各业务系统自身定义
+#          group: # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json
           consumer:
             maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
