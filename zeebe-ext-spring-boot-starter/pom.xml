@@ -87,21 +87,6 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>net.engining.pg</groupId>
-			<artifactId>pg-support</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>animal-sniffer-annotations</artifactId>
-					<groupId>org.codehaus.mojo</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>error_prone_annotations</artifactId>
-					<groupId>com.google.errorprone</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- spring boot log4j -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

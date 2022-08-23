@@ -32,12 +32,6 @@
         </dependency>
 
         <!-- 自身依赖 -->
-
-        <dependency>
-            <groupId>net.engining.pg</groupId>
-            <artifactId>pg-support</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>pentaho-kettle</groupId>
             <artifactId>kettle-core</artifactId>

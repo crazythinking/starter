@@ -17,15 +17,6 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 public class CombineContextConfig {
 
-    /**
-     * ApplicationContext的静态辅助Bean，建议项目必须注入
-     */
-    @Bean
-    @Lazy(value=false)
-    public ApplicationContextHolder applicationContextHolder(){
-        return new ApplicationContextHolder();
-    }
-
     @Bean
     public BeanInter inter(){
         return new BeanInter();

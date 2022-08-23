@@ -2,6 +2,20 @@
 <Config Version="3">
     <Runtime>
         <DBList>
+            <DB name="shenyu">
+                <property name="url" value="jdbc:mysql://ubuntu.wsl:4306/shenyu?useCursorFetch=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Hongkong&amp;zeroDateTimeBehavior=convertToNull"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="type" value="10"/>
+                <property name="user" value="root"/>
+                <property name="password" value="111111"/>
+                <property name="batchSize" value="1000"/>
+                <property name="autoConnect" value="false"/>
+                <property name="useSchema" value="false"/>
+                <property name="addTilde" value="false"/>
+                <property name="needTransContent" value="false"/>
+                <property name="needTransSentence" value="false"/>
+                <property name="caseSentence" value="false"/>
+            </DB>
         </DBList>
         <Esproc>
             <charSet>UTF-8</charSet>
