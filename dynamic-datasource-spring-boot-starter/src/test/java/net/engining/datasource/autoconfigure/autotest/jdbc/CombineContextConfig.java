@@ -1,14 +1,18 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc;
 
 import net.engining.datasource.autoconfigure.autotest.jdbc.support.OperAdtLogExtDto;
+import net.engining.gm.config.AsyncExtContextConfig;
+import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.jdbc.repository.RowMapperMap;
-import org.springframework.data.jdbc.repository.config.ConfigurableRowMapperMap;
+import org.springframework.data.jdbc.repository.QueryMappingConfiguration;
+import org.springframework.data.jdbc.repository.config.DefaultQueryMappingConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -45,9 +49,9 @@ public class CombineContextConfig {
     }
 
     @Bean
-    public RowMapperMap rowMappers() {
-        return new ConfigurableRowMapperMap()
-                .register(OperAdtLogExtDto.class, new OperAdtLogExtDto.OperAdtLogExtDtoRowMapper())
+    public QueryMappingConfiguration rowMappers() {
+        return new DefaultQueryMappingConfiguration()
+                .registerRowMapper(OperAdtLogExtDto.class, new OperAdtLogExtDto.OperAdtLogExtDtoRowMapper())
                 ;
     }
 

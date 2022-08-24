@@ -23,8 +23,8 @@ import java.util.List;
 @ActiveProfiles(profiles={
         "dynamic.hikari.enable",
         "db.common",
-		//"hikari.h2",
-        "hikari.clickhouse"
+		"hikari.h2",
+        //"hikari.clickhouse"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */

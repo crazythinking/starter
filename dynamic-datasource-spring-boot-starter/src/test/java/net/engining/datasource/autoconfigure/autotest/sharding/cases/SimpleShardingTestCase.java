@@ -18,7 +18,7 @@ import java.util.List;
         "shardingsphere.enable",
         "db.common",
         "db.sharding.common",
-        "db.sharding.hikari.h2"
+        "db.sharding.hikari.mysql"
 })
 public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -40,9 +40,8 @@ public class SimpleShardingTestCase extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         List<Long> ids = dbService.dsTest4sharding();
-        LOGGER.debug("get primery keys for datasource default: {}", ids);
-        this.testAssertDataContext.put("primerykeys4default", ids);
-
+        List<TOrderItem> tOrderItems = dbService.doFetch(ids.get(0));
+        LOGGER.info("tOrderItems: {}", tOrderItems);
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.engining.datasource.autoconfigure.support.TransactionManagementContex
 import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DynamicHikariDataSourceProperties;
+import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.datasource.DynamicRoutingDataSource;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
