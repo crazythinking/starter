@@ -22,7 +22,6 @@ import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 
-import javax.inject.Provider;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Map;

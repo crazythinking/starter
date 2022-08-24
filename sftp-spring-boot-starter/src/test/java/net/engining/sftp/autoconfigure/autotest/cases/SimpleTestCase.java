@@ -5,6 +5,7 @@ import cn.hutool.extra.ssh.JschSessionPool;
 import cn.hutool.extra.ssh.JschUtil;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
+import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import net.engining.sftp.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.sftp.autoconfigure.props.MutiSftpProperties;
@@ -65,7 +66,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
                 ((ChannelSftp) client).chmod(Integer.parseInt("755", 8), "/home/luxue/sftp-test/1.txt");
                 ((ChannelSftp) client).chmod(Integer.parseInt("755", 8), "/home/luxue/sftp-test/sub");
             } catch (SftpException e) {
-                throw new RuntimeException(e);
+                ExceptionUtilsExt.dump(e);
             }
             return null;
         });
@@ -80,7 +81,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             LOGGER.info("exec res:{}", res);
         }
 
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(600);
     }
 
     @Override

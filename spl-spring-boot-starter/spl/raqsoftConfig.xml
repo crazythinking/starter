@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config Version="3">
+    <Runtime>
+        <DBList>
+            <DB name="shenyu">
+                <property name="url" value="jdbc:mysql://ubuntu.wsl:4306/shenyu?useCursorFetch=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Hongkong&amp;zeroDateTimeBehavior=convertToNull"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="type" value="10"/>
+                <property name="user" value="root"/>
+                <property name="password" value="111111"/>
+                <property name="batchSize" value="1000"/>
+                <property name="autoConnect" value="false"/>
+                <property name="useSchema" value="false"/>
+                <property name="addTilde" value="false"/>
+                <property name="needTransContent" value="false"/>
+                <property name="needTransSentence" value="false"/>
+                <property name="caseSentence" value="false"/>
+            </DB>
+        </DBList>
+        <Esproc>
+            <charSet>UTF-8</charSet>
+            <splPathList>
+                <splPath>D:/idea-workspace/power-gears/starter/spl-spring-boot-starter/spl/scripts</splPath>
+            </splPathList>
+            <dateFormat>yyyy-MM-dd</dateFormat>
+            <timeFormat>HH:mm:ss</timeFormat>
+            <dateTimeFormat>yyyy-MM-dd HH:mm:ss</dateTimeFormat>
+            <mainPath>D:/idea-workspace/power-gears/starter/spl-spring-boot-starter/spl</mainPath>
+            <tempPath>D:/idea-workspace/power-gears/starter/spl-spring-boot-starter/spl/temp</tempPath>
+            <bufSize>65536</bufSize>
+            <localHost/>
+            <localPort>0</localPort>
+            <parallelNum/>
+            <cursorParallelNum/>
+            <blockSize/>
+            <nullStrings>nan,null,n/a</nullStrings>
+            <fetchCount/>
+            <extLibsPath/>
+            <customFunctionFile>D:/idea-workspace/power-gears/starter/spl-spring-boot-starter/spl/customFunctions.properties</customFunctionFile>
+        </Esproc>
+        <Logger>
+            <Level>SEVERE</Level>
+        </Logger>
+    </Runtime>
+    <JDBC>
+    </JDBC>
+</Config>

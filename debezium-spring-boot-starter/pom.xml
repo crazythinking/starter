@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<debezium.version>1.9.2.Final</debezium.version>
+		<debezium.version>1.9.5.Final</debezium.version>
 		<oracle.version>21.3.0.0.0</oracle.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 	</properties>

@@ -8,3 +8,9 @@ logging:
   level:
     root: info
     net.engining: trace
+
+
+pg:
+  param:
+    expire-duration: 1
+    expire-time-unit: seconds

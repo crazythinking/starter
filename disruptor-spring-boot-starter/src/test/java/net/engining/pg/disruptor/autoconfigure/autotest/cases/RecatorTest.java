@@ -35,13 +35,13 @@ public class RecatorTest {
 
     @Test
     public void range2() {
-        Flux<Integer> flux = Flux.range(1, 10);
+        Flux<Integer> flux = Flux.range(1, 100);
         // [2] 构建一个订阅者Subscriber
         Subscriber<Integer> subscriber = new BaseSubscriber<Integer>() {
             protected void hookOnNext(Integer value) {
                 Console.log(Thread.currentThread().getName() + " -> " + value);
                 //从上游生产者请求指定数量的数据
-                request(1);
+                request(10);
             }
         };
         // [3] 创建订阅关系，这时，生产者开始生产数据，并传递给订阅者。

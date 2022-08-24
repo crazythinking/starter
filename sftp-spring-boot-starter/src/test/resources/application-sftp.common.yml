@@ -34,7 +34,5 @@ pg:
           exec-enabled: true
     synchronizer:
       enabled: true
-    exec:
-      enabled: true
 
 

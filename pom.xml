@@ -168,6 +168,11 @@
 				<artifactId>sftp-spring-boot-starter</artifactId>
 				<version>${starter.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>spl-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -205,6 +210,7 @@
 		<module>kettle-spring-boot-starter</module>
 		<module>rheakv-spring-boot-starter</module>
 		<module>sftp-spring-boot-starter</module>
+		<module>spl-spring-boot-starter</module>
 	</modules>
 
 	<build>
