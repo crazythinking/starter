@@ -10,6 +10,7 @@ logging:
     root: warn
     net.engining: trace
     org.springframework: info
+    org.springframework.boot: debug
 
 
 

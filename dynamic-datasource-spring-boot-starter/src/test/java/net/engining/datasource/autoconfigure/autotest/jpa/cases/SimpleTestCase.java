@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
  * @date 2019-09-21 23:58
  **/
 @ActiveProfiles(profiles={
-        "autotest.hikari",
+        "dynamic.hikari.enable",
         "db.common",
         "db.jpa",
 		"hikari.h2",

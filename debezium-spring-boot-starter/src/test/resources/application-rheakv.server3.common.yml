@@ -1,0 +1,22 @@
+pg:
+  rheakv:
+    server:
+      store-options:
+        #在没有真实PD的情况下, 必须指定
+        initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+        store-engine-options:
+          # 本机地址，必须配置
+          ip: 127.0.0.1
+          port: 30003
+          #在没有真实PD的情况下, 必须指定；一般数据量较大时，需要设置分片规则
+          region-engine-options-list:
+            - region-id: 1
+              #key的前缀必须与pg.debezium.named-properties对应的database.server.name保持一致；
+              #每个Debezium Engine对应一个region, 如此每个Debezium Engine所对应的JRaft group都是隔离的；
+              start-key: ${pg.debezium.named-properties.xxljob-mysql.database.server.name}
+              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003
+            - region-id: 2
+              #key的前缀必须与pg.debezium.named-properties对应的database.server.name保持一致；
+              #每个Debezium Engine对应一个region, 如此每个Debezium Engine所对应的JRaft group都是隔离的；
+              start-key: ${pg.debezium.named-properties.demods0-mysql.database.server.name}
+              initial-server-list: 127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003

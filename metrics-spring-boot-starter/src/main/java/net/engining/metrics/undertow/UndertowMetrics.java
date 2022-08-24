@@ -77,16 +77,9 @@ public class UndertowMetrics implements ApplicationListener<ApplicationReadyEven
     private static final String SESSIONS_REJECTED = PREFIX + ".sessions.rejected";
     private static final String SESSIONS_ALIVE_MAX = PREFIX + ".sessions.alive.max";
 
-    private static final Field UNDERTOW_FIELD;
     private final Iterable<Tag> tags = Collections.emptyList();
 
     private MeterRegistry meterRegistry;
-
-    static {
-        UNDERTOW_FIELD = ReflectionUtils.findField(UndertowWebServer.class, "undertow");
-        Objects.requireNonNull(UNDERTOW_FIELD, "UndertowWebServer class field undertow not exist.");
-        ReflectionUtils.makeAccessible(UNDERTOW_FIELD);
-    }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -250,7 +243,10 @@ public class UndertowMetrics implements ApplicationListener<ApplicationReadyEven
     }
 
     private static Undertow getUndertow(UndertowWebServer undertowWebServer) {
-        return (Undertow) ReflectionUtils.getField(UNDERTOW_FIELD, undertowWebServer);
+        Field undertowField = ReflectionUtils.findField(UndertowWebServer.class, "undertow");
+        Objects.requireNonNull(undertowField, "UndertowWebServer class field undertow not exist.");
+        ReflectionUtils.makeAccessible(undertowField);
+        return (Undertow) ReflectionUtils.getField(undertowField, undertowWebServer);
     }
 
     private static UndertowWebServer findUndertowWebServer(ConfigurableApplicationContext applicationContext) {

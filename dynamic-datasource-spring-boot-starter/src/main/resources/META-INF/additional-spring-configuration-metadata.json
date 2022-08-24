@@ -11,6 +11,12 @@
       "type": "java.lang.Boolean",
       "defaultValue": false,
       "description": "是否开启 Dynamic-Datasource 相关管理端点."
+    },
+    {
+      "name": "pg.datasource.shardingsphere.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启 shardingsphere."
     }
   ],
   "hints": []

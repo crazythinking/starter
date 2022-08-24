@@ -9,6 +9,8 @@ import net.engining.gm.entity.dto.OperAdtLogDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
@@ -17,9 +19,11 @@ import org.springframework.util.Assert;
  * @date 2019-09-21 23:58
  **/
 @ActiveProfiles(profiles={
-        "autotest.hikari",
+        "dynamic.hikari.enable",
         "db.common",
-		"hikari.clickhouse",
+		//"hikari.clickhouse",
+        //""hikari.mysql",
+        "hikari.h2"
 })
 public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
@@ -27,6 +31,9 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     OperationLogBizService operationLogService;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public void initTestData() {
@@ -60,18 +67,20 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             );
         });
 
-        operationLogService.fetch4Ck("luxue").forEach(o -> {
-            OperAdtLogExtDto operAdtLogExtDto = (OperAdtLogExtDto) o;
-            LOGGER.debug(Joiner.on(";")
-                    .join(
-                            operAdtLogExtDto.getOperTime(),
-                            operAdtLogExtDto.getId(),
-                            operAdtLogExtDto.getLoginId(),
-                            operAdtLogExtDto.getRequestUri(),
-                            operAdtLogExtDto.getHashedRequestBody()
-                    )
-            );
-        });
+        if (environment.acceptsProfiles(Profiles.of("hikari.clickhouse"))) {
+            operationLogService.fetch4Ck("luxue").forEach(o -> {
+                OperAdtLogExtDto operAdtLogExtDto = (OperAdtLogExtDto) o;
+                LOGGER.debug(Joiner.on(";")
+                        .join(
+                                operAdtLogExtDto.getOperTime(),
+                                operAdtLogExtDto.getId(),
+                                operAdtLogExtDto.getLoginId(),
+                                operAdtLogExtDto.getRequestUri(),
+                                operAdtLogExtDto.getHashedRequestBody()
+                        )
+                );
+            });
+        }
 
     }
 

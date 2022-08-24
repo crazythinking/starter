@@ -6,7 +6,8 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>2.0.0.RELEASE</version>
+		<version>2.1.0.RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>bustream-spring-boot-starter</artifactId>
@@ -49,11 +50,6 @@
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
 
-
-		<dependency>
-			<groupId>net.engining.pg</groupId>
-			<artifactId>pg-support</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-config</artifactId>

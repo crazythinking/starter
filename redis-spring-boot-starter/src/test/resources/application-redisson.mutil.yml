@@ -1,0 +1,27 @@
+#redis多数据源配置
+pg:
+  redisson:
+    multi:
+      enabled: true
+      properties:
+        one:
+          model: single
+          keep-alive: true
+          client-name: ${spring.application.name}
+          transport-mode: nio
+          codec: org.redisson.codec.SmileJacksonCodec
+          idle-connection-timeout: 5000
+          connect-timeout: 5000
+          timeout: 1000
+          retry-attempts: 5
+#          password: bitnami
+          subscriptions-per-connection: 5
+          netty-threads: 16
+          threads: 16
+          single-server-properties:
+            address: ubuntu2004.wsl:6379
+            database: 0
+            connection-minimum-idle-size: 8
+            connection-pool-size: 16
+            subscription-connection-minimum-idle-size: 1
+

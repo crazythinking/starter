@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rheakv-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: warn
+    net.engining: trace
+    org.springframework.boot: info

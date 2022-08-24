@@ -1,0 +1,4 @@
+#配置自定义Starter的自动化配置
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  net.engining.rheakv.autoconfigure.RheaKVServerAutoConfiguration,\
+  net.engining.rheakv.autoconfigure.RheaKVClientAutoConfiguration

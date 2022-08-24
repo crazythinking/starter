@@ -1,6 +1,7 @@
 package net.engining.datasource.autoconfigure.autotest.jdbc.support;
 
 import com.google.common.collect.Table;
+import net.engining.datasource.autoconfigure.support.Utils;
 import net.engining.gm.entity.model.jdbc.OperAdtLog;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.db.jdbc.AbstractSingleTableJdbcDao;
@@ -23,7 +24,7 @@ public class OperAdtLogJdbcDao extends AbstractSingleTableJdbcDao {
 
     @Autowired
     public OperAdtLogJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                             @Qualifier("multipleDataSourceTable") Table<String, DbType, DataSource> multipleDataSourceTable) {
+                             @Qualifier(Utils.MULTIPLE_DATA_SOURCE_TABLE) Table<String, DbType, DataSource> multipleDataSourceTable) {
         super(namedParameterJdbcTemplate, multipleDataSourceTable);
     }
 

@@ -1,0 +1,9 @@
+pg:
+  disruptor:
+    grouped-disruptor:
+      #注意disruptor的groupKey与sftp配置的key保持一致
+      sftp-test1:
+        batch-size: 1
+        ring-buffer-size: 2048
+        #大部分情况文件的到达速率都不会频繁，为减少cpu的空转消耗，建议用此策略
+        wait-strategy: blocking_wait

@@ -44,7 +44,7 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
         event2.setKey("key1");
         event2.setTag("en");
         event2.setBind("12345");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             event2.setBind(event2.getBind()+1);
             applicationContext.publishEvent(event2);
         }
