@@ -4,6 +4,7 @@ package net.engining.gm.autoconfigure.autotest.cases;
 import cn.hutool.core.lang.Console;
 import net.engining.gm.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.gm.autoconfigure.autotest.support.Inter;
+import net.engining.gm.autoconfigure.autotest.support.Inter2;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.assertj.core.api.Assertions;
@@ -22,6 +23,9 @@ public class SimpleTest extends AbstractTestCaseTemplate {
 
     @Autowired
     private ConfigurableListableBeanFactory beanFactory;
+
+    @Autowired
+    Inter2 inter2;
 
     @Override
     public void initTestData() {
@@ -45,6 +49,8 @@ public class SimpleTest extends AbstractTestCaseTemplate {
     public void testProcess() {
         Map<String, Inter> beansOfType = beanFactory.getBeansOfType(Inter.class);
         Console.log(beansOfType);
+
+        inter2.test();
     }
 
     @Override

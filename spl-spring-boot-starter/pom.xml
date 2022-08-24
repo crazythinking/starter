@@ -15,6 +15,8 @@
 	<packaging>jar</packaging>
 
 	<properties>
+		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
+		<oracle.version>21.3.0.0.0</oracle.version>
 	</properties>
 
 	<dependencies>
@@ -48,6 +50,24 @@
 					<groupId>org.bouncycastle</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<!-- mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- oracle -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>oracle8</artifactId>
+			<version>${oracle.version}</version>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>

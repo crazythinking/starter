@@ -50,11 +50,6 @@
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
 
-
-		<dependency>
-			<groupId>net.engining.pg</groupId>
-			<artifactId>pg-support</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-config</artifactId>
