@@ -53,12 +53,10 @@ public class DebeziumCompositeHealthContributor implements CompositeHealthContri
         this.debeziumMetricsProperties.getCdcDefinition().forEach((dbType, cdcNames) -> {
             if (dbType.equals(DbType.MySQL)) {
                 for (String cdcName : cdcNames) {
-                    ConnectionMetricsMXBean mxBean = findConnectionMXBean("mysql", cdcName);
                     popHealthIndicators(cdcName, dbType);
                 }
             } else if (dbType.equals(DbType.Oracle)) {
                 for (String cdcName : cdcNames) {
-                    ConnectionMetricsMXBean mxBean = findConnectionMXBean("oracle", cdcName);
                     popHealthIndicators(cdcName, dbType);
                 }
             }
@@ -80,7 +78,7 @@ public class DebeziumCompositeHealthContributor implements CompositeHealthContri
 
             @Override
             public ConnectionMetricsMXBean getConnectionMetricsMxBean() {
-                return this.mxBean = findConnectionMXBean(dbType.getLabel().toLowerCase(), cdcName);
+                return findConnectionMXBean(dbType.getLabel().toLowerCase(), cdcName);
             }
 
             @Override
@@ -88,7 +86,7 @@ public class DebeziumCompositeHealthContributor implements CompositeHealthContri
                 Health health = Health.unknown().build();
                 if (ValidateUtilExt.isNullOrEmpty(mxBean)) {
                     //如果mxBean为空，说明之前初始化时还未产生，这里再尝试获取一次
-                    getConnectionMetricsMxBean();
+                    this.mxBean = getConnectionMetricsMxBean();
                     //还是为空
                     if (ValidateUtilExt.isNullOrEmpty(mxBean)) {
                         return health;
