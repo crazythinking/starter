@@ -1,6 +1,5 @@
 package net.engining.debezium.autoconfigure.actuator;
 
-import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import net.engining.pg.support.db.DbType;
 import org.springframework.boot.actuate.health.HealthIndicator;
 
