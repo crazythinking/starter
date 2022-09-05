@@ -1,6 +1,5 @@
 package net.engining.debezium.autoconfigure.actuator;
 
-import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import net.engining.metrics.debezium.DebeziumMetrics;
