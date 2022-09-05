@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.dialect.AnsiDialect;
  * @date : 2022-03-07 13:02
  * @since :
  **/
+@Deprecated
 public class OracleDialect extends AnsiDialect {
 
 }

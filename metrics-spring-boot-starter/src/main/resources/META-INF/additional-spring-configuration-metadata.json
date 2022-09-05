@@ -11,7 +11,13 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "是否开启 Undertow Metrics支持."
-    }
+    },
+    {
+          "name": "pg.metrics.debezium.enabled",
+          "type": "java.lang.Boolean",
+          "defaultValue": true,
+          "description": "是否开启 Debezium Metrics支持."
+     }
   ],
   "hints": []
 }

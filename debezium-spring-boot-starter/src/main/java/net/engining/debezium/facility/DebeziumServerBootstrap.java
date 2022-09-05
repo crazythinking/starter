@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 /**
- * @author n1
+ * @author Eric Lu
  * @since 2021/6/2 10:45
  */
 public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle {

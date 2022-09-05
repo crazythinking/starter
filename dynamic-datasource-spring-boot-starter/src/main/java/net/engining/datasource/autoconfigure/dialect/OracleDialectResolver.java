@@ -18,6 +18,7 @@ import java.util.Optional;
  * @date : 2022-03-07 13:55
  * @since :
  **/
+@Deprecated
 public class OracleDialectResolver implements DialectResolver.JdbcDialectProvider {
 
     public static final String ORACLE = "oracle";

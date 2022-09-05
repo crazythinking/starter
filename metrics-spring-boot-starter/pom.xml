@@ -18,6 +18,7 @@
 		<micrometer.version>1.9.0</micrometer.version>
 		<micrometer-jvm.version>0.2.2</micrometer-jvm.version>
 		<prometheus.version>0.12.0</prometheus.version>
+		<debezium.version>1.9.5.Final</debezium.version>
 	</properties>
 
 	<dependencies>
@@ -114,6 +115,25 @@
 		<dependency>
 			<groupId>io.undertow</groupId>
 			<artifactId>undertow-servlet</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>io.debezium</groupId>
+			<artifactId>debezium-embedded</artifactId>
+			<version>${debezium.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.debezium</groupId>
+			<artifactId>debezium-connector-mysql</artifactId>
+			<version>${debezium.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.debezium</groupId>
+			<artifactId>debezium-connector-oracle</artifactId>
+			<version>${debezium.version}</version>
 			<optional>true</optional>
 		</dependency>
 

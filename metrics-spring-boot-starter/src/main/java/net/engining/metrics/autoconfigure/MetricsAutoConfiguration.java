@@ -2,6 +2,7 @@ package net.engining.metrics.autoconfigure;
 
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
+import net.engining.metrics.config.DebeziumMetricsContextConfig;
 import net.engining.metrics.config.DropwizardMetricsContextConfig;
 import net.engining.metrics.config.SentinelMetricsContextConfig;
 import net.engining.metrics.config.UndertowMetricsContextConfig;
@@ -30,7 +31,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         DropwizardMetricsContextConfig.class,
         SentinelMetricsContextConfig.class,
-        UndertowMetricsContextConfig.class
+        UndertowMetricsContextConfig.class,
+        DebeziumMetricsContextConfig.class
 })
 public class MetricsAutoConfiguration {
 

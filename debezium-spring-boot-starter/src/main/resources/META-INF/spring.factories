@@ -2,4 +2,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 net.engining.debezium.autoconfigure.DebeziumAutoConfiguration,\
 net.engining.debezium.autoconfigure.JRaftNodeAutoConfiguration,\
-net.engining.debezium.autoconfigure.AsyncExtAutoConfiguration
+net.engining.debezium.autoconfigure.AsyncExtAutoConfiguration,\
+net.engining.debezium.autoconfigure.HealthAutoConfiguration
