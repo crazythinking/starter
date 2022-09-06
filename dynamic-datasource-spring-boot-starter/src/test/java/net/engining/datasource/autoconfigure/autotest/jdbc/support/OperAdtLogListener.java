@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.relational.core.conversion.AggregateChange;
 import org.springframework.data.relational.core.mapping.event.AbstractRelationalEventListener;
-import org.springframework.data.relational.core.mapping.event.AfterLoadEvent;
+import org.springframework.data.relational.core.mapping.event.AfterConvertEvent;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +30,9 @@ public class OperAdtLogListener extends AbstractRelationalEventListener<OperAdtL
     }
 
     @Override
-    protected void onAfterLoad(AfterLoadEvent<OperAdtLog> event) {
+    protected void onAfterConvert(AfterConvertEvent<OperAdtLog> event) {
         OperAdtLog operAdtLog = event.getEntity();
         LOGGER.debug(operAdtLog.toString());
-        super.onAfterLoad(event);
+        super.onAfterConvert(event);
     }
 }

@@ -15,7 +15,7 @@ public class GenericRemoteApplicationEvent<T> extends RemoteApplicationEvent {
 	}
 
 	public GenericRemoteApplicationEvent(Object source, T target, String originService, String destinationService) {
-		super(source, originService, destinationService);
+		super(source, originService, DEFAULT_DESTINATION_FACTORY.getDestination(destinationService));
 		this.target = target;
 	}
 

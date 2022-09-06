@@ -50,7 +50,7 @@ public class BustreamAutoConfiguration {
      *
      * @param message 消息处理过程中产生的异常消息
      */
-    @StreamListener("errorChannel")
+    @ StreamListener("errorChannel")
     public void error(Message<?> message) throws IOException {
         ErrorMessage errorMessage = (ErrorMessage) message;
         LOGGER.warn("Handling ERROR: {}", errorMessage.getPayload().getMessage());
