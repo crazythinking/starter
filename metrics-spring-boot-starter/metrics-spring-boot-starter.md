@@ -140,13 +140,15 @@ private void call2(AdditionalOb ob) throws Exception {
 ## 其他默认加载的指标
 Undertow：当ClassPath中存在Undertow时，默认自动注册并激活相应的监控指标；
 Sentinel：当ClassPath中存在MetricExtension时，默认自动注册并激活相应的监控指标；
+Debezium：当ClassPath中存在EmbeddedEngine时，默认自动注册并激活相应的监控指标；
 可通过以下配置关闭：
 ```
 pg.metrics.undertow.enabled=false
 pg.metrics.sentinel.enabled=false
+pg.metrics.debezium.enabled=false
 ```
-## 整合Dropwizard Metrics体系的指标
-由于某些组件默认采用了Dropwizard Metrics体系，因此需要将其统一整合到io.micrometer体系下；
+## Dropwizard Metrics to Promethus
+由于某些组件默认采用了Dropwizard Metrics体系，因此需要通过io.prometheus.client.dropwizard.DropwizardExports将其统一到Prometheus；详见：net.engining.metrics.config.DropwizardMetricsContextConfig；
 # Export Prometheus
 以上提到的所有指标，默认情况下都会被导出到Actuator 的 Prometheus Endpoint，供Prometheus抓取；可通过以下配置关闭：
 ```

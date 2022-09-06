@@ -127,11 +127,28 @@ pg.debezium.named-properties.xxljob-mysql.poll.interval.ms=1000
 pg.debezium.named-properties.xxljob-mysql：为组件自定义配置项前缀，其后的配置项命名与官方保持一致；
 详情参考：[https://debezium.io/documentation/reference/1.9/connectors](https://debezium.io/documentation/reference/1.9/connectors)
 ## 监控
-第四步：打开监控配置
+第四步：打开监控配置，以下配置项均默认为true；
 ```
 management.endpoint.metrics.enabled=true
 management.metrics.export.prometheus.enabled=true
+pg.metrics.debezium.enabled=true
 ```
+### Connector JMX 指标
+目前只支持MySql和Oracle两种connector的监控指标，需通过配置指定监控指标的名称区分不同的cdc-connector；<DbType>由net.engining.pg.support.db.DbType提供；<cdc database.server.name>需要与cdc-connector的配置保持一致，如下：
+```
+#逻辑名称;连接器在其生成的每个源记录的topic字段中包含此逻辑名称，使应用程序能够识别这些记录的来源;注意应于Key保持一致
+pg.debezium.named-properties.xxljob-mysql.database.server.name=xxljob-mysql
+
+#监控指标定义
+pg.metrics.debezium.cdc-definition.mysql[0]=${pg.debezium.named-properties.xxljob-mysql.database.server.name}
+```
+详细的JMX项指标见官方文档：[https://debezium.io/documentation/reference/1.9/operations/monitoring.html](https://debezium.io/documentation/reference/1.9/operations/monitoring.html)
+![image.png](https://cdn.nlark.com/yuque/0/2022/png/956807/1662448560382-817dd024-5118-48cc-bdb9-7bbf213253a3.png#clientId=u3db1a3c9-847e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=341&id=udba13c80&name=image.png&originHeight=341&originWidth=1306&originalType=binary&ratio=1&rotation=0&showTitle=false&size=33979&status=done&style=none&taskId=u5b20b466-32a9-4ee9-b962-689e9e2bd81&title=&width=1306)
+### JRaft 监控指标
+待续
+### Actuator - 监控检查
+该组件默认对每一个Connector建立了监控检查项，可通过/actuator/health端点查看健康状态；
+
 # 案例代码
 下载获取：debezium-spring-boot-starter-{starter.version}-test-sources.jar，详见如下案例：
 

@@ -347,3 +347,90 @@ spring.shardingsphere.datasource.ds1.password=password
 - 需要注意的是ShardingSphere本身只用作分库分表的分布式组件，不支持异构数据源的操作；
 
 参考：net.engining.starter:dynamic-datasource-spring-boot-starter:net.engining.datasource.autoconfigure.autotest.sharding.cases.SimpleShardingTestCase
+## 异步线程池DB-Event-Listener
+第九步：该组件默认开启了可用于处理数据库相关操作的异步线程池，其目的主要是为了隔离其他业务线程，与`@Async(Utils.DB_EVENT_LISTENER)`配合使用；可通过`pg.datasource.dynamic.async.enabled=false`关闭；
+可通过如下配置控制线程池属性：
+```
+pg.datasource.dynamic.async-excutor-cole-pool-size=2
+pg.datasource.dynamic.async-excutor-max-pool-size=2
+pg.datasource.dynamic.async-excutor-queue-capacity=10
+```
+
+1. 常用于需要异步操作某些与数据库操作相关的场景，如异步数据同步，异步触发监控指标统计等，使用如下：
+```java
+@Async(Utils.DB_EVENT_LISTENER)
+public void asyncTest() {
+    LOGGER.debug("async test");
+}
+```
+当在任意位置调用该方法时，其内逻辑将会在名为“DB-Event-Listener-xx”的线程内异步执行；
+
+2. 用于消费SpringData的DomainEvent，参考：[https://blog.csdn.net/f4761/article/details/84622317](https://blog.csdn.net/f4761/article/details/84622317)；或自定义net.engining.datasource.autoconfigure.support.TransactionalEvent；
+```java
+//事务监听事件
+public class TransactionalEvent<E> extends ApplicationEvent {
+
+    private final @Nullable E entity;
+
+    /**
+     * Create a new {@code ApplicationEvent}.
+     *
+     * @param entity the object on which the event initially occurred or with
+     *               which the event is associated (never {@code null})
+     */
+    public TransactionalEvent(@Nullable E entity) {
+        super(Objects.requireNonNull(entity));
+        this.entity = entity;
+    }
+
+    @Nullable
+    public E getEntity() {
+        return entity;
+    }
+}
+
+//RepositoryService
+//......Service {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public long save(List<OperAdtLogDto> operAdtLogList){
+        long n = extractedSave(operAdtLogList);
+        //发布事件
+        for (OperAdtLogDto operAdtLogDto : operAdtLogList){
+            applicationContext.publishEvent(new TransactionalEvent<>(operAdtLogDto));
+        }
+        return n;
+
+    }
+//......}
+
+//监听器
+@Component
+public class TransactionalListener {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionalListener.class);
+
+    @Async(Utils.DB_EVENT_LISTENER)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void afterSavedOperAdtLog(TransactionalEvent<OperAdtLogDto> event){
+        assert event.getEntity() != null;
+        LOGGER.debug(event.getEntity().toString());
+    }
+}
+```
+参考：
+net.engining.starter:dynamic-datasource-spring-boot-starter:net.engining.datasource.autoconfigure.autotest.jdbc.cases.SimpleTestCase; 
+net.engining.starter:dynamic-datasource-spring-boot-starter:net.engining.datasource.autoconfigure.autotest.qsql.support.LogRepositoriesServiceImpl; 
+## 管理端点
+第十步，该组件支持服务在线动态添加新增数据源，通过`pg.datasource.dynamic.actuator.enabled=true`激活，需要注意的是不支持 ShardingSphere DataSource；另外动态新增的前提是：在调用`POST:/actuator/dynamicDataSource/add`端点前需要依赖配置中心准备好“多数据源”章节中的数据源配置；调用新增接口的Json参数时只需传递“数据源配置”的key即可；
+例如，在配置中心添加如下配置：
+```
+pg.datasource.dynamic.hikari.cf-map.three.driver-class-name=org.h2.Driver
+pg.datasource.dynamic.hikari.cf-map.three.jdbc-url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+pg.datasource.dynamic.hikari.cf-map.three.username=sa
+pg.datasource.dynamic.hikari.cf-map.three.password=
+```
+然后等待服务获取到配置中心的配置变更后，则可使用如下指令添加数据源：
+```shell
+curl -X POST http://localhost:8099/mm/actuator/dynamicDataSource/add -d '{"key":"three"}'
+```
