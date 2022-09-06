@@ -27,7 +27,7 @@ public class JmhRecator {
         // 使用一个单独进程执行测试，执行5遍warmup，然后执行5遍测试
         Options opt = new OptionsBuilder()
                 //指定Benchmark的类，执行其内添加注解@Benchmark的方法
-                .include(ReactorTest.class.getSimpleName())
+                .include(ReactorTestCase.class.getSimpleName())
                 .forks(1)
                 .warmupIterations(5)
                 .measurementIterations(5)

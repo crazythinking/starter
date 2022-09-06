@@ -14,7 +14,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.PublisherProbe;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
 /**
@@ -25,7 +24,7 @@ import java.util.function.Consumer;
  * @date : 2021-03-07 20:23
  * @since :
  **/
-public class ReactorTest {
+public class ReactorTestCase {
 
     @Test
     @Benchmark
