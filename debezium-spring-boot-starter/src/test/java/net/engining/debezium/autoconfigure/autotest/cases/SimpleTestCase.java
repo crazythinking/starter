@@ -15,9 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthContributor;
 import org.springframework.cglib.core.ReflectUtils;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.InvocationTargetException;
