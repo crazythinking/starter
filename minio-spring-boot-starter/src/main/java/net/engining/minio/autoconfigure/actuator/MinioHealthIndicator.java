@@ -24,10 +24,9 @@ public class MinioHealthIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
-
+        Health.Builder builder = Health.unknown();
         if (bucket == null) {
-            return Health.unknown()
-                    .build();
+            return builder.build();
         }
 
         try {
@@ -35,16 +34,16 @@ public class MinioHealthIndicator implements HealthIndicator {
                     .bucket(bucket)
                     .build();
             if (minioClient.bucketExists(args)) {
-                return Health.up()
+                return builder.up()
                         .withDetail("bucket", bucket)
                         .build();
             } else {
-                return Health.down()
+                return builder.down()
                         .withDetail("bucket", bucket)
                         .build();
             }
         } catch (Exception e) {
-            return Health.down(e)
+            return builder.down(e)
                     .withDetail("bucket", bucket)
                     .build();
         }

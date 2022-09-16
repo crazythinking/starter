@@ -83,25 +83,29 @@ public class DebeziumCompositeHealthContributor implements CompositeHealthContri
 
             @Override
             public Health health() {
-                Health health = Health.unknown().build();
-                if (ValidateUtilExt.isNullOrEmpty(mxBean)) {
-                    //如果mxBean为空，说明之前初始化时还未产生，这里再尝试获取一次
-                    this.mxBean = getConnectionMetricsMxBean();
-                    //还是为空
+                Health.Builder builder = Health.unknown();
+                try {
                     if (ValidateUtilExt.isNullOrEmpty(mxBean)) {
-                        return health;
-                    }
-                }
-                else {
-                    if (mxBean.isConnected()) {
-                        return Health.up().build();
+                        //如果mxBean为空，说明之前初始化时还未产生，这里再尝试获取一次
+                        this.mxBean = getConnectionMetricsMxBean();
+                        //还是为空
+                        if (ValidateUtilExt.isNullOrEmpty(mxBean)) {
+                            return builder.build();
+                        }
                     }
                     else {
-                        return Health.down().build();
+                        if (mxBean.isConnected()) {
+                            return builder.up().build();
+                        }
+                        else {
+                            return builder.outOfService().build();
+                        }
                     }
+                } catch (Exception e) {
+                    return builder.down(e).build();
                 }
 
-                return health;
+                return builder.build();
             }
         });
     }
