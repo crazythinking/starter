@@ -9,12 +9,22 @@ spring:
         enabled: true
 
   elasticsearch:
+    uris: https://ubuntu.wsl:9200
+    connection-timeout: 10s
+    socket-timeout: 30s
+    username: elastic
+    password: elastic
+
+
+pg:
+  elasticsearch:
     rest:
-      uris: ubuntu.wsl:19200
-      connection-timeout: 10s
-      read-timeout: 30s
+      ssl: true
+
+
 
 logging:
   level:
     root: info
     net.engining: trace
+
