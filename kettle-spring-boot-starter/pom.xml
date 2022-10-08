@@ -7,7 +7,7 @@
     <parent>
         <artifactId>starter-parent</artifactId>
         <groupId>net.engining.starter</groupId>
-        <version>3.0.0.RELEASE</version>
+        <version>3.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <kettle.version>9.0.0.6-674</kettle.version>
+        <kettle.version>9.0.0.6-698</kettle.version>
     </properties>
 
     <dependencies>

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>3.0.0.RELEASE</version>
+		<version>3.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -15,6 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
+		<jsch.version>0.2.4</jsch.version>
 	</properties>
 
 	<dependencies>
@@ -48,19 +49,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- 代替原生jsch -->
 		<dependency>
 			<groupId>com.github.mwiede</groupId>
 			<artifactId>jsch</artifactId>
-			<version>0.2.4</version>
+			<version>${jsch.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.engining.starter</groupId>
 			<artifactId>disruptor-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.engining.pg</groupId>
-			<artifactId>pg-support</artifactId>
 		</dependency>
 
 		<dependency>
