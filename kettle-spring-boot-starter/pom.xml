@@ -17,6 +17,7 @@
 
     <properties>
         <kettle.version>9.0.0.6-698</kettle.version>
+        <jsch.version>0.2.4</jsch.version>
     </properties>
 
     <dependencies>
@@ -39,6 +40,10 @@
                 <exclusion>
                     <artifactId>dom4j</artifactId>
                     <groupId>org.dom4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsch</artifactId>
+                    <groupId>com.jcraft</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -100,6 +105,12 @@
                     <groupId>org.eclipse.equinox</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- 代替原生jsch -->
+        <dependency>
+            <groupId>com.github.mwiede</groupId>
+            <artifactId>jsch</artifactId>
+            <version>${jsch.version}</version>
         </dependency>
 
         <dependency>

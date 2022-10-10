@@ -180,6 +180,17 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.apache.skywalking</groupId>
+			<artifactId>apm-toolkit-log4j-2.x</artifactId>
+			<version>${skywalking.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.skywalking</groupId>
+			<artifactId>apm-toolkit-trace</artifactId>
+			<version>${skywalking.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-support</artifactId>
 		</dependency>
