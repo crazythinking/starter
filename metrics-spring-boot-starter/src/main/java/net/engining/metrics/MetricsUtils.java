@@ -50,7 +50,7 @@ public class MetricsUtils {
         //      0 = {StoredStepMeterRegistry@9613}
         //      1 = {StoredPushMeterRegistry@7808}
         //      2 = {PrometheusMeterRegistry@9634}
-        if (ValidateUtilExt.isNotNullOrEmpty(applicationContext.getBean(COMPOSITE_METER_REGISTRY))){
+        if (ValidateUtilExt.isNotNullOrEmpty(applicationContext.containsBean(COMPOSITE_METER_REGISTRY))){
             return (CompositeMeterRegistry) applicationContext.getBean(COMPOSITE_METER_REGISTRY);
         }
         else {
