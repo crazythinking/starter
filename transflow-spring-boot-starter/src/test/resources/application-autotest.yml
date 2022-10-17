@@ -8,3 +8,9 @@ logging:
   level:
     root: info
     net.engining: trace
+
+gm:
+  trans-flow:
+    dump-procedure: true
+    dump-request: true
+    dump-response: true

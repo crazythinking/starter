@@ -10,7 +10,6 @@ import net.engining.transflow.autoconfigure.autotest.support.IntValue2Key;
 import org.springframework.stereotype.Service;
 
 @FlowDefinition(
-        code = "sample",
         name = "示列流程",
         desc = "示列流程. 用于测试",
         invokers = {

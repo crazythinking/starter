@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Lazy;
  * @author Eric Lu
  */
 @Configuration
-@EnableConfigurationProperties(value = {
-
-})
 public class CombineContextConfig {
 
     /**

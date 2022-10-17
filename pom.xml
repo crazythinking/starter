@@ -17,8 +17,8 @@
 		<pmd.skip>true</pmd.skip>
 		<starter.version>3.0.1-SNAPSHOT</starter.version>
 		<pg.version>4.0.1-SNAPSHOT</pg.version>
-		<control.version>2.0.0.RELEASE</control.version>
-		<gm.version>2.0.0.RELEASE</gm.version>
+		<control.version>2.0.1-SNAPSHOT</control.version>
+		<gm.version>2.0.1-SNAPSHOT</gm.version>
 
 		<jasypt.version>3.0.4</jasypt.version>
 	</properties>

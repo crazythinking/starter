@@ -10,6 +10,8 @@ pg:
       Event1-Group:
         batch-size: 1
         ring-buffer-size: 2048
+        multi-producer: false
+        wait-strategy: sleeping_wait
       Event2-Group:
         batch-size: 1
         ring-buffer-size: 3000
