@@ -4,7 +4,13 @@
       "name": "gm.trans-flow.enabled",
       "type": "java.lang.Boolean",
       "defaultValue": true,
-      "description": "是否开启Trans-Flow支持."
+      "description": "是否开启 Trans-Flow 支持."
+    },
+    {
+      "name": "pg.trans-flow.datasync.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启 Trans-Flow Data Sync 支持."
     }
   ],
   "hints": []
