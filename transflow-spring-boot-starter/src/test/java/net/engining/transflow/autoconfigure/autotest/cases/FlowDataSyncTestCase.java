@@ -1,14 +1,11 @@
 package net.engining.transflow.autoconfigure.autotest.cases;
 
-import com.google.common.collect.Maps;
 import net.engining.control.api.ContextKey;
-import net.engining.control.api.FlowDispatcher;
-import net.engining.control.api.key.ChannelKey;
-import net.engining.control.api.key.ChannelRequestSeqKey;
-import net.engining.control.api.key.OnlineDataKey;
+import net.engining.control.sdk.FlowTransProcessorTemplate;
 import net.engining.transflow.autoconfigure.autotest.support.AbstractTestCaseTemplate;
-import net.engining.transflow.autoconfigure.autotest.support.IntValue1Key;
 import net.engining.transflow.autoconfigure.autotest.support.IntValue2Key;
+import net.engining.transflow.autoconfigure.autotest.support.SampleFlowRequest;
+import net.engining.transflow.autoconfigure.autotest.support.SimpleFlowResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,38 +23,35 @@ import static org.hamcrest.Matchers.equalTo;
 public class FlowDataSyncTestCase extends AbstractTestCaseTemplate {
 
 	@Autowired
-	private FlowDispatcher dispatcher;
+	FlowTransProcessorTemplate flowTransProcessorTemplate;
 
 	@Override
 	public void initTestData() {
 		
-		Map<Class<? extends ContextKey<?>>, Object> req = Maps.newHashMap();
-		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
-		req.put(ChannelRequestSeqKey.class, "1234567890987654321");
-		req.put(ChannelKey.class, "test");
-		req.put(IntValue1Key.class, 4);
-		req.put(IntValue2Key.class, 0);
-		
-		testIncomeDataContext.put("request1", req);
+		SampleFlowRequest request = new SampleFlowRequest();
+		request.setOnlineData("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+		request.setChannelRequestSeq("1234567890987654321");
+		request.setChannel("test");
+		request.setIntValue1(4);
+		request.setIntValue2(0);
+		testIncomeDataContext.put("request1", request);
 
 		//重复的交易，测试幂等
-		req = Maps.newHashMap();
-		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
-		req.put(ChannelRequestSeqKey.class, "1234567890987654321");
-		req.put(ChannelKey.class, "test");
-		req.put(IntValue1Key.class, 4);
-		req.put(IntValue2Key.class, 0);
+		SampleFlowRequest request2 = new SampleFlowRequest();
+		request.setOnlineData("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+		request.setChannelRequestSeq("1234567890987654321");
+		request.setChannel("test");
+		request.setIntValue1(4);
+		request.setIntValue2(0);
+		testIncomeDataContext.put("request2", request2);
 
-		testIncomeDataContext.put("request2", req);
-
-		req = Maps.newHashMap();
-		req.put(OnlineDataKey.class, "{\"key1\":\"value1\",\"key2\":\"value2\"}");
-		req.put(ChannelRequestSeqKey.class, "1234567890987654322");
-		req.put(ChannelKey.class, "test");
-		req.put(IntValue1Key.class, 4);
-		req.put(IntValue2Key.class, 0);
-
-		testIncomeDataContext.put("request3", req);
+		SampleFlowRequest request3 = new SampleFlowRequest();
+		request.setOnlineData("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+		request.setChannelRequestSeq("1234567890987654322");
+		request.setChannel("test");
+		request.setIntValue1(4);
+		request.setIntValue2(0);
+		testIncomeDataContext.put("request3", request3);
 
 	}
 
@@ -71,28 +65,17 @@ public class FlowDataSyncTestCase extends AbstractTestCaseTemplate {
 
 	@Override
 	public void testProcess() throws InterruptedException {
-		Map<Class<? extends ContextKey<?>>, Object> resp = dispatcher.process(
-				"sample",
-				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request1")
-		);
+		SampleFlowRequest request = (SampleFlowRequest) testIncomeDataContext.get("request1");
+		SimpleFlowResponse resp = flowTransProcessorTemplate.process(request, SimpleFlowResponse.class);
 		testAssertDataContext.put("response1", resp);
 
-		Map<Class<? extends ContextKey<?>>, Object> resp2 = dispatcher.process(
-				"sample",
-				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request2")
-		);
+		SampleFlowRequest request2 = (SampleFlowRequest) testIncomeDataContext.get("request2");
+		SimpleFlowResponse resp2 = flowTransProcessorTemplate.process(request2, SimpleFlowResponse.class);
 		testAssertDataContext.put("response2", resp2);
 
-		Map<Class<? extends ContextKey<?>>, Object> resp3 = dispatcher.process(
-				"outboundsample",
-				(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request3")
-		);
-
+		SampleFlowRequest request3 = (SampleFlowRequest) testIncomeDataContext.get("request3");
 		for (int i = 0; i < 10; i++) {
-			dispatcher.process(
-					"sample",
-					(Map<Class<? extends ContextKey<?>>, Object>) testIncomeDataContext.get("request2")
-			);
+			flowTransProcessorTemplate.process(request3, SimpleFlowResponse.class);
 		}
 		Thread.sleep(20000);
 	}
