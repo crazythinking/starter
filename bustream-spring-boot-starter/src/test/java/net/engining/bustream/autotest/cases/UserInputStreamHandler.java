@@ -45,12 +45,11 @@ public class UserInputStreamHandler extends AbstractConsume4ManualAckBustreamHan
      */
     @StreamListener(value = Sink.INPUT, condition = "headers['messageType']=='type1'")
     protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers){
-        receiving(event, headers);
+        super.consume(event, headers);
     }
 
     @Override
-    protected void handler(User event, Map<String, Object> headers) throws Exception{
-        LOGGER.info("handler event for user1 object: {}", event);
+    protected void handler(User event, MessageHeaders headers) throws Exception{
         if (event.getAge()==0){
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");
         }
@@ -63,6 +62,5 @@ public class UserInputStreamHandler extends AbstractConsume4ManualAckBustreamHan
     @Override
     public void afterPropertiesSet() throws Exception {
         super.setLogger(LOGGER);
-        super.setType(Type.CONSUMER);
     }
 }

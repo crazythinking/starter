@@ -23,10 +23,10 @@ import java.util.Map;
  **/
 @ActiveProfiles(profiles = {
         "bus.disable",
-        "channel.stream.input.rabbit",
-        "channel.stream.output.rabbit",
-        "rabbit.dev",
-        "stream.common",
+        //"channel.stream.input.rabbit",
+        //"channel.stream.output.rabbit",
+        //"rabbit.dev",
+        //"stream.common",
         "channel.input.dev",
         "channel.output.dev",
         "not.auto.ack"

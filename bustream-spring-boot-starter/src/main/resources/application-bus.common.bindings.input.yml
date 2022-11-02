@@ -6,7 +6,7 @@ spring:
         #以Channel的BeanName为Key所对应的Binding(BindingServiceProperties)的定义
         springCloudBusInput:
           #在多Binder环境下用于指定非默认的Binder
-#          binder: # 指定某个binder, 不指定时使用default-binder的配置
+          binder: # 指定某个binder, 不指定时使用default-binder的配置
           destination: ${gm.bustream.default-producer-name}.default # exchange 或 topic 用生产者的applicationName做前缀
 #          group: # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json

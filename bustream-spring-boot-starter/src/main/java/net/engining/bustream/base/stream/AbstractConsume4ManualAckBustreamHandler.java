@@ -3,14 +3,16 @@ package net.engining.bustream.base.stream;
 import com.rabbitmq.client.Channel;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;
 import org.springframework.integration.acks.AcknowledgmentCallback;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * 消费者子类，其只限用于手动Ack的消费者；同时注意：消费者需要配置为手动Ack；
@@ -22,11 +24,23 @@ import java.util.Map;
  **/
 public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Serializable>
                                                         extends AbstractConsumeBustreamHandler<E> {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConsume4ManualAckBustreamHandler.class);
+
+    Logger logger = LOGGER;
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
 
     /**
      * 接收处理消息，且在处理成功后进行ACK处理
      */
-    protected void receiving(E event, Map<String, Object> headers) {
+    @Override
+    protected void consume(E event, MessageHeaders headers) {
+        logger.trace("consume message headers: {}", headers);
+
         //AMQP特有的
         Channel channel = (Channel) headers.get(AmqpHeaders.CHANNEL);
         Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
@@ -38,6 +52,7 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
         //Kafka特有的
         Acknowledgment acknowledgment = (Acknowledgment) headers.get("kafka_acknowledgment");
 
+        logger.trace("consume event for {}: {}", event.getClass(), event);
         boolean ret = received(event, headers);
         try {
             if (ValidateUtilExt.isNotNullOrEmpty(channel)){

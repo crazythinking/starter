@@ -25,4 +25,4 @@ spring:
           producer:
             exchangeType: topic # 指定Exchange类型
 #              routingKeyExpression: headers.type # 生产者配置RabbitMq的动态路由键, 需要在生产者端组装消息时指定headers.type的值
-#              routingKeyExpression: ‘’‘testKey1’‘’ # 固定的routing key值
+#              routingKeyExpression: ‘testKey1’ # 固定的routing key值

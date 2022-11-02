@@ -16,8 +16,7 @@ import java.util.Map;
  * @since :
  **/
 @Profile({
-        "channel.stream.output.rabbit",
-        "channel.stream.output.kafka",
+        "channel.output.common",
 })
 @Service
 public class User2OutputStreamHandler extends AbstractOutputBustreamHandler<User2> implements InitializingBean {

@@ -18,7 +18,6 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles={
-        "rabbit.common",
         "rabbit.dev",
         "bus.enable",
         "bustream.rabbit.binders",

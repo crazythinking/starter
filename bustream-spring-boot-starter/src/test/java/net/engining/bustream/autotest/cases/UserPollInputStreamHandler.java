@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +33,7 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
     }
 
     @Override
-    protected void handler(User event, Map<String, Object> headers) throws Exception {
-        LOGGER.info("handler event for user object: {}", event);
+    protected void handler(User event, MessageHeaders headers) throws Exception {
         users.add(event);
     }
 

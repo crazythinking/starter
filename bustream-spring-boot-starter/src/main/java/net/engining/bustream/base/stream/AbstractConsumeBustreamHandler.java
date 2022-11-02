@@ -1,9 +1,12 @@
 package net.engining.bustream.base.stream;
 
 import net.engining.bustream.base.BustreamHandler;
+import net.engining.pg.support.core.exception.ErrorCode;
+import net.engining.pg.support.core.exception.ErrorMessageException;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.MessageHeaders;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -33,10 +36,24 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
     }
 
     /**
+     * 从消息中间件获取消息并消费
+     * @param event     payload
+     * @param headers   消息头
+     */
+    protected void consume(E event, MessageHeaders headers) {
+        logger.trace("consume message headers: {}", headers);
+        logger.trace("consume event for {}: {}", event.getClass(), event);
+        boolean ret = received(event, headers);
+        if (!ret){
+            throw new ErrorMessageException(ErrorCode.SystemError, "handle msg error");
+        }
+    }
+
+    /**
      * 接收到消息，并调用业务逻辑
      * @param event 消息事件
      */
-    protected boolean received(E event, Map<String, Object> headers){
+    protected boolean received(E event, MessageHeaders headers){
         defaultBefore(event, type, logger);
         try {
             handler(event, headers);
@@ -55,7 +72,7 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * @param headers   头信息
      * @exception       Exception
      */
-    protected abstract void handler(E event, Map<String, Object> headers) throws Exception;
+    protected abstract void handler(E event, MessageHeaders headers) throws Exception;
 
     @Override
     public void before(E event) {

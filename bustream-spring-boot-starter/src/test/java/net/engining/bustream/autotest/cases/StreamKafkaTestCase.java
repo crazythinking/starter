@@ -1,15 +1,12 @@
 package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
-import net.engining.bustream.autotest.cases.autoack.UserInput4AutoAckStreamHandler;
+import net.engining.bustream.autotest.cases.autoack.UserInputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -44,7 +41,7 @@ public class StreamKafkaTestCase extends AbstractTestCaseTemplate {
     User2OutputStreamHandler user2MsgOutputStreamHandler;
 
     @Autowired
-    UserInput4AutoAckStreamHandler userMsgInputStreamHandler;
+    UserInputStreamHandler userMsgInputStreamHandler;
 
     @Override
     public void initTestData() throws Exception {

@@ -2,7 +2,7 @@ package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
-import net.engining.bustream.autotest.cases.autoack.UserInput4AutoAckStreamHandler;
+import net.engining.bustream.autotest.cases.autoack.UserInputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -42,7 +42,7 @@ public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
     User2OutputStreamHandler user2MsgOutputStreamHandler;
 
     @Autowired
-    UserInput4AutoAckStreamHandler userMsgInputStreamHandler;
+    UserInputStreamHandler userMsgInputStreamHandler;
 
     @Autowired
     RabbitTemplate template;

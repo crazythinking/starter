@@ -39,9 +39,9 @@ import java.util.concurrent.atomic.AtomicInteger;
         //havingValue = "manual"
 )
 @Service
-public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
+public class UserInputStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserInput4AutoAckStreamHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInputStreamHandler.class);
 
     public List<User> users = new ArrayList<>();
 
@@ -52,14 +52,11 @@ public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandl
      */
     @StreamListener(value = Sink.INPUT)
     protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers) {
-        boolean ret = received(event, headers);
-        if (!ret){
-            throw new ErrorMessageException(ErrorCode.SystemError, "handle msg error");
-        }
+        super.consume(event, headers);
     }
 
     @Override
-    protected void handler(User event, Map<String, Object> headers) throws Exception{
+    protected void handler(User event, MessageHeaders headers) throws Exception{
         LOGGER.info("handler event for user1 object: {}", event);
         if (event.getAge()==0){
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");
@@ -73,6 +70,5 @@ public class UserInput4AutoAckStreamHandler extends AbstractConsumeBustreamHandl
     @Override
     public void afterPropertiesSet() throws Exception {
         super.setLogger(LOGGER);
-        super.setType(Type.CONSUMER);
     }
 }
