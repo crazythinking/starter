@@ -18,7 +18,7 @@ public class SampleFlowRequest extends AbstractFlowTransPayload {
      *
      */
     public SampleFlowRequest() {
-        super("sample");
+        super("net.engining.transflow.autoconfigure.autotest.cases.SampleFlow");
     }
 
     /*

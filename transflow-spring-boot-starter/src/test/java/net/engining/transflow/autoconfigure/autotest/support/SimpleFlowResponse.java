@@ -8,7 +8,7 @@ import net.engining.control.sdk.AbstractFlowTransPayload;
 public class SimpleFlowResponse extends AbstractFlowTransPayload {
 
     public SimpleFlowResponse() {
-        super("sample");
+        super("net.engining.transflow.autoconfigure.autotest.cases.SampleFlow");
     }
 
     public Integer getIntValue2() {
