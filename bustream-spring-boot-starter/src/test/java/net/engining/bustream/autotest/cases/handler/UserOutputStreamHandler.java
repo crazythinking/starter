@@ -1,5 +1,6 @@
-package net.engining.bustream.autotest.cases;
+package net.engining.bustream.autotest.cases.handler;
 
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.base.stream.AbstractOutputBustreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +17,17 @@ import java.util.Map;
  * @since :
  **/
 @Profile({
-        "channel.output.common",
+        "channel.output.common"
 })
 @Service
-public class User2OutputStreamHandler extends AbstractOutputBustreamHandler<User2> implements InitializingBean {
+public class UserOutputStreamHandler extends AbstractOutputBustreamHandler<User> implements InitializingBean {
 
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(User2OutputStreamHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserOutputStreamHandler.class);
 
     @Override
-    protected void transform(User2 event, Map<String, Object> headers) {
-        LOGGER.info("transform event to user2 object: {}", event);
+    protected void transform(User event, Map<String, Object> headers) {
+        LOGGER.info("transform event to user object: {}", event);
     }
 
     @Override

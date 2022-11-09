@@ -24,16 +24,6 @@ import java.io.Serializable;
  **/
 public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Serializable>
                                                         extends AbstractConsumeBustreamHandler<E> {
-    /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConsume4ManualAckBustreamHandler.class);
-
-    Logger logger = LOGGER;
-
-    @Override
-    public void setLogger(Logger logger) {
-        this.logger = logger;
-    }
-
     /**
      * 接收处理消息，且在处理成功后进行ACK处理
      */

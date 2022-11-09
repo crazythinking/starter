@@ -1,5 +1,6 @@
-package net.engining.bustream.autotest.cases;
+package net.engining.bustream.autotest.cases.handler;
 
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.base.bus.AbstractRemoteApplicationEventPublisher;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

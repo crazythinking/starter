@@ -3,6 +3,7 @@ package net.engining.bustream.autotest.cases;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.RandomUtil;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
+import net.engining.bustream.autotest.support.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.annotation.DirtiesContext;

@@ -1,11 +1,5 @@
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  application:
-    name: bustream-test
-
 logging:
   level:
     root: warn
     org.springframework: info
-    net.engining: debug
+    net.engining: trace

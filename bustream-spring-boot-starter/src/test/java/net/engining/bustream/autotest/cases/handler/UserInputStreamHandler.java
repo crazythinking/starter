@@ -1,13 +1,12 @@
-package net.engining.bustream.autotest.cases.autoack;
+package net.engining.bustream.autotest.cases.handler;
 
-import net.engining.bustream.autotest.cases.User;
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.base.stream.AbstractConsumeBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Profile;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -29,15 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since :
  **/
 @Profile({
-        "channel.stream.input.rabbit & !not.auto.ack",
-        "channel.stream.input.kafka & !not.auto.ack",
+        "channel.input.common",
 })
-@ConditionalOnProperty(
-        name = {"spring.kafka.consumer.enable-auto-commit"},
-        havingValue = "false"
-        //name = {"spring.cloud.stream.rabbit.bindings.input.consumer.acknowledge-mode"},
-        //havingValue = "manual"
-)
 @Service
 public class UserInputStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
     /** logger */

@@ -2,8 +2,12 @@ package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
-import net.engining.bustream.autotest.cases.autoack.UserInputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.User2OutputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.UserInputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.UserOutputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
+import net.engining.bustream.autotest.support.User;
+import net.engining.bustream.autotest.support.User2;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

@@ -1,5 +1,9 @@
+spring:
+    profiles:
+        include: bus.disable,channel.stream.input.rabbit,rabbit.dev,bustream.common,channel.input.common
+
+
 #激活组合的profiles
-spring.profiles.include=bus.disable,channel.stream.input.rabbit,rabbit.dev,bustream.common,channel.input.common
 #spring.profiles.include=bus.disable,channel.stream.input.kafka,kafka.dev,bustream.common,channel.input.common
 
 #根据环境不同的配置项
@@ -12,4 +16,3 @@ spring.profiles.include=bus.disable,channel.stream.input.rabbit,rabbit.dev,bustr
 #spring.cloud.stream.rabbit.bindings.input.consumer.maxConcurrency=1
 # 限制consumer在消费消息时, 一次能同时获取的消息数量, 默认1
 #spring.cloud.stream.rabbit.bindings.input.consumer.prefetch=1
-

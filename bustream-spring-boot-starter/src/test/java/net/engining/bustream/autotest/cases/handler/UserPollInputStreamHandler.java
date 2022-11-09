@@ -1,6 +1,7 @@
-package net.engining.bustream.autotest.cases;
+package net.engining.bustream.autotest.cases.handler;
 
 import com.google.common.collect.Lists;
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.base.stream.AbstractPollinputBustreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author : Eric Lu
@@ -19,7 +19,9 @@ import java.util.Map;
  * @date : 2020-10-31 18:52
  * @since :
  **/
-@Profile("stream.common.bindings.pollinput")
+@Profile({
+        "channel.pollinput.common"
+})
 @Service
 public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> implements InitializingBean {
     /** logger */

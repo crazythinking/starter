@@ -3,8 +3,13 @@ package net.engining.bustream.autotest.cases;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import net.engining.bustream.autotest.cases.handler.User2InputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.User2OutputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.UserInputStreamHandler;
+import net.engining.bustream.autotest.cases.handler.UserOutputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
-import net.engining.pg.support.utils.ValidateUtilExt;
+import net.engining.bustream.autotest.support.User;
+import net.engining.bustream.autotest.support.User2;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,11 +27,6 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "bus.disable",
-        //"channel.stream.input.rabbit",
-        //"channel.stream.output.rabbit",
-        //"rabbit.dev",
-        //"stream.common",
         "channel.input.dev",
         "channel.output.dev",
         "not.auto.ack"
@@ -35,16 +35,14 @@ import java.util.Map;
 public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
-    UserOutputStreamHandler userMsgOutputStreamHandler;
+    UserOutputStreamHandler userOutputStreamHandler;
+    @Autowired
+    User2OutputStreamHandler user2OutputStreamHandler;
 
     @Autowired
-    User2OutputStreamHandler user2MsgOutputStreamHandler;
-
+    UserInputStreamHandler userInputStreamHandler;
     @Autowired
-    UserInputStreamHandler userMsgInputStreamHandler;
-
-    @Autowired
-    User2InputBustreamHandler user2InputBustreamHandler;
+    User2InputStreamHandler user2InputStreamHandler;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -56,15 +54,9 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void assertResult() throws Exception {
-        //for deadLetter;
-        //Assert.isTrue(
-        //        this.testAssertDataContext.get("user").equals(JSON.toJSONString(userMsgInputStreamHandler.user)),
-        //        "same user"
-        //);
-
         //for normal
-        Assert.isTrue(userMsgInputStreamHandler.okCount.get()==10, () -> "msg count != "+ 10);
-        Assert.isTrue(user2InputBustreamHandler.okCount.get()==0, () -> "msg count != 0");
+        Assert.isTrue(user2InputStreamHandler.okCount.get()==6, () -> "msg count != "+ 6);
+        Assert.isTrue(userInputStreamHandler.okCount.get()==1, () -> "msg count != "+ 1);
 
     }
 
@@ -74,16 +66,19 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
     }
 
     private void normal() throws InterruptedException {
-        User user = setupUser();
+        User2 user2 = setupUser2();
         Map<String, Object> headerMap = Maps.newHashMap();
-        headerMap.put("gender", user.getAge() % 2);
-        headerMap.put("messageType", "type1");
+        headerMap.put("gender", user2.getAge() % 2);
+
         MessageProperties properties1 = new MessageProperties();
         properties1.setContentType(MessageProperties.CONTENT_TYPE_JSON);
         int n = 5;
         for (int i = 0; i < n; i++) {
+            if (i%2==0){
+                headerMap.put("messageType", "type2");
+            }
             properties1.getHeaders().putAll(headerMap);
-            userMsgOutputStreamHandler.send(user, headerMap);
+            user2OutputStreamHandler.send(user2, headerMap);
 
             //对比使用RabbitTemplate指定routingKey时，只有consumer也配置了相应binding-routing-key时才能收到消息；
             //producer为配置binding-routing-key时默认为#, 如果consumer配置指定的非“#”的binding-routing-key, 该消息将丢失, 因为找不到相应的queue；
@@ -91,16 +86,16 @@ public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
             rabbitTemplate.send(
                     "bustream-test.default",
                     "repayBack",
-                    new Message(JSON.toJSONString(user).getBytes(), properties1)
+                    new Message(JSON.toJSONString(user2).getBytes(), properties1)
             );
 
         }
 
         Map<String, Object> headerMap2 = Maps.newHashMap();
-        User2 user2 = setupUser2();
-        user2.setAge(0);
-        headerMap2.put("messageType", "type2");
-        user2MsgOutputStreamHandler.send(user2, headerMap2);
+        User user = setupUser();
+        user.setAge(0);
+        headerMap2.put("messageType", "type1");
+        userOutputStreamHandler.send(user, headerMap2);
 
         //等待另一个线程获取到消息并赋值
         Thread.sleep(20000);
