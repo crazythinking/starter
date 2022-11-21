@@ -3,22 +3,8 @@ spring:
     name: kettle-starter-test
   main:
     allow-bean-definition-overriding: true
-  cache:
-    type: redis
 
 pg:
-  redisson:
-    enabled: true
-    single-server-properties:
-      address: 127.0.0.1:6379
-      database: 0
-    cache:
-      enabled: true
-      cache-properties-list:
-        - names: pc111,pc222,pc333
-          ttl: 1800000
-          max-idle-time: 1800000
-          max-size: 2
   kettle:
     enabled: true
     config:

@@ -8,6 +8,7 @@ import net.engining.datasource.autoconfigure.support.JPAContextConfig;
 import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
 import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
 import net.engining.datasource.autoconfigure.support.Utils;
+import net.engining.gm.config.DbSequenceContextConfig;
 import net.engining.pg.support.db.DbType;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.apache.shardingsphere.driver.api.ShardingSphereDataSourceFactory;
@@ -71,6 +72,7 @@ import java.util.Optional;
 @Import({
         DataSourceContextConfig.class,
         JPAContextConfig.class,
+        DbSequenceContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
         TransactionManagementContextConfig.class
 })

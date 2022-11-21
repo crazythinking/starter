@@ -45,6 +45,10 @@
                     <artifactId>jsch</artifactId>
                     <groupId>com.jcraft</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>joda-time</artifactId>
+                    <groupId>joda-time</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -91,7 +95,7 @@
             <artifactId>metastore</artifactId>
             <version>${kettle.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>pentaho-kettle</groupId>
             <artifactId>kettle-dbdialog</artifactId>
             <version>${kettle.version}</version>
@@ -105,7 +109,7 @@
                     <groupId>org.eclipse.equinox</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <!-- 代替原生jsch -->
         <dependency>
             <groupId>com.github.mwiede</groupId>
