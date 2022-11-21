@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: groovy-starter-test
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace

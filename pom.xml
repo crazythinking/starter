@@ -173,6 +173,11 @@
 				<artifactId>spl-spring-boot-starter</artifactId>
 				<version>${starter.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>groovy-spring-boot-starter</artifactId>
+				<version>${starter.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -226,6 +231,7 @@
 		<module>rheakv-spring-boot-starter</module>
 		<module>sftp-spring-boot-starter</module>
 		<module>spl-spring-boot-starter</module>
+		<module>groovy-spring-boot-starter</module>
 	</modules>
 
 	<build>

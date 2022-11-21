@@ -6,7 +6,6 @@ import net.engining.pg.redis.connection.RedissonConnectionConfiguration;
 import net.engining.pg.redis.props.MultiRedissonCommonProperties;
 import net.engining.pg.redis.props.RedissonCommonProperties;
 import net.engining.pg.redis.utils.RedisUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -16,9 +15,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
+/**
+ * @author Eric Lu
+ */
 @Configuration
 @EnableConfigurationProperties({
         CommonProperties.class,
