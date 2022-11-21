@@ -93,7 +93,17 @@
 			<artifactId>simpleclient_dropwizard</artifactId>
 			<version>${prometheus.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.prometheus</groupId>
+			<artifactId>simpleclient_pushgateway</artifactId>
+			<version>${prometheus.version}</version>
+		</dependency>
 
+		<!-- expose JMX -->
+		<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>

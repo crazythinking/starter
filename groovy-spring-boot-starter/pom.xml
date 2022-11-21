@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<groovy.version>3.0.13</groovy.version>
+		<groovy.dep.version>4.0.5</groovy.dep.version>
 	</properties>
 
 	<dependencies>
@@ -35,10 +35,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
+			<groupId>org.apache.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
-			<version>${groovy.version}</version>
+			<version>${groovy.dep.version}</version>
 			<scope>compile</scope>
+			<type>pom</type>
 		</dependency>
 
 		<dependency>

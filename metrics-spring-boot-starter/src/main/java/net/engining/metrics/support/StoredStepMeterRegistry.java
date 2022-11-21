@@ -5,8 +5,6 @@ import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.step.StepMeterRegistry;
 import io.micrometer.core.instrument.step.StepRegistryConfig;
 import net.engining.metrics.MetricsUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -24,9 +22,6 @@ import java.util.concurrent.TimeUnit;
  * @since :
  **/
 public class StoredStepMeterRegistry extends StepMeterRegistry {
-    /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoredStepMeterRegistry.class);
-
     /**
      * 数据存储层
      */

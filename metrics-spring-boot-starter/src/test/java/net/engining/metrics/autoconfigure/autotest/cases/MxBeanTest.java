@@ -1,7 +1,5 @@
 package net.engining.metrics.autoconfigure.autotest.cases;
 
-import com.alibaba.management.WispCounterMXBean;
-import com.alibaba.wisp.engine.WispCounter;
 import com.sun.management.ThreadMXBean;
 import net.engining.metrics.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import org.slf4j.Logger;

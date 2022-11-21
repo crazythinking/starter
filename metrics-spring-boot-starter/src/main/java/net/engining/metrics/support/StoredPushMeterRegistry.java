@@ -22,8 +22,6 @@ import io.micrometer.core.instrument.internal.DefaultMeter;
 import io.micrometer.core.instrument.push.PushMeterRegistry;
 import io.micrometer.core.instrument.push.PushRegistryConfig;
 import net.engining.metrics.MetricsUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.time.Duration;
@@ -44,11 +42,6 @@ import java.util.function.ToLongFunction;
  * @since :
  **/
 public class StoredPushMeterRegistry extends PushMeterRegistry implements InitializingBean {
-    /**
-     * logger
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoredPushMeterRegistry.class);
-
     /**
      * 数据存储层
      */
