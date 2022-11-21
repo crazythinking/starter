@@ -31,6 +31,9 @@ import java.util.Properties;
 
 import static org.springframework.integration.context.IntegrationContextUtils.ERROR_CHANNEL_BEAN_NAME;
 
+/**
+ * @author Eric Lu
+ */
 public final class SftpConfigUtils {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(SftpConfigUtils.class);

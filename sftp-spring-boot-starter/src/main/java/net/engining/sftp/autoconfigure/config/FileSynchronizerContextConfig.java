@@ -12,6 +12,9 @@ import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.file.remote.session.DelegatingSessionFactory;
 
+/**
+ * @author Eric Lu
+ */
 @Configuration
 @ConditionalOnProperty(prefix = "pg.sftp.synchronizer", name = "enabled", havingValue = "true")
 @EnableIntegration

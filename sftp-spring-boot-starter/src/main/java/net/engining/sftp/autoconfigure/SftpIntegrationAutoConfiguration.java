@@ -26,6 +26,9 @@ import java.util.Map;
 import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.DEFAULT;
 import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.SFTP_REMOTE_FILE_TEMPLATE_MAP;
 
+/**
+ * @author Eric Lu
+ */
 @Configuration
 @ConditionalOnProperty(prefix = "pg.sftp", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({

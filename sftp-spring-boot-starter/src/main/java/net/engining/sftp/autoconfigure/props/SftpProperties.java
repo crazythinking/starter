@@ -4,7 +4,6 @@ package net.engining.sftp.autoconfigure.props;
  * SFTP配置项
  *
  * @author Eric Lu
- * @create 2019-06-07 13:38
  **/
 public class SftpProperties {
     /**

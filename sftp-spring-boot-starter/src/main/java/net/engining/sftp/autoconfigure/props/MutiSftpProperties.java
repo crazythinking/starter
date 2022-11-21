@@ -6,6 +6,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.Map;
 
+/**
+ * @author Eric Lu
+ */
 @ConfigurationProperties(prefix = "pg.sftp.muti")
 public class MutiSftpProperties {
 
