@@ -51,9 +51,5 @@ public @interface GroovyScriptService {
      */
     long refreshCheckDelay() default -1L;
 
-    /**
-     * groovy 自定义 bean 名称
-     */
-    String customizerRef() default "";
 
 }

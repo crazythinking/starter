@@ -73,6 +73,7 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
      * @param importingClassMetadata import原数据
      * @param registry               bean注册中心
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 
@@ -80,62 +81,49 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
         registerScriptFactoryPostProcessorIfNecessary(registry);
 
         // Create script factory bean definition.
-        LinkedHashSet<BeanDefinition> candidateComponents = new LinkedHashSet<>();
+        LinkedHashSet<BeanDefinition> beanDefinitions = new LinkedHashSet<>();
 
         ClassPathScanningCandidateComponentProvider scanner = getScanner();
         scanner.setResourceLoader(this.resourceLoader);
         scanner.addIncludeFilter(new AnnotationTypeFilter(GroovyScriptService.class));
         Set<String> basePackages = getBasePackages(importingClassMetadata);
         for (String basePackage : basePackages) {
-            candidateComponents.addAll(scanner.findCandidateComponents(basePackage));
+            beanDefinitions.addAll(scanner.findCandidateComponents(basePackage));
         }
 
-        for (BeanDefinition candidateComponent : candidateComponents) {
-            if (candidateComponent instanceof AnnotatedBeanDefinition) {
-
-                // verify annotated class is an interface
-                AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) candidateComponent;
-                AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
+        for (BeanDefinition definition : beanDefinitions) {
+            // verify annotated class is an interface
+            if (definition instanceof AnnotatedBeanDefinition) {
+                AnnotationMetadata annotationMetadata = ((AnnotatedBeanDefinition) definition).getMetadata();
                 Assert.isTrue(annotationMetadata.isInterface(),
                         "@GroovyDynamicLangService can only be specified on an interface");
 
                 Map<String, Object> attributes = annotationMetadata
                         .getAnnotationAttributes(GroovyScriptService.class.getCanonicalName());
 
-                //  don't worry, won't be null
-                assert attributes != null;
-                String id = (String) attributes.get("id");
-
-                String value = resolveScriptSource(attributes);
-                candidateComponent.setBeanClassName(GROOVY_SCRIPT_FACTORY_CLASS_NAME);
-                candidateComponent.setAttribute(ScriptFactoryPostProcessor.LANGUAGE_ATTRIBUTE, "groovy");
+                //  don't worry, attributes won't be null
+                String beanName = (String) attributes.get("id");
+                String scriptSourceLocator = resolveScriptSource(attributes);
+                definition.setBeanClassName(GROOVY_SCRIPT_FACTORY_CLASS_NAME);
+                definition.setAttribute(ScriptFactoryPostProcessor.LANGUAGE_ATTRIBUTE, "groovy");
 
                 long refreshCheckDelay = (long) attributes.get("refreshCheckDelay");
-                candidateComponent.setAttribute(ScriptFactoryPostProcessor.REFRESH_CHECK_DELAY_ATTRIBUTE, refreshCheckDelay);
+                definition.setAttribute(ScriptFactoryPostProcessor.REFRESH_CHECK_DELAY_ATTRIBUTE, refreshCheckDelay);
 
                 // Attach jdk proxy target class metadata.!!! 不使用cglib,cglib在刷新后强转会失败
-                candidateComponent.setAttribute(ScriptFactoryPostProcessor.PROXY_TARGET_CLASS_ATTRIBUTE, false);
+                definition.setAttribute(ScriptFactoryPostProcessor.PROXY_TARGET_CLASS_ATTRIBUTE, false);
 
                 // Add constructor arguments.
-                ConstructorArgumentValues cav = candidateComponent.getConstructorArgumentValues();
-                cav.addIndexedArgumentValue(0, value);
-                // This is used for Groovy. It's a bean reference to a customizer bean.
-                if (attributes.containsKey("customizerRef")) {
-                    String customizerBeanName = (String) attributes.get("customizerRef");
-                    if (!customizerBeanName.isEmpty()) {
-                        cav.addIndexedArgumentValue(1, new RuntimeBeanReference(customizerBeanName));
-                    }
-                }
+                ConstructorArgumentValues cav = definition.getConstructorArgumentValues();
+                cav.addIndexedArgumentValue(0, scriptSourceLocator);
 
-                String beanName = id;
-                if (id.isEmpty()) {
+                if (beanName.isEmpty()) {
                     beanName = BeanDefinitionReaderUtils.generateBeanName(
-                            beanDefinition, registry, false);
+                            definition, registry, false);
                 }
-
                 registry.registerBeanDefinition(
                         beanName + "." + GroovyScriptFactory.class.getSimpleName(),
-                        candidateComponent);
+                        definition);
 
             }
         }
