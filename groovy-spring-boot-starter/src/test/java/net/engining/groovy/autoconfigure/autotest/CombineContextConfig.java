@@ -1,5 +1,6 @@
 package net.engining.groovy.autoconfigure.autotest;
 
+import net.engining.groovy.autoconfigure.annotations.EnableGroovyScript;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
  * @author Eric Lu
  */
 @Configuration
+@EnableGroovyScript(basePackages = {
+        "net.engining.groovy.autotest.services"
+})
 public class CombineContextConfig {
 
 

@@ -1,6 +1,7 @@
-package net.engining.groovy.autoconfigure.support;
+package net.engining.groovy.autoconfigure.annotations;
 
 
+import net.engining.groovy.autoconfigure.support.GroovyScriptRegister;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;

@@ -1,10 +1,11 @@
 package net.engining.groovy.autoconfigure.support;
 
+import net.engining.groovy.autoconfigure.annotations.EnableGroovyScript;
+import net.engining.groovy.autoconfigure.annotations.GroovyScriptService;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -16,7 +17,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.lang.Nullable;
 import org.springframework.scripting.config.LangNamespaceUtils;
 import org.springframework.scripting.groovy.GroovyScriptFactory;
 import org.springframework.scripting.support.ScriptFactoryPostProcessor;
@@ -34,6 +34,7 @@ import java.util.Set;
  *
  * @author Eric Lu
  */
+@SuppressWarnings("NullableProblems")
 public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
 
     /**
@@ -152,8 +153,7 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
     protected ClassPathScanningCandidateComponentProvider getScanner() {
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
             @Override
-            protected boolean isCandidateComponent(
-                    AnnotatedBeanDefinition beanDefinition) {
+            protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
                 boolean isCandidate = false;
                 if (beanDefinition.getMetadata().isIndependent()) {
                     if (!beanDefinition.getMetadata().isAnnotation()) {

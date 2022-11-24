@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.engining.groovy.autoconfigure.support;
+package net.engining.groovy.autoconfigure.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -47,7 +47,7 @@ public @interface GroovyScriptService {
     String scriptSource() default "";
 
     /**
-     * 更新检查延时
+     * 更新检查延时毫秒数
      */
     long refreshCheckDelay() default -1L;
 
