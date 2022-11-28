@@ -8,3 +8,7 @@ logging:
   level:
     root: info
     net.engining: trace
+
+pg:
+  groovy:
+    base-packages: "net.engining.groovy.autotest.services,net.engining.groovy.autotest.services2"

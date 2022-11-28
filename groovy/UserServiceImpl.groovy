@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class UserServiceImpl implements UserService {
 
     @Autowired
-    private Gamer gamer;
+    Gamer gamer;
 
     @Override
     String hello(String name) {

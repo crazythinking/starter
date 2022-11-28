@@ -25,8 +25,8 @@ import net.engining.groovy.autoconfigure.annotations.GroovyScriptService;
  * @author caiqy
  */
 @GroovyScriptService(
-        id = "userService",
-        scriptSource = "file:D:\\idea-workspace\\power-gears\\starter\\groovy\\UserServiceImpl.groovy",
+        id = "userService2",
+        scriptSource = "file:D:\\idea-workspace\\power-gears\\starter\\groovy\\UserService2Impl.groovy",
         refreshCheckDelay = 50
 )
 public interface UserService2 {

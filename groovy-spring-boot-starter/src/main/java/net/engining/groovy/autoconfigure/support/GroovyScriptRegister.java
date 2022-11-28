@@ -3,6 +3,8 @@ package net.engining.groovy.autoconfigure.support;
 import net.engining.groovy.autoconfigure.annotations.EnableGroovyScript;
 import net.engining.groovy.autoconfigure.annotations.GroovyScriptService;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
@@ -36,6 +38,8 @@ import java.util.Set;
  */
 @SuppressWarnings("NullableProblems")
 public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroovyScriptRegister.class);
 
     /**
      * The unique name under which the internally managed {@link GroovyScriptFactoryPostProcessor} is
@@ -50,6 +54,10 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
     private Environment environment;
 
     private ResourceLoader resourceLoader;
+
+    public GroovyScriptRegister() {
+        LOGGER.debug("instance");
+    }
 
     /**
      * Implementation of EnvironmentAware interfaces
@@ -187,6 +195,9 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
             basePackages.add(
                     ClassUtils.getPackageName(importingClassMetadata.getClassName()));
         }
+
+        //environment.getProperty()
+
         return basePackages;
     }
 

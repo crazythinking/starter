@@ -18,6 +18,7 @@ package net.engining.groovy.autoconfigure.support;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.scripting.ScriptSource;
 import org.springframework.scripting.support.ScriptFactoryPostProcessor;
@@ -41,6 +42,11 @@ public class GroovyScriptFactoryPostProcessor extends ScriptFactoryPostProcessor
             LOGGER.warn(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return super.postProcessAfterInitialization(bean, beanName);
     }
 
     @Override
