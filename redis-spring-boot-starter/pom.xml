@@ -66,6 +66,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>gm-spring-boot-starter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>metrics-spring-boot-starter</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

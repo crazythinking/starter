@@ -1,6 +1,7 @@
 package net.engining.redis.autoconfigure.autotest.cases;
 
 import cn.hutool.core.lang.Console;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -37,6 +38,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     @Autowired
     RedisCacheService redisCacheService;
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     private User user;
 
     @Override
@@ -61,6 +64,9 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     public void assertResult() throws Exception {
         User user1 = redissonObject.getValue("user1");
         Assert.isTrue(user.getName().equals(user1.name), "user对象的值不相等");
+        Console.log(objectMapper.writeValueAsString(user1));
+        User user2 = (User) redisTemplate.opsForValue().get("user2");
+        Console.log(user2);
 
         //BitMap
         boolean b = RedisUtil.getBitmapHandler().get("loginId", 3L);
@@ -70,6 +76,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //boolean b3 = RedisUtil.getBitmapHandler(5).get("loginId", 0L);
         //Assert.isTrue(!b3, "状态不相等");
     }
+
 
     @Override
     public void testProcess() throws Exception {
@@ -103,6 +110,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         String c = redissonCacheService.cachable3("-test-cache");
         Console.log(c);
         redisCacheService.originCachable("origin-test-cache");
+
+        redisTemplate.opsForValue().set("user2", user);
 
     }
 

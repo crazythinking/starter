@@ -28,6 +28,9 @@
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingRandomAccessFile>
+        <!--<Async name="AsyncAllLog" bufferSize="256">
+	      <AppenderRef ref="AllLog"/>
+	    </Async>-->
 
     </Appenders>
 
