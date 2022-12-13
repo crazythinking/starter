@@ -2,6 +2,7 @@ package net.engining.gm.autoconfigure;
 
 import net.engining.gm.config.ParameterContextConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -13,8 +14,7 @@ import org.springframework.context.annotation.Import;
  **/
 @Configuration
 @ConditionalOnProperty(prefix = "gm.config.enabled", name = "parameter", havingValue = "true")
-@Import(value = {
-        ParameterContextConfig.class
-})
+@Import(value = {ParameterContextConfig.class})
+@EntityScan(basePackages = {"net.engining.pg.parameter.entity"})
 public class ParameterAutoConfiguration {
 }
