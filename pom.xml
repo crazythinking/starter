@@ -16,11 +16,11 @@
 	<properties>
 		<pmd.skip>true</pmd.skip>
 		<starter.version>3.1.0-SNAPSHOT</starter.version>
-		<pg.version>4.0.1-SNAPSHOT</pg.version>
-		<control.version>2.0.1-SNAPSHOT</control.version>
-		<gm.version>2.0.1-SNAPSHOT</gm.version>
+		<pg.version>4.0.1.RELEASE</pg.version>
+		<control.version>2.0.1.RELEASE</control.version>
+		<gm.version>2.0.1.RELEASE</gm.version>
 
-		<jasypt.version>3.0.4</jasypt.version>
+		<jasypt.version>3.0.5</jasypt.version>
 	</properties>
 	
 	<dependencyManagement>
