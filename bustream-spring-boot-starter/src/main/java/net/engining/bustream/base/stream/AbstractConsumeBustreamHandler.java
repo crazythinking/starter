@@ -59,7 +59,9 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
             handler(event, headers);
             defaultAfter(event, true, type, logger);
             return true;
-        } catch (Exception e) {
+        }
+        //FIXME 不因该捕捉所有异常，会造成非业务异常无法重试；比如超时类的异常
+        catch (Exception e) {
             ExceptionUtilsExt.dump(e);
             defaultAfter(event, false, type, logger);
         }
