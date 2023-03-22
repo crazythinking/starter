@@ -20,7 +20,7 @@ import java.util.List;
  * @since :
  **/
 @Profile({
-        "channel.pollinput.common"
+        "stream.common.bindings.pollinput"
 })
 @Service
 public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> implements InitializingBean {
@@ -36,6 +36,7 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
 
     @Override
     protected void handler(User event, MessageHeaders headers) throws Exception {
+        LOGGER.info("handler event for user object: {}", event);
         users.add(event);
     }
 

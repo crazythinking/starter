@@ -6,7 +6,6 @@ import net.engining.bustream.autotest.cases.handler.UserInputStreamHandler;
 import net.engining.bustream.autotest.cases.handler.UserOutputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import net.engining.bustream.autotest.support.User;
-import net.engining.bustream.autotest.support.User2;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,14 +21,15 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "channel.input.dev",
         "channel.output.dev",
+        "channel.input.dev",
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     UserOutputStreamHandler userOutputStreamHandler;
+
     @Autowired
     UserInputStreamHandler userInputStreamHandler;
 

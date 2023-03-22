@@ -3,8 +3,6 @@ package net.engining.bustream.base.stream;
 import com.rabbitmq.client.Channel;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;
 import org.springframework.integration.acks.AcknowledgmentCallback;
@@ -24,11 +22,12 @@ import java.io.Serializable;
  **/
 public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Serializable>
                                                         extends AbstractConsumeBustreamHandler<E> {
+
     /**
      * 接收处理消息，且在处理成功后进行ACK处理
      */
     @Override
-    protected void consume(E event, MessageHeaders headers) {
+    protected void consume(E event, MessageHeaders headers)  throws Exception {
         logger.trace("consume message headers: {}", headers);
 
         //AMQP特有的
@@ -43,8 +42,9 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
         Acknowledgment acknowledgment = (Acknowledgment) headers.get("kafka_acknowledgment");
 
         logger.trace("consume event for {}: {}", event.getClass(), event);
-        boolean ret = received(event, headers);
+        boolean ret;
         try {
+            ret = received(event, headers);
             if (ValidateUtilExt.isNotNullOrEmpty(channel)){
                 Assert.notNull(deliveryTag, AmqpHeaders.DELIVERY_TAG+" should not be null!!!");
                 if (ret){
@@ -79,6 +79,7 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
 
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
+            throw e;
         }
     }
 }

@@ -29,10 +29,11 @@ import java.util.List;
  **/
 public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListener<ApplicationReadyEvent> {
 
+    private static final String DB_NAME = "oracle";
     /**
-     * MySql CDC metrics
+     * Oracle CDC metrics
      */
-    public static final String ORACLE_PREFIX = PREFIX + ".oracle";
+    private static final String ORACLE_PREFIX = PREFIX + "." + DB_NAME;
     /**
      * Common metrics
      */
@@ -52,7 +53,6 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
      */
     private static final String HISTORY_CHANGES_RECOVERED = ORACLE_PREFIX + ".history.changes.recovered";
     private static final String HISTORY_CHANGES_APPLIED = ORACLE_PREFIX + ".history.changes.applied";
-
 
     private MeterRegistry meterRegistry;
 
@@ -201,7 +201,7 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
                             .register(this.meterRegistry);
                 }
 
-                DatabaseHistoryMXBean historyMXBean = findHistoryMXBean("mysql", cdcName);
+                DatabaseHistoryMXBean historyMXBean = findHistoryMXBean(DB_NAME, cdcName);
                 if (ValidateUtilExt.isNotNullOrEmpty(historyMXBean)) {
                     Gauge.builder(
                                     HISTORY_CHANGES_RECOVERED,
@@ -234,7 +234,7 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
      * @return OracleStreamingChangeEventSourceMetricsMXBean
      */
     public OracleStreamingChangeEventSourceMetricsMXBean findStreamingMXBean(String cdcName) {
-        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream("oracle", cdcName);
+        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream(DB_NAME, cdcName);
 
         return JMX.newMBeanProxy(
                 MBEAN_SERVER, objectName, OracleStreamingChangeEventSourceMetricsMXBean.class
@@ -248,7 +248,7 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
      * @return SnapshotChangeEventSourceMetricsMXBean
      */
     public SnapshotChangeEventSourceMetricsMXBean findSnapshotMXBean(String cdcName) {
-        ObjectName objectName = DebeziumMetrics.convertObjectName4Snapshot("oracle", cdcName);
+        ObjectName objectName = DebeziumMetrics.convertObjectName4Snapshot(DB_NAME, cdcName);
 
         return JMX.newMBeanProxy(
                 MBEAN_SERVER, objectName, SnapshotChangeEventSourceMetricsMXBean.class

@@ -30,6 +30,6 @@ spring:
               useTopicHeader: false
               #成功的发送结果Event发送到指定的MessageChannel(BeanName)；Bean必须存在于应用程序上下文中。默认null
               #recordMetadataChannel:
-              compression: ${spring.kafka.producer.compression-type}
+              compression-type: ${spring.kafka.producer.compression-type}
               #当关闭producer时等待的超时时间，默认30秒
               closeTimeout: 30

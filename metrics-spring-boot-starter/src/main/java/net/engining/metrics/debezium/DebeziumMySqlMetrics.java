@@ -29,10 +29,11 @@ import java.util.List;
  **/
 public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListener<ApplicationReadyEvent> {
 
+    private static final String DB_NAME = "mysql";
     /**
      * MySql CDC metrics
      */
-    public static final String MYSQL_PREFIX = PREFIX + ".mysql";
+    private static final String MYSQL_PREFIX = PREFIX + "."+DB_NAME;
     /**
      * Common metrics
      */
@@ -198,7 +199,7 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
                             .register(this.meterRegistry);
                 }
 
-                DatabaseHistoryMXBean historyMXBean = findHistoryMXBean("mysql", cdcName);
+                DatabaseHistoryMXBean historyMXBean = findHistoryMXBean(DB_NAME, cdcName);
                 if (ValidateUtilExt.isNotNullOrEmpty(historyMXBean)) {
                     Gauge.builder(
                                     HISTORY_CHANGES_RECOVERED,
@@ -231,7 +232,7 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
      * @return  MySqlStreamingChangeEventSourceMetricsMXBean
      */
     private MySqlStreamingChangeEventSourceMetricsMXBean findStreamingMXBean(String cdcName) {
-        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream("mysql", cdcName);
+        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream(DB_NAME, cdcName);
 
         return JMX.newMBeanProxy(
                 MBEAN_SERVER, objectName, MySqlStreamingChangeEventSourceMetricsMXBean.class
@@ -245,7 +246,7 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
      * @return  MySqlSnapshotChangeEventSourceMetricsMXBean
      */
     private MySqlSnapshotChangeEventSourceMetricsMXBean findSnapshotMXBean(String cdcName) {
-        ObjectName objectName = DebeziumMetrics.convertObjectName4Snapshot("mysql", cdcName);
+        ObjectName objectName = DebeziumMetrics.convertObjectName4Snapshot(DB_NAME, cdcName);
 
         return JMX.newMBeanProxy(
                 MBEAN_SERVER, objectName, MySqlSnapshotChangeEventSourceMetricsMXBean.class

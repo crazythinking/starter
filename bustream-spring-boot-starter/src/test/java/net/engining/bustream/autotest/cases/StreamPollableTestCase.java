@@ -21,16 +21,8 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles={
-        "rabbit.common",
-        "rabbit.dev",
-        "bus.disable",
-        "bustream.rabbit.binders",
-        "stream.common.bindings.pollinput",
-        "stream.common.bindings.output",
-        "stream.rabbit.bindings.pollinput",
-        "stream.rabbit.bindings.output",
-        "stream.common",
-        "stream.dev"
+        "channel.pollinput.dev",
+        "not.auto.ack"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamPollableTestCase extends AbstractTestCaseTemplate {

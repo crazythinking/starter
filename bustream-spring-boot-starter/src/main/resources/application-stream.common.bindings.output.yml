@@ -5,6 +5,9 @@ spring:
       bindings:
         output: # binding的key为output
 #          binder: # 指定某个binder, 不指定时使用default-binder的配置
-          destination: ${spring.application.name}.default
+          destination: ${spring.application.name}.default # exchange 或 topic 用生产者的applicationName做前缀
 #          group: # queue的后缀,带业务含义; 由各业务系统自身定义
           contentType: application/json
+          producer:
+            error-channel-enabled: true
+

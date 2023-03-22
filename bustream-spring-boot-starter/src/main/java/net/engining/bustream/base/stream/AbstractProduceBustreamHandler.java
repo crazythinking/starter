@@ -1,11 +1,18 @@
 package net.engining.bustream.base.stream;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.lang.UUID;
 import net.engining.bustream.base.BustreamHandler;
+import net.engining.bustream.base.ErrorMessageEvent;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.MessageBuilder;
 
 import java.io.Serializable;
@@ -29,6 +36,8 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
 
     Type type = Type.PRODUCER;
 
+    private ApplicationEventPublisher publisher;
+
     @Override
     public void setLogger(Logger logger) {
         this.logger = logger;
@@ -43,6 +52,10 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
         this.messageChannel = messageChannel;
     }
 
+    protected void setPublisher(ApplicationEventPublisher publisher) {
+        this.publisher = publisher;
+    }
+
     /**
      * 发送消息事件并返回结果，需要业务逻辑端显示调用
      *
@@ -50,18 +63,34 @@ public abstract class AbstractProduceBustreamHandler<E extends Serializable> imp
      * @param headers 消息头信息
      */
     public boolean send(E event, Map<String, Object> headers) {
+        return sendAndGetId(event, headers).getValue();
+    }
+
+    public Pair<String, Boolean> sendAndGetId(E event, Map<String, Object> headers) {
         boolean ret = false;
+        String messageId = null;
+        Message<E> message = null;
         defaultBefore(event, type, logger);
         try {
             transform(event, headers);
-            ret = messageChannel.send(MessageBuilder.createMessage(event, new MessageHeaders(headers)));
+            if (ValidateUtilExt.isNullOrEmpty(headers.get(ORIGIN_MESSAGE_ID))){
+                messageId = UUID.fastUUID().toString(true);
+                headers.put(ORIGIN_MESSAGE_ID, messageId);
+            }
+            else {
+                messageId = (String) headers.get(ORIGIN_MESSAGE_ID);
+            }
+
+            message = MessageBuilder.createMessage(event, new MessageHeaders(headers));
+            ret = messageChannel.send(message);
             defaultAfter(event, ret, type, logger);
-            return ret;
+
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
+            this.publisher.publishEvent(new ErrorMessageEvent(new ErrorMessage(e, message)));
             defaultAfter(event, false, type, logger);
         }
-        return ret;
+        return Pair.of(messageId, ret);
     }
 
     /**

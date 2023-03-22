@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.io.Serializable;
 
 /**
- * 默认消息轮询消费者的处理抽象类，由业务类继承并注入 Spring Context；
- * 注意：此类绑定了Channel -> 内置的POLLINPUT-Binding；如果业务类需要自定义的Binding时，需要自行实现{@link AbstractConsumeBustreamHandler}；
+ * 轮询消费者子类，此类默认绑定了Channel -> POLLINPUT；
+ * 如果业务类需要监听其他自定义的Channel时，需要自行实现{@link AbstractConsume4ManualAckBustreamHandler}；
  *
  * @author : Eric Lu
  * @version :
@@ -42,7 +42,11 @@ public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
     public void pollConsume4ChannelPollinput(){
         pollableMessageSource.poll(
                 message -> {
-                    super.consume((E) message.getPayload(), message.getHeaders());
+                    try {
+                        consume((E) message.getPayload(), message.getHeaders());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 },
                 getParameterizedTypeReference()
         );

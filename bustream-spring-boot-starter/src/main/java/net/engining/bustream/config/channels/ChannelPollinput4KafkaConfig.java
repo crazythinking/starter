@@ -4,7 +4,6 @@ import net.engining.bustream.base.stream.StreamPollableInput;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * 针对Kafka的 Channel：pollInput 的组合配置

@@ -20,6 +20,11 @@ spring:
                 password: ${spring.rabbitmq.password}
                 username: ${spring.rabbitmq.username}
                 virtual-host: ${spring.rabbitmq.virtual-host}
+                publisher-confirm-type: ${spring.rabbitmq.publisher-confirm-type}
+                publisher-returns: ${spring.rabbitmq.publisher-returns}
+                template:
+                  mandatory: ${spring.rabbitmq.template.mandatory}
   profiles:
     include:
+    - rabbit
     - bustream.rabbit.bindings.default

@@ -22,7 +22,7 @@
         <RollingRandomAccessFile name="AllLog" fileName="${LOG_HOME}/all.log" immediateFlush="false"
                                  filePattern="${LOG_HOME}/$${date:yyyy-MM}/all-%d{yyyy-MM-dd-HHmmss}.log">
             <PatternLayout charset="UTF-8"
-                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%sw_ctx] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
+                           pattern="[%-5level] [%d{DEFAULT}] [%pid] [%thread] [%traceId] [%MDC] ([%c{1.}:%line:%method]) %msg%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>

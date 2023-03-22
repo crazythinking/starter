@@ -10,6 +10,8 @@ import net.engining.bustream.autotest.cases.handler.UserOutputStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.autotest.support.User2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,13 +29,14 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "channel.input.dev",
         "channel.output.dev",
+        "channel.input.dev",
         "not.auto.ack"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamRabbitTestCase extends AbstractTestCaseTemplate {
-
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(StreamRabbitTestCase.class);
     @Autowired
     UserOutputStreamHandler userOutputStreamHandler;
     @Autowired

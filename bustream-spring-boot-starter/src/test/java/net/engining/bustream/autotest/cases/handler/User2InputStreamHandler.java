@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since :
  **/
 @Profile({
-        "channel.input.common",
-        "not.auto.ack"
+        "channel.stream.input.rabbit & not.auto.ack",
+        "channel.stream.input.kafka & not.auto.ack",
 })
 @Service
 public class User2InputStreamHandler extends AbstractConsume4ManualAckBustreamHandler<User2> implements InitializingBean {
@@ -44,7 +44,7 @@ public class User2InputStreamHandler extends AbstractConsume4ManualAckBustreamHa
      */
     @StreamListener(value = Sink.INPUT, condition = "headers['messageType']=='type2'")
     //@StreamListener(value = Sink.INPUT)
-    protected void consume4ChannelInput(@Payload User2 event, @Headers MessageHeaders headers) {
+    protected void consume4ChannelInput(@Payload User2 event, @Headers MessageHeaders headers) throws Exception {
         super.consume(event, headers);
     }
 

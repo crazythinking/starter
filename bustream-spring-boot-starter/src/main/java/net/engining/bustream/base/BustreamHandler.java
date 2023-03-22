@@ -14,6 +14,8 @@ import java.io.Serializable;
  **/
 public interface BustreamHandler<E extends Serializable> {
 
+    String ORIGIN_MESSAGE_ID = "origin_message_id";
+
     enum Type implements BaseEnum<String> {
 
         /**

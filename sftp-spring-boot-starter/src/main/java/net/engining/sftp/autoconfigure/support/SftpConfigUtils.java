@@ -22,11 +22,9 @@ import org.springframework.integration.sftp.dsl.Sftp;
 import org.springframework.integration.sftp.dsl.SftpInboundChannelAdapterSpec;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
-import org.springframework.messaging.Message;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.Properties;
 
 import static org.springframework.integration.context.IntegrationContextUtils.ERROR_CHANNEL_BEAN_NAME;

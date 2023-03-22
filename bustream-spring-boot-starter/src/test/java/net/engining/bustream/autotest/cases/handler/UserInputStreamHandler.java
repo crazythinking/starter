@@ -27,7 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since :
  **/
 @Profile({
-        "channel.input.common",
+        "channel.stream.input.rabbit",
+        "channel.stream.input.kafka",
 })
 @Service
 public class UserInputStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
@@ -42,7 +43,7 @@ public class UserInputStreamHandler extends AbstractConsumeBustreamHandler<User>
      * 接收消息，无需显示调用，由监听器自动触发
      */
     @StreamListener(value = Sink.INPUT)
-    protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers) {
+    protected void consume4ChannelInput(@Payload User event, @Headers MessageHeaders headers) throws Exception {
         super.consume(event, headers);
     }
 

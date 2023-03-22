@@ -17,7 +17,8 @@ import java.util.Map;
  * @since :
  **/
 @Profile({
-        "channel.output.common",
+        "channel.stream.output.rabbit",
+        "channel.stream.output.kafka",
 })
 @Service
 public class User2OutputStreamHandler extends AbstractOutputBustreamHandler<User2> implements InitializingBean {
@@ -27,7 +28,8 @@ public class User2OutputStreamHandler extends AbstractOutputBustreamHandler<User
 
     @Override
     protected void transform(User2 event, Map<String, Object> headers) {
-        LOGGER.info("transform event to user2 object: {}", event);
+        LOGGER.info("transform event to user2 object");
+        headers.put("test-head", "for test");
     }
 
     @Override

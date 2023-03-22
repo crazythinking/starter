@@ -3,6 +3,7 @@ package net.engining.bustream.base.stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.MessageChannel;
 
 import java.io.Serializable;
@@ -24,4 +25,9 @@ public abstract class AbstractOutputBustreamHandler<E extends Serializable> exte
         super.setMessageChannel(messageChannel);
     }
 
+    @Autowired
+    @Override
+    protected void setPublisher(ApplicationEventPublisher publisher) {
+        super.setPublisher(publisher);
+    }
 }
