@@ -21,6 +21,7 @@
 		<gm.version>2.0.2-SNAPSHOT</gm.version>
 
 		<jasypt.version>3.0.5</jasypt.version>
+		<jsch.version>0.2.4</jsch.version>
 	</properties>
 	
 	<dependencyManagement>

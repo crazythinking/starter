@@ -14,10 +14,6 @@
 	<name>sftp starter</name>
 	<packaging>jar</packaging>
 
-	<properties>
-		<jsch.version>0.2.4</jsch.version>
-	</properties>
-
 	<dependencies>
 
 		<dependency>
