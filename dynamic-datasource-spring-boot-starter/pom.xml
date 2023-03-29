@@ -18,7 +18,7 @@
 		<druid.spring.version>1.2.8</druid.spring.version>
 		<sharding.jdbc.version>5.1.1</sharding.jdbc.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-		<oracle.version>21.3.0.0.0</oracle.version>
+		<oracle.version>21.3.0.0</oracle.version>
 		<clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
 	</properties>
 
@@ -119,8 +119,8 @@
 
 		<!-- oracle -->
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>oracle8</artifactId>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
 			<version>${oracle.version}</version>
 			<scope>runtime</scope>
 			<optional>true</optional>

@@ -16,7 +16,7 @@
 
 	<properties>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-		<oracle.version>21.3.0.0.0</oracle.version>
+		<oracle.version>21.3.0.0</oracle.version>
 	</properties>
 
 	<dependencies>
@@ -63,8 +63,8 @@
 
 		<!-- oracle -->
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>oracle8</artifactId>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
 			<version>${oracle.version}</version>
 			<scope>runtime</scope>
 			<optional>true</optional>

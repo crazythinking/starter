@@ -68,8 +68,9 @@ public class JRaftOffsetBackingStore extends MemoryOffsetBackingStore {
              ObjectInputStream objectInputStream = new ObjectInputStream(byteInputStream);
         ) {
             Object obj = objectInputStream.readObject();
-            if (!(obj instanceof HashMap))
+            if (!(obj instanceof HashMap)) {
                 throw new ConnectException("Expected HashMap but found " + obj.getClass());
+            }
             Map<byte[], byte[]> raw = (Map<byte[], byte[]>) obj;
             for (Map.Entry<byte[], byte[]> mapEntry : raw.entrySet()) {
                 ByteBuffer key = (mapEntry.getKey() != null) ? ByteBuffer.wrap(mapEntry.getKey()) : null;
