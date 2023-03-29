@@ -13,7 +13,7 @@ import java.sql.SQLException;
 /**
  * @author Eric Lu
  **/
-public class SimpleTest extends AbstractTestCaseTemplate {
+public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void initTestData() {
