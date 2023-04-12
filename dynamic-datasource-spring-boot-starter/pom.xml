@@ -103,10 +103,6 @@
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>net.engining.gm</groupId>
-			<artifactId>gm-sdk</artifactId>
-		</dependency>
 
 		<!-- mysql -->
 		<dependency>
