@@ -32,9 +32,9 @@ import java.util.List;
 /**
  * @author Eric Lu
  **/
-public class SimpleTest extends AbstractTestCaseTemplate {
+public class SimpleTestCase extends AbstractTestCaseTemplate {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
 
     @Autowired(required = false)
     private UserService userService;
