@@ -1,15 +1,19 @@
 package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
+import com.google.common.collect.Maps;
+import net.engining.bustream.autotest.cases.handler.User2StreamBridgeStreamHandler;
+import net.engining.bustream.autotest.cases.handler.UserStreamBridgeStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.autotest.support.User2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.MimeTypeUtils;
+
+import java.util.Map;
 
 /**
  * @author : Eric Lu
@@ -28,7 +32,10 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(FunctionalTestCase.class);
 
     @Autowired
-    private StreamBridge streamBridge;
+    UserStreamBridgeStreamHandler userStreamBridgeStreamHandler;
+
+    @Autowired
+    User2StreamBridgeStreamHandler user2StreamBridgeStreamHandler;
 
     @Override
     public void initTestData() throws Exception {
@@ -44,8 +51,13 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     public void testProcess() throws Exception {
         //通过StreamBridge发送消息是同步模型
         for (int i = 0; i < 5; i++) {
-            boolean rt = streamBridge.send("catchUser2-in-0", setupUser2(), MimeTypeUtils.APPLICATION_JSON);
-            LOGGER.warn("streamBridge send succeed: {}", rt);
+
+            Map<String, Object> headerMap = Maps.newHashMap();
+            headerMap.put("messageType", "type2");
+
+            boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
+            boolean rt2 = user2StreamBridgeStreamHandler.send(setupUser2(), headerMap);
+            LOGGER.warn("streamBridge send succeed: {}-{}", rt, rt2);
         }
 
         //等待另一个线程获取到消息并赋值
@@ -56,6 +68,15 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
         User2 user = new User2();
         user.setUserId2(System.currentTimeMillis());
         user.setName2("user2.name");
+        user.setAge(RandomUtil.randomInt(1, 100));
+
+        return user;
+    }
+
+    public static User setupUser() {
+        User user = new User();
+        user.setUserId(System.currentTimeMillis());
+        user.setName("user2.name");
         user.setAge(RandomUtil.randomInt(1, 100));
 
         return user;

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -48,7 +49,7 @@ public class UserInputStreamHandler extends AbstractConsumeBustreamHandler<User>
     }
 
     @Override
-    protected void handler(User event, MessageHeaders headers) throws Exception{
+    protected void handler(User event, Map<String, Object> headers) throws Exception{
         LOGGER.info("handler event for user1 object: {}", event);
         if (event.getAge()==0){
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");

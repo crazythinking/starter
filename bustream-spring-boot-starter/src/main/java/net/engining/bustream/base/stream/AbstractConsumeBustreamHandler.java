@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 默认消息消费者的处理抽象类，由业务系统继承并注入 Spring Context；
@@ -73,7 +74,7 @@ public abstract class AbstractConsumeBustreamHandler<E extends Serializable> imp
      * @param headers   头信息
      * @exception       Exception 该异常类型会用于外部配置决定是否消费重试
      */
-    protected abstract void handler(E event, MessageHeaders headers) throws Exception;
+    protected abstract void handler(E event, Map<String, Object> headers) throws Exception;
 
     @Override
     public void before(E event) {

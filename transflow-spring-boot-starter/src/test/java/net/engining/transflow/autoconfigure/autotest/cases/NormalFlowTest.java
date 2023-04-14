@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
-public class NormalFlowTestCase extends AbstractTestCaseTemplate {
+public class NormalFlowTest extends AbstractTestCaseTemplate {
 
 	@Autowired
 	FlowTransProcessorTemplate flowTransProcessorTemplate;

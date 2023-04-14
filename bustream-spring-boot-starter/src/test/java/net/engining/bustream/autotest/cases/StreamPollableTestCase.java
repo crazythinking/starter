@@ -21,8 +21,8 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles={
+        "channel.output.dev",
         "channel.pollinput.dev",
-        "not.auto.ack"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class StreamPollableTestCase extends AbstractTestCaseTemplate {

@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -49,7 +50,7 @@ public class User2InputStreamHandler extends AbstractConsume4ManualAckBustreamHa
     }
 
     @Override
-    protected void handler(User2 event, MessageHeaders headers) throws Exception{
+    protected void handler(User2 event, Map<String, Object> headers) throws Exception{
         if (event.getAge()==0){
             user = event;
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");

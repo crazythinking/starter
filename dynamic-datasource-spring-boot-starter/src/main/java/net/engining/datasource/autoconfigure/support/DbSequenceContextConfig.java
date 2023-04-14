@@ -89,6 +89,9 @@ public class DbSequenceContextConfig {
                             LOGGER.warn("该数据库:{}, 不支持Sequence操作，Bean sequenceOperator 将为空值", dbType.getValue());
                         }
                     }
+                    else {
+                        sequenceOperator = null;
+                    }
 
                     if (ValidateUtilExt.isNotNullOrEmpty(sequenceOperator)) {
                         beanFactory.registerSingleton(

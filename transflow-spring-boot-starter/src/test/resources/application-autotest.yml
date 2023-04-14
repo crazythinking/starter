@@ -9,8 +9,10 @@ logging:
     root: info
     net.engining: trace
 
-#gm:
-#  trans-flow:
+gm:
+  trans-flow:
+    inbound-lob-persist: false
+    outbound-lob-persist: false
 #    dump-procedure: true
 #    dump-request: true
 #    dump-response: true

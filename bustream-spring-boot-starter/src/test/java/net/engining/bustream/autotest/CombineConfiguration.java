@@ -1,5 +1,6 @@
 package net.engining.bustream.autotest;
 
+import com.google.common.collect.Maps;
 import net.engining.bustream.autotest.cases.FunctionalTestCase;
 import net.engining.bustream.autotest.support.User2;
 import net.engining.gm.config.props.GmCommonProperties;
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -33,15 +37,33 @@ public class CombineConfiguration {
 		return new ApplicationContextHolder();
 	}
 
+	/**
+	 * 不推荐
+	 * 由spring.cloud.stream.poller.fixed-delay指定触发间隔，默认1s
+	 */
 	@Bean
-	public Consumer<User2> catchUser2() {
-		return user2 -> {
-			LOGGER.warn("Functional Consumer Received: {}", user2.toString());
+	public Supplier<Message<User2>> addUser2(){
+		return () -> {
+			Message<User2> message = MessageBuilder.createMessage(
+					FunctionalTestCase.setupUser2(),
+					new MessageHeaders(Maps.newHashMap())
+			);
+			LOGGER.warn("Functional Producer[addUser2] send: {}", message.getPayload());
+			return message;
 		};
 	}
 
 	@Bean
-	public Supplier<User2> addUser2(){
-		return FunctionalTestCase::setupUser2;
+	public Consumer<Message<User2>> catchUser2Lu() {
+		return message -> {
+			LOGGER.warn("Functional Consumer[catchUser2Lu] received: {}", message.getPayload());
+		};
+	}
+
+	@Bean
+	public Consumer<Message<User2>> catchUser2Repay1() {
+		return message -> {
+			LOGGER.warn("Functional Consumer[catchUser2Repay1] received: {}", message.getPayload());
+		};
 	}
 }

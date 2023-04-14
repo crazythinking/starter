@@ -15,11 +15,6 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<druid.spring.version>1.2.8</druid.spring.version>
-		<sharding.jdbc.version>5.1.1</sharding.jdbc.version>
-		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-		<oracle.version>21.3.0.0</oracle.version>
-		<clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
 	</properties>
 
 	<dependencies>
@@ -50,7 +45,6 @@
 		<dependency>
 			<groupId>org.apache.shardingsphere</groupId>
 			<artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
-			<version>${sharding.jdbc.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -58,7 +52,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>${druid.spring.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -108,7 +101,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-java.version}</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
@@ -117,7 +109,6 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
-			<version>${oracle.version}</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
@@ -125,7 +116,6 @@
 		<dependency>
 			<groupId>ru.yandex.clickhouse</groupId>
 			<artifactId>clickhouse-jdbc</artifactId>
-			<version>${clickhouse-jdbc.version}</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
@@ -156,6 +146,26 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose><!-- Emit messages about accessed/processed compilation units -->
+					<privateScope>true</privateScope><!-- Shows all classes and members. -->
+					<showWeaveInfo>true</showWeaveInfo><!-- Emit messages about weaving -->
+					<aspectLibraries>
+						<aspectLibrary><!-- 这里与spring-aspects配合使用；项目中springJPA事务管理就是使用Spring + AspectJ Annotation进行编译时Weave -->
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-aspects</artifactId>
+						</aspectLibrary>
+						<aspectLibrary>
+							<groupId>net.engining.gm</groupId>
+							<artifactId>gm-sdk</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+					<!-- Generate aop.xml file for load-time weaving with default name (/META-INF/aop.xml). -->
+					<outxml>true</outxml>
+					<complianceLevel>${jdk.version}</complianceLevel>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 
