@@ -43,3 +43,4 @@ hs_err_pid*
 /rheakv-spring-boot-starter/rheakv-rocksdb/
 /sftp-spring-boot-starter/sftpinput/
 /sftp-spring-boot-starter/sftpinput1/
+*.bak

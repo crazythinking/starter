@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>groovy-spring-boot-starter</artifactId>
-	<name>sftp starter</name>
+	<name>groovy starter</name>
 	<packaging>jar</packaging>
 
 	<properties>
