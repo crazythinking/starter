@@ -32,6 +32,7 @@ public class SftpProperties {
      * The timeout property is used as the socket timeout parameter, as well as
      * the default connection timeout. Defaults to <code>60000</code>, which means,
      * that no timeout will occur.
+     * 单位：毫秒
      */
     private int timeout = 60000;
 
@@ -50,7 +51,7 @@ public class SftpProperties {
 
     /**
      * Sets the limit of how long to wait for a session to become available.
-     *
+     * 单位：毫秒
      */
     private int cachingSessionWaitTimeout = 60000;
 
@@ -98,6 +99,20 @@ public class SftpProperties {
      * 是否启用ChannelExec
      */
     private boolean execEnabled = false;
+
+    /**
+     * Set to true to test the session when checking one out from the cache.
+     * 此处有坑：当设为true时，如果ssh用户没有该登录用户所属home的ls权限或执行ls home目录失败时，会造成session无法重用，从而造成不断的去创建新的ssh连接。
+     */
+    private boolean testSession = false;
+
+    public boolean isTestSession() {
+        return testSession;
+    }
+
+    public void setTestSession(boolean testSession) {
+        this.testSession = testSession;
+    }
 
     public boolean isExecEnabled() {
         return execEnabled;

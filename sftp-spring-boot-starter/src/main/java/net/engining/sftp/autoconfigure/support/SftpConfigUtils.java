@@ -54,7 +54,7 @@ public final class SftpConfigUtils {
 
         DefaultSftpSessionFactory sftpSessionFactory = new DefaultSftpSessionFactory(true);
         sftpSessionFactory.setAllowUnknownKeys(true);
-        //设置更底层的配置
+        //设置更底层的配置即ssh-client支持的配置项，参考https://man.openbsd.org/OpenBSD-current/man5/ssh_config.5
         Properties properties = new Properties();
         //连接server的key在本地不存在，那么就自动添加到文件中（默认是known_hosts），并且给出一个警告
         properties.put( "StrictHostKeyChecking" , "no" );
@@ -73,7 +73,7 @@ public final class SftpConfigUtils {
         CachingSessionFactory<ChannelSftp.LsEntry> cachingSessionFactory =
                 new CachingSessionFactory<>(sftpSessionFactory, sftpProperties.getSessionCacheSize());
         cachingSessionFactory.setSessionWaitTimeout(sftpProperties.getCachingSessionWaitTimeout());
-        cachingSessionFactory.setTestSession(true);
+        cachingSessionFactory.setTestSession(sftpProperties.isTestSession());
         return cachingSessionFactory;
     }
 

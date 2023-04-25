@@ -83,7 +83,7 @@ public class SftpIntegrationAutoConfiguration {
         });
 
         sftpRemoteFileTemplateMap.forEach((name, sftpRemoteFileTemplate) -> {
-            //注册DebeziumEngine到Spring容器
+            //注册到Spring容器
             beanFactory.registerSingleton(name+"SftpRemoteFileTemplate", sftpRemoteFileTemplate);
         });
 
