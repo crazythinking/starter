@@ -6,10 +6,16 @@ import net.engining.transflow.autoconfigure.autotest.support.SampleFlowRequest;
 import net.engining.transflow.autoconfigure.autotest.support.SimpleFlowResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@ActiveProfiles({
+		"dynamic.hikari.enable",
+		"db.common",
+		"hikari.h2"
+})
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class NormalFlowTest extends AbstractTestCaseTemplate {
 

@@ -119,6 +119,7 @@ public class Utils {
     public static com.querydsl.sql.Configuration getConfiguration(SQLTemplates templates) {
         com.querydsl.sql.Configuration configuration = new com.querydsl.sql.Configuration(templates);
         configuration.setExceptionTranslator(new SpringExceptionTranslator());
+        configuration.addListener(new QsqlLoggingListener());
         return configuration;
     }
 

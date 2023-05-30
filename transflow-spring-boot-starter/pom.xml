@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.engining.starter</groupId>
         <artifactId>starter-parent</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -35,22 +35,19 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>elasticsearch-spring-boot-starter</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>mongo-spring-boot-starter</artifactId>
+            <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>net.engining.control</groupId>
             <artifactId>control-core</artifactId>
@@ -62,11 +59,6 @@
         <dependency>
             <groupId>net.engining.pg</groupId>
             <artifactId>pg-disruptor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.engining.pg</groupId>
-            <artifactId>pg-storage-elasticsearch</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.engining.gm</groupId>
@@ -83,11 +75,6 @@
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

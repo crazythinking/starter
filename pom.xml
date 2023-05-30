@@ -15,7 +15,9 @@
 	
 	<properties>
 		<pmd.skip>true</pmd.skip>
-		<starter.version>3.1.0-SNAPSHOT</starter.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<revision>3.1.0-SNAPSHOT</revision>
+
 		<pg.version>4.0.2-SNAPSHOT</pg.version>
 		<control.version>2.0.2-SNAPSHOT</control.version>
 		<gm.version>2.0.2-SNAPSHOT</gm.version>
@@ -136,97 +138,102 @@
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>bustream-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>disruptor-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>distlock-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>kettle-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>redis-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>transflow-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>zeebe-ext-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>gm-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>debezium-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>minio-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>rocksdb-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>elasticsearch-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>metrics-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>drools-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>rheakv-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>sftp-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>spl-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>net.engining.starter</groupId>
 				<artifactId>groovy-spring-boot-starter</artifactId>
-				<version>${starter.version}</version>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.engining.starter</groupId>
+				<artifactId>mongo-spring-boot-starter</artifactId>
+				<version>${revision}</version>
 			</dependency>
 
 		</dependencies>
@@ -280,6 +287,8 @@
 		<module>sftp-spring-boot-starter</module>
 		<module>spl-spring-boot-starter</module>
 		<module>groovy-spring-boot-starter</module>
+		<module>mongo-spring-boot-starter</module>
+
 	</modules>
 
 	<build>
@@ -321,6 +330,31 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>${maven-pmd-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>${flatten-maven-plugin.version}</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>oss</flattenMode>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 

@@ -8,8 +8,8 @@ spring:
       uris: ubuntu.wsl:19200
       connection-timeout: 10s
       read-timeout: 30s
-      password:
-      username:
+#      password:
+#      username:
 
 
 logging:
@@ -25,4 +25,4 @@ pg:
     datasync:
       batch-size: 10
       flush-interval: 5
-      ring-buffer-size:
+#      ring-buffer-size:

@@ -26,4 +26,5 @@ public class JPAContextConfig {
 		SwitchOrg4HibernateFilterHandler aspect = new SwitchOrg4HibernateFilterHandler();
 		return aspect;
 	}
+
 }

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>net.engining.starter</groupId>
 		<artifactId>starter-parent</artifactId>
-		<version>3.1.0-SNAPSHOT</version>
+		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -95,6 +95,10 @@
 		<dependency>
 			<groupId>net.engining.gm</groupId>
 			<artifactId>gm-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.gm</groupId>
+			<artifactId>gm-sdk</artifactId>
 		</dependency>
 
 		<!-- mysql -->

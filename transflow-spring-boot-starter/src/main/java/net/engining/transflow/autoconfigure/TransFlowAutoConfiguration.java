@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -25,13 +26,15 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @ConditionalOnProperty(prefix = "gm.trans-flow", name = "enabled", matchIfMissing = true)
 @Import(value = {
-        FlowTransContextConfig.class
+        FlowTransContextConfig.class,
+        TransFlowAutoConfiguration.TransFlowBoundLobConfig.class
 })
 @EnableConfigurationProperties({
         TransFlowProperties.class
 })
 @EntityScan(basePackages = {
-        "net.engining.control.entity"
+        "net.engining.control.entity",
+        "net.engining.control.entity.model.mongo"
 })
 public class TransFlowAutoConfiguration {
 
@@ -49,6 +52,15 @@ public class TransFlowAutoConfiguration {
                 "trans-flow-async-thread",
                 false
         );
+    }
+
+    @Configuration
+    @ConditionalOnProperty(prefix = "gm.trans-flow", name = "mongo-lob-enabled", havingValue = "true")
+    @EnableMongoRepositories(basePackages = {
+            "net.engining.control.core.storage.mongo"
+    })
+    static class TransFlowBoundLobConfig {
+
     }
 
 }

@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 @ActiveProfiles(profiles={
         "dynamic.hikari.enable",
         "db.common",
+        "db.jpa",//以jpa为基础建表
 		//"hikari.clickhouse",
         //""hikari.mysql",
         "hikari.h2"

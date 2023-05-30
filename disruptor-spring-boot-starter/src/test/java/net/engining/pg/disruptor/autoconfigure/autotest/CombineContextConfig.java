@@ -1,9 +1,6 @@
 package net.engining.pg.disruptor.autoconfigure.autotest;
 
-import net.engining.pg.disruptor.props.DisruptorProperties;
 import net.engining.pg.support.core.context.ApplicationContextHolder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -18,7 +15,6 @@ public class CombineContextConfig {
 
     /**
      * ApplicationContext的静态辅助Bean，建议项目必须注入
-     * @return
      */
     @Bean
     @Lazy(value=false)

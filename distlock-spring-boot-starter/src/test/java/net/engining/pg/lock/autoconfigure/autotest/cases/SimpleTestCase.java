@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 
 /**
  * @author Eric Lu
- * @create 2019-09-21 23:58
  **/
 public class SimpleTestCase extends AbstractTestCaseTemplate {
 

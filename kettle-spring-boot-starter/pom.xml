@@ -7,7 +7,7 @@
     <parent>
         <artifactId>starter-parent</artifactId>
         <groupId>net.engining.starter</groupId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -31,6 +31,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 自身依赖 -->
         <dependency>
             <groupId>pentaho-kettle</groupId>
             <artifactId>kettle-core</artifactId>

@@ -23,6 +23,7 @@ import java.util.List;
 @ActiveProfiles(profiles={
         "dynamic.hikari.enable",
         "db.common",
+        "db.jpa",//以jpa为基础建表
 		"hikari.h2",
         //"hikari.clickhouse"
 })

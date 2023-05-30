@@ -3,6 +3,8 @@ package net.engining.datasource.autoconfigure.autotest.jpa.cases;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.AbstractTestCaseTemplate;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.DbService;
 import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdTestEnt1;
+import net.engining.pg.support.db.DbType;
+import net.engining.pg.support.db.sequence.JPASequenceFactory;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,7 @@ import javax.persistence.PersistenceContext;
 @ActiveProfiles(profiles={
         "dynamic.hikari.enable",
         "db.common",
-        "db.jpa",
+        "db.jpa",//以jpa为基础建表
 		"hikari.h2",
 //		"druid.mysql",
 //		"hikari.mysql",
@@ -74,7 +76,8 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //切换到数据库one，不存在该表抛异常
         Assertions.assertThatThrownBy(() -> callDbOpt4DataSourceOne4ThrowException())
                 .isInstanceOf(InvalidDataAccessResourceUsageException.class);
-
+        //H2 和 MySQL 使用都是 MysqlSequenceOperator
+        LOGGER.debug("seq:{}", JPASequenceFactory.getNextValue(em, DbType.MySQL, "tests"));
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{
