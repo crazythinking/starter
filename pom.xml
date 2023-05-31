@@ -10,7 +10,7 @@
 	<groupId>net.engining.starter</groupId>
 	<artifactId>starter-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>3.1.0-SNAPSHOT</version>
+	<version>${revision}</version>
 	<description>自定义spring-boot-starter组件</description>
 	
 	<properties>
@@ -23,13 +23,12 @@
 		<gm.version>2.0.2-SNAPSHOT</gm.version>
 
 		<jasypt.version>3.0.5</jasypt.version>
-		<jsch.version>0.2.4</jsch.version>
+		<jsch.version>0.2.9</jsch.version>
 		<druid.spring.version>1.2.8</druid.spring.version>
 		<sharding.jdbc.version>5.1.1</sharding.jdbc.version>
 		<clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<oracle.version>21.3.0.0</oracle.version>
-		<sentinel.version>1.8.3</sentinel.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -54,23 +53,12 @@
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-transport-netty-http</artifactId>
-                <version>${sentinel.version}</version>
             </dependency>
             <!-- Sentinel 针对 Nacos 作了适配，底层可以采用 Nacos 作为规则配置数据源 -->
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-datasource-nacos</artifactId>
-                <version>${sentinel.version}</version>
             </dependency>
-
-			<!-- spring cloud netflix -->
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-netflix</artifactId>
-				<version>${spring-cloud-netflix.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 
 			<!-- jasypt -->
 			<dependency>
