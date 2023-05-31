@@ -44,3 +44,4 @@ hs_err_pid*
 /sftp-spring-boot-starter/sftpinput/
 /sftp-spring-boot-starter/sftpinput1/
 *.bak
+*.flattened-pom.xml
