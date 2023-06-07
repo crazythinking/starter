@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.autoconfigure.mongo.MongoPropertiesClientSettingsBuilderCustomizer;
+import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +30,8 @@ import java.util.concurrent.TimeUnit;
         MongoDbProperties.class
 })
 @AutoConfigureBefore({
-        MongoAutoConfiguration.class
+        MongoAutoConfiguration.class,
+        MongoReactiveAutoConfiguration.class
 })
 public class CustomizedMongoAutoConfiguration {
     /** logger */
@@ -81,5 +86,11 @@ public class CustomizedMongoAutoConfiguration {
                                 )
                 )
                 .build();
+    }
+
+    @Bean
+    MongoPropertiesClientSettingsBuilderCustomizer mongoPropertiesCustomizer(MongoProperties properties,
+                                                                             Environment environment) {
+        return new MongoPropertiesClientSettingsBuilderCustomizer(properties, environment);
     }
 }

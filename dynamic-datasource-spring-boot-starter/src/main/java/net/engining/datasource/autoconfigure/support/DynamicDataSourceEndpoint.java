@@ -35,7 +35,6 @@ import java.util.Map;
  * @date : 2021-09-01 14:31
  * @since :
  **/
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RestControllerEndpoint(id = "dynamicDataSource")
 public class DynamicDataSourceEndpoint {
     /** logger */

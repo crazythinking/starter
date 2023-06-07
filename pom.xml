@@ -30,6 +30,7 @@
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<oracle.version>21.3.0.0</oracle.version>
 		<sentinel.version>1.8.6</sentinel.version>
+		<springdoc.version>1.6.15</springdoc.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -62,6 +63,23 @@
                 <artifactId>sentinel-datasource-nacos</artifactId>
 				<version>${sentinel.version}</version>
             </dependency>
+
+			<!-- springdoc+swagger3 -->
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-webflux-ui</artifactId>
+				<version>${springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-security</artifactId>
+				<version>${springdoc.version}</version>
+			</dependency>
 
 			<!-- jasypt -->
 			<dependency>
