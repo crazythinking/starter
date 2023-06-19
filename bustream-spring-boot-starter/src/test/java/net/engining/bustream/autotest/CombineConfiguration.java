@@ -5,14 +5,15 @@ import net.engining.bustream.autotest.cases.FunctionalTestCase;
 import net.engining.bustream.autotest.support.User2;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.props.CommonProperties;
-import net.engining.pg.support.core.context.ApplicationContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
@@ -31,16 +32,14 @@ public class CombineConfiguration {
 	/** logger */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CombineConfiguration.class);
 
-	@Bean
-	@Lazy(value=false)
-	public ApplicationContextHolder applicationContextHolder(){
-		return new ApplicationContextHolder();
-	}
+	@Autowired
+	ApplicationContext applicationContext;
 
 	/**
 	 * 不推荐
 	 * 由spring.cloud.stream.poller.fixed-delay指定触发间隔，默认1s
 	 */
+	@Profile("bustream.func.adduser2")
 	@Bean
 	public Supplier<Message<User2>> addUser2(){
 		return () -> {
@@ -53,6 +52,10 @@ public class CombineConfiguration {
 		};
 	}
 
+	/**
+	 * 不推荐
+	 */
+	@Profile("bustream.func.catchuser2lu")
 	@Bean
 	public Consumer<Message<User2>> catchUser2Lu() {
 		return message -> {
@@ -60,6 +63,10 @@ public class CombineConfiguration {
 		};
 	}
 
+	/**
+	 * 不推荐
+	 */
+	@Profile("bustream.func.catchuser2repay1")
 	@Bean
 	public Consumer<Message<User2>> catchUser2Repay1() {
 		return message -> {

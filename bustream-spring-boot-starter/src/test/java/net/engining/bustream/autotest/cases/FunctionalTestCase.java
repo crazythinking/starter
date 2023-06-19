@@ -1,5 +1,6 @@
 package net.engining.bustream.autotest.cases;
 
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
 import net.engining.bustream.autotest.cases.handler.User2StreamBridgeStreamHandler;
@@ -23,6 +24,10 @@ import java.util.Map;
  **/
 @ActiveProfiles(profiles = {
         "bustream.func.dev",
+        "bustream.func.userouter",
+        "bustream.func.userouter2",
+        "bustream.func.catchuser",
+        "bustream.func.catchuser2",
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class FunctionalTestCase extends AbstractTestCaseTemplate {
@@ -53,11 +58,11 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
         for (int i = 0; i < 5; i++) {
 
             Map<String, Object> headerMap = Maps.newHashMap();
-            headerMap.put("messageType", "type2");
 
             boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
-            boolean rt2 = user2StreamBridgeStreamHandler.send(setupUser2(), headerMap);
-            LOGGER.warn("streamBridge send succeed: {}-{}", rt, rt2);
+            Pair<String, Boolean> rt2 = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
+            LOGGER.warn("streamBridge send succeed: {}", rt);
+            LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
         }
 
         //等待另一个线程获取到消息并赋值
@@ -76,7 +81,7 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     public static User setupUser() {
         User user = new User();
         user.setUserId(System.currentTimeMillis());
-        user.setName("user2.name");
+        user.setName("user1.name");
         user.setAge(RandomUtil.randomInt(1, 100));
 
         return user;

@@ -1,7 +1,6 @@
 spring:
   profiles:
     include:
-    - bus.enable
-    - bustream.rabbit.binders
-    - bus.common.bindings.output
-    - bus.rabbit.bindings.output
+      - bus.enable
+      - bustream.bindings.default
+      - bustream.rabbit.bindings.default

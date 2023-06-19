@@ -1,7 +1,6 @@
 spring:
   profiles:
     include:
-    - bus.enable
-    - bustream.kafka.binders
-    - bus.common.bindings.output
-    - bus.kafka.bindings.output
+      - bus.enable
+      - bustream.bindings.default
+      - bustream.kafka.bindings.default

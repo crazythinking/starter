@@ -1,6 +1,6 @@
 package net.engining.bustream.autotest.cases.handler;
 
-import net.engining.bustream.autotest.support.User2;
+import net.engining.bustream.autotest.support.User;
 import net.engining.bustream.base.stream.AbstractConsumeBustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
@@ -26,14 +26,14 @@ import java.util.function.Consumer;
  * @since :
  **/
 @Profile({
-        "bustream.func.common",
+        "bustream.func.catchuser"
 })
 @Service
-public class UserConsumerFuncStreamHandler extends AbstractConsumeBustreamHandler<User2> implements InitializingBean {
+public class UserConsumerFuncStreamHandler extends AbstractConsumeBustreamHandler<User> implements InitializingBean {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(UserConsumerFuncStreamHandler.class);
 
-    public List<User2> users = new ArrayList<>();
+    public List<User> users = new ArrayList<>();
 
     public AtomicInteger okCount = new AtomicInteger(0);
 
@@ -41,7 +41,7 @@ public class UserConsumerFuncStreamHandler extends AbstractConsumeBustreamHandle
      * 接收消息，无需显示调用，由监听器自动触发
      */
     @Bean
-    public Consumer<Message<User2>> catchUser2() {
+    public Consumer<Message<User>> catchUser() {
         return message -> {
             try {
                 super.consume(message.getPayload(), message.getHeaders());
@@ -52,7 +52,7 @@ public class UserConsumerFuncStreamHandler extends AbstractConsumeBustreamHandle
     }
 
     @Override
-    protected void handler(User2 event, Map<String, Object> headers) throws Exception{
+    protected void handler(User event, Map<String, Object> headers) throws Exception{
         LOGGER.info("handler event for user1 object: {}", event);
         if (event.getAge()==0){
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");

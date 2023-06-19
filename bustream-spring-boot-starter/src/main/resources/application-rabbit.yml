@@ -1,7 +1,0 @@
-# RabbitMQ配置，更多配置请参考：RabbitProperties
-spring:
-  rabbitmq:
-    publisher-confirm-type: correlated
-    publisher-returns: true
-    template:
-      mandatory: true

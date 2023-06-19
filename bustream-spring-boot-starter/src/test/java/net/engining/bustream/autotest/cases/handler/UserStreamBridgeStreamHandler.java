@@ -21,7 +21,7 @@ import java.util.Map;
  * @since :
  **/
 @Profile({
-        "bustream.func.common",
+        "bustream.func.userouter",
 })
 @Service
 public class UserStreamBridgeStreamHandler extends AbstractStreamBridgeBustreamHandler<User> implements InitializingBean {
@@ -36,6 +36,7 @@ public class UserStreamBridgeStreamHandler extends AbstractStreamBridgeBustreamH
 
     @Override
     protected void transform(User event, Map<String, Object> headers) {
+        headers.put("messageType", "type1");
         LOGGER.info("transform event to user object: {}", event);
     }
 

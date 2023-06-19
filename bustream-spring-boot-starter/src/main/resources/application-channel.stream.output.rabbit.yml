@@ -1,6 +1,5 @@
 spring:
   profiles:
     include:
-    - bustream.rabbit.binders
-    - stream.common.bindings.output
-    - stream.rabbit.bindings.output
+      - bustream.bindings.default
+      - bustream.rabbit.bindings.default

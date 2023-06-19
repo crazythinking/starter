@@ -8,7 +8,7 @@
 首先对Bus和Stream的概念要有所了解，才能使用好该组件。
 <a name="eihQQ"></a>
 ## Stream
-Bus也是基于Stream实现的，只是以广播的模式为基础进行；因此可以从Stream的模型来详细说明，在Stream内部有两个概念，如下图：Binder 和 Binding；<br />![](https://cdn.nlark.com/yuque/0/2021/png/956807/1626341271401-4b0e3080-7f9b-49e8-8928-1d387accbf47.png?x-oss-process=image%2Fresize%2Cw_942%2Climit_0#crop=0&crop=0&crop=1&crop=1&from=url&id=cIhvM&margin=%5Bobject%20Object%5D&originHeight=316&originWidth=942&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+Bus也是基于Stream实现的，只是以广播的模式为基础进行；因此可以从Stream的模型来详细说明，在Stream内部有两个概念，如下图：Binder 和 Binding；<br />![](https://cdn.nlark.com/yuque/0/2021/png/956807/1626341271401-4b0e3080-7f9b-49e8-8928-1d387accbf47.png?x-oss-process=image%2Fresize%2Cw_942%2Climit_0#averageHue=%23e9e8e4&from=url&id=cIhvM&originHeight=316&originWidth=942&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 <a name="lsQZy"></a>
 ### Binder
 跟外部消息中间件集成的组件，用来创建 Binding，各消息中间件都有自己的 Binder 实现；所以Binder是负责与中间件进行交互，理论上可以是任何RPC中间件，只需要根据Binder的标准实现即可；比如 Kafka 的实现 KafkaMessageChannelBinder，RabbitMQ 的实现 RabbitMessageChannelBinder 以及 RocketMQ 的实现 RocketMQMessageChannelBinder。<br />所以在具体使用中首先要为应用定义Binder（即使用什么消息中间件、如何连接及相关配置属性等），比如在该组件的默认配置中存在三种Binder定义：
@@ -43,12 +43,24 @@ spring:
                 virtual-host: ${spring.rabbitmq.virtual-host}
   profiles:
     include:
-    - bustream.rabbit.bindings.default		#[5]
+    - rabbit		#[5]
 ```
-[1]：binders为Map数据结构，所以一个应用可以定义多个binder（多个消息中间件集群），每个binder的配置对应BinderProperties；<br />[2]：binder的名称，需要确保应用内的唯一性；<br />[3]：binder的类型，由Binder实现包中的`_META-INF/spring.binders_`文件定义；<br />[4]：environment也是Map数据结构，表示任意Env属性键值对，通常应该是该binder相关的配置属性，其取决于依赖中间件的配置项定义；<br />[5]：利用spring.profiles.include导入相对应的内置的binding定义；
+[1]：binders为Map数据结构，所以一个应用可以定义多个binder（多个消息中间件集群），每个binder的配置对应BinderProperties；<br />[2]：binder的名称，需要确保应用内的唯一性；<br />[3]：binder的类型，由Binder实现包中的`_META-INF/spring.binders_`文件定义；<br />[4]：environment也是Map数据结构，表示任意Env属性键值对，通常应该是该binder相关的配置属性，其取决于依赖中间件的配置项定义；<br />[5]：利用spring.profiles.include导入相应的消息组件与环境无关的配置；如RabbitMQ：
+```properties
+spring.cloud.stream.rabbit.binder.connection-name-prefix=${spring.application.name}
+
+spring.rabbitmq.connection-timeout=3s
+spring.rabbitmq.cache.channel.size=10
+spring.rabbitmq.cache.channel.checkout-timeout=1s
+spring.rabbitmq.cache.connection.mode=channel
+spring.rabbitmq.publisher-confirm-type=correlated
+spring.rabbitmq.publisher-returns=true
+spring.rabbitmq.template.mandatory=true
+```
+注意：默认情况下不需要自定义配置`spring.cloud.stream.binders.<binder-name>`相关前缀的配置项，且如果Context中出现自定义binder的配置，会造成SCS的Binding默认项失效；<br />默认情况下，业务端只需要按各类SpringBoot消息组件的通用方式配置，SCS会自动识别消息组件类型，并以`_META-INF/spring.binders_`中定义的key为Binder的key，在Context中注册，比如RabbitMQ对应rabbit，Kafka对应kafka，RocketMQ对应rocketmq；
 <a name="QZvAr"></a>
 ### Binding
-Binding 在消息中间件与应用程序提供的 Producer 和 Consumer 之间提供了一个桥梁，而开发者只需使用应用程序的 Producer 生产 或 Consumer 消费数据即可，屏蔽了开发者与底层消息中间件的接触。<br />有了Binder之后就需要为Binder定义具体的Binding，该组件定义了多个内置的Bindings，分别按：生产者内置的channel名称，消费者内置的channel名称，消息中间件，以及binding的生产者和消费者共用配置等粒度按不同的profile定义配置文件，而所谓default，input，pollinput，output只是Binding在该组件中定义的key，Bindings在内存中以Map的数据结构保存；整个组件的Binder和Binding的参数配置关系结构比较复杂，如下图：<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/956807/1666774147909-9a7cb5a4-aa66-4d8f-b3ea-8ea31c96c42d.png#clientId=u09c383a9-7078-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=357&id=u143bca88&margin=%5Bobject%20Object%5D&name=image.png&originHeight=357&originWidth=993&originalType=binary&ratio=1&rotation=0&showTitle=false&size=35440&status=done&style=none&taskId=u211f4176-abf4-4db3-b26f-a6a89dcc1f7&title=&width=993)<br />对应该组件提供的默认配置项文件如下：
+Binding 在消息中间件与应用程序提供的 Producer 和 Consumer 之间提供了一个桥梁，而开发者只需使用应用程序的 Producer 生产 或 Consumer 消费数据即可，屏蔽了开发者与底层消息中间件的接触。<br />有了Binder之后就需要为Binder定义具体的Binding，该组件定义了多个内置的Bindings，分别按：生产者内置的channel名称，消费者内置的channel名称，消息中间件，以及binding的生产者和消费者共用配置等粒度按不同的profile定义配置文件，而所谓default，input，pollinput，output只是Binding在该组件中定义的key，Bindings在内存中以Map的数据结构保存；整个组件的Binder和Binding的参数配置关系结构比较复杂，如下图：<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/956807/1666774147909-9a7cb5a4-aa66-4d8f-b3ea-8ea31c96c42d.png#averageHue=%2330302f&clientId=u09c383a9-7078-4&from=paste&height=357&id=u143bca88&originHeight=357&originWidth=993&originalType=binary&ratio=1&rotation=0&showTitle=false&size=35440&status=done&style=none&taskId=u211f4176-abf4-4db3-b26f-a6a89dcc1f7&title=&width=993)<br />对应该组件提供的默认配置项文件如下：
 <a name="hlGyM"></a>
 #### 按Binder类型维度区分的MessageChannel的内置Binding配置
 
@@ -212,7 +224,7 @@ spring:
 ```
 <a name="lZufn"></a>
 ## MessageChannel
-MessageChannel 是spring message模块提出的概念，从信息通讯模型上来说，Channel是与连接一一对应的；在该组件中 MessageChannel 用于接收消息，调用send方法可以将消息发送至该消息通道中；如下图：<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/956807/1666841329004-c381e60e-2de3-4d4e-b21e-8ed8dc9f8ae9.png#clientId=u09c383a9-7078-4&crop=0&crop=0&crop=1&crop=1&id=wVZJw&name=image.png&originHeight=87&originWidth=544&originalType=binary&ratio=1&rotation=0&showTitle=false&size=30228&status=done&style=none&taskId=ud8cadc18-0a6d-4b56-b7e8-e6b6c44ac8c&title=)<br />Stream组件通过`@EnableBinding`注解将预定义内置的`@Input`和`@Output`Binding，绑定到MessageChannel；`@Input` Binding 负责消费消息，`@Output`Binding 负责产生消息；该过程对于应用来说只需定义，实现由Spring Cloud Stream 框架完成；
+MessageChannel 是spring message模块提出的概念，从信息通讯模型上来说，Channel是与连接一一对应的；在该组件中 MessageChannel 用于接收消息，调用send方法可以将消息发送至该消息通道中；如下图：<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/956807/1666841329004-c381e60e-2de3-4d4e-b21e-8ed8dc9f8ae9.png#averageHue=%23e1e1e1&clientId=u09c383a9-7078-4&id=wVZJw&originHeight=87&originWidth=544&originalType=binary&ratio=1&rotation=0&showTitle=false&size=30228&status=done&style=none&taskId=ud8cadc18-0a6d-4b56-b7e8-e6b6c44ac8c&title=)<br />Stream组件通过`@EnableBinding`注解将预定义内置的`@Input`和`@Output`Binding，绑定到MessageChannel；`@Input` Binding 负责消费消息，`@Output`Binding 负责产生消息；该过程对于应用来说只需定义，实现由Spring Cloud Stream 框架完成；
 <a name="Gg8vb"></a>
 ### @Input Binding
 作为消息的消费者，定义如下：
@@ -427,6 +439,7 @@ spring:
 ```
 <a name="pb7Eb"></a>
 ## 配置
+注意该组件内置了针对Binding的默认配置，由于Binding的配置项涉及独立的Consumer和Producer，且配置项较多，同时不同Binder类型配置项又不同，所以一般建议尽可能使用默认配置项；由于SCS的实现机制要使用默认配置项，Context中就不能存在自定义Binder（即不能存在`spring.cloud.stream.binders.<binder-name>`的相关配置），如果使用了则默认Binding配置失效，需要自行为每一个Binding做相应配置；
 <a name="KGEtP"></a>
 ### Steam模式-默认配置项激活
 该模式用于传统生产者-消费者开发模型，两者之间通过消息中间件进行沟通；<br />第二步：以RabbitMQ作为消息中间件为例，通过profile激活默认配置；
@@ -437,19 +450,17 @@ spring:
 spring:
   profiles:
     include:
-    - bustream.rabbit.binders
     - stream.common.bindings.input
     - stream.rabbit.bindings.input
 
 ```
-如上，同时再激活`application-bustream.rabbit.binders.yml, application-stream.common.bindings.input.yml, application-stream.rabbit.bindings.input.yml`；
+如上，同时再激活`application-stream.common.bindings.input.yml, application-stream.rabbit.bindings.input.yml`；
 
 - `channel.stream.output.rabbit`：当应用系统需要生产者，并使用RabbitMQ作为Binder，且使用默认 output Binding 时，需要激活该profile，该动作激活默认配置文件`application-channel.stream.output.rabbit.yml`：
 ```yaml
 spring:
   profiles:
     include:
-    - bustream.rabbit.binders
     - stream.common.bindings.output
     - stream.rabbit.bindings.output
 ```
@@ -459,7 +470,6 @@ spring:
 spring:
   profiles:
     include:
-    - bustream.rabbit.binders
     - stream.common.bindings.pollinput
     - stream.rabbit.bindings.pollinput
 
@@ -479,7 +489,6 @@ spring:
   profiles:
     include:
     - bus.enable
-    - bustream.rabbit.binders
     - bus.common.bindings.input
     - bus.rabbit.bindings.input
 
@@ -491,7 +500,6 @@ spring:
   profiles:
     include:
     - bus.enable
-    - bustream.rabbit.binders
     - bus.common.bindings.output
     - bus.rabbit.bindings.output
 
@@ -504,7 +512,7 @@ spring:
 ### 自定义配置
 第三步，理论上默认配置已经足够，自定义配置的目的是为了应对不同场景下 Binder和Binding 需要微调，所以强烈建议按 Stream、Bus、Binder、Binding，4个维度定义配置项文件，最后通过组合profile来归一到相应的channel来应对不同的应用场景；
 
-1. 根据运行环境定义Binder相关配置；如在dev环境使用RabbitMQ时，定义`application-rabbit.dev.properties`：此处的配置将被用于填充 rabbitCluster Binder 配置的占位符（此为该组件下RabbitMQ类型的默认Binder，如果需要定义该类型其他命名的Binder，则需要参考`application-bustream.rabbit.binders.yml`定义完整的Binder配置文件；在一个应用系统中允许定义多个Binder，虽然并不常用）；另外还需注意`spring.rabbitmq.xxx`系列的配置参数不会直接影响Binder，需要配置在Binder之下（参考application-bustream.rabbit.binders.yml的配置模式）。
+1. 根据运行环境定义Binder相关配置；如在dev环境使用RabbitMQ时，定义`application-rabbit.dev.properties`：此处的配置会自动由SCS填充到Binder-rabbit（默认也将被用于填充字对应Binder-rabbitCluster配置的占位符，如果需要定义该类型其他命名的Binder，则需要参考`application-bustream.rabbit.binders.yml`定义完整的Binder配置文件；在一个应用系统中允许定义多个Binder，虽然并不常用）；
 ```properties
 spring.rabbitmq.virtual-host=spring-cloud-bus.host
 
@@ -524,18 +532,18 @@ gm.bustream.other-producer-names.sccust=sccust-online-sv
 
 ## 属于 Stream Binding的通用配置
 # 指定默认binder，未定义binder的channel将使用该binder
-spring.cloud.stream.default-binder=rabbitCluster
-#spring.cloud.stream.default-binder=kafkaCluster
+spring.cloud.stream.default-binder=rabbit
+#spring.cloud.stream.default-binder=kafka
 
 ```
-注意：spring.cloud.stream.default-binder 必须在应用系统中显示指定，其值取决于Binder的类型，默认情况下RabbitMQ可以使用rabbitCluster，Kafka可以使用kafkaCluster，如果自定义其他命名的Binder，也可以使用；该值将作为所有Binding未特别指定`spring.cloud.stream.bindings.<binding-name>.binder`参数时的兜底配置；
+注意：spring.cloud.stream.default-binder 必须在应用系统中显示指定，其值取决于Binder的类型，默认情况下RabbitMQ可以使用rabbit，Kafka可以使用kafka，如果自定义其他命名的Binder，也可以使用；该值将作为所有Binding未特别指定`spring.cloud.stream.bindings.<binding-name>.binder`参数时的兜底配置；
 
 3. 定义Binding相关的common配置，如`application-channel.input.common.properties, application-channel.output.common.properties`；
 ```properties
 ### 消费者（channel-name/binding-name: input） 的相关配置
 #为Channel指定Binder，这将决定Channel使用哪个MQ，如果不指定默认为default-binder
-#spring.cloud.stream.bindings.input.binder=kafkaCluster
-spring.cloud.stream.bindings.input.binder=rabbitCluster
+#spring.cloud.stream.bindings.input.binder=kafka
+spring.cloud.stream.bindings.input.binder=rabbit
 
 ## 属于 Stream Binding的通用配置
 #queue的后缀, 必须带有业务含义；在topic模式下其还作为分组
@@ -559,8 +567,8 @@ spring.cloud.stream.bindings.input.group=repayBack
 ```properties
 ### 生产者（channel name: output） 的相关配置
 #为Channel指定Binder，这将决定Channel使用哪个MQ
-#spring.cloud.stream.bindings.output.binder=kafkaCluster
-spring.cloud.stream.bindings.output.binder=rabbitCluster
+#spring.cloud.stream.bindings.output.binder=kafka
+spring.cloud.stream.bindings.output.binder=rabbit
 
 ## 属于 Stream Binding的通用配置
 #生产者必须确保将消息传递到这些组，即使这些组在消息创建之后才开始传递；
@@ -607,6 +615,21 @@ spring.profiles.include=bus.disable,channel.stream.output.rabbit,rabbit.dev,bust
 #消息生产者的分区设置
 #spring.cloud.stream.bindings.output.producer.partitionCount=2
 
+```
+<a name="CEJ2w"></a>
+## 使用默认Binder
+该Starter已经内置了默认的RabbitMq-Binder：rabbit，大部分默认配置已经能够覆盖大部分线上环境（具体查看：application-rabbit.properties）；需要基于环境特别配置的只有如下4项：
+```properties
+# 根据实际环境配置
+spring.rabbitmq.virtual-host=spring-cloud-bus.host
+spring.rabbitmq.addresses=ubuntu.wsl:5672,ubuntu.wsl:5673,ubuntu.wsl:5674
+spring.rabbitmq.username=admin
+spring.rabbitmq.password=admin
+```
+同时也内置了默认的Kafka-Binder：kafka，同样大部分默认配置已经能够覆盖大部分线上环境（具体查看：application-kafka.properties）；需要基于环境特别配置的只有如下1项：
+```properties
+# 根据实际环境配置
+spring.kafka.bootstrap-servers=ubuntu.wsl:9092,ubuntu.wsl:9093,ubuntu.wsl:9094
 ```
 <a name="LJjuQ"></a>
 ## 产生消息
@@ -821,7 +844,7 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
 ### Bus模式
 待补充
 <a name="ZRtmi"></a>
-# 案例代码
+## 案例代码
 下载获取：bustream-spring-boot-starter-{starter.version}-test-sources.jar，详见如下案例：
 
 - StreamRabbitTestCase.java
@@ -829,3 +852,148 @@ public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler
 - StreamPollableTestCase.java
 - StreamTestCase.java
 - BusTestCase.java
+<a name="n0yg1"></a>
+# 简化使用模式：Functional模式
+<a name="jecZH"></a>
+## 通用配置
+```properties
+spring.profiles.include=bus.disable,bustream.rabbit.bindings.default
+spring.cloud.stream.default-binder=rabbit
+```
+以上配置以使用Rabbit和只使用Stream模式，需要激活默认配置，和指定默认Binder；
+<a name="JLN9Q"></a>
+## 生产者
+<a name="Ege2B"></a>
+### 配置
+最精简配置只需要以下3项，分别用于指定Binder，指定Exchange，打开ErrorChannel；
+```properties
+#为Channel指定Binder，这将决定Channel使用哪个MQ
+spring.cloud.stream.bindings.user-outer2.binder=rabbit
+#在Function模式下如果不指定destination，将默认使用“functionName-in/out-n”的模式；即destination就是exchange/topic的命名
+#不指定routing-key-expression时默认的routeKey就是destination
+spring.cloud.stream.bindings.user-outer2.destination=test.stream.bridge
+spring.cloud.stream.bindings.user-outer2.producer.error-channel-enabled=true
+#不指定routing-key-expression时默认的routeKey就是destination的值"test.stream.bridge"
+#可以通过指定routing-key-expression从MessageHeader中获取自定义key“messageType”，作为routeKey
+#spring.cloud.stream.rabbit.bindings.user-outer2.producer.routing-key-expression=headers.messageType
+```
+注意BindingName的定义，需要与后续发送消息的逻辑相对应；
+<a name="UeY83"></a>
+### 实现AbstractStreamBridgeBustreamHandler
+```java
+// 建议与特定的Profile绑定，这样在测试或不需要注入该消费这是，可以通过Profile的激活，灵活控制；
+@Profile({
+        "bustream.func.user-outer2",
+})
+@Service
+public class User2StreamBridgeStreamHandler extends AbstractStreamBridgeBustreamHandler<User2> implements InitializingBean {
+
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(User2StreamBridgeStreamHandler.class);
+
+    @Autowired
+    public User2StreamBridgeStreamHandler(StreamBridge streamBridge, ApplicationEventPublisher publisher) {
+        super(streamBridge, "user-outer2", MimeTypeUtils.APPLICATION_JSON, publisher);
+    }
+
+    @Override
+    protected void transform(User2 event, Map<String, Object> headers) {
+        LOGGER.info("transform event to user object: {}", event);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.setLogger(LOGGER);
+    }
+}
+```
+
+1. 实现类必须限定消息体对应的Pojo类；
+2. 消费者的实现类构造函数必须传入Spring默认注入的StreamBridge和ApplicationEventPublisher；同时必须调用父类构造函数，并指定配置中匹配的bindingName("user-outer2")；
+3. 重载transform方法，该方法用于对消息体做自定义的业务逻辑处理；
+4. 重载afterPropertiesSet，用于初始化类属性，一般建议至少指定Logger，便于日志定位；
+<a name="yPyKL"></a>
+### 发送消息
+经过以上步骤的实现，通过注入的Bean:User2StreamBridgeStreamHandler，业务端代码可以在需要的任何地方，通过如下代码发送消息：
+```java
+boolean rt = user2StreamBridgeStreamHandler.send(setupUser2(), headerMap);
+Pair<String, Boolean> res = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
+```
+
+1. 使用`send`方法，返回rt=true时，即说明消息（MessageHeader+User）已经发送到rabbitCluster(RabbitMq集群)中的spring-cloud-bus.host(Vhost)上的test.stream.bridge(Exchange)；
+2. 使用`sendAndGetId`，返回的res会包含一个ID的KV，用于关联该消息；
+
+注意：该ID保存在MessageHeader中，key=`BustreamHandler.ORIGIN_MESSAGE_ID`；业务端代码如果在调用`send`或`sendAndGetId`方法中的headerMap中指定BustreamHandler.ORIGIN_MESSAGE_ID的值，该发送消息的过程将使用业务端指定的ID，不指定时将默认使用UUID生成；
+<a name="SfmYK"></a>
+## 消费者
+<a name="wsYRs"></a>
+### 配置
+最精简配置只需要以下3项，分别用于指定Binder，指定Exchange，指定Queue；
+```properties
+spring.cloud.stream.bindings.catchUser2-in-0.binder=rabbit
+spring.cloud.stream.bindings.catchUser2-in-0.destination=test.stream.bridge
+# 只指定group，作为Queue的名称后缀，不指定routeKey，则默认routeKey=“#”，表示该Queue将以test.stream.bridge.repqyBack命名，且保持Exchange：test.stream.bridge中的所有消息；
+# 标识该Consumer将指定消费Queue：test.stream.bridge.repqyBack内的消息；
+spring.cloud.stream.bindings.catchUser2-in-0.group=repayBack
+```
+注意这里指定bindingName为"catchUser2-in-0"，因为后续使用Functional-Bean的模式消费消息，故BindingName的命名必须保持约定的格式即：beanName-in-n，n为index，默认用0，只在需要对Consumer进行分片运行时，按服务实例对应；
+<a name="ErHM3"></a>
+### 实现AbstractConsumeBustreamHandler
+```java
+// 建议与特定的Profile绑定，这样在测试或不需要注入该消费这是，可以通过Profile的激活，灵活控制；
+@Profile({
+        "bustream.func.catchUser2",
+})
+@Service
+public class UserConsumerFuncStreamHandler extends AbstractConsumeBustreamHandler<User2> implements InitializingBean {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserConsumerFuncStreamHandler.class);
+
+    public List<User2> users = new ArrayList<>();
+
+    public AtomicInteger okCount = new AtomicInteger(0);
+
+    /**
+     * 接收消息，无需显示调用，由监听器自动触发
+     */
+    @Bean
+    public Consumer<Message<User2>> catchUser2() {
+        return message -> {
+            try {
+                super.consume(message.getPayload(), message.getHeaders());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    @Override
+    protected void handler(User2 event, Map<String, Object> headers) throws Exception{
+        LOGGER.info("handler event for user1 object: {}", event);
+        if (event.getAge()==0){
+            throw new ErrorMessageException(ErrorCode.SystemError, "error test");
+        }
+        else {
+            users.add(event);
+            okCount.incrementAndGet();
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        super.setLogger(LOGGER);
+    }
+}
+```
+
+1. 实现类必须限定消息体对应的Pojo类；
+2. 消费消息的`catchUser2`方法，需要独立注册为Bean，且调用父类的`consume`方法；且`catchUser2`方法的命名必须要与bindingName的配置对应，且符合Functional模式的命名规范；另外由于使用了Functional模式，必须要告诉容器哪个Bean是Function，如下配置，当有多个Function时，使用";"分隔：
+```java
+spring.cloud.function.definition=catchUser2
+```
+
+3. 重载handler方法，该方法用于收到消息体后，且反序列化为指定Pojo类后，由业务端代码自定义的业务逻辑处理；
+4. 重载afterPropertiesSet，用于初始化类属性，一般建议至少指定Logger，便于日志定位；
+<a name="t6zCD"></a>
+## 案例代码
+下载获取：bustream-spring-boot-starter-{starter.version}-test-sources.jar，详见如下案例：<br />FunctionalTestCase<br />User2StreamBridgeStreamHandler<br />UserStreamBridgeStreamHandler<br />UserConsumerFuncStreamHandler
