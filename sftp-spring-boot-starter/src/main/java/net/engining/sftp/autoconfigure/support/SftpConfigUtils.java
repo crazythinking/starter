@@ -15,11 +15,15 @@ import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
+import org.springframework.integration.file.filters.CompositeFileListFilter;
 import org.springframework.integration.file.filters.LastModifiedFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.metadata.SimpleMetadataStore;
 import org.springframework.integration.sftp.dsl.Sftp;
 import org.springframework.integration.sftp.dsl.SftpInboundChannelAdapterSpec;
+import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
+import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
@@ -41,6 +45,8 @@ public final class SftpConfigUtils {
     public static final String DEFAULT = "default";
 
     public static final String SFTP_SYNCHRONIZER_INBOUND_CHANNEL_ADAPTER = "SftpSyncInboundChannelAdapter";
+    public static final String SFTP_REMOTE_FILE_TEMPLATE_SUFFIX = "-SftpRemoteFileTemplate";
+    public static final String SYNCHRONIZER_CHECKER_SUFFIX = "-SynchronizerChecker";
 
     public static CachingSessionFactory<ChannelSftp.LsEntry> buildCachingSessionFactory(SftpProperties sftpProperties) {
         Preconditions.checkArgument(
@@ -98,13 +104,12 @@ public final class SftpConfigUtils {
                                                        SessionFactory<ChannelSftp.LsEntry> cachingSessionFactory,
                                                        ApplicationContext applicationContext
     ) {
+
         SftpInboundChannelAdapterSpec inboundChannelAdapterSpec =
                 Sftp.inboundAdapter(cachingSessionFactory)
                         .preserveTimestamp(true)
                         .remoteDirectory(sftpProperties.getDefaultRemoteDirectory())
                         .deleteRemoteFiles(sftpProperties.isDeleteRemoteFiles())
-                        //.regexFilter(".*\\.txt$")
-                        .regexFilter(sftpProperties.getSyncFileNameRegex())
                         .temporaryFileSuffix(TEMPORARY_FILE_SUFFIX)
                         .autoCreateLocalDirectory(true)
                         .localDirectory(new File(sftpProperties.getDefaultLocalDirectory()))
@@ -114,6 +119,48 @@ public final class SftpConfigUtils {
                         .maxFetchSize(sftpProperties.getMaxFetchSize());
         //对指定的同步本地目录启用WatchService(linux下使用内核inotify)监听目录内增删改事件
         inboundChannelAdapterSpec.get().setUseWatchService(true);
+        //本地文件 metadata-store
+        //PropertiesPersistingMetadataStore remoteMetadataStore = new PropertiesPersistingMetadataStore();
+        //remoteMetadataStore.setFileName(key + "-remote-metadata.properties");
+        //remoteMetadataStore.setBaseDirectory(sftpProperties.getMetadataLocalDirectory());
+        //remoteMetadataStore.afterPropertiesSet();
+        //Redis metadata-store
+        //RedisMetadataStore syncedMetadataStore = new RedisMetadataStore(
+        //        SpringUtil.getBean(RedisConnectionFactory.class),
+        //        key + "-synced-files-metadata"
+        //);
+        SimpleMetadataStore syncedMetadataStore = new SimpleMetadataStore();
+        inboundChannelAdapterSpec.remoteFileMetadataStore(syncedMetadataStore);
+
+        //设置远程目录的Filter
+        CompositeFileListFilter<ChannelSftp.LsEntry> compositeFileListFilter = new CompositeFileListFilter<>();
+        //本地文件 metadata-store
+        //PropertiesPersistingMetadataStore localMetadataStore = new PropertiesPersistingMetadataStore();
+        //localMetadataStore.setFileName(key + "-local-metadata.properties");
+        //localMetadataStore.setBaseDirectory(sftpProperties.getMetadataLocalDirectory());
+        //localMetadataStore.afterPropertiesSet();
+        //Redis metadata-store
+        //RedisMetadataStore remoteFilesMetadataStore = new RedisMetadataStore(
+        //        SpringUtil.getBean(RedisConnectionFactory.class),
+        //        key + "-remote-files-metadata"
+        //);
+        SimpleMetadataStore remoteFilesMetadataStore = new SimpleMetadataStore();
+        SftpPersistentAcceptOnceFileListFilter persistentAcceptOnceFileListFilter
+                = new SftpPersistentAcceptOnceFileListFilter(remoteFilesMetadataStore, key+"-");
+        persistentAcceptOnceFileListFilter.setFlushOnUpdate(true);
+        compositeFileListFilter.addFilters(
+                new SftpRegexPatternFileListFilter(sftpProperties.getSyncFileNameRegex()),
+                persistentAcceptOnceFileListFilter
+        );
+        inboundChannelAdapterSpec.filter(compositeFileListFilter);
+        inboundChannelAdapterSpec.remoteComparator((o1, o2) -> {
+            if (o1.getAttrs().getMTime() > o2.getAttrs().getMTime()) {
+                return -1;
+            } else if (o1.getAttrs().getMTime() < o2.getAttrs().getMTime()) {
+                return 1;
+            }
+            return 0;
+        });
 
         return IntegrationFlows
                 .from(

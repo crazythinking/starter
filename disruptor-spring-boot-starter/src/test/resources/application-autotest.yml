@@ -15,6 +15,7 @@ pg:
       Event2-Group:
         batch-size: 1
         ring-buffer-size: 3000
+        multi-producer: true
 
 logging:
   level:

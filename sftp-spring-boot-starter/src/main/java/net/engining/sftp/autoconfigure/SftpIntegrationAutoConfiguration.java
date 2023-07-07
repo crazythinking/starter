@@ -23,8 +23,7 @@ import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
 import java.util.Map;
 
-import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.DEFAULT;
-import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.SFTP_REMOTE_FILE_TEMPLATE_MAP;
+import static net.engining.sftp.autoconfigure.support.SftpConfigUtils.*;
 
 /**
  * @author Eric Lu
@@ -84,7 +83,7 @@ public class SftpIntegrationAutoConfiguration {
 
         sftpRemoteFileTemplateMap.forEach((name, sftpRemoteFileTemplate) -> {
             //注册到Spring容器
-            beanFactory.registerSingleton(name+"SftpRemoteFileTemplate", sftpRemoteFileTemplate);
+            beanFactory.registerSingleton(name+SFTP_REMOTE_FILE_TEMPLATE_SUFFIX, sftpRemoteFileTemplate);
         });
 
         return sftpRemoteFileTemplateMap;

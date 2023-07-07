@@ -51,6 +51,14 @@
 			<artifactId>jsch</artifactId>
 			<version>${jsch.version}</version>
 		</dependency>
+		<!--<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.engining.starter</groupId>
+			<artifactId>redis-spring-boot-starter</artifactId>
+		</dependency>-->
 
 		<dependency>
 			<groupId>net.engining.starter</groupId>

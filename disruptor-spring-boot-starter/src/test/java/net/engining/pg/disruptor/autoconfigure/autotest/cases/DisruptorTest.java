@@ -49,16 +49,35 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
             applicationContext.publishEvent(event2);
         }
 
-        GenericDisruptorApplicationEvent<Integer> event = new GenericDisruptorApplicationEvent<>(this);
-        event.setTopicKey(Event2SerialDisruptor.GROUP_NAME);
-        event.setKey("key1");
-        event.setTag("en");
-        event.setBind(12345);
-        applicationContext.publishEvent(event);
-        for (int i = 0; i < 10; i++) {
-            event.setBind(event.getBind()+1);
-            applicationContext.publishEvent(event);
-        }
+        GenericDisruptorApplicationEvent<Integer> event2_0 = new GenericDisruptorApplicationEvent<>(this);
+        event2_0.setTopicKey(Event2SerialDisruptor.GROUP_NAME);
+        event2_0.setKey("key2_0");
+        event2_0.setTag("en");
+        event2_0.setBind(12345);
+        GenericDisruptorApplicationEvent<Integer> event2_1 = new GenericDisruptorApplicationEvent<>(this);
+        event2_1.setTopicKey(Event2SerialDisruptor.GROUP_NAME);
+        event2_1.setKey("key2_1");
+        event2_1.setTag("en");
+        event2_1.setBind(22345);
+
+        Thread t1 = new Thread(() -> {
+            applicationContext.publishEvent(event2_0);
+            for (int i = 0; i < 10; i++) {
+                event2_0.setBind(event2_0.getBind()+1);
+                applicationContext.publishEvent(event2_0);
+            }
+        }, "t1");
+
+        Thread t2 = new Thread(() -> {
+            applicationContext.publishEvent(event2_1);
+            for (int i = 0; i < 10; i++) {
+                event2_1.setBind(event2_1.getBind()+1);
+                applicationContext.publishEvent(event2_1);
+            }
+        }, "t2");
+
+        t1.start();
+        t2.start();
 
         bizDataEventDisruptorTemplate.publishEvent(
                 this,
@@ -78,6 +97,7 @@ public class DisruptorTest extends AbstractTestCaseTemplate {
 
         Thread.sleep(5000);
     }
+
 
     @Override
     public void end() {

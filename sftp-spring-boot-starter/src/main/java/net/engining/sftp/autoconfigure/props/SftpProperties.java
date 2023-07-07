@@ -1,5 +1,7 @@
 package net.engining.sftp.autoconfigure.props;
 
+import net.engining.pg.support.utils.ValidateUtilExt;
+
 /**
  * SFTP配置项
  *
@@ -61,9 +63,9 @@ public class SftpProperties {
     private String defaultRemoteDirectory;
 
     /**
-     * 远程文件保存到本地的默认目录
+     * 远程文件保存到本地的默认目录, 必须使用绝对路径
      */
-    private String defaultLocalDirectory = "./sftpinput/";
+    private String defaultLocalDirectory;
 
     /**
      * Should we delete the remote source files after copying to the local directory? By default this is false.
@@ -105,6 +107,35 @@ public class SftpProperties {
      * 此处有坑：当设为true时，如果ssh用户没有该登录用户所属home的ls权限或执行ls home目录失败时，会造成session无法重用，从而造成不断的去创建新的ssh连接。
      */
     private boolean testSession = false;
+
+    /**
+     * 本地元数据的存储目录
+     */
+    private String metadataLocalDirectory;
+
+    /**
+     * 检查器的轮询间隔，单位：分钟
+     */
+    private int checkerInterval = 5;
+
+    public int getCheckerInterval() {
+        return checkerInterval;
+    }
+
+    public void setCheckerInterval(int checkerInterval) {
+        this.checkerInterval = checkerInterval;
+    }
+
+    public String getMetadataLocalDirectory() {
+        if (ValidateUtilExt.isNullOrEmpty(metadataLocalDirectory)){
+            return defaultLocalDirectory;
+        }
+        return metadataLocalDirectory;
+    }
+
+    public void setMetadataLocalDirectory(String metadataLocalDirectory) {
+        this.metadataLocalDirectory = metadataLocalDirectory;
+    }
 
     public boolean isTestSession() {
         return testSession;
