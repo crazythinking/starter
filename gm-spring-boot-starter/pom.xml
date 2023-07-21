@@ -59,6 +59,15 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<!-- 整个项目只作为依赖包，不作为parent-->
+					<flattenMode>bom</flattenMode>
+				</configuration>
+			</plugin>
 		</plugins>
 
 	</build>
