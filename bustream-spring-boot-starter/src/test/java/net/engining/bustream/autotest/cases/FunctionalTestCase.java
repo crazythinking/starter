@@ -1,7 +1,9 @@
 package net.engining.bustream.autotest.cases;
 
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
+import net.engining.bustream.autotest.cases.handler.User2StreamBridgeStreamHandler;
 import net.engining.bustream.autotest.cases.handler.UserStreamBridgeStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import net.engining.bustream.autotest.support.User;
@@ -37,8 +39,8 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     @Autowired
     UserStreamBridgeStreamHandler userStreamBridgeStreamHandler;
 
-    //@Autowired
-    //User2StreamBridgeStreamHandler user2StreamBridgeStreamHandler;
+    @Autowired
+    User2StreamBridgeStreamHandler user2StreamBridgeStreamHandler;
 
     @Override
     public void initTestData() throws Exception {
@@ -58,9 +60,9 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
             Map<String, Object> headerMap = Maps.newHashMap();
 
             boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
-            //Pair<String, Boolean> rt2 = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
+            Pair<String, Boolean> rt2 = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
             LOGGER.warn("streamBridge send succeed: {}", rt);
-            //LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
+            LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
         }
 
         //等待另一个线程获取到消息并赋值
