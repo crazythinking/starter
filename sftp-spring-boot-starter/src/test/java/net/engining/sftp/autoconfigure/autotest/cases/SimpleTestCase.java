@@ -87,15 +87,26 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         //}
 
         TimeUnit.MINUTES.sleep(1);
-        for (SynchronizerChecker checker : synchronizerCheckerMap.values()) {
-            Map<String, Object> ret = checker.check();
-            LOGGER.info("checker:{} ret:{}", checker, ret);
-            if (checker.isOk()){
-                SpringApplication.exit(context, () -> 0);
+        boolean cycle = true;
+        while (cycle) {
+            boolean isOk = false;
+            for (SynchronizerChecker checker : synchronizerCheckerMap.values()) {
+                if (checker.isOk()){
+                    isOk = true;
+                }
+                else {
+                    isOk = false;
+                    break;
+                }
             }
+            if (isOk){
+                cycle = false;
+            }
+            TimeUnit.SECONDS.sleep(10);
         }
 
-        TimeUnit.MINUTES.sleep(1);
+        SpringApplication.exit(context, () -> 0);
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.google.common.collect.Maps;
 import com.jcraft.jsch.ChannelSftp;
 import net.engining.pg.support.utils.ThreadUtilsExt;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import net.engining.sftp.autoconfigure.props.SftpProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,11 @@ public class SimpleCountSynchronizerChecker implements SynchronizerChecker, Smar
 
     @Override
     public boolean isOk() {
-        return (int) result.get(LOCAL_FILES_COUNT) == (int) result.get(REMOTE_FILES_COUNT);
+        if (ValidateUtilExt.isNotNullOrEmpty(result.get(LOCAL_FILES_COUNT))
+                && ValidateUtilExt.isNotNullOrEmpty(result.get(REMOTE_FILES_COUNT))) {
+            return (int) result.get(LOCAL_FILES_COUNT) == (int) result.get(REMOTE_FILES_COUNT);
+        }
+        return false;
     }
 
     private void init() {
