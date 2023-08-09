@@ -1,6 +1,10 @@
 package net.engining.metrics.autoconfigure;
 
 import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
 import net.engining.metrics.config.DebeziumMetricsContextConfig;
 import net.engining.metrics.config.DropwizardMetricsContextConfig;
@@ -12,12 +16,15 @@ import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
 import net.engining.metrics.support.StoredStepMeterRegistry;
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.time.Duration;
 
 /**
  * @author : Eric Lu
@@ -43,6 +50,44 @@ public class MetricsAutoConfiguration {
     @Bean
     public MetricsRepositoriesService  simpleMetricsRepositoriesService() {
         return new SimpleMetricsRepositoriesServiceImpl();
+    }
+
+    /**
+     * 增加 gateway metrics 的 Histogram 配置
+     */
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
+
+        return registry -> {
+            registry.config().meterFilter(
+                    new MeterFilter() {
+                        @Override
+                        public DistributionStatisticConfig configure(Meter.Id id, DistributionStatisticConfig config) {
+                            String regex = "^(http"+"){1}.*";
+                            if (id.getType() == Meter.Type.TIMER
+                                    && id.getName().matches(regex)) {
+                                return DistributionStatisticConfig.builder()
+                                        .percentilesHistogram(true)
+                                        .percentiles(0.5, 0.75, 0.90, 0.95, 0.99)
+                                        // 定义了6个桶
+                                        .serviceLevelObjectives(
+                                                Duration.ofMillis(100).toNanos(),
+                                                Duration.ofMillis(500).toNanos(),
+                                                Duration.ofSeconds(1).toNanos(),
+                                                Duration.ofSeconds(2).toNanos(),
+                                                Duration.ofSeconds(3).toNanos(),
+                                                Duration.ofSeconds(5).toNanos()
+                                        )
+                                        .minimumExpectedValue(new Double(Duration.ofMillis(1).toNanos()))
+                                        .maximumExpectedValue(new Double(Duration.ofSeconds(5).toNanos()))
+                                        .build()
+                                        .merge(config);
+                            } else {
+                                return config;
+                            }
+                        }
+                    });
+        };
     }
 
     /**
