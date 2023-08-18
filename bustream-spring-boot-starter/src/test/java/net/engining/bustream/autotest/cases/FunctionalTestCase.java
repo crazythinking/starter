@@ -65,6 +65,12 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
             LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
         }
 
+        User2 user = new User2();
+        user.setUserId2(System.currentTimeMillis());
+        user.setName2("user2.name");
+        user.setAge(0);
+        user2StreamBridgeStreamHandler.sendAndGetId(user, Maps.newHashMap());
+
         //等待另一个线程获取到消息并赋值
         Thread.sleep(20000);
     }
