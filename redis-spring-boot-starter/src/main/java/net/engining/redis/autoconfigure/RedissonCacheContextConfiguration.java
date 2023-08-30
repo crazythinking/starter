@@ -6,6 +6,7 @@ import net.engining.pg.config.support.RedisConfigUtils;
 import net.engining.pg.props.CommonProperties;
 import net.engining.pg.redis.props.CacheProperties;
 import net.engining.pg.redis.props.RedissonCacheProperties;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
@@ -75,18 +76,19 @@ public class RedissonCacheContextConfiguration extends RedisCacheContextConfig {
      * 因此需要在使用{@link org.springframework.cache.annotation.CacheConfig}时指定redissonKeyGenerator
      *
      */
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean(REDISSON_CACHE_MANAGER)
     public CacheManager redissonCacheManager(RedissonClient redissonClient) {
         Map<String, CacheConfig> configMap = new HashMap<>(8);
         List<CacheProperties> cachePropertiesList = redissonCacheProperties.getCachePropertiesList();
-        for (CacheProperties cacheProperties : cachePropertiesList) {
-            String[] names = cacheProperties.getNames();
-            LOGGER.debug("init redisson spring cache config for cache names: {}", ArrayUtil.join(names, ","));
-            CacheConfig cacheConfig = new CacheConfig(cacheProperties.getTtl(), cacheProperties.getMaxIdleTime());
-            cacheConfig.setMaxSize(cacheProperties.getMaxSize());
-            for (String name : names) {
-                configMap.put(name, cacheConfig);
+        if (ValidateUtilExt.isNotNullOrEmpty(cachePropertiesList)){
+            for (CacheProperties cacheProperties : cachePropertiesList) {
+                String[] names = cacheProperties.getNames();
+                LOGGER.debug("init redisson spring cache config for cache names: {}", ArrayUtil.join(names, ","));
+                CacheConfig cacheConfig = new CacheConfig(cacheProperties.getTtl(), cacheProperties.getMaxIdleTime());
+                cacheConfig.setMaxSize(cacheProperties.getMaxSize());
+                for (String name : names) {
+                    configMap.put(name, cacheConfig);
+                }
             }
         }
 
