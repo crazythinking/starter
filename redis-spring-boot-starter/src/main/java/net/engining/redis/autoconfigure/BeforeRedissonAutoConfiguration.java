@@ -44,7 +44,6 @@ public class BeforeRedissonAutoConfiguration {
         };
     }
 
-    @SuppressWarnings("AlibabaMethodTooLong")
     @Bean(name = RedisUtil.REDISSON_CONNECTION_CONFIGURATION)
     public RedissonConnectionConfiguration redissonConnectionConfiguration(CommonProperties commonProperties,
                                                                            RedisProperties redisProperties,
