@@ -45,6 +45,11 @@
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-ion</artifactId>
         </dependency>
+        <!-- 监控 -->
+        <dependency>
+            <groupId>net.engining.starter</groupId>
+            <artifactId>metrics-spring-boot-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>net.engining.pg</groupId>
@@ -69,11 +74,6 @@
         <dependency>
             <groupId>net.engining.starter</groupId>
             <artifactId>gm-spring-boot-starter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.engining.starter</groupId>
-            <artifactId>metrics-spring-boot-starter</artifactId>
             <scope>test</scope>
         </dependency>
 

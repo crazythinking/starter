@@ -36,6 +36,9 @@ public class BeforeRedissonAutoConfiguration {
             RedissonConnectionConfiguration redissonConnectionConfiguration) {
         return configuration -> {
             //用自定义的config覆盖原生的config
+            //if (ValidateUtilExt.isNotNullOrEmpty(connectionListener)) {
+            //    redissonConnectionConfiguration.setConnectionListener(connectionListener);
+            //}
             BeanUtil.copyProperties(redissonConnectionConfiguration, configuration);
 
         };

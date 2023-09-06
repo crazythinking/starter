@@ -13,6 +13,9 @@ import net.engining.pg.redis.operation.RedissonObjectOperation;
 import net.engining.pg.redis.props.MultiRedissonCommonProperties;
 import net.engining.pg.redis.props.RedissonCommonProperties;
 import net.engining.pg.redis.utils.RedisUtil;
+import net.engining.redis.autoconfigure.support.RedissonMetrics;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -85,6 +88,11 @@ public class AfterRedissonAutoConfiguration {
     public RedissonCollectionOperation redissonCollection(HandlerManagementProxy handlerManagementProxy) {
         //取默认的RedissonCollectionOperation
         return handlerManagementProxy.getHandler(HandlerType.COLLECTION);
+    }
+
+    @Bean
+    public RedissonMetrics redissonMetrics(RedissonClient redisson) {
+        return new RedissonMetrics((Redisson)redisson);
     }
 
 }

@@ -99,7 +99,7 @@ public class UndertowMetrics implements ApplicationListener<ApplicationReadyEven
 
         // 连接信息指标
         List<Undertow.ListenerInfo> listenerInfoList = undertow.getListenerInfo();
-        listenerInfoList.forEach(listenerInfo -> registerConnectorStatistics(listenerInfo));
+        listenerInfoList.forEach(this::registerConnectorStatistics);
 
         // 如果是 web 监控，添加 session 指标
         if (undertowWebServer instanceof UndertowServletWebServer) {
