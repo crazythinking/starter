@@ -36,7 +36,11 @@ public class RedissonMetrics implements ApplicationListener<ApplicationReadyEven
     public void onApplicationEvent(ApplicationReadyEvent event) {
         ConfigurableApplicationContext applicationContext = event.getApplicationContext();
         MeterRegistry meterRegistry = MetricsUtils.determinedMeterRegistry(applicationContext);
+        // connection 监控指标
+        connectionMeter(meterRegistry);
+    }
 
+    private void connectionMeter(MeterRegistry meterRegistry) {
         this.redisson.getConnectionManager().getEntrySet().forEach(masterSlaveEntry -> {
             LOGGER.trace("{}", masterSlaveEntry);
             String serverAddr
@@ -81,6 +85,5 @@ public class RedissonMetrics implements ApplicationListener<ApplicationReadyEven
                     freeSubscribeQueue.size()
             );
         });
-
     }
 }
