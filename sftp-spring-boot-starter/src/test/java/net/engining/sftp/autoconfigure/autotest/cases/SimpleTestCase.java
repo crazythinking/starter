@@ -1,6 +1,7 @@
 package net.engining.sftp.autoconfigure.autotest.cases;
 
 import cn.hutool.extra.ssh.JschSessionPool;
+import net.engining.pg.support.utils.ThreadUtilsExt;
 import net.engining.sftp.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.sftp.autoconfigure.props.MutiSftpProperties;
 import net.engining.sftp.autoconfigure.support.SynchronizerChecker;
@@ -15,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static net.engining.sftp.autoconfigure.config.FileSynchronizerContextConfig.SYNCHRONIZER_CHECKER_MAP;
@@ -112,5 +114,21 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     @Override
     public void end() throws Exception {
         JschSessionPool.INSTANCE.closeAll();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ScheduledExecutorService executorService = ThreadUtilsExt.newSingleThreadScheduledExecutor(
+                "synchronizer-checker",
+                true
+        );
+        executorService.scheduleAtFixedRate(
+                () -> {
+                    System.out.println("test");
+                    //throw new RuntimeException("test");
+                }, 1, 10, TimeUnit.SECONDS
+        );
+
+        TimeUnit.MINUTES.sleep(1);
+
     }
 }

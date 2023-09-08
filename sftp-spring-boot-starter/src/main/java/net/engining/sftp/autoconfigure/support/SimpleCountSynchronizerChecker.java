@@ -75,17 +75,22 @@ public class SimpleCountSynchronizerChecker implements SynchronizerChecker, Smar
 
         executorService = ThreadUtilsExt.newSingleThreadScheduledExecutor(key+"-synchronizer-checker", true);
         task = () -> {
-            // 执行定时任务的逻辑
-            File[] localFiles = FileUtil.ls(sftpProperties.getDefaultLocalDirectory());
+            try {
+                // 执行定时任务的逻辑
+                File[] localFiles = FileUtil.ls(sftpProperties.getDefaultLocalDirectory());
 
-            List<ChannelSftp.LsEntry> remoteFiles = fileListFilter.filterFiles(
-                    sftpRemoteFileTemplate.list(sftpProperties.getDefaultRemoteDirectory())
-            );
-            LOGGER.info("Sftp synchronizer {}: local files count {}, remote files count {}",
-                    key, localFiles.length, remoteFiles.size()
-            );
-            result.put(LOCAL_FILES_COUNT, localFiles.length);
-            result.put(REMOTE_FILES_COUNT, remoteFiles.size());
+                List<ChannelSftp.LsEntry> remoteFiles = fileListFilter.filterFiles(
+                        sftpRemoteFileTemplate.list(sftpProperties.getDefaultRemoteDirectory())
+                );
+                LOGGER.info("Sftp synchronizer {}: local files count {}, remote files count {}",
+                        key, localFiles.length, remoteFiles.size()
+                );
+                result.put(LOCAL_FILES_COUNT, localFiles.length);
+                result.put(REMOTE_FILES_COUNT, remoteFiles.size());
+            }
+            catch (Exception e) {
+                LOGGER.error("Sftp synchronizer checker error：", e);
+            }
         };
     }
 
