@@ -78,7 +78,7 @@ public class MetricsAutoConfiguration {
                                                 Duration.ofSeconds(3).toNanos(),
                                                 Duration.ofSeconds(5).toNanos()
                                         )
-                                        .minimumExpectedValue(new Double(Duration.ofMillis(1).toNanos()))
+                                        .minimumExpectedValue(new Double(Duration.ofMillis(100).toNanos()))
                                         .maximumExpectedValue(new Double(Duration.ofSeconds(5).toNanos()))
                                         .build()
                                         .merge(config);
