@@ -1,0 +1,221 @@
+{
+  "groups": [
+    {
+      "name": "spring.dynamic.tp.apollo",
+      "type": "org.dromara.dynamictp.common.properties.DtpProperties$Apollo",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties",
+      "sourceMethod": "getApollo()"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd",
+      "type": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties",
+      "sourceMethod": "getEtcd()"
+    },
+    {
+      "name": "spring.dynamic.tp.nacos",
+      "type": "org.dromara.dynamictp.common.properties.DtpProperties$Nacos",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties",
+      "sourceMethod": "getNacos()"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper",
+      "type": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties",
+      "sourceMethod": "getZookeeper()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.dynamic.tp.apollo.namespace",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Apollo"
+    },
+    {
+      "name": "spring.dynamic.tp.brpc-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.collector-types",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.config-type",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.dubbo-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.enabled-banner",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.enabled-collect",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.auth-enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.authority",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.charset",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.endpoints",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.key",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.password",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.etcd.user",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Etcd"
+    },
+    {
+      "name": "spring.dynamic.tp.executors",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.DtpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.grpc-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.hystrix-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.jetty-tp",
+      "type": "org.dromara.dynamictp.common.entity.TpExecutorProps",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.log-path",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.monitor-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.motan-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.nacos.data-id",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Nacos"
+    },
+    {
+      "name": "spring.dynamic.tp.nacos.group",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Nacos"
+    },
+    {
+      "name": "spring.dynamic.tp.nacos.namespace",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Nacos"
+    },
+    {
+      "name": "spring.dynamic.tp.okhttp3-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.platforms",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.NotifyPlatform>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.rabbitmq-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.rocket-mq-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.sofa-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.tars-tp",
+      "type": "java.util.List<org.dromara.dynamictp.common.entity.TpExecutorProps>",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.tomcat-tp",
+      "type": "org.dromara.dynamictp.common.entity.TpExecutorProps",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.undertow-tp",
+      "type": "org.dromara.dynamictp.common.entity.TpExecutorProps",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper.config-key",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper.config-version",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper.node",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper.root-node",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper"
+    },
+    {
+      "name": "spring.dynamic.tp.zookeeper.zk-connect-str",
+      "type": "java.lang.String",
+      "sourceType": "org.dromara.dynamictp.common.properties.DtpProperties$Zookeeper"
+    }
+  ],
+  "hints": []
+}

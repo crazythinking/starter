@@ -1,0 +1,10 @@
+# noinspection YAMLSchemaValidation
+spring:
+  profiles:
+    include: dyntp.default
+  dynamic:
+    tp:
+      nacos:                                #通过配置中心nacos支持参数运行时动态刷新
+        data-id: dynamic-tp-demo-dev.yml
+        namespace:
+        group: DEFAULT_GROUP
