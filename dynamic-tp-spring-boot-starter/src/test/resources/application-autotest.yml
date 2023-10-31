@@ -3,6 +3,8 @@ spring:
     name: dynamictp-starter-test
   main:
     allow-bean-definition-overriding: true
+  config:
+    use-legacy-processing: true
 
 logging:
   level:

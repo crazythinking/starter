@@ -2,8 +2,7 @@ package net.engining.dyntp.autoconfigure.autotest.support;
 
 import net.engining.dyntp.autoconfigure.autotest.AutoConfigureTestApplication;
 import net.engining.pg.support.testcase.AbstractJUnit4SpringContextTestsWithoutServlet;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 * 针对所有测试，只执行一次，且必须为static void
 	 *
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void init4Test() {
 
 	}
@@ -42,7 +41,7 @@ public abstract class AbstractTestCaseTemplate extends AbstractJUnit4SpringConte
 	 * 针对所有测试，只执行一次，且必须为static void
 	 *
 	 */
-	@AfterClass
+	@BeforeAll
 	public static void tearDown4Test() {
 		//使用H2的测试需要关闭
 		//TestCommonLogic.closeH2();
