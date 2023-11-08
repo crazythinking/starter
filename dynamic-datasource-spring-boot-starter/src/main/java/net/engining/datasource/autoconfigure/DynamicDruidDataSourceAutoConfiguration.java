@@ -16,7 +16,6 @@ import net.engining.datasource.autoconfigure.support.JPAContextConfig;
 import net.engining.datasource.autoconfigure.support.MultipleJdbc4QuerydslContextConfig;
 import net.engining.datasource.autoconfigure.support.TransactionManagementContextConfig;
 import net.engining.datasource.autoconfigure.support.Utils;
-import net.engining.gm.config.DbSequenceContextConfig;
 import net.engining.gm.config.props.GmCommonProperties;
 import net.engining.pg.db.props.DruidDataSourceWrapper;
 import net.engining.pg.db.props.DynamicDruidDataSourceProperties;
@@ -68,7 +67,6 @@ import java.util.Map;
         DruidFilterConfiguration.class,
         DataSourceContextConfig.class,
         JPAContextConfig.class,
-        DbSequenceContextConfig.class,
         MultipleJdbc4QuerydslContextConfig.class,
         TransactionManagementContextConfig.class
 })
