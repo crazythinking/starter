@@ -17,12 +17,12 @@
     <properties>
         <pmd.skip>true</pmd.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>3.1.0.RELEASE</revision>
+        <revision>3.1.1-SNAPSHOT</revision>
 
         <parent.version>4.1.RELEASE</parent.version>
         <pg.version>4.0.2.RELEASE</pg.version>
         <control.version>2.0.2.RELEASE</control.version>
-        <gm.version>2.0.2.RELEASE</gm.version>
+        <gm.version>2.0.3-SNAPSHOT</gm.version>
 
         <jasypt.version>3.0.5</jasypt.version>
         <jsch.version>0.2.9</jsch.version>
@@ -345,6 +345,10 @@
                             <aspectLibrary><!-- 这里与spring-aspects配合使用；项目中springJPA事务管理就是使用Spring + AspectJ Annotation进行编译时Weave -->
                                 <groupId>org.springframework</groupId>
                                 <artifactId>spring-aspects</artifactId>
+                            </aspectLibrary>
+                            <aspectLibrary>
+                                <groupId>org.springframework.security</groupId>
+                                <artifactId>spring-security-aspects</artifactId>
                             </aspectLibrary>
                             <aspectLibrary>
                                 <groupId>net.engining.gm</groupId>
