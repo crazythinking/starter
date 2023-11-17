@@ -81,7 +81,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     }
 
     public void callDbOpt4DataSourceOne4ThrowException() throws Exception{
-        Long id2 = dbService.dsTest();
+        Long id2 = dbService.dbTest();
         LOGGER.debug("get primery key for datasource one: {}", id2);
         this.testAssertDataContext.put("primerykey4one", id2);
     }

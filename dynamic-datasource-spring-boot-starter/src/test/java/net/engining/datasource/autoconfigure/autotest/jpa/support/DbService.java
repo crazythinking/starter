@@ -2,9 +2,8 @@ package net.engining.datasource.autoconfigure.autotest.jpa.support;
 
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.engining.datasource.autoconfigure.aop.SwitchOrg4HibernateFilter;
 import net.engining.gm.aop.SpecifiedDataSource;
-import net.engining.pg.support.core.context.OrganizationContextHolder;
+import net.engining.gm.aop.SwitchOrg4HibernateFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +58,14 @@ public class DbService {
         return pgIdTestEnt1;
     }
 
+    //注意使用切换数据库AOP时，应该确保其在开启事务外，因为切换数据库之后，就是一个新的事务了
     @SpecifiedDataSource(value = "one")
+    public Long dbTest() {
+        return doDsTest();
+    }
+
     @Transactional(rollbackFor = Exception.class)
-    public Long dsTest(){
+    private Long doDsTest(){
         PgIdTestEnt1 pgIdTestEnt1 = new PgIdTestEnt1();
         pgIdTestEnt1.setBatchNumber("aa1111111");
         em.persist(pgIdTestEnt1);

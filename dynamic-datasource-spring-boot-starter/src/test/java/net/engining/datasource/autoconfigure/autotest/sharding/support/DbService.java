@@ -3,15 +3,8 @@ package net.engining.datasource.autoconfigure.autotest.sharding.support;
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.engining.datasource.autoconfigure.aop.SwitchOrg4HibernateFilter;
-import net.engining.datasource.autoconfigure.autotest.jpa.support.OperAdtLogJpaRepository;
-import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdSdTestEnt;
-import net.engining.datasource.autoconfigure.autotest.jpa.support.PgIdTestEnt1;
-import net.engining.datasource.autoconfigure.autotest.jpa.support.QPgIdTestEnt1;
-import net.engining.gm.aop.SpecifiedDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
