@@ -354,6 +354,10 @@
                                 <groupId>net.engining.gm</groupId>
                                 <artifactId>gm-sdk</artifactId>
                             </aspectLibrary>
+                            <aspectLibrary>
+                                <groupId>org.springframework.security</groupId>
+                                <artifactId>spring-security-aspects</artifactId>
+                            </aspectLibrary>
                         </aspectLibraries>
                         <!-- Generate aop.xml file for load-time weaving with default name (/META-INF/aop.xml). -->
                         <outxml>true</outxml>
