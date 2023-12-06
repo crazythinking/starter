@@ -5,8 +5,12 @@ import cn.hutool.core.util.RandomUtil;
 import net.engining.elasticsearch.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.elasticsearch.autoconfigure.autotest.support.DocBean;
 import net.engining.elasticsearch.autoconfigure.autotest.support.DocBeanRepositoriesServiceImpl;
+import net.engining.elasticsearch.autoconfigure.autotest.support.ExceptionDoc;
+import net.engining.elasticsearch.autoconfigure.autotest.support.ExceptionDocRepoService;
 import net.engining.elasticsearch.autoconfigure.autotest.support.PkBean;
 import net.engining.pg.support.core.exception.ErrorCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.DirtiesContext;
@@ -27,9 +31,14 @@ import static org.hamcrest.Matchers.is;
  **/
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class ElasticSearchTestCase extends AbstractTestCaseTemplate {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticSearchTestCase.class);
 
     @Autowired
     DocBeanRepositoriesServiceImpl docBeanRepositoriesService;
+
+    @Autowired
+    ExceptionDocRepoService exceptionDocRepoService;
 
     public Iterator<DocBean> all() {
         return docBeanRepositoriesService.findAll();
@@ -47,7 +56,8 @@ public class ElasticSearchTestCase extends AbstractTestCaseTemplate {
                 "xxxxxx",
                 1,
                 ErrorCode.CheckError,
-                new Date())
+                new Date(),
+                new DocBean.Agent("bf", "bf"))
         );
         list.add(new DocBean(
                 new PkBean(RandomUtil.randomLong(), RandomUtil.randomString(1)),
@@ -56,7 +66,8 @@ public class ElasticSearchTestCase extends AbstractTestCaseTemplate {
                 "xxxxxxxxxx",
                 1,
                 ErrorCode.SystemError,
-                new Date())
+                new Date(),
+                new DocBean.Agent("bf", "bf"))
         );
         list.add(new DocBean(
                 new PkBean(RandomUtil.randomLong(), RandomUtil.randomString(1)),
@@ -65,7 +76,8 @@ public class ElasticSearchTestCase extends AbstractTestCaseTemplate {
                 "xxxxxxxxxxxxxxxxxx",
                 1,
                 ErrorCode.Null,
-                new Date())
+                new Date(),
+                new DocBean.Agent("bf", "bf"))
 
         );
         //list.add(new DocBean(RandomUtil.randomLong(), "XX0193", "XX8064", "xxxxxx", 1));
@@ -86,11 +98,21 @@ public class ElasticSearchTestCase extends AbstractTestCaseTemplate {
         });
         Console.log("get beans count : {}", beans.size());
 
+        List<DocBean> beans2 = docBeanRepositoriesService.findByFirstCodeAndSecondCodeWithNative("XX0210", "XX9999");
+        beans2.forEach(docBean -> {
+            LOGGER.info("docBean : {}", docBean);
+        });
+
         docBeanRepositoriesService.findByFirstCode("XX0257");
         Page<DocBean> docBeanPage = docBeanRepositoriesService.findByContent("xxxxxx");
         docBeanPage.get().forEach(docBean -> Console.log(docBean.getCreateTime()));
 
         all();
+
+        List<ExceptionDoc> beans3 = exceptionDocRepoService.findWithNative("ConnectException");
+        beans3.forEach(exceptionDoc -> {
+            LOGGER.info("exceptionDoc : {}", exceptionDoc);
+        });
     }
 
     @Override

@@ -1,15 +1,20 @@
 package net.engining.elasticsearch.autoconfigure.autotest.support;
 
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : Eric Lu
@@ -75,15 +80,6 @@ public class DocBeanRepositoriesServiceImpl implements DocBeanRepositoriesServic
 
     @Override
     public List<DocBean> findByFirstCodeAndSecondCode(String firstCode, String secondCode) {
-        //NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
-        //        .withQuery(
-        //                QueryBuilders.boolQuery()
-        //                        .must(QueryBuilders.matchQuery("firstCode", firstCode))
-        //                        .must(QueryBuilders.matchQuery("secondCode", secondCode))
-        //        );
-        //
-        //SearchHits<DocBean> docBeans = elasticsearchTemplate.search(queryBuilder.build(), DocBean.class);
-        //List<DocBean> beans = docBeans.stream().collect(Collectors.toList());
         return elasticsearchRepository.findByFirstCodeAndSecondCode(firstCode, secondCode);
     }
 
@@ -95,5 +91,16 @@ public class DocBeanRepositoriesServiceImpl implements DocBeanRepositoriesServic
     @Override
     public void batchSave(List<?> entities) {
 
+    }
+
+    public List<DocBean> findByFirstCodeAndSecondCodeWithNative(String firstCode, String secondCode) {
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
+                .withQuery(
+                        QueryBuilders.boolQuery()
+                                .must(QueryBuilders.matchQuery("firstCode", firstCode))
+                                .must(QueryBuilders.matchQuery("secondCode", secondCode))
+                );
+        SearchHits<DocBean> docBeans = elasticsearchTemplate.search(queryBuilder.build(), DocBean.class);
+        return docBeans.stream().map(SearchHit::getContent).collect(Collectors.toList());
     }
 }

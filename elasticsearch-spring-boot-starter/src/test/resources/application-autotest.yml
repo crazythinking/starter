@@ -15,12 +15,10 @@ spring:
     username: elastic
     password: elastic
 
-
 pg:
   elasticsearch:
     rest:
       ssl: true
-
 
 
 logging:

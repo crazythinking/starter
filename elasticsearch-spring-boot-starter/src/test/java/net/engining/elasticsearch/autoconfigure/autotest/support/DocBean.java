@@ -6,8 +6,11 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.StringJoiner;
 
 /**
  * @author : Eric Lu
@@ -15,8 +18,9 @@ import java.util.Date;
  * @date : 2020-07-03 16:13
  * @since :
  **/
-@Document(indexName = "#{@environment.getProperty('spring.application.name')}-ems")
-public class DocBean {
+@Document(indexName = "#{@environment.getProperty('spring.application.name')}-ems-#{@indexDateSuffix}")
+@Setting(replicas = 2)
+public class DocBean implements Serializable {
 
     @Id
     private PkBean id;
@@ -39,7 +43,11 @@ public class DocBean {
     @Field(type = FieldType.Date, format = DateFormat.date_time)
     private Date createTime;
 
-    public DocBean(PkBean id, String firstCode, String secondCode, String content, Integer type, ErrorCode errorCode, Date createTime){
+    @Field(type = FieldType.Nested, name = "agent")
+    private Agent agent;
+
+    public DocBean(PkBean id, String firstCode, String secondCode, String content, Integer type, ErrorCode errorCode,
+                   Date createTime, Agent agent){
         this.id=id;
         this.firstCode=firstCode;
         this.secondCode =secondCode;
@@ -47,6 +55,52 @@ public class DocBean {
         this.type=type;
         this.errorCode=errorCode;
         this.createTime=createTime;
+        this.agent = agent;
+    }
+
+    public static class Agent implements Serializable {
+        @Field(type = FieldType.Keyword)
+        private String hostname;
+
+        @Field(type = FieldType.Keyword)
+        private String name;
+
+        public Agent(String hostname, String name) {
+            this.hostname = hostname;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Agent.class.getSimpleName() + "[", "]")
+                    .add("hostname='" + hostname + "'")
+                    .add("name='" + name + "'")
+                    .toString();
+        }
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public Date getCreateTime() {
@@ -103,5 +157,19 @@ public class DocBean {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", DocBean.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("firstCode='" + firstCode + "'")
+                .add("secondCode='" + secondCode + "'")
+                .add("content='" + content + "'")
+                .add("type=" + type)
+                .add("errorCode=" + errorCode)
+                .add("createTime=" + createTime)
+                .add("agent=" + agent)
+                .toString();
     }
 }

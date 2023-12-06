@@ -1,11 +1,11 @@
 package net.engining.elasticsearch.autoconfigure.autotest;
 
-import net.engining.pg.support.core.context.ApplicationContextHolder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 通用Context配置
@@ -18,13 +18,10 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 })
 public class CombineContextConfig {
 
-    /**
-     * ApplicationContext的静态辅助Bean，建议项目必须注入
-     */
     @Bean
-    @Lazy(value=false)
-    public ApplicationContextHolder applicationContextHolder(){
-        return new ApplicationContextHolder();
+    public String indexDateSuffix(){
+        //根据日期生成index
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
     }
 
 }
