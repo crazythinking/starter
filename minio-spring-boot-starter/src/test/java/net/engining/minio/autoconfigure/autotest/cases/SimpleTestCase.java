@@ -2,7 +2,6 @@ package net.engining.minio.autoconfigure.autotest.cases;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import net.engining.minio.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.pg.storage.minio.operators.ObjectOperations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +40,12 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         metaData.put("doc", "Timing Wheels");
         metaData.put("type", "ppt");
         objectOperations.uploadObject(
-                "D:\\360Downloads\\TimingWheels.ppt",
-                "TimingWheels.ppt",
+                "D:\\360Downloads\\bustream-spring-boot-starter.pdf",
+                "cp001/bustream-spring-boot-starter.pdf",
                 metaData
         );
+
+
     }
 
     @Override

@@ -11,8 +11,15 @@ pg:
     endpoint: http://ubuntu.wsl:9000
     access-key: minio
     secret-key: minio123
-    bucket: bucket-test1
-
+    default-bucket: my-bucketname
+    multiple:
+      enabled: true
+      properties:
+        gu1:
+          endpoint: http://ubuntu.wsl:9000
+          access-key: gu1
+          secret-key: gu1gu1098765
+          default-bucket: my-destination-bucket
 
 logging:
   level:

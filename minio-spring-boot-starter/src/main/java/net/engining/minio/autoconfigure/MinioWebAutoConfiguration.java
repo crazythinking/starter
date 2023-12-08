@@ -13,7 +13,7 @@ import java.util.List;
 
 @ConditionalOnProperty(prefix = "pg.minio", name = "enabled", matchIfMissing = true)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@AutoConfigureAfter(MinioCoreAutoConfiguration.class)
+@AutoConfigureAfter(MinioAutoConfiguration.class)
 class MinioWebAutoConfiguration implements WebMvcConfigurer {
 
     @Autowired
