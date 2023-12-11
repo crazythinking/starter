@@ -46,6 +46,12 @@
 		<dependency>
 			<groupId>net.engining.pg</groupId>
 			<artifactId>pg-storage-minio</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>okhttp</artifactId>
+					<groupId>com.squareup.okhttp3</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -64,6 +70,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 			<optional>true</optional>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.470</version>
 			<scope>test</scope>
 		</dependency>
 
