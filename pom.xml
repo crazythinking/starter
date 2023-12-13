@@ -36,6 +36,7 @@
         <sentinel.version>1.8.6</sentinel.version>
         <springdoc.version>1.6.15</springdoc.version>
         <dynamic-tp.version>1.1.4.1</dynamic-tp.version>
+        <debezium.version>1.9.7.Final</debezium.version>
     </properties>
 
     <dependencyManagement>
