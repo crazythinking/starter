@@ -1,8 +1,11 @@
 package net.engining.metrics.autoconfigure;
 
+import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
+import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
@@ -44,12 +47,27 @@ import java.time.Duration;
 public class MetricsAutoConfiguration {
 
     /**
-     * 声明指标服务
-     * @return 指标服务
+     * 声明自定义业务指标存储层
      */
     @Bean
     public MetricsRepositoriesService  simpleMetricsRepositoriesService() {
         return new SimpleMetricsRepositoriesServiceImpl();
+    }
+
+    /**
+     * 收集 JVM Process Memory 指标
+     */
+    @Bean
+    public MeterBinder processMemoryMetrics() {
+        return new ProcessMemoryMetrics();
+    }
+
+    /**
+     * 收集 JVM Process Thread 指标
+     */
+    @Bean
+    public MeterBinder processThreadMetrics() {
+        return new ProcessThreadMetrics();
     }
 
     /**

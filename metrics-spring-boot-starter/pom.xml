@@ -18,7 +18,6 @@
 		<micrometer.version>1.9.0</micrometer.version>
 		<micrometer-jvm.version>0.2.2</micrometer-jvm.version>
 		<prometheus.version>0.12.0</prometheus.version>
-		<debezium.version>1.9.5.Final</debezium.version>
 	</properties>
 
 	<dependencies>
