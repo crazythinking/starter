@@ -55,6 +55,7 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
     @Override
     public void stop() {
         try {
+            running = false;
             debeziumEngine.close();
         } catch (IOException e) {
             LOGGER.error("DebeziumEngine close failed: {}", e.getMessage());

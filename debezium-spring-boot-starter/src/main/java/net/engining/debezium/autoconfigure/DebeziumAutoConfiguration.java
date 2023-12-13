@@ -14,7 +14,7 @@ import net.engining.debezium.event.SourceRecordChangeEventConsumer;
 import net.engining.debezium.facility.DebeziumServerBootstrap;
 import net.engining.debezium.facility.JRaftDatabaseHistory;
 import net.engining.debezium.facility.JRaftOffsetBackingStore;
-import net.engining.debezium.facility.LeaderShiftConnectorCallback;
+import net.engining.debezium.facility.StopBootstrapConnectorCallback;
 import net.engining.debezium.prop.DebeziumProperties;
 import net.engining.pg.rheakv.props.KvServerProperties;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -135,8 +135,8 @@ public class DebeziumAutoConfiguration {
                         regionEngineOptions -> {
                             if (regionEngineOptions.getStartKey().equals(name)){
                                 builder.using(
-                                        new LeaderShiftConnectorCallback(
-                                                regionEngineOptions.getRegionId(),
+                                        new StopBootstrapConnectorCallback(
+                                                name,
                                                 applicationContext
                                         )
                                 );

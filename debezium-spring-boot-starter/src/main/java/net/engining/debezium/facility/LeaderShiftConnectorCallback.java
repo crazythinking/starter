@@ -10,13 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 当 DebeziumEngine connector stop 时，主动切换JRaft leader；使其他多活节点能够主动转变为Leader
  *
  * @author luxue
+ *
+ * Deprecated: 通过JRaft主从切换来触发重启Connector的方式，牵扯太多层的重启，且切换过程太重且容易造成频繁切换，稳定性太低，不如直接重启Connector
  */
+@Deprecated
 public class LeaderShiftConnectorCallback implements DebeziumEngine.ConnectorCallback {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(LeaderShiftConnectorCallback.class);
@@ -36,7 +39,7 @@ public class LeaderShiftConnectorCallback implements DebeziumEngine.ConnectorCal
         LOGGER.warn("DebeziumEngine connector stopped, has bean shifting the JRaft leader");
     }
 
-    public void transferLeader() {
+    private void transferLeader() {
         KvServer kvServer = applicationContext.getBean(KvServer.class);
         DefaultRheaKVStore defaultRheaKVStore = (DefaultRheaKVStore) kvServer.getRheaKVStore();
         if (!defaultRheaKVStore.isLeader(regionId)) {
@@ -46,7 +49,7 @@ public class LeaderShiftConnectorCallback implements DebeziumEngine.ConnectorCal
 
         final PeerId leader = defaultRheaKVStore.getStoreEngine().getRegionEngine(regionId).getLeaderId();
         NodeImpl node = (NodeImpl) defaultRheaKVStore.getStoreEngine().getRegionEngine(regionId).getNode();
-        final Set<PeerId> peers = node.getCurrentConf().getPeerSet();
+        final List<PeerId> peers = node.listPeers();
         PeerId targetPeer = null;
         for (final PeerId peer : peers) {
             if (!peer.equals(leader)) {

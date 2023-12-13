@@ -15,7 +15,6 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<debezium.version>1.9.7.Final</debezium.version>
 	</properties>
 
 	<dependencies>
