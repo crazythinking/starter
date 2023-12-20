@@ -1,6 +1,7 @@
 package net.engining.debezium.autoconfigure.autotest.cases;
 
 
+import cn.hutool.core.util.ReflectUtil;
 import io.debezium.connector.mysql.MySqlStreamingChangeEventSourceMetricsMXBean;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
@@ -15,12 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,19 +61,16 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
                     Search.in(meterRegistry).meters().size());
         });
 
-        //MySqlStreamingChangeEventSourceMetricsMXBean mxBean =
-        //        DebeziumMySqlMetrics.findStreamingMXBean("xxljob-mysql");
 
-        Method method = ReflectUtils.findDeclaredMethod(
-                DebeziumMySqlMetrics.class, "findStreamingMXBean", new Class[]{String.class}
-        );
-        method.setAccessible(true);
-        MySqlStreamingChangeEventSourceMetricsMXBean mxBean =
-                (MySqlStreamingChangeEventSourceMetricsMXBean) method.invoke(debeziumMySqlMetrics, "xxljob-mysql");
-
-        LOGGER.warn("isConnected:{}", mxBean.isConnected());
-        LOGGER.warn("getMaxQueueSizeInBytes:{}", mxBean.getMaxQueueSizeInBytes());
-        LOGGER.warn("getCurrentQueueSizeInBytes:{}", mxBean.getCurrentQueueSizeInBytes());
+        Map<String, MySqlStreamingChangeEventSourceMetricsMXBean> map =
+                (Map<String, MySqlStreamingChangeEventSourceMetricsMXBean>)
+                        ReflectUtil.getFieldValue(debeziumMySqlMetrics, "streamingMXBeanMap");
+        map.forEach((k, v) -> {
+            LOGGER.warn("k:{}, v:{}", k, v);
+            LOGGER.warn("isConnected:{}", v.isConnected());
+            LOGGER.warn("getMaxQueueSizeInBytes:{}", v.getMaxQueueSizeInBytes());
+            LOGGER.warn("getCurrentQueueSizeInBytes:{}", v.getCurrentQueueSizeInBytes());
+        });
 
         DebeziumCompositeHealthContributor healthContributor =
                 ApplicationContextHolder.getBean("debeziumCompositeHealthContributor");
