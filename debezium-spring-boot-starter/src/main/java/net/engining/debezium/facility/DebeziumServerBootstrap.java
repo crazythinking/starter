@@ -21,7 +21,7 @@ public class DebeziumServerBootstrap implements InitializingBean, SmartLifecycle
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerBootstrap.class);
 
-    private String suffix;
+    private final String suffix;
 
     protected boolean running = false;
 
