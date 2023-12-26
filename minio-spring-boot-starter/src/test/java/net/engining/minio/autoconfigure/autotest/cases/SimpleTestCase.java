@@ -8,11 +8,15 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.engining.minio.autoconfigure.autotest.support.AbstractTestCaseTemplate;
+import net.engining.pg.storage.minio.BucketAndObject;
 import net.engining.pg.storage.minio.operators.ObjectOperations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
@@ -28,6 +32,8 @@ import java.util.Map;
  **/
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class SimpleTestCase extends AbstractTestCaseTemplate {
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
 
     @Autowired
     ApplicationContext applicationContext;
@@ -65,11 +71,13 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         metaData.put("doc", "时间轮");
         metaData.put("doc", "Timing Wheels");
         metaData.put("type", "ppt");
-        objectOperations.uploadObject(
+        BucketAndObject bucketAndObject = objectOperations.uploadObject(
                 "D:\\360Downloads\\bustream-spring-boot-starter.pdf",
                 "cp001/bustream-spring-boot-starter.pdf",
                 metaData
         );
+        LOGGER.info("bucketAndObject:{}", bucketAndObject);
+
 
         InputStream in = FileUtil.getInputStream("D:\\360Downloads\\exception.csv");
         Map<String, String> metaData2 = Maps.newHashMap();
@@ -78,12 +86,13 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(in.available());
         metadata.setUserMetadata(metaData2);
-        amazonS3.putObject(
+        PutObjectResult putObjectResult = amazonS3.putObject(
                 "my-destination-bucket",
                 "exception.csv",
                 in,
                 metadata
         );
+        LOGGER.info("putObjectResult: id={}", putObjectResult.getVersionId());
 
     }
 
