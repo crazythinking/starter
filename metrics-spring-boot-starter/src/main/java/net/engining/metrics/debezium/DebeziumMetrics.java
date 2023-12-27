@@ -3,7 +3,6 @@ package net.engining.metrics.debezium;
 import cn.hutool.core.util.StrUtil;
 import io.debezium.pipeline.metrics.SnapshotChangeEventSourceMetricsMXBean;
 import io.debezium.pipeline.metrics.StreamingChangeEventSourceMetricsMXBean;
-import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import io.debezium.relational.history.DatabaseHistoryMXBean;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -81,14 +80,6 @@ public interface DebeziumMetrics {
             throw new RuntimeException(e);
         }
         return objectName;
-    }
-
-    default ConnectionMetricsMXBean findConnectionMXBean(String dbName, String cdcName) {
-        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream(dbName, cdcName);
-
-        return JMX.newMBeanProxy(
-                DebeziumMetrics.MBEAN_SERVER, objectName, ConnectionMetricsMXBean.class
-        );
     }
 
     /**
@@ -205,11 +196,11 @@ public interface DebeziumMetrics {
                 .register(meterRegistry);
     }
 
-    default void connectionMXBeanMetrics(String dbPrefix, MeterRegistry meterRegistry,
-                                         String cdcName, ConnectionMetricsMXBean connectionMXBean) {
+    default void streamingMXBeanMetrics(String dbPrefix, MeterRegistry meterRegistry,
+                                        String cdcName, StreamingChangeEventSourceMetricsMXBean streamingMXBean) {
         Gauge.builder(
                         StrUtil.format(CONNECTED, dbPrefix),
-                        connectionMXBean,
+                        streamingMXBean,
                         value -> {
                             if (value.isConnected()) {
                                 return 1;
@@ -220,12 +211,9 @@ public interface DebeziumMetrics {
                 .description("Whether the connector is connected to the database.")
                 //cdc connector name
                 .tag("cdcName", cdcName)
-                .tag("metricTypes", "connection")
+                .tag("metricTypes", "streaming")
                 .register(meterRegistry);
-    }
 
-    default void streamingMXBeanMetrics(String dbPrefix, MeterRegistry meterRegistry,
-                                        String cdcName, StreamingChangeEventSourceMetricsMXBean streamingMXBean) {
         Gauge.builder(
                         StrUtil.format(MILLI_SECONDS_SINCE_LAST_EVENT, dbPrefix),
                         streamingMXBean,

@@ -3,7 +3,6 @@ package net.engining.metrics.debezium;
 import com.google.common.collect.Maps;
 import io.debezium.connector.oracle.OracleStreamingChangeEventSourceMetricsMXBean;
 import io.debezium.pipeline.metrics.SnapshotChangeEventSourceMetricsMXBean;
-import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import io.debezium.relational.history.DatabaseHistoryMXBean;
 import io.micrometer.core.instrument.MeterRegistry;
 import net.engining.metrics.MetricsUtils;
@@ -42,7 +41,6 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
     @Autowired
     private DebeziumMetricsProperties debeziumMetricsProperties;
 
-    private final Map<String, ConnectionMetricsMXBean> connectionMXBeanMap = Maps.newHashMap();
     private final Map<String, OracleStreamingChangeEventSourceMetricsMXBean> streamingMXBeanMap = Maps.newHashMap();
     private final Map<String, SnapshotChangeEventSourceMetricsMXBean> snapshotMXBeanMap = Maps.newHashMap();
     private final Map<String, DatabaseHistoryMXBean> historyMXBeanMap = Maps.newHashMap();
@@ -62,11 +60,6 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
 
         if (ValidateUtilExt.isNotNullOrEmpty(cdcNames)) {
             for (String cdcName : cdcNames) {
-                ConnectionMetricsMXBean connectionMXBean = findConnectionMXBean(DB_NAME, cdcName);
-                if (ValidateUtilExt.isNotNullOrEmpty(connectionMXBean)) {
-                    connectionMXBeanMap.put(cdcName, connectionMXBean);
-                }
-
                 OracleStreamingChangeEventSourceMetricsMXBean streamingMXBean = findStreamingMXBean(cdcName);
                 if (ValidateUtilExt.isNotNullOrEmpty(streamingMXBean)) {
                     streamingMXBeanMap.put(cdcName, streamingMXBean);
@@ -85,9 +78,6 @@ public class DebeziumOracleMetrics implements DebeziumMetrics, ApplicationListen
         }
 
         //注册指标
-        for (Map.Entry<String, ConnectionMetricsMXBean> entry : connectionMXBeanMap.entrySet()) {
-            connectionMXBeanMetrics(ORACLE_PREFIX, meterRegistry, entry.getKey(), entry.getValue());
-        }
         for (Map.Entry<String, OracleStreamingChangeEventSourceMetricsMXBean> entry : streamingMXBeanMap.entrySet()) {
             streamingMXBeanMetrics(ORACLE_PREFIX, meterRegistry, entry.getKey(), entry.getValue());
         }
