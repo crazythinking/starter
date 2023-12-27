@@ -3,6 +3,7 @@ package net.engining.metrics.debezium;
 import cn.hutool.core.util.StrUtil;
 import io.debezium.pipeline.metrics.SnapshotChangeEventSourceMetricsMXBean;
 import io.debezium.pipeline.metrics.StreamingChangeEventSourceMetricsMXBean;
+import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import io.debezium.relational.history.DatabaseHistoryMXBean;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -25,15 +26,16 @@ public interface DebeziumMetrics {
      */
     String PREFIX = "debezium";
 
-    String STREAM_MBEAN_NAME_PATTERN="debezium.{}:type=connector-metrics,context=streaming,server={}";
-    String SNAPSHOT_MBEAN_NAME_PATTERN="debezium.{}:type=connector-metrics,context=snapshot,server={}";
-    String SCHEMA_HISTORY_MBEAN_NAME_PATTERN="debezium.{}:type=connector-metrics,context=schema-history,server={}";
+    String STREAM_MBEAN_NAME_PATTERN = "debezium.{}:type=connector-metrics,context=streaming,server={}";
+    String SNAPSHOT_MBEAN_NAME_PATTERN = "debezium.{}:type=connector-metrics,context=snapshot,server={}";
+    String SCHEMA_HISTORY_MBEAN_NAME_PATTERN = "debezium.{}:type=connector-metrics,context=schema-history,server={}";
 
     MBeanServer MBEAN_SERVER = ManagementFactory.getPlatformMBeanServer();
 
     /**
      * Common metrics
      */
+    String CONNECTED = "{}.connected";
     String MILLI_SECONDS_SINCE_LAST_EVENT = "{}.milli.seconds.since.last.event";
     String TOTAL_NUMBER_OF_EVENTS_SEEN = "{}.total.number.of.events.seen";
     String NUMBER_OF_EVENTS_FILTERED = "{}.number.of.events.filtered";
@@ -81,12 +83,20 @@ public interface DebeziumMetrics {
         return objectName;
     }
 
+    default ConnectionMetricsMXBean findConnectionMXBean(String dbName, String cdcName) {
+        ObjectName objectName = DebeziumMetrics.convertObjectName4Stream(dbName, cdcName);
+
+        return JMX.newMBeanProxy(
+                DebeziumMetrics.MBEAN_SERVER, objectName, ConnectionMetricsMXBean.class
+        );
+    }
+
     /**
      * 从MBeanServer获取对应的HistoryMXBean
      *
-     * @param dbName    数据库类型，如mysql，oracle等
-     * @param cdcName   CDC Name，逻辑名称需要与database.server.name配置项一致
-     * @return  DatabaseHistoryMXBean
+     * @param dbName  数据库类型，如mysql，oracle等
+     * @param cdcName CDC Name，逻辑名称需要与database.server.name配置项一致
+     * @return DatabaseHistoryMXBean
      */
     default DatabaseHistoryMXBean findHistoryMXBean(String dbName, String cdcName) {
         ObjectName objectName = DebeziumMetrics.convertObjectName4SchemaHistory(dbName, cdcName);
@@ -186,12 +196,31 @@ public interface DebeziumMetrics {
         Gauge.builder(
                         StrUtil.format(SNAPSHOT_DURATION_IN_SECONDS, dbPrefix),
                         snapshotMXBean,
-                        value -> value.getSnapshotDurationInSeconds()*1000
+                        value -> value.getSnapshotDurationInSeconds() * 1000
                 )
                 .description("The total number of seconds that the snapshot has taken so far.")
                 //cdc connector name
                 .tag("cdcName", cdcName)
                 .baseUnit(BaseUnits.MILLISECONDS)
+                .register(meterRegistry);
+    }
+
+    default void connectionMXBeanMetrics(String dbPrefix, MeterRegistry meterRegistry,
+                                         String cdcName, ConnectionMetricsMXBean connectionMXBean) {
+        Gauge.builder(
+                        StrUtil.format(CONNECTED, dbPrefix),
+                        connectionMXBean,
+                        value -> {
+                            if (value.isConnected()) {
+                                return 1;
+                            }
+                            return 0;
+                        }
+                )
+                .description("Whether the connector is connected to the database.")
+                //cdc connector name
+                .tag("cdcName", cdcName)
+                .tag("metricTypes", "connection")
                 .register(meterRegistry);
     }
 

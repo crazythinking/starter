@@ -3,6 +3,7 @@ package net.engining.metrics.debezium;
 import com.google.common.collect.Maps;
 import io.debezium.connector.mysql.MySqlSnapshotChangeEventSourceMetricsMXBean;
 import io.debezium.connector.mysql.MySqlStreamingChangeEventSourceMetricsMXBean;
+import io.debezium.pipeline.metrics.traits.ConnectionMetricsMXBean;
 import io.debezium.relational.history.DatabaseHistoryMXBean;
 import io.micrometer.core.instrument.MeterRegistry;
 import net.engining.metrics.MetricsUtils;
@@ -41,6 +42,7 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
     @Autowired
     private DebeziumMetricsProperties debeziumMetricsProperties;
 
+    private final Map<String, ConnectionMetricsMXBean> connectionMXBeanMap = Maps.newHashMap();
     private final Map<String, MySqlStreamingChangeEventSourceMetricsMXBean> streamingMXBeanMap = Maps.newHashMap();
     private final Map<String, MySqlSnapshotChangeEventSourceMetricsMXBean> snapshotMXBeanMap = Maps.newHashMap();
     private final Map<String, DatabaseHistoryMXBean> historyMXBeanMap = Maps.newHashMap();
@@ -60,6 +62,11 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
 
         if (ValidateUtilExt.isNotNullOrEmpty(cdcNames)){
             for (String cdcName : cdcNames) {
+                ConnectionMetricsMXBean connectionMXBean = findConnectionMXBean(DB_NAME, cdcName);
+                if (ValidateUtilExt.isNotNullOrEmpty(connectionMXBean)) {
+                    connectionMXBeanMap.put(cdcName, connectionMXBean);
+                }
+
                 MySqlStreamingChangeEventSourceMetricsMXBean streamingMXBean = findStreamingMXBean(cdcName);
                 if (ValidateUtilExt.isNotNullOrEmpty(streamingMXBean)) {
                     streamingMXBeanMap.put(cdcName, streamingMXBean);
@@ -77,6 +84,9 @@ public class DebeziumMySqlMetrics implements DebeziumMetrics, ApplicationListene
             }
 
             //注册指标
+            for (Map.Entry<String, ConnectionMetricsMXBean> entry : connectionMXBeanMap.entrySet()) {
+                connectionMXBeanMetrics(MYSQL_PREFIX, meterRegistry, entry.getKey(), entry.getValue());
+            }
             for (Map.Entry<String, MySqlStreamingChangeEventSourceMetricsMXBean> entry : streamingMXBeanMap.entrySet()) {
                 streamingMXBeanMetrics(MYSQL_PREFIX, meterRegistry, entry.getKey(), entry.getValue());
             }
