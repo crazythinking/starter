@@ -9,6 +9,7 @@ import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEn
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -40,17 +41,17 @@ public class BootstrapMaintenanceEndpoint {
     }
 
     @PostMapping("/delOffset")
-    public void deleteOffset(String key) {
+    public void deleteOffset(@RequestParam String key) {
         kvServer.getRheaKVStore().bDelete(key);
     }
 
     @PostMapping("/delHistory")
-    public void deleteHistory(String key) {
+    public void deleteHistory(@RequestParam String key) {
         kvServer.getRheaKVStore().bDelete(key);
     }
 
     @PostMapping("/restart")
-    public void restart(String name) {
+    public void restart(@RequestParam String name) {
         DebeziumServerBootstrap debeziumServerBootstrap = debeziumServerBootstrapMap.get(name);
         if (debeziumServerBootstrap != null) {
             if (debeziumServerBootstrap.isRunning()) {
