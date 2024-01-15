@@ -17,12 +17,12 @@
     <properties>
         <pmd.skip>true</pmd.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>3.1.1-SNAPSHOT</revision>
+        <revision>3.1.1.RELEASE</revision>
 
         <parent.version>4.1.RELEASE</parent.version>
-        <pg.version>4.0.3-SNAPSHOT</pg.version>
-        <control.version>2.0.3-SNAPSHOT</control.version>
-        <gm.version>2.0.3-SNAPSHOT</gm.version>
+        <pg.version>4.0.3.RELEASE</pg.version>
+        <control.version>2.0.3.RELEASE</control.version>
+        <gm.version>2.0.3.RELEASE</gm.version>
 
         <jasypt.version>3.0.5</jasypt.version>
         <jsch.version>0.2.9</jsch.version>
