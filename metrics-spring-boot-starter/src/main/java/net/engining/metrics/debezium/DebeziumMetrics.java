@@ -129,7 +129,7 @@ public interface DebeziumMetrics {
                         snapshotMXBean,
                         SnapshotChangeEventSourceMetricsMXBean::getMilliSecondsSinceLastEvent
                 )
-                .description("The total number of events, since the last start or metrics reset.")
+                .description("The number of milliseconds since the connector has read and processed the most recent event.")
                 //cdc connector name
                 .tag("cdcName", cdcName)
                 .tag("metricTypes", "snapshot")
@@ -219,7 +219,7 @@ public interface DebeziumMetrics {
                         streamingMXBean,
                         StreamingChangeEventSourceMetricsMXBean::getMilliSecondsSinceLastEvent
                 )
-                .description("The total number of events, since the last start or metrics reset.")
+                .description("The number of milliseconds since the connector has read and processed the most recent event.")
                 //cdc connector name
                 .tag("cdcName", cdcName)
                 .tag("metricTypes", "streaming")
