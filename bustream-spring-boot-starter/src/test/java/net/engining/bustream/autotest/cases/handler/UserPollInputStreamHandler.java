@@ -20,7 +20,7 @@ import java.util.Map;
  * @since :
  **/
 @Profile({
-        "stream.common.bindings.pollinput"
+        "channel.stream.pollinput.rabbit",
 })
 @Service
 public class UserPollInputStreamHandler extends AbstractPollinputBustreamHandler<User> implements InitializingBean {

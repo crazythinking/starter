@@ -25,14 +25,6 @@ import java.util.Map;
  * @since :
  **/
 @ActiveProfiles(profiles = {
-        "bus.disable",
-        "channel.stream.input.rabbit",
-        "channel.stream.output.rabbit",
-        //"channel.stream.input.kafka",
-        //"channel.stream.output.kafka",
-        "rabbit.dev",
-        //"kafka.dev",
-        "stream.common",
         "channel.input.dev",
         "channel.output.dev",
 })
@@ -87,6 +79,7 @@ public class Stream4AutoAckTestCase extends AbstractTestCaseTemplate {
         User user = setupUser();
         Map<String, Object> headerMap = Maps.newHashMap();
         headerMap.put("gender", user.getAge() % 2);
+        headerMap.put("messageType", "type1");
         int n = 5;
         for (int i = 0; i < n; i++) {
             //last one set for error

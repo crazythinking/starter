@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Map;
  * @author Eric Lu
  * @date 2020-10-29 18:16
  **/
-public abstract class AbstractConsumeBustreamHandler<E extends Serializable> implements BustreamHandler<E> {
+public abstract class AbstractConsumeBustreamHandler<E> implements BustreamHandler<E> {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConsumeBustreamHandler.class);
 

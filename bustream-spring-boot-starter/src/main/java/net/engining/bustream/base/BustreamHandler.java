@@ -4,15 +4,13 @@ import net.engining.pg.support.enums.BaseEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import java.io.Serializable;
-
 /**
  * 消息事件 Handler接口
  *
  * @author Eric Lu
  * @date 2020-10-29 18:32
  **/
-public interface BustreamHandler<E extends Serializable> {
+public interface BustreamHandler<E> {
 
     String ORIGIN_MESSAGE_ID = "origin_message_id";
 

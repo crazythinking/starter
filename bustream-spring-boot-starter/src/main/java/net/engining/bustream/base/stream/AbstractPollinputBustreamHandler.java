@@ -57,6 +57,6 @@ public abstract class AbstractPollinputBustreamHandler<E extends Serializable>
      * 由业务子类用于指定具体的引用类型
      * @return ParameterizedTypeReference
      */
-    protected abstract ParameterizedTypeReference getParameterizedTypeReference();
+    protected abstract ParameterizedTypeReference<E> getParameterizedTypeReference();
 
 }
