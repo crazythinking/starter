@@ -20,7 +20,16 @@ public class DebeziumProperties {
 
     private String dataPath;
 
+    /**
+     * 是否启用 JRaft 作为 CDC 的Offset和Snapshot存储
+     */
     private boolean enabledJRaft = false;
+
+    /**
+     * 是否启用 Kafka 作为 CDC event 的消息来源；
+     * 注意：该能力是与内嵌 Debezium Engine 的能力互斥的，不能同时启用；打开该能力后，内嵌 Debezium Engine 的能力将被关闭；
+     */
+    private boolean enabledKafkaCdc = false;
 
     private Map<String, Map<String, String>> namedProperties = new HashMap<>();
 
@@ -38,6 +47,14 @@ public class DebeziumProperties {
      * 异步线程池的队列大小
      */
     private int asyncExcutorQueueCapacity = 10;
+
+    public boolean isEnabledKafkaCdc() {
+        return enabledKafkaCdc;
+    }
+
+    public void setEnabledKafkaCdc(boolean enabledKafkaCdc) {
+        this.enabledKafkaCdc = enabledKafkaCdc;
+    }
 
     public boolean isEnabledJRaft() {
         return enabledJRaft;

@@ -53,7 +53,7 @@ public class User2ConsumerFuncStreamHandler extends AbstractConsumeBustreamHandl
 
     @Override
     protected void handler(User2 event, Map<String, Object> headers) throws Exception{
-        LOGGER.info("handler event for user1 object: {}", event);
+        LOGGER.info("handler event for user2 object: {}", event);
         if (event.getAge()==0){
             throw new ErrorMessageException(ErrorCode.SystemError, "error test");
         }

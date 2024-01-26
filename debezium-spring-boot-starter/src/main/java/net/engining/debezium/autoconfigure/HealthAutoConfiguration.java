@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @since :
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "management.endpoint.health", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "management.health.debezium", name = "enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(JRaftNodeAutoConfiguration.class)
 @EnableConfigurationProperties({
         DebeziumMetricsProperties.class

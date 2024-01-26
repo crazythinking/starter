@@ -3,13 +3,14 @@ spring:
     name: debezium-starter-test
   main:
     allow-bean-definition-overriding: true
-
+  config:
+    use-legacy-processing: true
 
 logging:
   level:
     root: info
     net.engining: trace
-    org.springframework.boot: info
+    org.springframework.boot: debug
     io.debezium: warn
 #    org.apache.kafka.connect: info
     com.alipay.sofa.jraft: warn

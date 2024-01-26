@@ -1,7 +1,6 @@
 package net.engining.bustream.base.stream;
 
 import com.rabbitmq.client.Channel;
-import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;
@@ -27,7 +26,7 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
      * 接收处理消息，且在处理成功后进行ACK处理
      */
     @Override
-    protected void consume(E event, MessageHeaders headers)  throws Exception {
+    public void consume(E event, MessageHeaders headers)  throws Exception {
         logger.trace("consume message headers: {}", headers);
 
         //AMQP特有的
@@ -78,7 +77,8 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
             }
 
         } catch (Exception e) {
-            ExceptionUtilsExt.dump(e);
+            //ExceptionUtilsExt.dump(e);
+            defaultAfter(event, false, type, logger);
             throw e;
         }
     }

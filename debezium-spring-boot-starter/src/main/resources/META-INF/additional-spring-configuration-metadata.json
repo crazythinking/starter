@@ -5,6 +5,12 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "是否开启异步线程池功能."
+    },
+    {
+      "name": "management.health.debezium.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启debezium健康检查."
     }
   ],
   "hints": []

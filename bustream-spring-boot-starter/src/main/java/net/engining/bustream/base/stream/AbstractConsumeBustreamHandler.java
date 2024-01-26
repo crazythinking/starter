@@ -3,7 +3,6 @@ package net.engining.bustream.base.stream;
 import net.engining.bustream.base.BustreamHandler;
 import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.core.exception.ErrorMessageException;
-import net.engining.pg.support.utils.ExceptionUtilsExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
@@ -39,7 +38,7 @@ public abstract class AbstractConsumeBustreamHandler<E> implements BustreamHandl
      * @param event     payload
      * @param headers   消息头
      */
-    protected void consume(E event, MessageHeaders headers) throws Exception {
+    public void consume(E event, MessageHeaders headers) throws Exception {
         logger.trace("consume message headers: {}", headers);
         logger.trace("consume event for {}: {}", event.getClass(), event);
         boolean ret = received(event, headers);
@@ -60,7 +59,7 @@ public abstract class AbstractConsumeBustreamHandler<E> implements BustreamHandl
             return true;
         }
         catch (Exception e) {
-            ExceptionUtilsExt.dump(e);
+            //ExceptionUtilsExt.dump(e);
             defaultAfter(event, false, type, logger);
             //抛出原始异常，由外部配置决定是否消费重试
             throw e;
