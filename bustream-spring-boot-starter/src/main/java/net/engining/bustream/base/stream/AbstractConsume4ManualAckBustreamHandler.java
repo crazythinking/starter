@@ -42,44 +42,38 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
 
         logger.trace("consume event for {}: {}", event.getClass(), event);
         boolean ret;
-        try {
-            ret = received(event, headers);
-            if (ValidateUtilExt.isNotNullOrEmpty(channel)){
-                Assert.notNull(deliveryTag, AmqpHeaders.DELIVERY_TAG+" should not be null!!!");
-                if (ret){
-                    //提交ACK
-                    channel.basicAck(deliveryTag, false);
-                }
-                else {
-                    //这里不重新入列，避免消费端重复消费失败的消息
-                    channel.basicNack(deliveryTag, false, false);
-                }
+        ret = received(event, headers);
+        if (ValidateUtilExt.isNotNullOrEmpty(channel)){
+            Assert.notNull(deliveryTag, AmqpHeaders.DELIVERY_TAG+" should not be null!!!");
+            if (ret){
+                //提交ACK
+                channel.basicAck(deliveryTag, false);
             }
-            else if(ValidateUtilExt.isNotNullOrEmpty(ackCallback)){
-                if (ret){
-                    //提交ACK
-                    ackCallback.acknowledge(AcknowledgmentCallback.Status.ACCEPT);
-                }
-                else {
-                    //这里不重新入列，避免消费端重复消费失败的消息
-                    ackCallback.acknowledge(AcknowledgmentCallback.Status.REJECT);
-                }
+            else {
+                //这里不重新入列，避免消费端重复消费失败的消息
+                channel.basicNack(deliveryTag, false, false);
             }
-            else if (ValidateUtilExt.isNotNullOrEmpty(acknowledgment)){
-                if (ret){
-                    //提交ACK
-                    acknowledgment.acknowledge();
-                }
-                else {
-                    //这里不重新入列，避免消费端重复消费失败的消息
-                    acknowledgment.nack(1000);
-                }
-            }
-
-        } catch (Exception e) {
-            //ExceptionUtilsExt.dump(e);
-            defaultAfter(event, false, type, logger);
-            throw e;
         }
+        else if(ValidateUtilExt.isNotNullOrEmpty(ackCallback)){
+            if (ret){
+                //提交ACK
+                ackCallback.acknowledge(AcknowledgmentCallback.Status.ACCEPT);
+            }
+            else {
+                //这里不重新入列，避免消费端重复消费失败的消息
+                ackCallback.acknowledge(AcknowledgmentCallback.Status.REJECT);
+            }
+        }
+        else if (ValidateUtilExt.isNotNullOrEmpty(acknowledgment)){
+            if (ret){
+                //提交ACK
+                acknowledgment.acknowledge();
+            }
+            else {
+                //这里不重新入列，避免消费端重复消费失败的消息
+                acknowledgment.nack(1000);
+            }
+        }
+
     }
 }
