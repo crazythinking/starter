@@ -10,6 +10,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.time.Duration;
 
 /**
  * 消费者子类，其只限用于手动Ack的消费者；同时注意：消费者需要配置为手动Ack；
@@ -30,15 +31,15 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
         logger.trace("consume message headers: {}", headers);
 
         //AMQP特有的
-        Channel channel = (Channel) headers.get(AmqpHeaders.CHANNEL);
-        Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
+        Channel channel = headers.get("amqp_channel", Channel.class);
+        Long deliveryTag = headers.get("amqp_deliveryTag", Long.class);
 
         //Integration通用的
         AcknowledgmentCallback ackCallback
-                = (AcknowledgmentCallback) headers.get(IntegrationMessageHeaderAccessor.ACKNOWLEDGMENT_CALLBACK);
+                = headers.get(IntegrationMessageHeaderAccessor.ACKNOWLEDGMENT_CALLBACK, AcknowledgmentCallback.class);
 
         //Kafka特有的
-        Acknowledgment acknowledgment = (Acknowledgment) headers.get("kafka_acknowledgment");
+        Acknowledgment acknowledgment = headers.get("kafka_acknowledgment",Acknowledgment.class);
 
         logger.trace("consume event for {}: {}", event.getClass(), event);
         boolean ret;
@@ -71,7 +72,7 @@ public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Seriali
             }
             else {
                 //这里不重新入列，避免消费端重复消费失败的消息
-                acknowledgment.nack(1000);
+                acknowledgment.nack(Duration.ofSeconds(1));
             }
         }
 
