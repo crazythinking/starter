@@ -2,16 +2,14 @@ package net.engining.debezium.autoconfigure.autotest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.engining.debezium.event.CdcConsumerFuncStreamHandler;
-import net.engining.pg.support.core.context.ApplicationContextHolder;
+import net.engining.debezium.prop.utils.DebeziumUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.Message;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -27,15 +25,6 @@ import java.util.function.Consumer;
 )
 public class CombineContextConfig {
 
-    /**
-     * ApplicationContext的静态辅助Bean，建议项目必须注入
-     */
-    @Bean
-    @Lazy(value = false)
-    public ApplicationContextHolder applicationContextHolder() {
-        return new ApplicationContextHolder();
-    }
-
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
@@ -48,11 +37,7 @@ public class CombineContextConfig {
     public Consumer<Message<HashMap<String, Object>>> cdcXxlJobGroup(
             ObjectProvider<CdcConsumerFuncStreamHandler> streamHandler) {
         return message -> {
-            try {
-                Objects.requireNonNull(streamHandler.getIfAvailable()).consume(message.getPayload(), message.getHeaders());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            DebeziumUtils.consumeFunc(streamHandler, message);
         };
     }
 
@@ -60,11 +45,7 @@ public class CombineContextConfig {
     public Consumer<Message<HashMap<String, Object>>> cdcXxlJobLog(
             ObjectProvider<CdcConsumerFuncStreamHandler> streamHandler) {
         return message -> {
-            try {
-                Objects.requireNonNull(streamHandler.getIfAvailable()).consume(message.getPayload(), message.getHeaders());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            DebeziumUtils.consumeFunc(streamHandler, message);
         };
     }
 
