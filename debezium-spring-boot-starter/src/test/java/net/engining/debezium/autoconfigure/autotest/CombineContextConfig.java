@@ -7,6 +7,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
 
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class CombineContextConfig {
     /**
      * 接收消息，无需显示调用，由监听器自动触发
      */
+    @Profile("debezium.func.catchcdc")
     @Bean
     public Consumer<Message<HashMap<String, Object>>> cdcXxlJobGroup(
             ObjectProvider<CdcConsumerFuncStreamHandler> streamHandler) {
@@ -41,6 +43,7 @@ public class CombineContextConfig {
         };
     }
 
+    @Profile("debezium.func.catchcdc")
     @Bean
     public Consumer<Message<HashMap<String, Object>>> cdcXxlJobLog(
             ObjectProvider<CdcConsumerFuncStreamHandler> streamHandler) {
