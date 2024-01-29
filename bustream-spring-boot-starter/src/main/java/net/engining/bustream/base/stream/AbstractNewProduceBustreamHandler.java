@@ -6,13 +6,17 @@ import net.engining.bustream.base.BustreamHandler;
 import net.engining.bustream.base.ErrorMessageEvent;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.ValidateUtilExt;
+import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.MimeType;
 
 import java.io.Serializable;
@@ -68,7 +72,6 @@ public abstract class AbstractNewProduceBustreamHandler<E extends Serializable> 
         Message<E> message = null;
         defaultBefore(event, type, logger);
         try {
-            transform(event, headers);
             if (ValidateUtilExt.isNullOrEmpty(headers.get(ORIGIN_MESSAGE_ID))){
                 messageId = UUID.fastUUID().toString(true);
                 headers.put(ORIGIN_MESSAGE_ID, messageId);
@@ -76,7 +79,19 @@ public abstract class AbstractNewProduceBustreamHandler<E extends Serializable> 
             else {
                 messageId = (String) headers.get(ORIGIN_MESSAGE_ID);
             }
+            //TODO 由于是通用逻辑，所以如果classpath中都包含了这些类，那么header中可能包含多个类型的messageId
+            if (ClassUtils.isPresent("org.springframework.amqp.support.AmqpHeaders", this.getClass().getClassLoader())
+            ){
+                headers.put(AmqpHeaders.MESSAGE_ID, messageId);
+            }
+            if (ClassUtils.isPresent("org.springframework.kafka.support.KafkaHeaders", this.getClass().getClassLoader())){
+                headers.put(KafkaHeaders.MESSAGE_KEY, messageId);
+            }
+            if (ClassUtils.isPresent("org.apache.rocketmq.spring.support.RocketMQHeaders", this.getClass().getClassLoader())){
+                headers.put(RocketMQHeaders.MESSAGE_ID, messageId);
+            }
 
+            transform(event, headers);
             message = MessageBuilder.createMessage(event, new MessageHeaders(headers));
             ret = send(message,bindingName,mimeType);
             defaultAfter(event, ret, type, logger);
