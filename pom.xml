@@ -22,7 +22,7 @@
         <parent.version>4.1.RELEASE</parent.version>
         <pg.version>4.0.3.RELEASE</pg.version>
         <control.version>2.0.3.RELEASE</control.version>
-        <gm.version>2.0.3.RELEASE</gm.version>
+        <gm.version>2.0.4-SNAPSHOT</gm.version>
 
         <jasypt.version>3.0.5</jasypt.version>
         <jsch.version>0.2.9</jsch.version>
