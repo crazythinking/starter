@@ -1,6 +1,6 @@
 package net.engining.metrics.support;
 
-import io.micrometer.core.instrument.MeterRegistry;
+import cn.hutool.core.date.SystemClock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +20,12 @@ public class SimpleMetricsRepositoriesServiceImpl implements MetricsRepositories
 
     @Override
     public void batchSave(List<?> entities) {
+        long timestamp = SystemClock.now();
         entities.forEach(o -> {
             if (o instanceof MeterDto){
                 MeterDto meter = (MeterDto) o;
                 if (LOGGER.isTraceEnabled()){
-                    LOGGER.trace(meter.toString());
+                    LOGGER.trace("{}@{}", timestamp, meter);
                 }
             }
         });
@@ -35,8 +36,4 @@ public class SimpleMetricsRepositoriesServiceImpl implements MetricsRepositories
         //do nothing
     }
 
-    @Override
-    public void initializeMeters(MeterRegistry meterRegistry) {
-        //do nothing
-    }
 }

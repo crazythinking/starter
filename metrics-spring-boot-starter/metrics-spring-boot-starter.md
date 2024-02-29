@@ -94,8 +94,8 @@ private Counter counter2;
 private Counter counter3;
 private Counter counter4;
 
-counter1 = BizMetrics.requestStepTimes("/mvcecho/111").register(storedStepMeterRegistry);
-counter2 = BizMetrics.requestStepTimes("/mvcecho3").register(storedStepMeterRegistry);
+counter1 = BizMetrics.requestStepTimes("/mvcecho/111").register(storedStepPushMeterRegistry);
+counter2 = BizMetrics.requestStepTimes("/mvcecho3").register(storedStepPushMeterRegistry);
 
 counter3 = BizMetrics.requestTotalTimes("/mvcecho/111").register(storedPushMeterRegistry);
 counter4 = BizMetrics.requestTotalTimes("/mvcecho3").register(storedPushMeterRegistry);

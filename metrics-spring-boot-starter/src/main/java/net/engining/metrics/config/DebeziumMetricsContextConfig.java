@@ -9,7 +9,6 @@ import io.debezium.relational.history.DatabaseHistoryMXBean;
 import net.engining.metrics.debezium.DebeziumMySqlMetrics;
 import net.engining.metrics.debezium.DebeziumOracleMetrics;
 import net.engining.metrics.prop.DebeziumMetricsProperties;
-import net.engining.metrics.prop.MetricsRegistryProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

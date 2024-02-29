@@ -27,7 +27,11 @@ public class ExceptionDocRepoService {
                 .withQuery(
                         QueryBuilders.boolQuery()
                                 .must(QueryBuilders.matchQuery("Exception_name", exception))
-                                .must(QueryBuilders.rangeQuery("@timestamp").gte("now-30m/m").lte("now/m"))
+                                .must(QueryBuilders.rangeQuery("@timestamp")
+                                        .gte("now-30m/m")
+                                        .lte("now/m")
+                                        .timeZone("CTT")
+                                )
                 );
         SearchHits<ExceptionDoc> exceptionDocs = elasticsearchTemplate.search(queryBuilder.build(), ExceptionDoc.class);
         return exceptionDocs.stream().map(SearchHit::getContent).collect(Collectors.toList());

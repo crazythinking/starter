@@ -22,7 +22,6 @@ import io.micrometer.core.instrument.internal.DefaultMeter;
 import io.micrometer.core.instrument.push.PushMeterRegistry;
 import io.micrometer.core.instrument.push.PushRegistryConfig;
 import net.engining.metrics.MetricsUtils;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,17 +30,18 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToLongFunction;
 
 /**
- * 基于数据存储层的指标注册器，可将监控指标数据发布到数据存储层；
+ * 基于数据存储层的指标注册器，可将监控指标数据定时发布到数据存储层；
+ * 常用与只支持推送监控数据的监控系统存储层；
  * 注意：
- * <li>其指标都是累计值，即从初始化那一刻开始一直累计，因此注意重启服务时需要从存储层初始化各指标；
- * <li>Interval参数只控制该指标注册器按周期间隔发布指标数据到存储层的场景；
+ * <li>其指标都是累计值，即从初始化那一刻开始一直累计；
+ * <li>Interval参数只控制该MeterRegistry数据发布的间隔周期；
  *
  * @author : Eric Lu
  * @version :
  * @date : 2021-12-07 15:37
  * @since :
  **/
-public class StoredPushMeterRegistry extends PushMeterRegistry implements InitializingBean {
+public class StoredPushMeterRegistry extends PushMeterRegistry {
     /**
      * 数据存储层
      */
@@ -152,10 +152,5 @@ public class StoredPushMeterRegistry extends PushMeterRegistry implements Initia
         return DistributionStatisticConfig.builder()
                 .build()
                 .merge(DistributionStatisticConfig.DEFAULT);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        repositoriesService.initializeMeters(this);
     }
 }

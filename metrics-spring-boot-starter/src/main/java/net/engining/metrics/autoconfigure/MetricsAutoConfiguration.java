@@ -17,7 +17,7 @@ import net.engining.metrics.prop.MetricsRegistryProperties;
 import net.engining.metrics.support.MetricsRepositoriesService;
 import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import net.engining.metrics.support.StoredPushMeterRegistry;
-import net.engining.metrics.support.StoredStepMeterRegistry;
+import net.engining.metrics.support.StoredStepPushMeterRegistry;
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -113,16 +113,16 @@ public class MetricsAutoConfiguration {
      */
     @Bean(destroyMethod="")
     @ConditionalOnBean(MetricsRepositoriesService.class)
-    public StoredStepMeterRegistry storedStepMeterRegistry(MetricsRepositoriesService repositoriesService,
-                                                           MetricsRegistryProperties properties, Clock clock) {
-        StoredStepMeterRegistry storedStepMeterRegistry = new StoredStepMeterRegistry(
+    public StoredStepPushMeterRegistry storedStepMeterRegistry(MetricsRepositoriesService repositoriesService,
+                                                               MetricsRegistryProperties properties, Clock clock) {
+        StoredStepPushMeterRegistry storedStepPushMeterRegistry = new StoredStepPushMeterRegistry(
                 repositoriesService,
                 clock,
                 properties.getStepMeterRegistryPrefixes(),
                 properties.getStepMeterRegistryInterval()
         );
-        storedStepMeterRegistry.start(new NamedThreadFactory("step-metrics-storage-publisher"));
-        return storedStepMeterRegistry;
+        storedStepPushMeterRegistry.start(new NamedThreadFactory("step-metrics-storage-publisher"));
+        return storedStepPushMeterRegistry;
     }
 
     /**

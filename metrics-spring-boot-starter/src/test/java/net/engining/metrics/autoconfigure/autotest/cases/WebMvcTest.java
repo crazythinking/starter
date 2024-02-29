@@ -5,15 +5,21 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.search.MeterNotFoundException;
 import io.micrometer.core.instrument.search.Search;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
+import net.engining.metrics.MetricsUtils;
 import net.engining.metrics.autoconfigure.autotest.support.AbstractTestCaseTemplate;
 import net.engining.metrics.autoconfigure.autotest.support.AdditionalOb;
 import net.engining.metrics.autoconfigure.autotest.support.BizMetrics;
 import net.engining.metrics.support.StoredPushMeterRegistry;
-import net.engining.metrics.support.StoredStepMeterRegistry;
+import net.engining.metrics.support.StoredStepPushMeterRegistry;
+import net.engining.pg.support.utils.ValidateUtilExt;
+import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,6 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
@@ -50,10 +57,14 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
     private StoredPushMeterRegistry storedPushMeterRegistry;
 
     @Autowired
-    private StoredStepMeterRegistry storedStepMeterRegistry;
+    private StoredStepPushMeterRegistry storedStepPushMeterRegistry;
+
+    private MeterRegistry meterRegistry;
 
     private MockMvc mvc;
 
+    private Counter gbCounter1;
+    private Counter gbCounter2;
     private Counter counter1;
     private Counter counter2;
     private Counter counter3;
@@ -65,13 +76,31 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
+        this.meterRegistry = MetricsUtils.determinedMeterRegistry((ConfigurableApplicationContext) context);
 
-        counter1 = BizMetrics.requestStepTimes("/mvcecho/111").register(storedStepMeterRegistry);
-        counter2 = BizMetrics.requestStepTimes("/mvcecho3").register(storedStepMeterRegistry);
+        // 注册全局的MeterRegistry, 所有的MeterRegistry都会被注册
+        gbCounter1 = BizMetrics.REQUEST_TIMES.tag("uri", "/mvcecho/111").register(meterRegistry);
+        gbCounter2 = BizMetrics.REQUEST_TIMES.tag("uri", "/mvcecho3").register(meterRegistry);
 
-        counter3 = BizMetrics.requestTotalTimes("/mvcecho/111").register(storedPushMeterRegistry);
-        counter4 = BizMetrics.requestTotalTimes("/mvcecho3").register(storedPushMeterRegistry);
+        // 注册自定义指标，如果只使用Prometheus作为指标存储层，则可以不注册
+        //regist();
+    }
 
+    private void regist() {
+        Counter.Builder builder1;
+        Counter.Builder builder2;
+        Counter.Builder builder3;
+        Counter.Builder builder4;
+        builder1 = BizMetrics.requestStepTimes("/mvcecho/111");
+        builder2 = BizMetrics.requestStepTimes("/mvcecho3");
+        builder3 = BizMetrics.requestTotalTimes("/mvcecho/111");
+        builder4 = BizMetrics.requestTotalTimes("/mvcecho3");
+        // 注册按步长计算的计数器
+        counter1 = builder1.register(storedStepPushMeterRegistry);
+        counter2 = builder2.register(storedStepPushMeterRegistry);
+        // 注册累积计算的计数器
+        counter3 = builder3.register(storedPushMeterRegistry);
+        counter4 = builder4.register(storedPushMeterRegistry);
     }
 
     @Override
@@ -85,6 +114,20 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
                     "the meter registry[{}] number of total meters: {} ",
                     meterRegistry.getClass().getName(),
                     Search.in(meterRegistry).meters().size());
+            if (meterRegistry instanceof StoredPushMeterRegistry){
+                Assertions.assertThatThrownBy(() -> meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meter())
+                        .isInstanceOf(MeterNotFoundException.class);
+            }
+            if (meterRegistry instanceof StoredStepPushMeterRegistry){
+                Assert.isTrue(
+                        meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meters().size() == 2,
+                        "meter size must be 2");
+            }
+            if (meterRegistry instanceof PrometheusMeterRegistry) {
+                Assert.isTrue(
+                        meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meters().size() == 2,
+                        "meter size must be 2");
+            }
         });
 
     }
@@ -110,8 +153,13 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
         ;
-        counter2.increment();
-        counter4.increment();
+        if (ValidateUtilExt.isNotNullOrEmpty(counter2)){
+            counter2.increment();
+        }
+        if (ValidateUtilExt.isNotNullOrEmpty(counter4)){
+            counter4.increment();
+        }
+        //gbCounter2.increment();
     }
 
     private AdditionalOb call1() throws Exception {
@@ -125,8 +173,13 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         String json = "{\"aa\":\"bbb\"}";
         AdditionalOb ob = mapper.readValue(json, AdditionalOb.class);
 
-        counter1.increment();
-        counter3.increment();
+        if (ValidateUtilExt.isNotNullOrEmpty(counter1)){
+            counter1.increment();
+        }
+        if (ValidateUtilExt.isNotNullOrEmpty(counter3)){
+            counter3.increment();
+        }
+        //gbCounter1.increment();
 
         return ob;
     }

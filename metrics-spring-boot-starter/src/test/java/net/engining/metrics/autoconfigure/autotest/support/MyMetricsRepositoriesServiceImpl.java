@@ -1,6 +1,6 @@
 package net.engining.metrics.autoconfigure.autotest.support;
 
-import io.micrometer.core.instrument.MeterRegistry;
+import cn.hutool.core.date.SystemClock;
 import net.engining.metrics.support.MeterDto;
 import net.engining.metrics.support.SimpleMetricsRepositoriesServiceImpl;
 import org.slf4j.Logger;
@@ -20,22 +20,14 @@ public class MyMetricsRepositoriesServiceImpl extends SimpleMetricsRepositoriesS
 
     @Override
     public void batchSave(List<?> entities) {
+        long timestamp = SystemClock.now();
         entities.forEach(o -> {
             if (o instanceof MeterDto){
                 MeterDto meter = (MeterDto) o;
-                LOGGER.warn(meter.toString());
+                //模拟存储
+                LOGGER.warn("{}@{}", timestamp, meter);
             }
         });
     }
 
-    @Override
-    public void initializeMeters(MeterRegistry meterRegistry) {
-        //load from storage
-        double call1 = 20;
-        double call2 = 20;
-
-        BizMetrics.requestTotalTimes("/mvcecho/111").register(meterRegistry).increment(call1);
-        BizMetrics.requestTotalTimes("/mvcecho3").register(meterRegistry).increment(call2);
-
-    }
 }

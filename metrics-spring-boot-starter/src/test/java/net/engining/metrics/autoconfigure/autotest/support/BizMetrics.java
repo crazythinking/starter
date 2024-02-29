@@ -12,6 +12,8 @@ public class BizMetrics {
     private static final String BIZ_MVC = "biz.mvc.";
     public static final String BIZ_MVC_CALL = BIZ_MVC + "call";
 
+    public static final Counter.Builder REQUEST_TIMES = Counter.builder(BIZ_MVC_CALL);
+
     public static Counter.Builder requestStepTimes(String uri) {
         return Counter.builder(BIZ_MVC_CALL)
                 .tags(
