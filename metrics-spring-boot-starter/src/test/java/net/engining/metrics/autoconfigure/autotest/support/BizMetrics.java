@@ -14,19 +14,17 @@ public class BizMetrics {
 
     public static final Counter.Builder REQUEST_TIMES = Counter.builder(BIZ_MVC_CALL);
 
-    public static Counter.Builder requestStepTimes(String uri) {
+    public static Counter.Builder requestStepTimes() {
         return Counter.builder(BIZ_MVC_CALL)
                 .tags(
-                        "uri", uri,
                         "type", "step"
                 )
                 ;
     }
 
-    public static Counter.Builder requestTotalTimes(String uri) {
+    public static Counter.Builder requestTotalTimes() {
         return Counter.builder(BIZ_MVC_CALL)
                 .tags(
-                        "uri", uri,
                         "type", "cumulative"
                 )
                 ;

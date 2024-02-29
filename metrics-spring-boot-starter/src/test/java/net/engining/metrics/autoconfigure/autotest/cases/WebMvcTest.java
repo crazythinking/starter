@@ -79,11 +79,11 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         this.meterRegistry = MetricsUtils.determinedMeterRegistry((ConfigurableApplicationContext) context);
 
         // 注册全局的MeterRegistry, 所有的MeterRegistry都会被注册
-        gbCounter1 = BizMetrics.REQUEST_TIMES.tag("uri", "/mvcecho/111").register(meterRegistry);
-        gbCounter2 = BizMetrics.REQUEST_TIMES.tag("uri", "/mvcecho3").register(meterRegistry);
+        gbCounter1 = BizMetrics.REQUEST_TIMES.tags("uri", "/mvcecho/111").register(meterRegistry);
+        gbCounter2 = BizMetrics.REQUEST_TIMES.tags("uri", "/mvcecho3").register(meterRegistry);
 
         // 注册自定义指标，如果只使用Prometheus作为指标存储层，则可以不注册
-        //regist();
+        regist();
     }
 
     private void regist() {
@@ -91,16 +91,16 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         Counter.Builder builder2;
         Counter.Builder builder3;
         Counter.Builder builder4;
-        builder1 = BizMetrics.requestStepTimes("/mvcecho/111");
-        builder2 = BizMetrics.requestStepTimes("/mvcecho3");
-        builder3 = BizMetrics.requestTotalTimes("/mvcecho/111");
-        builder4 = BizMetrics.requestTotalTimes("/mvcecho3");
+        builder1 = BizMetrics.requestStepTimes();
+        builder2 = BizMetrics.requestStepTimes();
+        builder3 = BizMetrics.requestTotalTimes();
+        builder4 = BizMetrics.requestTotalTimes();
         // 注册按步长计算的计数器
-        counter1 = builder1.register(storedStepPushMeterRegistry);
-        counter2 = builder2.register(storedStepPushMeterRegistry);
+        counter1 = builder1.tag("uri", "/mvcecho/111").register(storedStepPushMeterRegistry);
+        counter2 = builder2.tag("uri", "/mvcecho3").register(storedStepPushMeterRegistry);
         // 注册累积计算的计数器
-        counter3 = builder3.register(storedPushMeterRegistry);
-        counter4 = builder4.register(storedPushMeterRegistry);
+        counter3 = builder3.tag("uri", "/mvcecho/111").register(storedPushMeterRegistry);
+        counter4 = builder4.tag("uri", "/mvcecho3").register(storedPushMeterRegistry);
     }
 
     @Override
@@ -118,9 +118,10 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
                 Assertions.assertThatThrownBy(() -> meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meter())
                         .isInstanceOf(MeterNotFoundException.class);
             }
+            //向全局注册的2个+自定义注册的2个，共4个;两两之间tag不同;但如果tag完全相同则会被合并为2个,因为MeterId是指标名称加tags的组合
             if (meterRegistry instanceof StoredStepPushMeterRegistry){
                 Assert.isTrue(
-                        meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meters().size() == 2,
+                        meterRegistry.get(BizMetrics.BIZ_MVC_CALL).tagKeys("uri").meters().size() == 4,
                         "meter size must be 2");
             }
             if (meterRegistry instanceof PrometheusMeterRegistry) {
