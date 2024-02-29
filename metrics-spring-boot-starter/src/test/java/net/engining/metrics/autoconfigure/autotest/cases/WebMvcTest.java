@@ -160,7 +160,7 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         if (ValidateUtilExt.isNotNullOrEmpty(counter4)){
             counter4.increment();
         }
-        //gbCounter2.increment();
+        gbCounter2.increment();
     }
 
     private AdditionalOb call1() throws Exception {
@@ -180,7 +180,7 @@ public class WebMvcTest extends AbstractTestCaseTemplate {
         if (ValidateUtilExt.isNotNullOrEmpty(counter3)){
             counter3.increment();
         }
-        //gbCounter1.increment();
+        gbCounter1.increment();
 
         return ob;
     }
