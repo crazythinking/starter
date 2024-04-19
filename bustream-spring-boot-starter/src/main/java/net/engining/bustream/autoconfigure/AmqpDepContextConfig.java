@@ -1,6 +1,7 @@
 package net.engining.bustream.autoconfigure;
 
 import net.engining.bustream.base.AmqpErrorMessageEventListener;
+import net.engining.bustream.base.ConnectionBlockedEventListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -26,5 +27,11 @@ public class AmqpDepContextConfig {
     @ConditionalOnMissingBean
     public AmqpErrorMessageEventListener amqpErrorMessageEventListener(){
         return new AmqpErrorMessageEventListener();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ConnectionBlockedEventListener connectionBlockedEventListener(){
+        return new ConnectionBlockedEventListener();
     }
 }

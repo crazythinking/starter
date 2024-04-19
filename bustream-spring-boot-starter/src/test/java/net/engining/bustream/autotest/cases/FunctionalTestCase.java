@@ -1,9 +1,7 @@
 package net.engining.bustream.autotest.cases;
 
-import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
-import net.engining.bustream.autotest.cases.handler.User2StreamBridgeStreamHandler;
 import net.engining.bustream.autotest.cases.handler.UserStreamBridgeStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import net.engining.bustream.autotest.support.User;
@@ -25,9 +23,9 @@ import java.util.Map;
 @ActiveProfiles(profiles = {
         "bustream.func.dev",
         "bustream.func.userouter",
-        "bustream.func.userouter2",
+        //"bustream.func.userouter2",
         "bustream.func.catchuser",
-        "bustream.func.catchuser2",
+        //"bustream.func.catchuser2",
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class FunctionalTestCase extends AbstractTestCaseTemplate {
@@ -39,8 +37,8 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     @Autowired
     UserStreamBridgeStreamHandler userStreamBridgeStreamHandler;
 
-    @Autowired
-    User2StreamBridgeStreamHandler user2StreamBridgeStreamHandler;
+    //@Autowired
+    //User2StreamBridgeStreamHandler user2StreamBridgeStreamHandler;
 
     @Override
     public void initTestData() throws Exception {
@@ -55,21 +53,21 @@ public class FunctionalTestCase extends AbstractTestCaseTemplate {
     @Override
     public void testProcess() throws Exception {
         //通过StreamBridge发送消息是同步模型
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
 
             Map<String, Object> headerMap = Maps.newHashMap();
 
             boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
-            Pair<String, Boolean> rt2 = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
+            //Pair<String, Boolean> rt2 = user2StreamBridgeStreamHandler.sendAndGetId(setupUser2(), headerMap);
             LOGGER.warn("streamBridge send succeed: {}", rt);
-            LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
+            //LOGGER.warn("streamBridge sendAndGetId succeed: {}-{}", rt2.getKey(), rt2.getValue());
         }
 
         User2 user = new User2();
         user.setUserId2(System.currentTimeMillis());
         user.setName2("user2.name");
         user.setAge(0);
-        user2StreamBridgeStreamHandler.sendAndGetId(user, Maps.newHashMap());
+        //user2StreamBridgeStreamHandler.sendAndGetId(user, Maps.newHashMap());
 
         //等待另一个线程获取到消息并赋值
         Thread.sleep(20000);
