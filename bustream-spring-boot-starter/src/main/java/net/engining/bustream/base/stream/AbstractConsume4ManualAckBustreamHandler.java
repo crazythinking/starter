@@ -20,6 +20,7 @@ import java.time.Duration;
  * @date : 2021-05-04 13:44
  * @since :
  **/
+@Deprecated
 public abstract class AbstractConsume4ManualAckBustreamHandler<E extends Serializable>
                                                         extends AbstractConsumeBustreamHandler<E> {
 
