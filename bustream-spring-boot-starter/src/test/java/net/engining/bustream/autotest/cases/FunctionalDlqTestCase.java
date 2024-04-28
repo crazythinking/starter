@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
  * @since :
  **/
 @ActiveProfiles(profiles = {
+        "bustream.func.dev",
         "bustream.func.catchdlq"
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
