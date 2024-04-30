@@ -17,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Map;
 
 /**
+ * 不同类型多 Binder 测试
+ *
  * @author : Eric Lu
  * @version :
  * @date : 2023-03-03 9:41

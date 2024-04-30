@@ -1,5 +1,0 @@
-spring:
-  profiles:
-    include:
-      - bustream.bindings.default
-      - bustream.kafka.bindings.default

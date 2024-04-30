@@ -24,10 +24,6 @@ import java.util.Map;
         "rabbit.dev",
         "bus.enable",
         "bustream.rabbit.binders",
-        "bus.common.bindings.input",
-        "bus.common.bindings.output",
-        "bus.rabbit.bindings.input",
-        "bus.rabbit.bindings.output"
 })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
 public class BusTestCase extends AbstractTestCaseTemplate {

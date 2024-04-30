@@ -63,6 +63,14 @@ public class CombineConfiguration {
 		};
 	}
 
+	@Profile("bustream.func.catchuser2chu")
+	@Bean
+	public Consumer<Message<User2>> catchuser2chu() {
+		return message -> {
+			LOGGER.warn("Functional Consumer[catchuser2chu] received: {}", message.getPayload());
+		};
+	}
+
 	/**
 	 * 不推荐
 	 */
