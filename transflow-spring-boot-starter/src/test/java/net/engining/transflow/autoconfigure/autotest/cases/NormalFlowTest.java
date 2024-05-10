@@ -49,7 +49,34 @@ public class NormalFlowTest extends AbstractTestCaseTemplate {
 		//重复的交易，测试幂等
 		SimpleFlowResponse resp2 = flowTransProcessorTemplate.process(request, SimpleFlowResponse.class);
 		testAssertDataContext.put("response2", resp2);
-		
+
+		//CountDownLatch latch = new CountDownLatch(3);
+		//for (int i = 0; i < 3; i++) {
+		//	new Thread(() -> {
+        //        try {
+        //            SampleFlowRequest request1 = new SampleFlowRequest();
+        //            request1.setOnlineData("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+        //            request1.setChannelRequestSeq("1234567890987654321");
+        //            request1.setChannel("test");
+        //            request1.setIntValue1(4);
+        //            request1.setIntValue2(0);
+        //            SimpleFlowResponse resp1 = flowTransProcessorTemplate.process(request1, SimpleFlowResponse.class);
+        //        }
+        //        finally {
+        //            latch.countDown();
+        //        }
+		//
+        //    }).start();
+		//}
+		//
+		//try {
+		//	boolean success = latch.await(3000, java.util.concurrent.TimeUnit.MILLISECONDS);
+		//	if (!success) {
+		//		throw new RuntimeException("Timeout");
+		//	}
+		//} catch (InterruptedException e) {
+		//	Thread.currentThread().interrupt();
+		//}
 	}
 
 	@Override

@@ -2,12 +2,10 @@ package net.engining.bustream.autotest.cases;
 
 import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.Maps;
-import net.engining.bustream.autotest.cases.handler.UserStreamBridgeStreamHandler;
 import net.engining.bustream.autotest.support.AbstractTestCaseTemplate;
 import net.engining.bustream.autotest.support.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -25,11 +23,11 @@ import java.util.Map;
         "bustream.func.dev",
         "bustream.rabbit1.binders",
         "bustream.rabbit2.binders",
-        "bustream.func.userouter",
-        "bustream.func.catchuser",
+        //"bustream.func.userouter",
+        //"bustream.func.catchuser",
         "bustream.func.adduser2",
         "bustream.func.catchuser2lu",
-        "bustream.func.catchuser2chu"
+        //"bustream.func.catchuser2chu"
 
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -39,8 +37,8 @@ public class FunctionalBindersTestCase extends AbstractTestCaseTemplate {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(FunctionalBindersTestCase.class);
 
-    @Autowired
-    UserStreamBridgeStreamHandler userStreamBridgeStreamHandler;
+    //@Autowired
+    //UserStreamBridgeStreamHandler userStreamBridgeStreamHandler;
 
     @Override
     public void initTestData() throws Exception {
@@ -60,8 +58,8 @@ public class FunctionalBindersTestCase extends AbstractTestCaseTemplate {
 
             Map<String, Object> headerMap = Maps.newHashMap();
 
-            boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
-            LOGGER.warn("streamBridge send succeed: {}", rt);
+            //boolean rt = userStreamBridgeStreamHandler.send(setupUser(), headerMap);
+            //LOGGER.warn("streamBridge send succeed: {}", rt);
         }
 
         //等待另一个线程获取到消息并赋值

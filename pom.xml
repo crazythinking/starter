@@ -327,13 +327,13 @@
         <module>rocksdb-spring-boot-starter</module>
         <module>drools-spring-boot-starter</module>
         <module>metrics-spring-boot-starter</module>
-        <module>kettle-spring-boot-starter</module>
         <module>rheakv-spring-boot-starter</module>
         <module>sftp-spring-boot-starter</module>
         <module>spl-spring-boot-starter</module>
         <module>groovy-spring-boot-starter</module>
         <module>mongo-spring-boot-starter</module>
         <module>dynamic-tp-spring-boot-starter</module>
+        <module>kettle-spring-boot-starter</module>
     </modules>
 
     <build>

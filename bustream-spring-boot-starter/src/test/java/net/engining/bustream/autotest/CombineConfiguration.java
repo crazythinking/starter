@@ -18,6 +18,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -43,9 +44,12 @@ public class CombineConfiguration {
 	@Bean
 	public Supplier<Message<User2>> addUser2(){
 		return () -> {
+			Map<String, Object> headerMap = Maps.newHashMap();
+			headerMap.put("messageType", "type2");
+
 			Message<User2> message = MessageBuilder.createMessage(
 					FunctionalTestCase.setupUser2(),
-					new MessageHeaders(Maps.newHashMap())
+					new MessageHeaders(headerMap)
 			);
 			LOGGER.warn("Functional Producer[addUser2] send: {}", message.getPayload());
 			return message;
