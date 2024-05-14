@@ -26,7 +26,6 @@ import org.apache.shardingsphere.spring.transaction.TransactionTypeScanner;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -137,7 +136,6 @@ public class EnhanceShardingSphereAutoConfiguration implements EnvironmentAware 
      */
     @Bean
     @Primary
-    @ConditionalOnMissingBean(DataSource.class)
     public DataSource dataSource(final ModeConfiguration modeConfig) throws SQLException {
         return !dataSourceMap.isEmpty() ?
                 ShardingSphereDataSourceFactory.createDataSource(
