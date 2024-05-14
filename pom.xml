@@ -278,6 +278,11 @@
                 <artifactId>dynamic-tp-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>net.engining.starter</groupId>
+                <artifactId>batch-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -333,6 +338,7 @@
         <module>groovy-spring-boot-starter</module>
         <module>mongo-spring-boot-starter</module>
         <module>dynamic-tp-spring-boot-starter</module>
+        <module>batch-spring-boot-starter</module>
         <module>kettle-spring-boot-starter</module>
     </modules>
 
