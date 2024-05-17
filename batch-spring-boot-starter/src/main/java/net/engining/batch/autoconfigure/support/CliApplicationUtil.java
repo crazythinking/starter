@@ -1,9 +1,7 @@
 package net.engining.batch.autoconfigure.support;
 
 import cn.hutool.core.lang.Console;
-import com.alibaba.fastjson.JSON;
 import net.engining.pg.batch.sdk.infrastructure.utils.BatchCommonLogicUtils;
-import net.engining.pg.support.core.exception.ErrorCode;
 import net.engining.pg.support.utils.ExceptionUtilsExt;
 import net.engining.pg.support.utils.SystemUtils;
 import net.engining.pg.support.utils.ValidateUtilExt;
@@ -16,7 +14,14 @@ import org.springframework.context.ConfigurableApplicationContext;
  **/
 public class CliApplicationUtil {
 
-    public static void run(String[] args, Class mainClass, String defaultBatchCliReturn) {
+    /**
+     * Runs the specified main class with the provided arguments, logging necessary information.
+     *
+     * @param  args                    the arguments to be passed to the main class
+     * @param  mainClass               the main class to be run
+     * @param  defaultUnknownCliReturn the default value in case of an unknown CLI return
+     */
+    public static void run(String[] args, Class mainClass, String defaultUnknownCliReturn) {
         Console.log("{}{}", BatchCommonLogicUtils.BATCH_CLI_PID, SystemUtils.getCurrentPid());
         ConfigurableApplicationContext configurableApplicationContext = null;
         try {
@@ -24,7 +29,7 @@ public class CliApplicationUtil {
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
         } finally {
-            exitApplication(configurableApplicationContext, defaultBatchCliReturn);
+            exitApplication(configurableApplicationContext, defaultUnknownCliReturn);
         }
     }
 
@@ -41,9 +46,6 @@ public class CliApplicationUtil {
                 return 0;
             });
         } else {
-            //List<AbstractBatchJobRunner.ExecutionStatus> list = Lists.newArrayList();
-            //list.add(new AbstractBatchJobRunner.ExecutionStatus(-1L, new ExitStatus("UNKNOWN", "未知错误")));
-            Console.error("{}{}", BatchCommonLogicUtils.BATCH_CLI_RETURN, JSON.toJSONString(ErrorCode.UnknowFail));
             Console.error("{}{}", BatchCommonLogicUtils.BATCH_CLI_RETURN, batchCliReturn);
             exitCode = -1;
         }
