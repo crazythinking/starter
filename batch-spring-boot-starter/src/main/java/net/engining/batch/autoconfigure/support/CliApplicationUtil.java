@@ -11,20 +11,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * CLI 启动抽象类
- *
- */
-public class AbstractCliApplication {
+ * @author Eric Lu
+ * @date 2024-05-14 17:49
+ **/
+public class CliApplicationUtil {
 
-    public static void main(String[] args) {
+    public static void run(String[] args, Class mainClass, String defaultBatchCliReturn) {
         Console.log("{}{}", BatchCommonLogicUtils.BATCH_CLI_PID, SystemUtils.getCurrentPid());
         ConfigurableApplicationContext configurableApplicationContext = null;
         try {
-            configurableApplicationContext = SpringApplication.run(AbstractCliApplication.class, args);
+            configurableApplicationContext = SpringApplication.run(mainClass, args);
         } catch (Exception e) {
             ExceptionUtilsExt.dump(e);
         } finally {
-            exitApplication(configurableApplicationContext);
+            exitApplication(configurableApplicationContext, defaultBatchCliReturn);
         }
     }
 
@@ -33,7 +33,7 @@ public class AbstractCliApplication {
      *
      * @param configurableApplicationContext 上下文
      */
-    private static void exitApplication(ConfigurableApplicationContext configurableApplicationContext) {
+    private static void exitApplication(ConfigurableApplicationContext configurableApplicationContext, String batchCliReturn) {
         int exitCode = 0;
         if (ValidateUtilExt.isNotNullOrEmpty(configurableApplicationContext)) {
             SpringApplication.exit(configurableApplicationContext, () -> {
@@ -41,9 +41,13 @@ public class AbstractCliApplication {
                 return 0;
             });
         } else {
+            //List<AbstractBatchJobRunner.ExecutionStatus> list = Lists.newArrayList();
+            //list.add(new AbstractBatchJobRunner.ExecutionStatus(-1L, new ExitStatus("UNKNOWN", "未知错误")));
             Console.error("{}{}", BatchCommonLogicUtils.BATCH_CLI_RETURN, JSON.toJSONString(ErrorCode.UnknowFail));
+            Console.error("{}{}", BatchCommonLogicUtils.BATCH_CLI_RETURN, batchCliReturn);
             exitCode = -1;
         }
         System.exit(exitCode);
     }
+
 }
