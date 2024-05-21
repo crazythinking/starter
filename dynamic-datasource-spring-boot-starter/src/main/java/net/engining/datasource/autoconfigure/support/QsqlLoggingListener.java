@@ -18,8 +18,7 @@ public class QsqlLoggingListener extends SQLBaseListener {
     @Override
     public void end(SQLListenerContext context) {
         context.getAllSQLBindings().forEach(sqlBindings -> {
-            LOGGER.debug("SQL: {}", sqlBindings.getSQL());
-            LOGGER.debug("Params: {}", sqlBindings.getNullFriendlyBindings());
+            LOGGER.debug("SQL: {}; Params: {}", sqlBindings.getSQL(), sqlBindings.getNullFriendlyBindings());
         });
     }
 }
