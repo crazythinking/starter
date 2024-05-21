@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gm-starter-test
+  main:
+    allow-bean-definition-overriding: true
+  config:
+    use-legacy-processing: true
+
+logging:
+  level:
+    root: info
+    net.engining: trace
+
+
+pg:
+  param:
+    expire-duration: 1
+    expire-time-unit: seconds
