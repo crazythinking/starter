@@ -50,6 +50,10 @@ public final class SftpConfigUtils {
 
     public static CachingSessionFactory<ChannelSftp.LsEntry> buildCachingSessionFactory(SftpProperties sftpProperties) {
         Preconditions.checkArgument(
+                ValidateUtilExt.isNotNullOrEmpty(sftpProperties),
+                "SFTP Properties instance must not be null"
+        );
+        Preconditions.checkArgument(
                 ValidateUtilExt.isNotNullOrEmpty(sftpProperties.getUser()),
                 "SFTP user must be set"
         );
