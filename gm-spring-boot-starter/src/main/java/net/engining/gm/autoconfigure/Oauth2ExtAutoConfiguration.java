@@ -1,9 +1,7 @@
 package net.engining.gm.autoconfigure;
 
 import net.engining.gm.config.security.OauthResourceServerExtContextConfig;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -18,7 +16,6 @@ import org.springframework.context.annotation.Import;
 @Import(value = {
         OauthResourceServerExtContextConfig.class
 })
-@AutoConfigureAfter(OAuth2AutoConfiguration.class)
 public class Oauth2ExtAutoConfiguration {
 
 }

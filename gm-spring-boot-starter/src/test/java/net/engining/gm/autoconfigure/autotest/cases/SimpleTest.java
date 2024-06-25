@@ -10,8 +10,6 @@ import net.engining.pg.support.utils.ValidateUtilExt;
 import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import java.util.Map;
