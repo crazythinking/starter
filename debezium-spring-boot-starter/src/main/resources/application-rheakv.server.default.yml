@@ -26,6 +26,7 @@ pg:
             # raft log snapshot 落盘间隔时间，默认为3600s
             snapshot-interval-secs: 3600
             enable-metrics: true
+            election-timeout-ms: 1000
         use-parallel-compress: true
         # 是否只从 leader 节点读取数据, 默认为true, 当然从follower节点读也能保证线性一致读;
         # 但是如果一个 follower 节点在同步数据时落后较多的情况下, 将导致读请求超时;

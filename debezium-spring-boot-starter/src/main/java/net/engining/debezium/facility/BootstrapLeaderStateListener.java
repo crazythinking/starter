@@ -30,6 +30,13 @@ public class BootstrapLeaderStateListener implements LeaderStateListener {
             LOGGER.warn("debezium {} is already running, will not start again", debeziumServerBootstrap.getSuffix());
             return;
         }
+        //不要马上启动，底层的资源需要有初始化的过程，包括：前序LeadNode的资源回收，VHeaKv数据一致性同步等，暂停当前线程60s
+        try {
+            Thread.sleep(60 * 1000);
+        }
+        catch (InterruptedException e) {
+            LOGGER.error("start debezium {} thread sleep error", debeziumServerBootstrap.getSuffix(), e);
+        }
         debeziumServerBootstrap.start();
     }
 
