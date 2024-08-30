@@ -4,6 +4,8 @@ import com.alipay.sofa.jraft.rhea.LeaderStateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 使 DebeziumServerBootstrap 的启动依赖于Sofa-JRaft LeaderStateListener，当前节点为Leader时启动，否则停止；
  * @author Eric Lu
@@ -32,7 +34,7 @@ public class BootstrapLeaderStateListener implements LeaderStateListener {
         }
         //不要马上启动，底层的资源需要有初始化的过程，包括：前序LeadNode的资源回收，VHeaKv数据一致性同步等，暂停当前线程60s
         try {
-            Thread.sleep(60 * 1000);
+            TimeUnit.MILLISECONDS.sleep(60 * 1000);
         }
         catch (InterruptedException e) {
             LOGGER.error("start debezium {} thread sleep error", debeziumServerBootstrap.getSuffix(), e);
