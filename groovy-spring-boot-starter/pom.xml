@@ -16,6 +16,7 @@
 
 	<properties>
 		<groovy.dep.version>4.0.5</groovy.dep.version>
+		<nacos.client.version>2.2.0</nacos.client.version>
 	</properties>
 
 	<dependencies>
@@ -40,6 +41,13 @@
 			<version>${groovy.dep.version}</version>
 			<scope>compile</scope>
 			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.nacos</groupId>
+			<artifactId>nacos-client</artifactId>
+			<version>${nacos.client.version}</version>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>

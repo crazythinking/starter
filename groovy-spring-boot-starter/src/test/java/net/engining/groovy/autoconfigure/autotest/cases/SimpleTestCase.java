@@ -12,6 +12,7 @@ import net.engining.groovy.autoconfigure.autotest.support.Gamer;
 import net.engining.groovy.autotest.services.UserService;
 import net.engining.groovy.autotest.services2.UserService2;
 import net.engining.groovy.autotest.services3.UserService3;
+import net.engining.pg.support.utils.ValidateUtilExt;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.ast.stmt.WhileStatement;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -37,6 +39,9 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTestCase.class);
 
     @Autowired(required = false)
+    private List<UserService> userServices;
+
+    @Resource(name = "UserServiceImpl2.groovy")
     private UserService userService;
 
     @Autowired(required = false)
@@ -56,13 +61,17 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     }
 
     @Override
-    public void testProcess() throws IOException, ScriptException, ResourceException, ClassNotFoundException {
+    public void testProcess() throws IOException, ScriptException, ResourceException {
+        if (ValidateUtilExt.isNotNullOrEmpty(userServices)) {
+            userServices.forEach(service -> LOGGER.debug(service.hello("dynamic language")));
+        }
+
         if (userService != null) {
-            System.out.println(userService.hello("dynamic language"));
+            LOGGER.debug(userService.hello("dynamic language"));
         }
 
         if (userService2 != null) {
-            System.out.println(userService2.hello("dynamic language"));
+            LOGGER.debug(userService2.hello("dynamic language"));
         }
 
         CompilerConfiguration config = new CompilerConfiguration();
@@ -99,9 +108,9 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             URL[] urls = ((URLClassLoader)groovyClassLoader.getParent()).getURLs();
             Arrays.stream(urls).forEach(Console::log);
         }
-        //URL url1 = new URL("file:///D:\\idea-workspace\\power-gears\\starter\\groovy\\script1\\jars\\groovy-deps-test-1.0-SNAPSHOT.jar");
-        //groovyClassLoader.addURL(url1);
-        groovyClassLoader.addClasspath("D:\\idea-workspace\\power-gears\\starter\\groovy\\script1\\jars\\groovy-deps-test-1.0-SNAPSHOT.jar");
+
+        //可以通过添加-classpath参数的方式添加
+        //groovyClassLoader.addClasspath("D:\\idea-workspace\\power-gears\\starter\\groovy\\script1\\jars\\groovy-deps-test-1.0-SNAPSHOT.jar");
 
         GroovyScriptEngine engine = new GroovyScriptEngine(
                 "file:///D:\\idea-workspace\\power-gears\\starter\\groovy\\script1\\",

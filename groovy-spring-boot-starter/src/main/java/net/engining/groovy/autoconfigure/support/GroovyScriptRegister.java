@@ -1,14 +1,15 @@
 package net.engining.groovy.autoconfigure.support;
 
+import cn.hutool.core.util.StrUtil;
 import net.engining.groovy.autoconfigure.annotations.EnableGroovyScript;
 import net.engining.groovy.autoconfigure.annotations.GroovyScriptService;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.EnvironmentAware;
@@ -20,7 +21,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.scripting.config.LangNamespaceUtils;
-import org.springframework.scripting.groovy.GroovyScriptFactory;
 import org.springframework.scripting.support.ScriptFactoryPostProcessor;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -111,28 +112,27 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
                         .getAnnotationAttributes(GroovyScriptService.class.getCanonicalName());
 
                 //  don't worry, attributes won't be null
-                String beanName = (String) attributes.get("id");
-                String scriptSourceLocator = resolveScriptSource(attributes);
-                definition.setBeanClassName(GROOVY_SCRIPT_FACTORY_CLASS_NAME);
-                definition.setAttribute(ScriptFactoryPostProcessor.LANGUAGE_ATTRIBUTE, "groovy");
+                List<String> scriptSourceLocators = resolveScriptSource(attributes);
+                scriptSourceLocators.forEach(scriptSourceLocator -> {
+                    BeanDefinition definitionNew = new AnnotatedGenericBeanDefinition(annotationMetadata);
+                    definitionNew.setBeanClassName(GROOVY_SCRIPT_FACTORY_CLASS_NAME);
+                    definitionNew.setAttribute(ScriptFactoryPostProcessor.LANGUAGE_ATTRIBUTE, "groovy");
 
-                long refreshCheckDelay = (long) attributes.get("refreshCheckDelay");
-                definition.setAttribute(ScriptFactoryPostProcessor.REFRESH_CHECK_DELAY_ATTRIBUTE, refreshCheckDelay);
+                    long refreshCheckDelay = resolveRefreshCheckDelay(attributes);
+                    definitionNew.setAttribute(ScriptFactoryPostProcessor.REFRESH_CHECK_DELAY_ATTRIBUTE, refreshCheckDelay);
 
-                // Attach jdk proxy target class metadata.!!! 不使用cglib,cglib在刷新后强转会失败
-                definition.setAttribute(ScriptFactoryPostProcessor.PROXY_TARGET_CLASS_ATTRIBUTE, false);
+                    // Attach jdk proxy target class metadata.!!! 不使用cglib,cglib在刷新后强转会失败
+                    definitionNew.setAttribute(ScriptFactoryPostProcessor.PROXY_TARGET_CLASS_ATTRIBUTE, false);
 
-                // Add constructor arguments.
-                ConstructorArgumentValues cav = definition.getConstructorArgumentValues();
-                cav.addIndexedArgumentValue(0, scriptSourceLocator);
+                    // Add constructor arguments.
+                    ConstructorArgumentValues cav = definitionNew.getConstructorArgumentValues();
+                    cav.addIndexedArgumentValue(0, scriptSourceLocator);
 
-                if (beanName.isEmpty()) {
-                    beanName = BeanDefinitionReaderUtils.generateBeanName(
-                            definition, registry, false);
-                }
-                registry.registerBeanDefinition(
-                        beanName + "." + GroovyScriptFactory.class.getSimpleName(),
-                        definition);
+                    // bean name
+                    String beanName = StrUtil.subAfter(scriptSourceLocator, "/", true);
+
+                    registry.registerBeanDefinition(beanName, definitionNew);
+                });
 
             }
         }
@@ -201,13 +201,32 @@ public class GroovyScriptRegister implements ImportBeanDefinitionRegistrar, Envi
         return basePackages;
     }
 
-    private String resolveScriptSource(Map<String, Object> attributes) {
-        String scriptSource = (String) attributes.get("scriptSource");
+    private List<String> resolveScriptSource(Map<String, Object> attributes) {
+        String scriptSource = (String) attributes.get("scriptSources");
 
         if (ValidateUtilExt.isNullOrEmpty(scriptSource)) {
             throw new IllegalStateException("Must specify either 'scriptSource'");
         }
 
-        return scriptSource;
+        //scriptSource 可能是从外部配置项中获取脚本源
+        if (scriptSource.startsWith("${") && scriptSource.endsWith("}")) {
+            scriptSource = environment.resolveRequiredPlaceholders(scriptSource);
+        }
+
+        return StrUtil.split(scriptSource, ",");
+    }
+
+    private long resolveRefreshCheckDelay(Map<String, Object> attributes) {
+        String refreshCheckDelay = (String) attributes.get("refreshCheckDelay");
+
+        if (refreshCheckDelay.startsWith("${") && refreshCheckDelay.endsWith("}")) {
+            refreshCheckDelay = environment.resolveRequiredPlaceholders(refreshCheckDelay);
+        }
+
+        if (!ValidateUtilExt.isNumber(refreshCheckDelay)) {
+            throw new IllegalStateException("Must number 'refreshCheckDelay'");
+        }
+
+        return Long.parseLong(refreshCheckDelay);
     }
 }

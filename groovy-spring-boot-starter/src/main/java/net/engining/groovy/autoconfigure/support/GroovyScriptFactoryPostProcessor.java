@@ -51,7 +51,8 @@ public class GroovyScriptFactoryPostProcessor extends ScriptFactoryPostProcessor
 
     @Override
     protected ScriptSource getScriptSource(String beanName, String scriptSourceLocator) {
-        // add self protocol here
+        //可通过注入不同的ProtocolResolver实现支持自定义协议来获取脚本
+        //like nacos://, redis://, http://, https:// and so on
         return super.getScriptSource(beanName, scriptSourceLocator);
     }
 }
