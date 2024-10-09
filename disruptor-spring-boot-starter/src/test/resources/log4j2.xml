@@ -3,8 +3,8 @@
 <Configuration status="ERROR" monitorInterval="600" strict="true">
     <properties>
         <!-- 日志路径 -->
-        <!-- 可设置自定义jvm参数通过-D指定，这里通过${sys:xxxxxx}获取 >> ${sys:log.path.prefix}-->
-        <property name="LOG_HOME">./logs/</property>
+        <!-- 可设置自定义环境变量指定 -->
+        <property name="LOG_HOME">${env:LOG_HOME:-./logs}</property>
         <!-- 日志输入级别 -->
         <property name="LOG_LEVEL">${sys:log4j2.level:-WARN}</property>
     </properties>
