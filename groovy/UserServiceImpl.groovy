@@ -1,19 +1,23 @@
 import net.engining.groovy.autoconfigure.autotest.support.Gamer
 import net.engining.groovy.autotest.services.UserService
-import org.springframework.beans.factory.annotation.Autowired
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+import javax.annotation.Resource
 
 class UserServiceImpl implements UserService {
+    static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
+    @Resource
     Gamer gamer;
 
     @Override
     String hello(String name) {
 
-        println("this is gamer")
+        LOGGER.info("this is gamer")
         gamer.play()
 
-        println("this is user service")
+        LOGGER.info("this is user service")
         return "hello " + name
     }
 }

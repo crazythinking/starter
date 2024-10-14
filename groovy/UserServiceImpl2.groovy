@@ -1,9 +1,12 @@
 import net.engining.groovy.autoconfigure.autotest.support.Gamer
 import net.engining.groovy.autotest.services.UserService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import javax.annotation.Resource
 
 class UserServiceImpl2 implements UserService {
+    static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl2.class);
 
     @Resource
     Gamer gamer;
@@ -11,10 +14,10 @@ class UserServiceImpl2 implements UserService {
     @Override
     String hello(String name) {
 
-        println("UserServiceImpl2: this is gamer")
+        LOGGER.info("UserServiceImpl2: this is gamer")
         gamer.play()
 
-        println("UserServiceImpl2: this is user service")
+        LOGGER.info("UserServiceImpl2: this is user service")
         return "hello " + name
     }
 }

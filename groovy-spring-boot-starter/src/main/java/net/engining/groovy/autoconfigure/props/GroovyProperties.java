@@ -18,6 +18,9 @@ public class GroovyProperties {
 
     Set<String> basePackages = Sets.newHashSet();
 
+    String nacosAddresses;
+    String nacosNamespace = "public";
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -32,5 +35,21 @@ public class GroovyProperties {
 
     public void setBasePackages(Set<String> basePackages) {
         this.basePackages = basePackages;
+    }
+
+    public String getNacosAddresses() {
+        return nacosAddresses;
+    }
+
+    public void setNacosAddresses(String nacosAddresses) {
+        this.nacosAddresses = nacosAddresses;
+    }
+
+    public String getNacosNamespace() {
+        return nacosNamespace;
+    }
+
+    public void setNacosNamespace(String nacosNamespace) {
+        this.nacosNamespace = nacosNamespace;
     }
 }

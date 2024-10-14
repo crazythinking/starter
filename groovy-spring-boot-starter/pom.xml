@@ -15,8 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<groovy.dep.version>4.0.5</groovy.dep.version>
-		<nacos.client.version>2.2.0</nacos.client.version>
+		<groovy.dep.version>4.0.23</groovy.dep.version>
 	</properties>
 
 	<dependencies>
@@ -46,7 +45,6 @@
 		<dependency>
 			<groupId>com.alibaba.nacos</groupId>
 			<artifactId>nacos-client</artifactId>
-			<version>${nacos.client.version}</version>
 			<optional>true</optional>
 		</dependency>
 

@@ -12,6 +12,7 @@ import net.engining.groovy.autoconfigure.autotest.support.Gamer;
 import net.engining.groovy.autotest.services.UserService;
 import net.engining.groovy.autotest.services2.UserService2;
 import net.engining.groovy.autotest.services3.UserService3;
+import net.engining.pg.support.core.context.ApplicationContextHolder;
 import net.engining.pg.support.utils.ValidateUtilExt;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.ast.stmt.WhileStatement;
@@ -41,7 +42,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     @Autowired(required = false)
     private List<UserService> userServices;
 
-    @Resource(name = "UserServiceImpl2.groovy")
+    @Resource(name = "UserServiceImpl3.groovy")
     private UserService userService;
 
     @Autowired(required = false)
@@ -49,7 +50,6 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Autowired
     Gamer gamer;
-
 
     @Override
     public void initTestData() {
@@ -62,18 +62,30 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
     @Override
     public void testProcess() throws IOException, ScriptException, ResourceException {
+
         if (ValidateUtilExt.isNotNullOrEmpty(userServices)) {
             userServices.forEach(service -> LOGGER.debug(service.hello("dynamic language")));
-        }
-
-        if (userService != null) {
-            LOGGER.debug(userService.hello("dynamic language"));
         }
 
         if (userService2 != null) {
             LOGGER.debug(userService2.hello("dynamic language"));
         }
 
+        useGroovyScriptEngine();
+
+        if (userService != null) {
+            LOGGER.debug(userService.hello("dynamic language"));
+        }
+
+        ApplicationContextHolder.getBeansOfType(UserService.class).forEach((key, value) -> {
+            LOGGER.debug(key);
+            LOGGER.debug(value.hello("dynamic language"));
+        });
+
+    }
+
+    //不推荐直接使用GroovyScriptEngine
+    private void useGroovyScriptEngine() throws IOException, ResourceException, ScriptException {
         CompilerConfiguration config = new CompilerConfiguration();
         // 创建SecureASTCustomizer
         final SecureASTCustomizer secure = new SecureASTCustomizer();
@@ -119,15 +131,15 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
 
         Binding binding1 = new Binding();
         binding1.setProperty("gamer", gamer);
+        //注意：使用GroovyScriptEngine运行脚本，脚本文件名不能与脚本中的类名相同
         //每次groovy脚本改变，其内部会生成新的Class对象；每次调用run，返回的对象也是新的；因此有内存泄漏的风险
-        UserService3 obj = (UserService3) engine.run("UserServiceScript.groovy", binding1);
+        UserService3 obj = (UserService3) engine.run("UserService3ImplScript.groovy", binding1);
         obj.hello("dynamic language");
         LOGGER.debug(obj.toString());
 
-        obj = (UserService3) engine.run("UserServiceScript.groovy", binding1);
+        obj = (UserService3) engine.run("UserService3ImplScript.groovy", binding1);
         obj.hello("dynamic language");
         LOGGER.debug(obj.toString());
-
     }
 
     @Override

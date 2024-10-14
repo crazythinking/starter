@@ -16,6 +16,8 @@
 
 package net.engining.groovy.autoconfigure.autotest.support;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,8 +27,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GamerImpl implements Gamer{
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(GamerImpl.class);
+
     @Override
     public void play() {
-        System.out.println("i'm playing");
+        LOGGER.debug("i'm playing");
     }
 }
