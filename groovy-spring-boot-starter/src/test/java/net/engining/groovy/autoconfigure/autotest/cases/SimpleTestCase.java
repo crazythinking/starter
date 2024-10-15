@@ -43,6 +43,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
     private List<UserService> userServices;
 
     @Resource(name = "UserServiceImpl3.groovy")
+
     private UserService userService;
 
     @Autowired(required = false)
@@ -82,6 +83,7 @@ public class SimpleTestCase extends AbstractTestCaseTemplate {
             LOGGER.debug(value.hello("dynamic language"));
         });
 
+        ((UserService)ApplicationContextHolder.getBean("UserServiceImpl3.groovy")).hello("dynamic language");
     }
 
     //不推荐直接使用GroovyScriptEngine
